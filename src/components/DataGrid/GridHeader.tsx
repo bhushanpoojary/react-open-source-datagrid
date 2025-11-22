@@ -56,10 +56,11 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
     });
   };
 
-  // Drag and drop handlers for column reordering
+  // Drag and drop handlers for column reordering and grouping
   const handleDragStart = (e: React.DragEvent, field: string) => {
     setDraggedColumn(field);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', field);
   };
 
   const handleDragOver = (e: React.DragEvent) => {

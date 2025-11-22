@@ -134,13 +134,25 @@ export const DemoGridPage: React.FC = () => {
               <span className="text-green-500">✓</span>
               <span>Sticky header</span>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Row grouping (drag to group area)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Multi-level grouping</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Group aggregates (count, sum, avg)</span>
+            </div>
           </div>
         </div>
 
         {/* Instructions */}
         <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
           <h3 className="font-semibold text-blue-900 mb-2">How to use:</h3>
-          <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+          <ul className="text-sm text-blue-800 space-y-1 list-disc list-outside ml-5">
             <li>Click column header to sort (asc → desc → none)</li>
             <li>Type in filter boxes to filter data</li>
             <li>Drag column borders to resize</li>
@@ -148,6 +160,9 @@ export const DemoGridPage: React.FC = () => {
             <li>Click row to select (Ctrl+click for multi, Shift+click for range)</li>
             <li>Double-click cell to edit (or press Enter on focused cell)</li>
             <li>Use arrow keys to navigate, Enter to edit, Escape to cancel</li>
+            <li><strong>NEW:</strong> Drag column headers to the "Group By" area to group rows</li>
+            <li><strong>NEW:</strong> Click on group rows to expand/collapse</li>
+            <li><strong>NEW:</strong> View aggregate statistics (count, sum, avg) for each group</li>
           </ul>
         </div>
 

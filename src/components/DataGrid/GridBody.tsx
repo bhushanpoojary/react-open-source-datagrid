@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState } from './types';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow } from './types';
+import { GroupRow } from './GroupRow';
+import { isGroupedRow } from './groupingUtils';
 
 interface GridBodyProps {
   columns: Column[];
-  rows: Row[];
+  rows: (Row | GroupedRow)[];
   columnOrder: string[];
   columnWidths: { [field: string]: number };
   selectedRows: Set<string | number>;
@@ -50,10 +52,12 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
     if (isShift && selectedRows.size > 0) {
       // Range selection (simplified - select all rows between last selected and current)
-      const lastSelectedIndex = rows.findIndex(r => selectedRows.has(r.id));
-      const startIndex = Math.min(lastSelectedIndex, rowIndex);
-      const endIndex = Math.max(lastSelectedIndex, rowIndex);
-      const rowIds = rows.slice(startIndex, endIndex + 1).map(r => r.id);
+      const dataRows = rows.filter((r): r is Row => !isGroupedRow(r));
+      const lastSelectedIndex = dataRows.findIndex(r => selectedRows.has(r.id));
+      const currentDataIndex = dataRows.findIndex(r => r.id === row.id);
+      const startIndex = Math.min(lastSelectedIndex, currentDataIndex);
+      const endIndex = Math.max(lastSelectedIndex, currentDataIndex);
+      const rowIds = dataRows.slice(startIndex, endIndex + 1).map(r => r.id);
       
       dispatch({
         type: 'SELECT_RANGE',
@@ -106,7 +110,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
   const handleEditComplete = () => {
     if (editState.rowId === null || editState.field === null) return;
 
-    const rowIndex = rows.findIndex(r => r.id === editState.rowId);
+    const dataRows = rows.filter((r): r is Row => !isGroupedRow(r));
+    const rowIndex = dataRows.findIndex(r => r.id === editState.rowId);
     
     if (onCellEdit && rowIndex !== -1) {
       onCellEdit(rowIndex, editState.field, editState.value);
@@ -156,9 +161,11 @@ export const GridBody: React.FC<GridBodyProps> = ({
         e.preventDefault();
         // Start editing current cell
         const row = rows[rowIndex];
-        const field = columnOrder[columnIndex];
-        const value = row[field];
-        handleCellDoubleClick(row, field, value);
+        if (!isGroupedRow(row)) {
+          const field = columnOrder[columnIndex];
+          const value = row[field];
+          handleCellDoubleClick(row, field, value);
+        }
         break;
       default:
         return;
@@ -173,6 +180,21 @@ export const GridBody: React.FC<GridBodyProps> = ({
   return (
     <div ref={bodyRef} className="overflow-auto" style={{ maxHeight: '500px' }}>
       {rows.map((row, rowIndex) => {
+        // Check if this is a group row
+        if (isGroupedRow(row)) {
+          return (
+            <GroupRow
+              key={row.groupKey}
+              group={row}
+              columns={columns}
+              columnOrder={columnOrder}
+              columnWidths={columnWidths}
+              dispatch={dispatch}
+            />
+          );
+        }
+
+        // Regular row rendering
         const isSelected = selectedRows.has(row.id);
         const isFocused = focusState?.rowIndex === rowIndex;
 

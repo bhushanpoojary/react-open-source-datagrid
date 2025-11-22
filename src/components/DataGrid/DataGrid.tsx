@@ -1,9 +1,11 @@
 import React, { useReducer, useMemo, useEffect, useCallback } from 'react';
-import type { DataGridProps } from './types';
+import type { DataGridProps, Row, GroupedRow } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
 import { GridPagination } from './GridPagination';
+import { GroupByPanel } from './GroupByPanel';
+import { groupRows, flattenGroupedRows } from './groupingUtils';
 
 /**
  * DataGrid Component
@@ -106,12 +108,28 @@ export const DataGrid: React.FC<DataGridProps> = ({
     });
   }, [sortedRows, state.filterConfig]);
 
+  // Apply grouping
+  const groupedRows = useMemo(() => {
+    if (state.groupBy.length === 0) {
+      return filteredRows;
+    }
+    return groupRows(filteredRows, state.groupBy, state.expandedGroups);
+  }, [filteredRows, state.groupBy, state.expandedGroups]);
+
+  // Flatten grouped rows for display
+  const flattenedRows = useMemo(() => {
+    if (state.groupBy.length === 0) {
+      return groupedRows as Row[];
+    }
+    return flattenGroupedRows(groupedRows as (Row | GroupedRow)[]);
+  }, [groupedRows, state.groupBy]);
+
   // Apply pagination
   const paginatedRows = useMemo(() => {
     const startIndex = state.currentPage * state.pageSize;
     const endIndex = startIndex + state.pageSize;
-    return filteredRows.slice(startIndex, endIndex);
-  }, [filteredRows, state.currentPage, state.pageSize]);
+    return flattenedRows.slice(startIndex, endIndex);
+  }, [flattenedRows, state.currentPage, state.pageSize]);
 
   // Auto-adjust column width based on content (simplified implementation)
   useEffect(() => {
@@ -158,8 +176,10 @@ export const DataGrid: React.FC<DataGridProps> = ({
       if (onCellEdit) {
         // Find the actual row index in the original data
         const actualRow = paginatedRows[rowIndex];
-        const actualRowIndex = rows.findIndex((r) => r.id === actualRow.id);
-        onCellEdit(actualRowIndex, field, value);
+        if ('id' in actualRow) {
+          const actualRowIndex = rows.findIndex((r) => r.id === actualRow.id);
+          onCellEdit(actualRowIndex, field, value);
+        }
       }
     },
     [onCellEdit, paginatedRows, rows]
@@ -167,6 +187,13 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+      {/* Group By Panel */}
+      <GroupByPanel
+        columns={columns}
+        groupBy={state.groupBy}
+        dispatch={dispatch}
+      />
+
       {/* Sticky Header */}
       <div className="sticky top-0 z-20">
         <GridHeader
@@ -197,7 +224,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       <GridPagination
         currentPage={state.currentPage}
         pageSize={state.pageSize}
-        totalRows={filteredRows.length}
+        totalRows={flattenedRows.length}
         dispatch={dispatch}
       />
     </div>

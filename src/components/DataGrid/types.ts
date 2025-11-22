@@ -39,6 +39,32 @@ export interface FocusState {
   columnIndex: number;
 }
 
+// Grouping types
+export type AggregateFunction = 'count' | 'sum' | 'avg' | 'min' | 'max';
+
+export interface GroupConfig {
+  field: string;
+  aggregates?: {
+    field: string;
+    function: AggregateFunction;
+  }[];
+}
+
+export interface GroupedRow {
+  isGroup: true;
+  groupKey: string;
+  groupValue: any;
+  field: string;
+  level: number;
+  children: (Row | GroupedRow)[];
+  isExpanded: boolean;
+  aggregates?: { [key: string]: any };
+}
+
+export interface ExpandedGroups {
+  [groupKey: string]: boolean;
+}
+
 // Main grid state interface
 export interface GridState {
   columns: Column[];
@@ -51,6 +77,8 @@ export interface GridState {
   focusState: FocusState | null;
   columnOrder: string[]; // Array of field names in display order
   columnWidths: { [field: string]: number };
+  groupBy: string[]; // Array of field names to group by
+  expandedGroups: ExpandedGroups; // Track which groups are expanded
 }
 
 // Action types for reducer
@@ -67,7 +95,12 @@ export type GridAction =
   | { type: 'SET_FOCUS'; payload: FocusState | null }
   | { type: 'REORDER_COLUMNS'; payload: { fromIndex: number; toIndex: number } }
   | { type: 'RESIZE_COLUMN'; payload: { field: string; width: number } }
-  | { type: 'RESET_COLUMNS'; payload: Column[] };
+  | { type: 'RESET_COLUMNS'; payload: Column[] }
+  | { type: 'ADD_GROUP'; payload: string }
+  | { type: 'REMOVE_GROUP'; payload: string }
+  | { type: 'REORDER_GROUPS'; payload: { fromIndex: number; toIndex: number } }
+  | { type: 'TOGGLE_GROUP'; payload: string }
+  | { type: 'CLEAR_GROUPS' };
 
 // Props for the main DataGrid component
 export interface DataGridProps {
