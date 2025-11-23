@@ -7,38 +7,53 @@ function App() {
   const [currentDemo, setCurrentDemo] = useState<'standard' | 'virtual'>('standard')
 
   return (
-    <div>
-      {/* Demo Switcher */}
-      <div className="bg-gray-800 text-white p-4 shadow-lg">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold">React DataGrid Demos</h1>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCurrentDemo('standard')}
-              className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                currentDemo === 'standard'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
-            >
-              Standard Demo
-            </button>
-            <button
-              onClick={() => setCurrentDemo('virtual')}
-              className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                currentDemo === 'virtual'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
-            >
-              Virtual Scrolling (50K+ Rows)
-            </button>
+    <div className="flex flex-col h-screen bg-neutral-50">
+      {/* Professional Header */}
+      <header className="bg-white border-b border-neutral-200 shadow-sm">
+        <div className="max-w-full mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Title */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md">
+                <span className="text-white font-bold text-lg">📊</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-neutral-900">React DataGrid</h1>
+                <p className="text-xs text-neutral-500">Professional Data Table Component</p>
+              </div>
+            </div>
+
+            {/* Navigation Tabs */}
+            <div className="flex items-center gap-2 bg-neutral-100 p-1 rounded-lg">
+              <button
+                onClick={() => setCurrentDemo('standard')}
+                className={`px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 ${
+                  currentDemo === 'standard'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                Standard Demo
+              </button>
+              <button
+                onClick={() => setCurrentDemo('virtual')}
+                className={`px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 ${
+                  currentDemo === 'virtual'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                Virtual Scrolling
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Render selected demo */}
-      {currentDemo === 'standard' ? <DemoGridPage /> : <VirtualScrollDemo />}
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        {currentDemo === 'standard' ? <DemoGridPage /> : <VirtualScrollDemo />}
+      </main>
     </div>
   )
 }

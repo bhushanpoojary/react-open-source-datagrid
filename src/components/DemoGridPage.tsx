@@ -82,143 +82,128 @@ export const DemoGridPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            DataGrid Component Demo
+    <div className="h-full bg-neutral-50 p-6">
+      <div className="max-w-full mx-auto h-full flex flex-col">
+        {/* Page Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-neutral-900 mb-2">
+            Employee Directory
           </h1>
-          <p className="text-lg text-gray-600">
-            A fully-featured React DataGrid similar to AG-Grid
+          <p className="text-neutral-600 text-sm">
+            Manage and explore employee information with sorting, filtering, and advanced features
           </p>
         </div>
 
-        {/* Features List */}
-        <div className="mb-6 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-3 text-gray-800">Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Sortable columns (click header)</span>
+        {/* Features Grid */}
+        <div className="mb-6 bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
+          <h2 className="text-lg font-semibold mb-4 text-neutral-900">Available Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Sortable columns</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Column filtering (text search)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Column filtering</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Pagination (10, 20, 50 rows)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Pagination controls</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Column resizing (drag border)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Column resizing</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Column reordering (drag header)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Column reordering</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Row selection (Ctrl/Shift click)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Row selection</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Editable cells (double-click)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Editable cells</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Keyboard navigation (arrows)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Keyboard navigation</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Sticky header</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Sticky headers</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Row grouping (drag to group area)</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Row grouping</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Multi-level grouping</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Aggregations</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Group aggregates (count, sum, avg)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Footer row with aggregations</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Group-level footer rows</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Multiple aggregate functions</span>
+            <div className="flex items-start gap-2">
+              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
+              <span className="text-neutral-700">Footer aggregates</span>
             </div>
           </div>
         </div>
 
-        {/* Instructions */}
-        <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
-          <h3 className="font-semibold text-blue-900 mb-2">How to use:</h3>
-          <ul className="text-sm text-blue-800 space-y-1 list-disc list-outside ml-5">
-            <li>Click column header to sort (asc → desc → none)</li>
-            <li>Type in filter boxes to filter data</li>
-            <li>Drag column borders to resize</li>
-            <li>Drag column headers to reorder</li>
-            <li>Click row to select (Ctrl+click for multi, Shift+click for range)</li>
-            <li>Double-click cell to edit (or press Enter on focused cell)</li>
-            <li>Use arrow keys to navigate, Enter to edit, Escape to cancel</li>
-            <li><strong>NEW:</strong> Drag column headers to the "Group By" area to group rows</li>
-            <li><strong>NEW:</strong> Click on group rows to expand/collapse</li>
-            <li><strong>NEW:</strong> View aggregate statistics (count, sum, avg) for each group</li>
-            <li><strong>NEW:</strong> Footer row displays global aggregations (total, average, min, max, count)</li>
-            <li><strong>NEW:</strong> Group-level footers show subtotals for each group</li>
+        {/* Instructions Card */}
+        <div className="mb-6 bg-primary-50 border border-primary-200 p-5 rounded-lg">
+          <h3 className="font-semibold text-primary-900 mb-3 text-sm">How to use:</h3>
+          <ul className="text-sm text-primary-800 space-y-1.5 list-disc list-outside ml-5">
+            <li>Click column headers to sort data</li>
+            <li>Use filter boxes to search within columns</li>
+            <li>Drag column borders to resize columns</li>
+            <li>Drag headers to reorder columns</li>
+            <li>Click rows to select them (Ctrl+click for multiple)</li>
+            <li>Double-click cells to edit content</li>
+            <li>Drag headers to the Group By area to group data</li>
           </ul>
         </div>
 
-        {/* DataGrid with Footer Aggregations */}
-        <div className="mb-6">
-          <DataGrid
-            columns={columns}
-            rows={employees}
-            pageSize={10}
-            onRowClick={handleRowClick}
-            onCellEdit={handleCellEdit}
-            onSelectionChange={handleSelectionChange}
-            footerConfig={{
-              show: true,
-              showGroupFooters: true,
-              aggregates: [
-                { field: 'salary', function: 'total', label: 'Total Salary' },
-                { field: 'salary', function: 'avg', label: 'Avg Salary' },
-                { field: 'salary', function: 'min', label: 'Min Salary' },
-                { field: 'salary', function: 'max', label: 'Max Salary' },
-                { field: 'id', function: 'count', label: 'Total Employees' },
-              ],
-            }}
-          />
+        {/* DataGrid Container */}
+        <div className="mb-6 flex-1 min-h-0 bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
+          <div className="h-full overflow-auto">
+            <DataGrid
+              columns={columns}
+              rows={employees}
+              pageSize={10}
+              onRowClick={handleRowClick}
+              onCellEdit={handleCellEdit}
+              onSelectionChange={handleSelectionChange}
+              footerConfig={{
+                show: true,
+                showGroupFooters: true,
+                aggregates: [
+                  { field: 'salary', function: 'total', label: 'Total Salary' },
+                  { field: 'salary', function: 'avg', label: 'Avg Salary' },
+                  { field: 'salary', function: 'min', label: 'Min Salary' },
+                  { field: 'salary', function: 'max', label: 'Max Salary' },
+                  { field: 'id', function: 'count', label: 'Total Employees' },
+                ],
+              }}
+            />
+          </div>
         </div>
 
-        {/* Event Log and Selection Info */}
+        {/* Info Panels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Selection Info */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-3 text-gray-800">
-              Selected Rows ({selectedIds.length})
+          <div className="bg-white p-5 rounded-lg shadow-sm border border-neutral-200">
+            <h3 className="text-sm font-semibold mb-4 text-neutral-900">
+              Selected Rows <span className="text-primary-600 font-bold">({selectedIds.length})</span>
             </h3>
             {selectedIds.length === 0 ? (
-              <p className="text-gray-500 text-sm">No rows selected</p>
+              <p className="text-neutral-500 text-sm">No rows selected. Click on rows to select them.</p>
             ) : (
-              <div className="space-y-1">
+              <div className="space-y-2 max-h-40 overflow-y-auto">
                 {selectedIds.map((id) => {
                   const employee = employees.find((emp) => emp.id === id);
                   return (
-                    <div key={id} className="text-sm text-gray-700">
-                      ID: {id} - {employee?.name}
+                    <div key={id} className="text-sm text-neutral-700 p-2 bg-primary-50 rounded border border-primary-100">
+                      <span className="font-medium text-primary-600">ID {id}</span> - {employee?.name}
                     </div>
                   );
                 })}
@@ -227,18 +212,18 @@ export const DemoGridPage: React.FC = () => {
           </div>
 
           {/* Event Log */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-3 text-gray-800">
-              Event Log (Last 10)
+          <div className="bg-white p-5 rounded-lg shadow-sm border border-neutral-200">
+            <h3 className="text-sm font-semibold mb-4 text-neutral-900">
+              Event Log <span className="text-neutral-500 font-normal">(Last 10)</span>
             </h3>
             {eventLog.length === 0 ? (
-              <p className="text-gray-500 text-sm">No events yet</p>
+              <p className="text-neutral-500 text-sm">No events yet. Try interacting with the grid.</p>
             ) : (
-              <div className="space-y-1 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-40 overflow-y-auto">
                 {eventLog.map((event, index) => (
                   <div
                     key={index}
-                    className="text-sm text-gray-700 py-1 border-b border-gray-100 last:border-0"
+                    className="text-xs text-neutral-600 p-2 bg-neutral-100 rounded border border-neutral-200 font-mono"
                   >
                     {event}
                   </div>

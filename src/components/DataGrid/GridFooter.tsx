@@ -76,7 +76,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', borderTop: '2px solid #d1d5db', backgroundColor: '#f9fafb', fontWeight: '600' }}>
+    <div style={{ display: 'flex', borderTop: '2px solid #e2e8f0', backgroundColor: '#f8f9fa', fontWeight: '600' }}>
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;
@@ -87,11 +87,11 @@ export const GridFooter: React.FC<GridFooterProps> = ({
         // For the first column, show the label
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
-          cellContent = <span style={{ color: '#4b5563' }}>{label}</span>;
+          cellContent = <span style={{ color: '#262626', fontWeight: '600' }}>{label}</span>;
         } else if (configs && configs.length > 0) {
           // Show aggregates for this field
           cellContent = (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
               {configs.map((config, idx) => {
                 const key = `${config.field}_${config.function}`;
                 const value = aggregates[key];
@@ -101,9 +101,9 @@ export const GridFooter: React.FC<GridFooterProps> = ({
                 return (
                   <div key={idx} style={{ fontSize: '12px' }}>
                     {configs.length > 1 && (
-                      <span style={{ color: '#6b7280', marginRight: '4px' }}>{displayLabel}:</span>
+                      <span style={{ color: '#666666', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
                     )}
-                    <span style={{ color: '#111827' }}>{formattedValue}</span>
+                    <span style={{ color: '#262626', fontWeight: '600' }}>{formattedValue}</span>
                   </div>
                 );
               })}
@@ -120,11 +120,12 @@ export const GridFooter: React.FC<GridFooterProps> = ({
               ...cellStyle,
               paddingLeft: '12px',
               paddingRight: '12px',
-              paddingTop: '8px',
-              paddingBottom: '8px',
-              fontSize: '14px',
-              borderRight: '1px solid #e5e7eb',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+              fontSize: '13px',
+              borderRight: '1px solid #e2e8f0',
               flexShrink: 0,
+              backgroundColor: '#f8f9fa',
             }}
           >
             {cellContent}

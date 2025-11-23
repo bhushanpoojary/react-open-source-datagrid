@@ -273,12 +273,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
         style={{
           ...style,
           display: 'flex',
-          borderBottom: '1px solid #e5e7eb',
-          backgroundColor: isSelected ? '#eff6ff' : isFocused ? '#dbeafe' : '#fff',
+          borderBottom: '1px solid #e2e8f0',
+          backgroundColor: isSelected ? '#e8f0ff' : isFocused ? '#f0f6ff' : '#ffffff',
           cursor: 'pointer',
+          transition: 'background-color 0.15s ease',
         }}
-        onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f9fafb')}
-        onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#fff')}
+        onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f8f9fa')}
+        onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
         onClick={(e) => handleRowClick(row, rowIndex, e)}
       >
         {displayColumnOrder.map((field, columnIndex) => {
@@ -300,12 +301,14 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 ...cellStyle,
                 paddingLeft: '12px',
                 paddingRight: '12px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                fontSize: '14px',
-                borderRight: '1px solid #e5e7eb',
+                paddingTop: '10px',
+                paddingBottom: '10px',
+                fontSize: '13px',
+                borderRight: '1px solid #e2e8f0',
                 flexShrink: 0,
-                outline: isCellFocused ? '2px solid #3b82f6' : 'none',
+                outline: isCellFocused ? '2px solid #0066cc' : 'none',
+                outlineOffset: '-2px',
+                color: '#262626',
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
@@ -315,7 +318,15 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 <input
                   ref={editInputRef}
                   type="text"
-                  style={{ width: '100%', padding: '4px', border: '1px solid #3b82f6', borderRadius: '4px', outline: 'none' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '6px 8px', 
+                    border: '1.5px solid #0066cc', 
+                    borderRadius: '3px', 
+                    outline: 'none',
+                    fontSize: '13px',
+                    boxShadow: '0 0 0 3px rgba(0, 102, 204, 0.1)',
+                  }}
                   value={editState.value ?? ''}
                   onChange={(e) => handleEditChange(e.target.value)}
                   onBlur={handleEditComplete}
@@ -330,7 +341,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   }}
                 />
               ) : (
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{cellValue ?? ''}</span>
+                <span style={{ 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis', 
+                  whiteSpace: 'nowrap', 
+                  display: 'block',
+                  color: '#262626',
+                }}>{cellValue ?? ''}</span>
               )}
             </div>
           );

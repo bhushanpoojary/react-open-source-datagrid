@@ -230,9 +230,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
   );
 
   return (
-    <div style={{ border: '1px solid #d1d5db', borderRadius: '8px', overflow: 'hidden', backgroundColor: '#fff', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
+    <div style={{ border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#ffffff', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.08)' }}>
       {/* Toolbar */}
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb', zIndex: 30 }}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: '#fafafa', borderBottom: '1px solid #e2e8f0', zIndex: 30 }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
           <ColumnChooser
