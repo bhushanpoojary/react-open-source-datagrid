@@ -317,10 +317,10 @@ export interface MockWebSocket {
  * Create a mock WebSocket that connects to the feed
  */
 export function createMockWebSocket(feed: WebSocketMockFeed): MockWebSocket {
-  let readyState = 0; // CONNECTING
+  const initialReadyState = 0; // CONNECTING
   
   const mockWS: MockWebSocket = {
-    readyState,
+    readyState: initialReadyState,
     onmessage: null,
     onopen: null,
     onclose: null,

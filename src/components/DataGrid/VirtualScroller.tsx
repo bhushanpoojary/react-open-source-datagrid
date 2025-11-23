@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useMemo } from 'react';
 
-export interface VirtualScrollerProps<T = any> {
+export interface VirtualScrollerProps<T = unknown> {
   // Data
   items: T[];
   
@@ -60,7 +60,7 @@ interface ColumnRange {
  * - Cell recycling
  * - Optimized for 50,000+ rows and 200+ columns
  */
-export const VirtualScroller = <T extends any>({
+export const VirtualScroller = <T = unknown>({
   items,
   itemHeight = 35,
   overscanCount = 3,
@@ -77,7 +77,7 @@ export const VirtualScroller = <T extends any>({
 }: VirtualScrollerProps<T>) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPos, setScrollPos] = useState<ScrollPosition>({ scrollTop: 0, scrollLeft: 0 });
-  const [measuredHeights, setMeasuredHeights] = useState<Map<number, number>>(new Map());
+  const [measuredHeights] = useState<Map<number, number>>(new Map());
   
   // Memoize item height function
   const getItemHeight = useCallback(
@@ -168,7 +168,7 @@ export const VirtualScroller = <T extends any>({
       };
     }
 
-    const effectiveWidth = containerWidth || (containerRef.current?.clientWidth || 0);
+    const effectiveWidth = containerWidth || 0;
     let accumulatedWidth = 0;
     let startIndex = 0;
     
@@ -191,7 +191,7 @@ export const VirtualScroller = <T extends any>({
     let endIndex = startIndex;
     let visibleWidth = 0;
     
-    while (endIndex < columns.length && visibleWidth < effectiveWidth + columns[endIndex].width * columnOverscan) {
+    while (endIndex < columns.length && visibleWidth < effectiveWidth + (columns[endIndex]?.width || 0) * columnOverscan) {
       visibleWidth += columns[endIndex].width;
       endIndex++;
     }
@@ -235,7 +235,8 @@ export const VirtualScroller = <T extends any>({
     [onScroll]
   );
 
-  // Measure dynamic heights if needed
+  // Measure dynamic heights if needed - currently unused but kept for future use
+  /*
   const measureHeight = useCallback(
     (index: number, element: HTMLElement | null) => {
       if (!element || typeof itemHeight === 'number') return;
@@ -250,6 +251,7 @@ export const VirtualScroller = <T extends any>({
     },
     [itemHeight]
   );
+  */
 
   // Render visible items
   const visibleItems = useMemo(() => {
@@ -295,7 +297,6 @@ export const VirtualScroller = <T extends any>({
     renderItem,
     renderRow,
     visibleColumns,
-    measureHeight,
   ]);
 
   return (

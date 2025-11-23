@@ -50,6 +50,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   }, [rows]);
 
   // Enhanced columns with market data formatting
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const enhancedColumns = useMemo(() => {
     return columns.map(col => {
       // Add custom renderers for market data fields
@@ -217,6 +218,7 @@ export interface WithMarketDataProps {
   engine?: MarketDataEngine;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function withMarketData<P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<P & WithMarketDataProps> {

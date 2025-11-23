@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { Column, FilterConfig, GridAction, Row } from './types';
+import type { Column, FilterConfig, FilterValue, GridAction, Row } from './types';
 
 interface ColumnFiltersProps {
   columns: Column[];
@@ -23,15 +23,11 @@ interface FilterMenuProps {
 
 // Text Filter Component
 const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const [filterType, setFilterType] = useState<'contains' | 'equals' | 'startsWith' | 'endsWith' | 'notContains'>('contains');
-  const [value, setValue] = useState(filterValue?.value || '');
-
-  useEffect(() => {
-    if (filterValue) {
-      setFilterType((filterValue.type as typeof filterType) || 'contains');
-      setValue(filterValue.value || '');
-    }
-  }, [filterValue]);
+  const initialFilterType = (filterValue?.type as 'contains' | 'equals' | 'startsWith' | 'endsWith' | 'notContains') || 'contains';
+  const initialValue = (filterValue?.value as string) || '';
+  
+  const [filterType, setFilterType] = useState(initialFilterType);
+  const [value, setValue] = useState(initialValue);
 
   const handleApply = () => {
     if (value) {
@@ -151,21 +147,17 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 
 // Number Filter Component
 const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const [filterType, setFilterType] = useState<'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'inRange'>('equals');
-  const [value, setValue] = useState(filterValue?.value || '');
-  const [value2, setValue2] = useState(filterValue?.value2 || '');
-
-  useEffect(() => {
-    if (filterValue) {
-      setFilterType((filterValue.type as typeof filterType) || 'equals');
-      setValue(filterValue.value || '');
-      setValue2(filterValue.value2 || '');
-    }
-  }, [filterValue]);
+  const initialFilterType = (filterValue?.type as 'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'inRange') || 'equals';
+  const initialValue = (filterValue?.value as string) || '';
+  const initialValue2 = (filterValue?.value2 as string) || '';
+  
+  const [filterType, setFilterType] = useState(initialFilterType);
+  const [value, setValue] = useState(initialValue);
+  const [value2, setValue2] = useState(initialValue2);
 
   const handleApply = () => {
     if (value) {
-      const filterData: any = { type: filterType, value: parseFloat(value) };
+      const filterData: FilterValue = { type: filterType, value: parseFloat(value) };
       if (filterType === 'inRange' && value2) {
         filterData.value2 = parseFloat(value2);
       }
@@ -278,21 +270,17 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
 
 // Date Filter Component
 const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const [filterType, setFilterType] = useState<'equals' | 'before' | 'after' | 'inRange'>('equals');
-  const [value, setValue] = useState(filterValue?.value || '');
-  const [value2, setValue2] = useState(filterValue?.value2 || '');
-
-  useEffect(() => {
-    if (filterValue) {
-      setFilterType((filterValue.type as typeof filterType) || 'equals');
-      setValue(filterValue.value || '');
-      setValue2(filterValue.value2 || '');
-    }
-  }, [filterValue]);
+  const initialFilterType = (filterValue?.type as 'equals' | 'before' | 'after' | 'inRange') || 'equals';
+  const initialValue = (filterValue?.value as string) || '';
+  const initialValue2 = (filterValue?.value2 as string) || '';
+  
+  const [filterType, setFilterType] = useState(initialFilterType);
+  const [value, setValue] = useState(initialValue);
+  const [value2, setValue2] = useState(initialValue2);
 
   const handleApply = () => {
     if (value) {
-      const filterData: any = { type: filterType, value };
+      const filterData: FilterValue = { type: filterType, value };
       if (filterType === 'inRange' && value2) {
         filterData.value2 = value2;
       }
@@ -410,7 +398,7 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
     String(val).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleToggle = (value: any) => {
+  const handleToggle = (value: unknown) => {
     const newSelected = new Set(selectedValues);
     if (newSelected.has(value)) {
       newSelected.delete(value);
@@ -622,7 +610,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
     setOpenFilterMenu(null);
   };
 
-  const handleApplyFilter = (field: string, value: any) => {
+  const handleApplyFilter = (field: string, value: FilterConfig[string]) => {
     dispatch({ type: 'SET_FILTER', payload: { field, value } });
   };
 
@@ -648,7 +636,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
     const commonProps = {
       column,
       filterValue,
-      onApplyFilter: (value: any) => handleApplyFilter(column.field, value),
+      onApplyFilter: (value: FilterConfig[string]) => handleApplyFilter(column.field, value),
       onClose: handleCloseFilter,
       rows,
       anchorEl,

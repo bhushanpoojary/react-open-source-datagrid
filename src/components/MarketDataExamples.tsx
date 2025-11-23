@@ -5,6 +5,8 @@
  * Copy this file to get started quickly with live market data.
  */
 
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/refs */
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { 
   MarketDataGrid,

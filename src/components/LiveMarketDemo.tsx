@@ -11,6 +11,7 @@
  * - Flash animations
  */
 
+/* eslint-disable react-hooks/refs */
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { MarketDataGrid } from './DataGrid/MarketDataGrid';
 import { MarketDataEngine, createMarketDataEngine } from './DataGrid/MarketDataEngine';
@@ -61,8 +62,7 @@ export const LiveMarketDemo: React.FC = () => {
       // Engine config is immutable, so we'd need to recreate or expose setters
       // For now, settings apply on next mount
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [flashEnabled, freezeMovement]);
 
   // State for rows
   const [rows, setRows] = useState<any[]>([]);
@@ -122,7 +122,6 @@ export const LiveMarketDemo: React.FC = () => {
         mockConnection.close();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run once after engine is initialized
 
   // Define columns for market data

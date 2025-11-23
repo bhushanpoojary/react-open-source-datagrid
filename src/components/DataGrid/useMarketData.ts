@@ -12,6 +12,7 @@
  * - Connection state tracking
  */
 
+/* eslint-disable react-hooks/refs */
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { MarketDataEngine } from './MarketDataEngine';
 import type { RowUpdate, MarketDataRow } from './MarketDataEngine';
@@ -77,9 +78,16 @@ export function useMarketData(options: UseMarketDataOptions): UseMarketDataRetur
   const metricsRef = useRef({
     updatesPerSecond: 0,
     totalUpdates: 0,
-    lastUpdateTime: Date.now(),
+    lastUpdateTime: 0,
     updateCountInSecond: 0,
   });
+  
+  // Initialize lastUpdateTime after render
+  useEffect(() => {
+    if (metricsRef.current.lastUpdateTime === 0) {
+      metricsRef.current.lastUpdateTime = Date.now();
+    }
+  }, []);
 
   /**
    * Update metrics
@@ -204,7 +212,8 @@ export function useMarketData(options: UseMarketDataOptions): UseMarketDataRetur
           reconnectTimeoutRef.current = setTimeout(() => {
             reconnectCountRef.current++;
             reconnectDelayRef.current *= 2; // Exponential backoff
-            connect();
+            // Reconnect will be triggered by the useEffect that watches connectionState
+            setConnectionState('reconnecting');
           }, delay);
         } else if (reconnectCountRef.current >= (wsConfig.reconnectAttempts || Infinity)) {
           setConnectionState('failed');

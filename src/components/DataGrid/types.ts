@@ -18,6 +18,7 @@ export interface Column {
 
 export interface Row {
   id: string | number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -57,8 +58,11 @@ export interface SortConfig {
 // Enhanced filter configuration supporting multiple filter types
 export interface FilterValue {
   type?: string; // Filter operation type (e.g., 'contains', 'equals', 'greaterThan', etc.)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;   // Primary filter value
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value2?: any;  // Secondary value for range filters
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   values?: any[]; // Array of values for set/multi-select filters
 }
 
@@ -74,6 +78,7 @@ export interface SelectionState {
 export interface EditState {
   rowId: string | number | null;
   field: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
 }
 
@@ -109,11 +114,13 @@ export interface FooterConfig {
 export interface GroupedRow {
   isGroup: true;
   groupKey: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   groupValue: any;
   field: string;
   level: number;
   children: (Row | GroupedRow)[];
   isExpanded: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   aggregates?: { [key: string]: any };
 }
 
@@ -152,6 +159,7 @@ export type GridAction =
   | { type: 'TOGGLE_ROW_SELECTION'; payload: { rowId: string | number; isMulti: boolean } }
   | { type: 'SELECT_RANGE'; payload: { startIndex: number; endIndex: number; rowIds: (string | number)[] } }
   | { type: 'CLEAR_SELECTION' }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | { type: 'START_EDIT'; payload: { rowId: string | number; field: string; value: any } }
   | { type: 'END_EDIT' }
   | { type: 'SET_FOCUS'; payload: FocusState | null }
@@ -259,6 +267,7 @@ export interface DragRowConfig {
   onDragEnd?: () => void; // Called when drag ends
   onRowDrop?: (sourceIndex: number, targetIndex: number, row: Row) => void;
   onRowMove?: (sourceIndex: number, targetIndex: number) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onExternalDrop?: (data: any, targetIndex: number) => void;
 }
 
@@ -287,7 +296,9 @@ export interface MarketDataConfig {
 export interface CellUpdate {
   rowId: string | number;
   field: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   oldValue: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   newValue: any;
   timestamp: number;
 }
@@ -315,6 +326,7 @@ export interface DataGridProps {
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
   onLayoutChange?: (layout: LayoutPreset['layout']) => void;

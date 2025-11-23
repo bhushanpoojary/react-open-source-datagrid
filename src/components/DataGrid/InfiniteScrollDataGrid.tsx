@@ -11,7 +11,7 @@
  */
 
 import React, { useReducer, useMemo, useEffect, useCallback, useState } from 'react';
-import type { Column, VirtualScrollConfig } from './types';
+import type { Column, Row, VirtualScrollConfig } from './types';
 import type { ServerSideDataSourceConfig } from './ServerSideDataSource';
 import { ServerSideDataSource } from './ServerSideDataSource';
 import { gridReducer, createInitialState } from './gridReducer';
@@ -30,8 +30,8 @@ export interface InfiniteScrollDataGridProps {
   showColumnPinning?: boolean;
   virtualScrollConfig?: VirtualScrollConfig;
   theme?: ThemeName;
-  onRowClick?: (row: any) => void;
-  onCellEdit?: (rowIndex: number, field: string, value: any) => void;
+  onRowClick?: (row: Row) => void;
+  onCellEdit?: (rowIndex: number, field: string, value: unknown) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
 }
 
@@ -183,7 +183,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
 
   // Handle cell edit
   const handleCellEdit = useCallback(
-    (rowIndex: number, field: string, value: any) => {
+    (rowIndex: number, field: string, value: unknown) => {
       if (onCellEdit) {
         const actualRowIndex = state.currentPage * pageSize + rowIndex;
         onCellEdit(actualRowIndex, field, value);

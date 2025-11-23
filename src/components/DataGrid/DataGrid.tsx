@@ -108,8 +108,6 @@ export const DataGrid: React.FC<DataGridProps> = ({
     state.hiddenColumns,
     state.sortConfig,
     state.filterConfig,
-    sortConfigStr,
-    filterConfigStr,
     state.pageSize,
     state.groupBy,
   ]);
@@ -347,7 +345,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
   // Handle cell edit with callback
   const handleCellEdit = useCallback(
-    (rowIndex: number, field: string, value: any) => {
+    (rowIndex: number, field: string, value: unknown) => {
       if (onCellEdit) {
         // Find the actual row index in the original data
         const actualRow = paginatedRows[rowIndex];
