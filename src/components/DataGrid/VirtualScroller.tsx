@@ -301,8 +301,14 @@ export const VirtualScroller = <T extends any>({
   return (
     <div
       ref={containerRef}
-      className={`overflow-auto ${className}`}
-      style={{ height: containerHeight, width: containerWidth || '100%', position: 'relative' }}
+      className={`virtual-scroller-container ${className}`}
+      style={{ 
+        height: containerHeight, 
+        width: containerWidth || '100%', 
+        position: 'relative',
+        overflow: 'auto',
+        overflowY: 'scroll',
+      }}
       onScroll={handleScroll}
     >
       <div

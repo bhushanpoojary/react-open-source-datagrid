@@ -5,6 +5,8 @@ export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
 export { ColumnFilters } from './ColumnFilters';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
+export { InfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
+export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
 export type { 
   Column, 
   Row, 
@@ -24,6 +26,12 @@ export type {
   UserProfileConfig,
   PersistenceConfig
 } from './types';
+export type { 
+  ServerSideDataSourceConfig, 
+  ServerSideRequest, 
+  ServerSideResponse 
+} from './ServerSideDataSource';
+export type { InfiniteScrollDataGridProps } from './InfiniteScrollDataGrid';
 export { handleExport, exportToCSV, exportToXLSX, generateFilename } from './exportUtils';
 export type { ExportFormat, ExportScope, ExcelStyling, ExportOptions } from './exportUtils';
 export { 

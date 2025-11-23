@@ -266,6 +266,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     // Regular row rendering
     const isSelected = selectedRows.has(row.id);
     const isFocused = focusState?.rowIndex === rowIndex;
+    const isLoadingRow = (row as any)._loading === true;
 
     return (
       <div
@@ -274,19 +275,19 @@ export const GridBody: React.FC<GridBodyProps> = ({
           ...style,
           display: 'flex',
           borderBottom: '1px solid #e2e8f0',
-          backgroundColor: isSelected ? '#e8f0ff' : isFocused ? '#f0f6ff' : '#ffffff',
-          cursor: 'pointer',
+          backgroundColor: isLoadingRow ? '#f9fafb' : isSelected ? '#e8f0ff' : isFocused ? '#f0f6ff' : '#ffffff',
+          cursor: isLoadingRow ? 'wait' : 'pointer',
           transition: 'background-color 0.15s ease',
         }}
-        onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f8f9fa')}
-        onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
-        onClick={(e) => handleRowClick(row, rowIndex, e)}
+        onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = '#f8f9fa')}
+        onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = '#ffffff')}
+        onClick={(e) => !isLoadingRow && handleRowClick(row, rowIndex, e)}
       >
         {displayColumnOrder.map((field, columnIndex) => {
           const column = columnMap.get(field);
           if (!column) return null;
 
-          const cellValue = row[field];
+          const cellValue = isLoadingRow ? '' : row[field];
           const isEditing =
             editState.rowId === row.id && editState.field === field;
           const isCellFocused =
@@ -346,9 +347,20 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   textOverflow: 'ellipsis', 
                   whiteSpace: 'nowrap', 
                   display: 'block',
-                  color: '#262626',
+                  color: isLoadingRow ? '#94a3b8' : '#262626',
                 }}>
-                  {column.renderCell ? column.renderCell(row) : (cellValue ?? '')}
+                  {isLoadingRow ? (
+                    <span style={{ 
+                      display: 'inline-block',
+                      width: '80%',
+                      height: '12px',
+                      backgroundColor: '#e2e8f0',
+                      borderRadius: '2px',
+                      animation: 'pulse 1.5s ease-in-out infinite'
+                    }}></span>
+                  ) : (
+                    column.renderCell ? column.renderCell(row) : (cellValue ?? '')
+                  )}
                 </div>
               )}
             </div>
@@ -372,7 +384,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const enableColumnVirtualization = virtualScrollConfig.enableColumnVirtualization ?? true;
 
     return (
-      <div ref={bodyRef} style={{ position: 'relative' }}>
+      <div ref={bodyRef} style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <VirtualScroller<Row | GroupedRow>
           items={rows}
           itemHeight={virtualScrollConfig.rowHeight || 35}

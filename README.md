@@ -20,6 +20,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Virtual Scrolling** (50,000+ rows, 200+ columns with ultra-fast rendering)
 - ✅ **Cell Renderer Framework** (custom components: badges, progress bars, buttons, images, icons)
 - ✅ **Layout Persistence** (save/load layouts with localStorage, server, or user profile storage)
+- ✅ **Infinite Scrolling with Server-Side DataSource** (100M+ rows with server-side filtering, sorting, and caching)
 
 ## Quick Start
 
@@ -184,3 +185,70 @@ const virtualConfig: VirtualScrollConfig = {
 **See also:**
 - [VIRTUAL_SCROLLING.md](./VIRTUAL_SCROLLING.md) - Complete documentation
 - [VIRTUAL_SCROLLING_QUICK_REF.md](./VIRTUAL_SCROLLING_QUICK_REF.md) - Quick reference guide
+
+## Infinite Scrolling with Server-Side DataSource
+
+For massive datasets (100M+ rows), use server-side infinite scrolling:
+
+```tsx
+import { InfiniteScrollDataGrid, ServerSideDataSource } from './components/DataGrid';
+
+// Create data source
+const dataSource = new ServerSideDataSource({
+  blockSize: 100,              // Rows per block
+  maxConcurrentRequests: 2,    // Max parallel requests
+  cacheBlockCount: 20,         // Cache up to 20 blocks
+  cacheTimeout: 5 * 60 * 1000, // 5 minutes
+  
+  // Implement server communication
+  getRows: async (request) => {
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      body: JSON.stringify(request)
+    });
+    return await response.json();
+  },
+});
+
+// Use the grid
+<InfiniteScrollDataGrid
+  columns={columns}
+  dataSource={dataSource}
+  pageSize={100}
+  virtualScrollConfig={{ enabled: true }}
+/>
+```
+
+**Features:**
+- Handles 100M+ rows efficiently
+- Server-side filtering and sorting
+- Intelligent block caching with LRU eviction
+- Prefetching for smooth scrolling
+- Configurable concurrent requests
+- AG Grid-like API
+
+**Server API Format:**
+
+Request:
+```json
+{
+  "startRow": 0,
+  "endRow": 100,
+  "sortModel": [{ "field": "name", "direction": "asc" }],
+  "filterModel": { "age": { "type": "greaterThan", "value": 25 } }
+}
+```
+
+Response:
+```json
+{
+  "rows": [...],
+  "totalRows": 100000000,
+  "lastRow": undefined
+}
+```
+
+**See also:**
+- [INFINITE_SCROLLING_INDEX.md](./INFINITE_SCROLLING_INDEX.md) - Documentation index
+- [INFINITE_SCROLLING_FEATURE.md](./INFINITE_SCROLLING_FEATURE.md) - Complete guide
+- [INFINITE_SCROLLING_QUICK_REF.md](./INFINITE_SCROLLING_QUICK_REF.md) - Quick reference

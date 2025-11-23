@@ -4,9 +4,10 @@ import { VirtualScrollDemo } from './components/VirtualScrollDemo'
 import { CellRenderersDemo } from './components/CellRenderersDemo'
 import { ColumnFiltersDemo } from './components/ColumnFiltersDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
+import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence';
+type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite';
 
 interface MenuItem {
   id: DemoType;
@@ -30,6 +31,12 @@ function App() {
       label: 'Virtual Scrolling',
       icon: '',
       description: 'High-performance rendering',
+    },
+    {
+      id: 'infinite',
+      label: 'Infinite Scroll',
+      icon: '',
+      description: 'Server-side 100M rows',
     },
     {
       id: 'renderers',
@@ -114,6 +121,7 @@ function App() {
       <main style={{ flex: 1, overflow: 'auto', backgroundColor: '#f8fafc' }}>
         {currentDemo === 'standard' && <DemoGridPage />}
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
+        {currentDemo === 'infinite' && <InfiniteScrollDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
