@@ -62,11 +62,12 @@ export const GroupRow: React.FC<GroupRowProps> = ({
       onClick={handleToggle}
     >
       {/* Expand/Collapse Icon */}
-      <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+      <div className="flex-shrink-0 flex items-center justify-center" style={{ width: '24px', height: '24px' }}>
         <svg
-          className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
+          className={`text-gray-600 transition-transform duration-200 ${
             group.isExpanded ? 'rotate-90' : ''
           }`}
+          style={{ width: '16px', height: '16px' }}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
