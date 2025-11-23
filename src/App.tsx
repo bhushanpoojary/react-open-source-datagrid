@@ -6,9 +6,10 @@ import { ColumnFiltersDemo } from './components/ColumnFiltersDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
+import { TreeDataDemo } from './components/TreeDataDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes';
+type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree';
 
 interface MenuItem {
   id: DemoType;
@@ -38,6 +39,12 @@ function App() {
       label: 'Infinite Scroll',
       icon: '',
       description: 'Server-side 100M rows',
+    },
+    {
+      id: 'tree',
+      label: 'Tree Data',
+      icon: '🌲',
+      description: 'Hierarchical rows & expand/collapse',
     },
     {
       id: 'renderers',
@@ -129,6 +136,7 @@ function App() {
         {currentDemo === 'standard' && <DemoGridPage />}
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
         {currentDemo === 'infinite' && <InfiniteScrollDemo />}
+        {currentDemo === 'tree' && <TreeDataDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}

@@ -33,6 +33,7 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     pinnedColumnsLeft: [],
     pinnedColumnsRight: [],
     hiddenColumns: [],
+    expandedNodes: {},
   };
 };
 
@@ -380,6 +381,37 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         ...(partialLayout.filterConfig && { filterConfig: partialLayout.filterConfig }),
         ...(partialLayout.pageSize && { pageSize: partialLayout.pageSize }),
         ...(partialLayout.groupBy && { groupBy: partialLayout.groupBy }),
+      };
+    }
+
+    case 'TOGGLE_TREE_NODE': {
+      const nodeId = action.payload;
+      const nodeKey = String(nodeId);
+      const currentState = state.expandedNodes[nodeKey] !== false; // Default expanded
+      
+      return {
+        ...state,
+        expandedNodes: {
+          ...state.expandedNodes,
+          [nodeKey]: !currentState,
+        },
+      };
+    }
+
+    case 'EXPAND_ALL_NODES': {
+      // This will be handled by the DataGrid component which has access to the tree structure
+      return state;
+    }
+
+    case 'COLLAPSE_ALL_NODES': {
+      // This will be handled by the DataGrid component which has access to the tree structure
+      return state;
+    }
+
+    case 'SET_EXPANDED_NODES': {
+      return {
+        ...state,
+        expandedNodes: action.payload,
       };
     }
 

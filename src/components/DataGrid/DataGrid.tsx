@@ -1,5 +1,5 @@
 import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState } from 'react';
-import type { DataGridProps, Row, GroupedRow, LayoutPreset } from './types';
+import type { DataGridProps, Row, GroupedRow, LayoutPreset, TreeNode } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
@@ -15,6 +15,7 @@ import { computeAggregations, computeGroupAggregations } from './aggregationUtil
 import { applyFilters, hasActiveFilters } from './filterUtils';
 import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 import { getTheme, generateThemeCSS } from './themes';
+import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
 
 /**
  * DataGrid Component
@@ -41,6 +42,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   footerConfig,
   virtualScrollConfig,
   persistenceConfig,
+  treeConfig,
   theme = 'quartz',
   onRowClick,
   onCellEdit,
@@ -240,13 +242,28 @@ export const DataGrid: React.FC<DataGridProps> = ({
     return applyFilters(sortedRows, state.filterConfig);
   }, [sortedRows, state.filterConfig]);
 
+  // Apply tree structure if tree mode is enabled
+  const treeRows = useMemo(() => {
+    if (!treeConfig?.enabled) {
+      return filteredRows;
+    }
+
+    const treeNodes = buildTreeFromFlat(filteredRows, treeConfig);
+    return flattenTree(treeNodes, state.expandedNodes, treeConfig) as (Row | TreeNode)[];
+  }, [filteredRows, treeConfig, state.expandedNodes]);
+
   // Apply grouping
   const groupedRows = useMemo(() => {
+    // Don't apply grouping if tree mode is enabled
+    if (treeConfig?.enabled) {
+      return treeRows;
+    }
+
     if (state.groupBy.length === 0) {
       return filteredRows;
     }
     return groupRows(filteredRows, state.groupBy, state.expandedGroups);
-  }, [filteredRows, state.groupBy, state.expandedGroups]);
+  }, [filteredRows, treeRows, treeConfig, state.groupBy, state.expandedGroups]);
 
   // Flatten grouped rows for display
   const flattenedRows = useMemo(() => {
@@ -431,6 +448,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         groupAggregates={groupAggregates}
         aggregateConfigs={footerConfig?.aggregates}
         virtualScrollConfig={virtualScrollConfig}
+        treeConfig={treeConfig}
       />
 
       {/* Global Footer */}

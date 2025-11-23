@@ -21,6 +21,34 @@ export interface Row {
   [key: string]: any;
 }
 
+// Tree data types
+export interface TreeNode extends Row {
+  isTreeNode: true;
+  nodeId: string | number;
+  parentId: string | number | null;
+  level: number;
+  hasChildren: boolean;
+  isExpanded: boolean;
+  children?: TreeNode[];
+}
+
+export interface TreeConfig {
+  enabled: boolean;
+  idField?: string; // Field name for node ID (default: 'id')
+  parentIdField?: string; // Field name for parent ID (default: 'parentId')
+  childrenField?: string; // Field name for children array (default: 'children')
+  indentSize?: number; // Pixels to indent per level (default: 24)
+  showExpandIcon?: boolean; // Show expand/collapse icons (default: true)
+  showConnectors?: boolean; // Show tree connectors (default: false)
+  lazyLoad?: boolean; // Support lazy loading of children (default: false)
+  onNodeExpand?: (node: TreeNode) => void | Promise<TreeNode[]>;
+  onNodeCollapse?: (node: TreeNode) => void;
+}
+
+export interface ExpandedNodes {
+  [nodeKey: string]: boolean;
+}
+
 export interface SortConfig {
   field: string;
   direction: 'asc' | 'desc' | null;
@@ -110,6 +138,7 @@ export interface GridState {
   pinnedColumnsLeft: string[];
   pinnedColumnsRight: string[];
   hiddenColumns: string[]; // Array of field names that are hidden
+  expandedNodes: ExpandedNodes; // Track which tree nodes are expanded
 }
 
 // Action types for reducer
@@ -138,7 +167,11 @@ export type GridAction =
   | { type: 'TOGGLE_COLUMN_VISIBILITY'; payload: string }
   | { type: 'RESET_COLUMN_LAYOUT' }
   | { type: 'LOAD_LAYOUT_PRESET'; payload: LayoutPreset['layout'] }
-  | { type: 'APPLY_LAYOUT'; payload: Partial<LayoutPreset['layout']> };
+  | { type: 'APPLY_LAYOUT'; payload: Partial<LayoutPreset['layout']> }
+  | { type: 'TOGGLE_TREE_NODE'; payload: string | number }
+  | { type: 'EXPAND_ALL_NODES' }
+  | { type: 'COLLAPSE_ALL_NODES' }
+  | { type: 'SET_EXPANDED_NODES'; payload: ExpandedNodes };
 
 // Virtual scrolling configuration
 export interface VirtualScrollConfig {
@@ -220,6 +253,7 @@ export interface DataGridProps {
   footerConfig?: FooterConfig;
   virtualScrollConfig?: VirtualScrollConfig;
   persistenceConfig?: PersistenceConfig;
+  treeConfig?: TreeConfig; // Configuration for tree/hierarchical data
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;

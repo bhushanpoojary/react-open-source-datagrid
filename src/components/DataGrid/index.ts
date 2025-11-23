@@ -36,7 +36,10 @@ export type {
   StorageAdapter,
   ServerConfig,
   UserProfileConfig,
-  PersistenceConfig
+  PersistenceConfig,
+  TreeNode,
+  TreeConfig,
+  ExpandedNodes
 } from './types';
 export type { 
   ServerSideDataSourceConfig, 
@@ -55,6 +58,19 @@ export {
   generatePresetId,
   createPreset
 } from './layoutPersistence';
+export {
+  buildTreeFromFlat,
+  flattenTree,
+  toggleNodeExpansion,
+  expandAllNodes,
+  collapseAllNodes,
+  getDescendantIds,
+  getNodePath,
+  getTreeDepth,
+  countTreeNodes,
+  filterTree,
+  isTreeNode
+} from './treeDataUtils';
 
 // Export Cell Renderer Components
 export {

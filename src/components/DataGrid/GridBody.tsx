@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig } from './types';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig } from './types';
 import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
+import { isTreeNode } from './treeDataUtils';
+import { TreeRow } from './TreeRow';
 import { VirtualScroller } from './VirtualScroller';
 
 interface GridBodyProps {
   columns: Column[];
-  rows: (Row | GroupedRow)[];
+  rows: (Row | GroupedRow | TreeNode)[];
   columnOrder: string[];
   displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
@@ -22,6 +24,7 @@ interface GridBodyProps {
   groupAggregates?: Map<string, { [key: string]: number | null }>;
   aggregateConfigs?: AggregateConfig[];
   virtualScrollConfig?: VirtualScrollConfig;
+  treeConfig?: TreeConfig;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -42,6 +45,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   groupAggregates = new Map(),
   aggregateConfigs = [],
   virtualScrollConfig,
+  treeConfig,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -229,8 +233,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
   };
 
   // Render a single row (used by both virtual and non-virtual modes)
-  const renderRowContent = (row: Row | GroupedRow, rowIndex: number, style?: React.CSSProperties) => {
-    // Check if this is a group row
+  const renderRowContent = (row: Row | GroupedRow | TreeNode, rowIndex: number, style?: React.CSSProperties) => {
+    // Check if this is a group row first (before tree check, as groups take precedence)
     if (isGroupedRow(row)) {
       const groupAgg = groupAggregates.get(row.groupKey) || {};
       
@@ -260,6 +264,31 @@ export const GridBody: React.FC<GridBodyProps> = ({
             />
           )}
         </React.Fragment>
+      );
+    }
+
+    // Check if this is a tree node
+    if (treeConfig?.enabled && isTreeNode(row)) {
+      return (
+        <TreeRow
+          key={row.id}
+          node={row as TreeNode}
+          columns={columns}
+          columnOrder={columnOrder}
+          displayColumnOrder={displayColumnOrder}
+          columnWidths={columnWidths}
+          selectedRows={selectedRows}
+          editState={editState}
+          focusState={focusState}
+          rowIndex={rowIndex}
+          dispatch={dispatch}
+          onRowClick={onRowClick}
+          onCellEdit={onCellEdit}
+          pinnedLeft={pinnedLeft}
+          pinnedRight={pinnedRight}
+          treeConfig={treeConfig}
+          editInputRef={editInputRef}
+        />
       );
     }
 
