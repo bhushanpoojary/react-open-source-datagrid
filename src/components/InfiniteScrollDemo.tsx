@@ -84,7 +84,7 @@ export const InfiniteScrollDemo: React.FC = () => {
   const dataSource = useMemo(() => {
     return createMockServerDataSource(
       100_000_000, // 100 million rows
-      300 // 300ms simulated network delay
+      50 // 50ms simulated network delay (faster loading)
     );
   }, []);
 
@@ -159,8 +159,8 @@ export const InfiniteScrollDemo: React.FC = () => {
             Performance Notes:
           </h2>
           <p style={{ color: '#78350f', lineHeight: '1.6' }}>
-            This demo simulates a 300ms network delay. In production, you would connect to your actual API endpoint.
-            The block size, cache size, and other parameters can be tuned based on your use case.
+            This demo simulates a 50ms network delay with 4 concurrent requests for fast loading. In production, you would connect to your actual API endpoint.
+            The block size, cache size, concurrent requests, and other parameters can be tuned based on your use case.
           </p>
         </div>
       </div>

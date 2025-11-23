@@ -87,7 +87,7 @@ export class ServerSideDataSource {
 
   constructor(config: ServerSideDataSourceConfig) {
     this.blockSize = config.blockSize || 100;
-    this.maxConcurrentRequests = config.maxConcurrentRequests || 2;
+    this.maxConcurrentRequests = config.maxConcurrentRequests || 4;
     this.cacheBlockCount = config.cacheBlockCount || 20;
     this.cacheTimeout = config.cacheTimeout || 5 * 60 * 1000; // 5 minutes
     this.getRows = config.getRows;

@@ -133,7 +133,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   }, [state.selection.selectedRows]);
 
   // Track loaded row range for infinite scrolling
-  const [loadedRange, setLoadedRange] = useState({ start: 0, end: pageSize * 10 }); // Start with 10 pages
+  const [loadedRange, setLoadedRange] = useState({ start: 0, end: pageSize * 15 }); // Start with 15 pages
   
   // Force re-render when data source updates
   const [dataVersion, setDataVersion] = useState(0);
@@ -167,8 +167,8 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     const visibleRows = Math.ceil(containerHeight / rowHeight);
     const currentRow = Math.floor(scrollTop / rowHeight);
     
-    // Calculate buffer (3x visible rows)
-    const buffer = visibleRows * 3;
+    // Calculate buffer (5x visible rows for more aggressive prefetching)
+    const buffer = visibleRows * 5;
     const newStart = Math.max(0, currentRow - buffer);
     const newEnd = Math.min(totalRows, currentRow + visibleRows + buffer);
     
