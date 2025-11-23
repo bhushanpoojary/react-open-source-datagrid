@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DataGrid } from './DataGrid';
+import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, PersistenceConfig } from './DataGrid/types';
 
 // Sample data with varied content
@@ -297,10 +297,11 @@ export const LayoutPersistenceDemo: React.FC = () => {
       </div>
 
       {/* DataGrid */}
-      <DataGrid
+      <ThemedDataGrid
         columns={columns}
         rows={data}
         pageSize={10}
+        theme="quartz"
         showColumnPinning={true}
         persistenceConfig={persistenceConfig}
         onLayoutChange={() => setLayoutChangeCount(prev => prev + 1)}

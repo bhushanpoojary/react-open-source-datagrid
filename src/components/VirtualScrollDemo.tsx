@@ -1,5 +1,5 @@
 ﻿import React, { useMemo, useState } from 'react';
-import { DataGrid } from './DataGrid';
+import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, VirtualScrollConfig } from './DataGrid';
 
 /**
@@ -290,9 +290,10 @@ export const VirtualScrollDemo: React.FC = () => {
 
         {/* DataGrid */}
         <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-          <DataGrid
+          <ThemedDataGrid
             columns={columns}
             rows={largeDataset}
+            theme="quartz"
             virtualScrollConfig={virtualScrollConfig}
             onCellEdit={handleCellEdit}
             showColumnPinning={false}

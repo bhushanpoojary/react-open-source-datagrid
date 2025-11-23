@@ -95,7 +95,7 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         {groupBy.length === 0 ? (
           <div style={{ color: 'var(--grid-text-secondary)', fontSize: 'var(--grid-font-size, 13px)', display: 'flex', alignItems: 'center', gap: '8px', fontStyle: 'italic' }}>
-            ?? Drag columns here to group rows
+            ⚡ Drag columns here to group rows
           </div>
         ) : (
           <>

@@ -10,7 +10,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { InfiniteScrollDataGrid } from './DataGrid/InfiniteScrollDataGrid';
+import { ThemedInfiniteScrollDataGrid } from './DataGrid/InfiniteScrollDataGrid';
 import { createMockServerDataSource } from './DataGrid/ServerSideDataSource';
 import type { Column } from './DataGrid/types';
 
@@ -166,10 +166,11 @@ export const InfiniteScrollDemo: React.FC = () => {
 
       {/* DataGrid with infinite scrolling */}
       <div style={{ marginBottom: '60px', position: 'relative', zIndex: 1 }}>
-        <InfiniteScrollDataGrid
+        <ThemedInfiniteScrollDataGrid
           columns={columns}
           dataSource={dataSource}
           pageSize={100}
+          theme="quartz"
           showColumnPinning={true}
           virtualScrollConfig={{
             enabled: true,

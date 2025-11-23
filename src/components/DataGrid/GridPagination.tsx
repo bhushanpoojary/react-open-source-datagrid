@@ -134,7 +134,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === 0}
           title="First page"
         >
-          �
+          ⟪
         </button>
 
         {/* Previous page button */}
@@ -158,7 +158,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === 0}
           title="Previous page"
         >
-          �
+          ‹
         </button>
 
         {/* Page numbers */}
@@ -218,7 +218,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === totalPages - 1}
           title="Next page"
         >
-          �
+          ›
         </button>
 
         {/* Last page button */}
@@ -242,7 +242,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === totalPages - 1}
           title="Last page"
         >
-          �
+          ⟫
         </button>
       </div>
     </div>

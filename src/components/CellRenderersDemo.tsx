@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DataGrid } from './DataGrid';
+import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 import {
   StatusChip,
@@ -340,10 +340,11 @@ export const CellRenderersDemo: React.FC = () => {
 
         {/* DataGrid */}
         <div className="flex-1" style={{border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden', marginBottom: '20px'}}>
-          <DataGrid
+          <ThemedDataGrid
             columns={columns}
             rows={projects}
             pageSize={10}
+            theme="quartz"
             footerConfig={{
               show: true,
               aggregates: [

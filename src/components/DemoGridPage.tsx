@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { DataGrid, StatusChip, CurrencyCell } from './DataGrid';
+import { ThemedDataGrid, StatusChip, CurrencyCell } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 
 /**
@@ -182,10 +182,11 @@ export const DemoGridPage: React.FC = () => {
         {/* DataGrid Container */}
         <div style={{ marginBottom: '24px', flex: '1 1 auto', minHeight: '500px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
           <div style={{ height: '100%', overflow: 'auto' }}>
-            <DataGrid
+            <ThemedDataGrid
               columns={columns}
               rows={employees}
               pageSize={10}
+              theme="quartz"
               onRowClick={handleRowClick}
               onCellEdit={handleCellEdit}
               onSelectionChange={handleSelectionChange}

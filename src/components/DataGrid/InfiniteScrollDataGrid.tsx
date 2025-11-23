@@ -20,6 +20,8 @@ import { GridBody } from './GridBody';
 import { GroupByPanel } from './GroupByPanel';
 import { ColumnChooser } from './ColumnChooser';
 import { ColumnFilters } from './ColumnFilters';
+import { getTheme, generateThemeCSS } from './themes';
+import type { ThemeName } from './themes';
 
 export interface InfiniteScrollDataGridProps {
   columns: Column[];
@@ -27,6 +29,7 @@ export interface InfiniteScrollDataGridProps {
   pageSize?: number;
   showColumnPinning?: boolean;
   virtualScrollConfig?: VirtualScrollConfig;
+  theme?: ThemeName;
   onRowClick?: (row: any) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
@@ -43,6 +46,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   pageSize = 100,
   showColumnPinning = true,
   virtualScrollConfig,
+  theme = 'quartz',
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -206,10 +210,11 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
 
   return (
     <div style={{ 
-      border: '1px solid #e2e8f0', 
-      borderRadius: '6px', 
-      backgroundColor: '#ffffff', 
-      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.08)',
+      border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
+      borderRadius: 'var(--grid-border-radius, 6px)', 
+      backgroundColor: 'var(--grid-bg)', 
+      boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))',
+      fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)',
       display: 'flex',
       flexDirection: 'column',
       height: virtualScrollConfig?.containerHeight ? `${virtualScrollConfig.containerHeight + 150}px` : 'auto'
@@ -224,8 +229,8 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
         paddingRight: '16px', 
         paddingTop: '10px', 
         paddingBottom: '10px', 
-        backgroundColor: '#fafafa', 
-        borderBottom: '1px solid #e2e8f0', 
+        backgroundColor: 'var(--grid-bg-alt)', 
+        borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
         zIndex: 30 
       }}>
         <div style={{ 
@@ -319,10 +324,10 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
       {/* Status bar */}
       <div style={{ 
         padding: '8px 16px', 
-        backgroundColor: '#fafafa', 
-        borderTop: '1px solid #e2e8f0', 
-        fontSize: '12px', 
-        color: '#64748b',
+        backgroundColor: 'var(--grid-footer-bg)', 
+        borderTop: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
+        fontSize: 'var(--grid-font-size-sm, 12px)', 
+        color: 'var(--grid-text-secondary)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -334,6 +339,22 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
           Rows loaded: {visibleRows.length}
         </div>
       </div>
+    </div>
+  );
+};
+
+/**
+ * ThemedInfiniteScrollDataGrid - InfiniteScrollDataGrid wrapper with theme support
+ * Applies theme CSS variables to the grid container
+ */
+export const ThemedInfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = (props) => {
+  const { theme = 'quartz', ...restProps } = props;
+  const currentTheme = getTheme(theme);
+  const themeStyles = generateThemeCSS(currentTheme);
+
+  return (
+    <div style={themeStyles as React.CSSProperties}>
+      <InfiniteScrollDataGrid {...restProps} theme={theme} />
     </div>
   );
 };

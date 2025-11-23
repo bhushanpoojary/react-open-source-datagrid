@@ -217,9 +217,9 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {column.sortable !== false && (
                     <span style={{ fontSize: '12px', color: sortDirection ? 'var(--grid-primary)' : 'var(--grid-text-secondary)' }}>
-                      {sortDirection === 'asc' && '?'}
-                      {sortDirection === 'desc' && '?'}
-                      {!sortDirection && '?'}
+                      {sortDirection === 'asc' && '↑'}
+                      {sortDirection === 'desc' && '↓'}
+                      {!sortDirection && '⇅'}
                     </span>
                   )}
                   {showPinControls && (
@@ -249,7 +249,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                         }}
                         aria-label={`Pin ${column.headerName} to left`}
                       >
-                        ?
+                        ⇤
                       </button>
                       <button
                         type="button"
@@ -276,7 +276,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                         }}
                         aria-label={`Pin ${column.headerName} to right`}
                       >
-                        ?
+                        ⇥
                       </button>
                       {(isPinnedLeft || isPinnedRight) && (
                         <button
@@ -309,7 +309,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                           }}
                           aria-label={`Unpin ${column.headerName}`}
                         >
-                          �
+                          ×
                         </button>
                       )}
                     </div>

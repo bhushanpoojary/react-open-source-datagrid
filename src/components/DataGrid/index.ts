@@ -5,7 +5,7 @@ export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
 export { ColumnFilters } from './ColumnFilters';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
-export { InfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
+export { InfiniteScrollDataGrid, ThemedInfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
 export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
 export { ThemeSelector } from './ThemeSelector';
 export { 

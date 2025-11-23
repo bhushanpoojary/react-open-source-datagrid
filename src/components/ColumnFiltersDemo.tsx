@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataGrid } from './DataGrid';
+import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 
 /**
@@ -302,10 +302,11 @@ export const ColumnFiltersDemo: React.FC = () => {
         overflow: 'hidden',
         boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
       }}>
-        <DataGrid
+        <ThemedDataGrid
           columns={columns}
           rows={rows}
           pageSize={10}
+          theme="quartz"
           showColumnPinning={true}
         />
       </div>
