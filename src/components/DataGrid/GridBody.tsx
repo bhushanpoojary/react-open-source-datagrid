@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState, GroupedRow } from './types';
-import { GroupRow } from './GroupRow';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig } from './types';
+import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
 
 interface GridBodyProps {
@@ -17,6 +17,9 @@ interface GridBodyProps {
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   pinnedLeft: string[];
   pinnedRight: string[];
+  showGroupFooters?: boolean;
+  groupAggregates?: Map<string, { [key: string]: number | null }>;
+  aggregateConfigs?: AggregateConfig[];
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -33,6 +36,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
   onCellEdit,
   pinnedLeft,
   pinnedRight,
+  showGroupFooters = false,
+  groupAggregates = new Map(),
+  aggregateConfigs = [],
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -224,15 +230,34 @@ export const GridBody: React.FC<GridBodyProps> = ({
       {rows.map((row, rowIndex) => {
         // Check if this is a group row
         if (isGroupedRow(row)) {
+          const groupAgg = groupAggregates.get(row.groupKey) || {};
+          
           return (
-            <GroupRow
-              key={row.groupKey}
-              group={row}
-              columns={columns}
-              columnOrder={columnOrder}
-              columnWidths={columnWidths}
-              dispatch={dispatch}
-            />
+            <React.Fragment key={row.groupKey}>
+              <GroupRow
+                group={row}
+                columns={columns}
+                columnOrder={columnOrder}
+                displayColumnOrder={displayColumnOrder}
+                columnWidths={columnWidths}
+                dispatch={dispatch}
+                pinnedLeft={pinnedLeft}
+                pinnedRight={pinnedRight}
+              />
+              {/* Render group footer if expanded and showGroupFooters is enabled */}
+              {showGroupFooters && row.isExpanded && aggregateConfigs.length > 0 && (
+                <GroupFooterRow
+                  group={row}
+                  columns={columns}
+                  displayColumnOrder={displayColumnOrder}
+                  columnWidths={columnWidths}
+                  aggregates={groupAgg}
+                  aggregateConfigs={aggregateConfigs}
+                  pinnedLeft={pinnedLeft}
+                  pinnedRight={pinnedRight}
+                />
+              )}
+            </React.Fragment>
           );
         }
 

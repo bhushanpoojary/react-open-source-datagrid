@@ -146,6 +146,18 @@ export const DemoGridPage: React.FC = () => {
               <span className="text-green-500">✓</span>
               <span>Group aggregates (count, sum, avg)</span>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Footer row with aggregations</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Group-level footer rows</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-500">✓</span>
+              <span>Multiple aggregate functions</span>
+            </div>
           </div>
         </div>
 
@@ -163,10 +175,12 @@ export const DemoGridPage: React.FC = () => {
             <li><strong>NEW:</strong> Drag column headers to the "Group By" area to group rows</li>
             <li><strong>NEW:</strong> Click on group rows to expand/collapse</li>
             <li><strong>NEW:</strong> View aggregate statistics (count, sum, avg) for each group</li>
+            <li><strong>NEW:</strong> Footer row displays global aggregations (total, average, min, max, count)</li>
+            <li><strong>NEW:</strong> Group-level footers show subtotals for each group</li>
           </ul>
         </div>
 
-        {/* DataGrid */}
+        {/* DataGrid with Footer Aggregations */}
         <div className="mb-6">
           <DataGrid
             columns={columns}
@@ -175,6 +189,17 @@ export const DemoGridPage: React.FC = () => {
             onRowClick={handleRowClick}
             onCellEdit={handleCellEdit}
             onSelectionChange={handleSelectionChange}
+            footerConfig={{
+              show: true,
+              showGroupFooters: true,
+              aggregates: [
+                { field: 'salary', function: 'total', label: 'Total Salary' },
+                { field: 'salary', function: 'avg', label: 'Avg Salary' },
+                { field: 'salary', function: 'min', label: 'Min Salary' },
+                { field: 'salary', function: 'max', label: 'Max Salary' },
+                { field: 'id', function: 'count', label: 'Total Employees' },
+              ],
+            }}
           />
         </div>
 

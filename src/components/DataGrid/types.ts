@@ -41,7 +41,7 @@ export interface FocusState {
 }
 
 // Grouping types
-export type AggregateFunction = 'count' | 'sum' | 'avg' | 'min' | 'max';
+export type AggregateFunction = 'count' | 'sum' | 'avg' | 'min' | 'max' | 'total';
 
 export interface GroupConfig {
   field: string;
@@ -49,6 +49,19 @@ export interface GroupConfig {
     field: string;
     function: AggregateFunction;
   }[];
+}
+
+// Footer/Aggregation types
+export interface AggregateConfig {
+  field: string;
+  function: AggregateFunction;
+  label?: string; // Optional custom label for the aggregate
+}
+
+export interface FooterConfig {
+  show: boolean;
+  aggregates?: AggregateConfig[]; // Aggregates to compute for global footer
+  showGroupFooters?: boolean; // Show footers for each group
 }
 
 export interface GroupedRow {
@@ -113,6 +126,7 @@ export interface DataGridProps {
   rows: Row[];
   pageSize?: number;
   showColumnPinning?: boolean;
+  footerConfig?: FooterConfig;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;

@@ -1,12 +1,16 @@
 import React from 'react';
-import type { GroupedRow, Column, GridAction } from './types';
+import type { GroupedRow, Column, GridAction, AggregateConfig } from './types';
+import { formatAggregateValue, getAggregateLabel } from './aggregationUtils';
 
 interface GroupRowProps {
   group: GroupedRow;
   columns: Column[];
   columnOrder: string[];
+  displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
   dispatch: React.Dispatch<GridAction>;
+  pinnedLeft: string[];
+  pinnedRight: string[];
 }
 
 export const GroupRow: React.FC<GroupRowProps> = ({
@@ -109,6 +113,139 @@ export const GroupRow: React.FC<GroupRowProps> = ({
           {group.aggregates?.count || 0}
         </span>
       </div>
+    </div>
+  );
+};
+
+interface GroupFooterRowProps {
+  group: GroupedRow;
+  columns: Column[];
+  displayColumnOrder: string[];
+  columnWidths: { [field: string]: number };
+  aggregates: { [key: string]: number | null };
+  aggregateConfigs: AggregateConfig[];
+  pinnedLeft: string[];
+  pinnedRight: string[];
+}
+
+export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
+  group,
+  columns,
+  displayColumnOrder,
+  columnWidths,
+  aggregates,
+  aggregateConfigs,
+  pinnedLeft,
+  pinnedRight,
+}) => {
+  // Create a map for quick column lookup
+  const columnMap = new Map(columns.map(col => [col.field, col]));
+
+  // Create a map of field -> aggregate configs
+  const fieldAggregateMap = new Map<string, AggregateConfig[]>();
+  aggregateConfigs.forEach(config => {
+    if (!fieldAggregateMap.has(config.field)) {
+      fieldAggregateMap.set(config.field, []);
+    }
+    fieldAggregateMap.get(config.field)!.push(config);
+  });
+
+  const pinnedLeftSet = new Set(pinnedLeft);
+  const pinnedRightSet = new Set(pinnedRight);
+
+  const leftOffsets: { [field: string]: number } = {};
+  let leftAccumulator = 0;
+  pinnedLeft.forEach((field) => {
+    leftOffsets[field] = leftAccumulator;
+    leftAccumulator += columnWidths[field] || 150;
+  });
+
+  const rightOffsets: { [field: string]: number } = {};
+  let rightAccumulator = 0;
+  [...pinnedRight].reverse().forEach((field) => {
+    rightOffsets[field] = rightAccumulator;
+    rightAccumulator += columnWidths[field] || 150;
+  });
+
+  const getPinnedCellStyle = (field: string): React.CSSProperties => {
+    const width = `${columnWidths[field] || 150}px`;
+    const style: React.CSSProperties = { width };
+
+    if (pinnedLeftSet.has(field)) {
+      style.position = 'sticky';
+      style.left = `${leftOffsets[field]}px`;
+      style.zIndex = 20;
+      style.backgroundColor = '#f3f4f6';
+    } else if (pinnedRightSet.has(field)) {
+      style.position = 'sticky';
+      style.right = `${rightOffsets[field]}px`;
+      style.zIndex = 20;
+      style.backgroundColor = '#f3f4f6';
+    }
+
+    return style;
+  };
+
+  const isFirstColumn = (field: string): boolean => {
+    return displayColumnOrder[0] === field;
+  };
+
+  const column = columns.find(col => col.field === group.field);
+  const columnName = column?.headerName || group.field;
+  const groupLabel = `${columnName}: ${group.groupValue} Subtotal`;
+
+  return (
+    <div className="flex border-t border-gray-300 bg-gray-100 font-medium text-sm">
+      {displayColumnOrder.map((field, columnIndex) => {
+        const column = columnMap.get(field);
+        if (!column) return null;
+
+        const cellStyle = getPinnedCellStyle(field);
+        const configs = fieldAggregateMap.get(field);
+
+        // For the first column, show the label
+        let cellContent: React.ReactNode;
+        if (isFirstColumn(field) && columnIndex === 0) {
+          cellContent = (
+            <span className="text-gray-700" style={{ marginLeft: `${group.level * 24 + 12}px` }}>
+              {groupLabel}
+            </span>
+          );
+        } else if (configs && configs.length > 0) {
+          // Show aggregates for this field
+          cellContent = (
+            <div className="flex flex-col gap-0.5">
+              {configs.map((config, idx) => {
+                const key = `${config.field}_${config.function}`;
+                const value = aggregates[key];
+                const formattedValue = formatAggregateValue(value, config.function);
+                const displayLabel = config.label || getAggregateLabel(config.function);
+                
+                return (
+                  <div key={idx} className="text-xs">
+                    {configs.length > 1 && (
+                      <span className="text-gray-500 mr-1">{displayLabel}:</span>
+                    )}
+                    <span className="text-gray-800">{formattedValue}</span>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        } else {
+          cellContent = null;
+        }
+
+        return (
+          <div
+            key={`group-footer-${group.groupKey}-${field}`}
+            className="px-3 py-2 border-r border-gray-200 flex-shrink-0"
+            style={cellStyle}
+          >
+            {cellContent}
+          </div>
+        );
+      })}
     </div>
   );
 };

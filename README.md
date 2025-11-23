@@ -14,6 +14,9 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ Keyboard navigation (arrow keys)
 - ✅ Sticky header
 - ✅ Column pinning (freeze left/right columns)
+- ✅ Row grouping (drag columns to group area)
+- ✅ **Aggregation footer rows** (Total, Average, Min, Max, Count)
+- ✅ **Group-level footers** (subtotals for each group)
 
 ## Quick Start
 
@@ -57,6 +60,8 @@ const rows: Row[] = [
 - **Full Documentation**: See [DATAGRID_README.md](./DATAGRID_README.md)
 - **Quick Start Guide**: See [QUICKSTART.md](./QUICKSTART.md)
 - **Architecture Guide**: See [src/components/DataGrid/ARCHITECTURE.md.ts](./src/components/DataGrid/ARCHITECTURE.md.ts)
+- **Aggregation Footer Feature**: See [AGGREGATION_FOOTER_FEATURE.md](./AGGREGATION_FOOTER_FEATURE.md)
+- **Footer Quick Reference**: See [FOOTER_QUICK_REFERENCE.md](./FOOTER_QUICK_REFERENCE.md)
 
 ## Technology Stack
 

@@ -5,7 +5,9 @@ import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
 import { GridPagination } from './GridPagination';
 import { GroupByPanel } from './GroupByPanel';
+import { GridFooter } from './GridFooter';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
+import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 
 /**
  * DataGrid Component
@@ -29,6 +31,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   rows,
   pageSize = 10,
   showColumnPinning = true,
+  footerConfig,
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -143,6 +146,26 @@ export const DataGrid: React.FC<DataGridProps> = ({
     return flattenedRows.slice(startIndex, endIndex);
   }, [flattenedRows, state.currentPage, state.pageSize]);
 
+  // Compute global footer aggregations
+  const globalAggregates = useMemo(() => {
+    if (!footerConfig?.show || !footerConfig.aggregates) {
+      return {};
+    }
+    
+    // Get all data rows (non-grouped)
+    const dataRows = filteredRows.filter((r): r is Row => !('isGroup' in r));
+    return computeAggregations(dataRows, footerConfig.aggregates);
+  }, [filteredRows, footerConfig]);
+
+  // Compute group-level aggregations
+  const groupAggregates = useMemo(() => {
+    if (!footerConfig?.showGroupFooters || !footerConfig.aggregates || state.groupBy.length === 0) {
+      return new Map();
+    }
+    
+    return computeGroupAggregations(groupedRows as (Row | GroupedRow)[], footerConfig.aggregates);
+  }, [groupedRows, footerConfig, state.groupBy]);
+
   // Auto-adjust column width based on content (simplified implementation)
   useEffect(() => {
     // This is a basic implementation. In a production app, you might want to:
@@ -237,7 +260,23 @@ export const DataGrid: React.FC<DataGridProps> = ({
         onCellEdit={handleCellEdit}
         pinnedLeft={pinnedLeftFields}
         pinnedRight={pinnedRightFields}
+        showGroupFooters={footerConfig?.showGroupFooters}
+        groupAggregates={groupAggregates}
+        aggregateConfigs={footerConfig?.aggregates}
       />
+
+      {/* Global Footer */}
+      {footerConfig?.show && footerConfig.aggregates && (
+        <GridFooter
+          columns={columns}
+          displayColumnOrder={displayColumnOrder}
+          columnWidths={state.columnWidths}
+          aggregates={globalAggregates}
+          aggregateConfigs={footerConfig.aggregates}
+          pinnedLeft={pinnedLeftFields}
+          pinnedRight={pinnedRightFields}
+        />
+      )}
 
       {/* Pagination */}
       <GridPagination
