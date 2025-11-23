@@ -151,6 +151,7 @@ export const ThemesDemo: React.FC = () => {
   return (
     <div 
       style={{
+        ...themeStyles as React.CSSProperties,
         minHeight: '100vh',
         padding: '24px',
         backgroundColor: theme.colors.backgroundAlt,

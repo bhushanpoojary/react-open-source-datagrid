@@ -74,12 +74,12 @@ export const GridBody: React.FC<GridBodyProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = 'var(--grid-bg, #fff)';
+      style.backgroundColor = 'var(--grid-bg)';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = 'var(--grid-bg, #fff)';
+      style.backgroundColor = 'var(--grid-bg)';
     }
 
     return style;
@@ -275,7 +275,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
           ...style,
           display: 'flex',
           minWidth: '100%',
-          borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
+          borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)',
           backgroundColor: isLoadingRow ? 'var(--grid-bg-alt)' : isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
           cursor: isLoadingRow ? 'wait' : 'pointer',
           transition: 'background-color 0.15s ease',
@@ -303,9 +303,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 ...cellStyle,
                 padding: 'var(--grid-cell-padding, 10px 12px)',
                 fontSize: 'var(--grid-font-size, 13px)',
-                borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
+                borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
                 flexShrink: 0,
-                outline: isCellFocused ? '2px solid var(--grid-primary, #0066cc)' : 'none',
+                outline: isCellFocused ? '2px solid var(--grid-primary)' : 'none',
                 outlineOffset: '-2px',
                 color: 'var(--grid-text)',
               }}
@@ -320,7 +320,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   style={{ 
                     width: '100%', 
                     padding: '6px 8px', 
-                    border: '1.5px solid var(--grid-primary, #0066cc)', 
+                    border: '1.5px solid var(--grid-primary)', 
                     borderRadius: 'var(--grid-border-radius, 3px)', 
                     outline: 'none',
                     fontSize: 'var(--grid-font-size, 13px)',
@@ -347,7 +347,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   textOverflow: 'ellipsis', 
                   whiteSpace: 'nowrap', 
                   display: 'block',
-                  color: isLoadingRow ? 'var(--grid-text-secondary, #94a3b8)' : 'var(--grid-text, #262626)',
+                  color: isLoadingRow ? 'var(--grid-text-secondary)' : 'var(--grid-text)',
                 }}>
                   {isLoadingRow ? (
                     <span style={{ 
@@ -409,12 +409,12 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   ...style,
                   display: 'flex',
                   minWidth: '100%',
-                  borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e5e7eb)',
+                  borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)',
                   backgroundColor: isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
                   cursor: 'pointer',
                 }}
-                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f9fafb)')}
-                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg, #fff)')}
+                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
                 onClick={(e) => handleRowClick(row, index, e)}
               >
                 {visibleColumns.map((colInfo, columnIndex) => {
@@ -439,9 +439,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         paddingTop: '8px',
                         paddingBottom: '8px',
                         fontSize: 'var(--grid-font-size, 14px)',
-                        borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e5e7eb)',
+                        borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
                         flexShrink: 0,
-                        outline: isCellFocused ? '2px solid var(--grid-primary, #3b82f6)' : 'none',
+                        outline: isCellFocused ? '2px solid var(--grid-primary)' : 'none',
                         color: 'var(--grid-text)',
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}

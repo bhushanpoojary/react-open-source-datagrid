@@ -60,12 +60,12 @@ export const GridFooter: React.FC<GridFooterProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = 'var(--grid-footer-bg, #f9fafb)';
+      style.backgroundColor = 'var(--grid-footer-bg)';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = 'var(--grid-footer-bg, #f9fafb)';
+      style.backgroundColor = 'var(--grid-footer-bg)';
     }
 
     return style;
@@ -101,7 +101,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
                 return (
                   <div key={idx} style={{ fontSize: '12px' }}>
                     {configs.length > 1 && (
-                      <span style={{ color: 'var(--grid-text-secondary, #666666)', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
+                      <span style={{ color: 'var(--grid-text-secondary)', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
                     )}
                     <span style={{ color: 'var(--grid-text)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{formattedValue}</span>
                   </div>
@@ -120,7 +120,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
               ...cellStyle,
               padding: 'var(--grid-cell-padding, 10px 12px)',
               fontSize: 'var(--grid-font-size, 13px)',
-              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
               flexShrink: 0,
               backgroundColor: 'var(--grid-footer-bg)',
             }}

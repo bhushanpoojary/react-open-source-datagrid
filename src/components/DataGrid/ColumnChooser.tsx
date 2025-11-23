@@ -110,7 +110,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
         style={{
           position: 'fixed',
           backgroundColor: 'var(--grid-bg)',
-          border: '2px solid var(--grid-border, #9ca3af)',
+          border: '2px solid var(--grid-border)',
           borderRadius: '8px',
           boxShadow: 'var(--grid-shadow-heavy, 0 20px 25px -5px rgba(0, 0, 0, 0.1))',
           zIndex: 10000,
@@ -121,7 +121,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
           maxHeight: '500px',
         }}
       >
-        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-bg-alt, #f9fafb)', borderBottom: '1px solid var(--grid-border, #e5e7eb)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: '1px solid var(--grid-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--grid-text)', margin: 0 }}>Select Columns</h3>
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={onResetLayout} style={{ fontSize: '12px', color: '#2563eb', fontWeight: '500', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', textDecoration: 'none', padding: 0 }} onMouseEnter={(e) => { e.currentTarget.style.color = '#1d4ed8'; e.currentTarget.style.textDecoration = 'underline'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb'; e.currentTarget.style.textDecoration = 'none'; }}>Reset</button>
@@ -130,7 +130,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
         </div>
         <div style={{ padding: '16px', display: 'flex', gap: '12px', height: '400px' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--grid-text, #374151)', marginBottom: '8px' }}>Available Columns ({availableColumns.length})</div>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--grid-text)', marginBottom: '8px' }}>Available Columns ({availableColumns.length})</div>
             <div style={{ flex: 1, border: '1px solid var(--grid-border)', borderRadius: '4px', overflowY: 'scroll', backgroundColor: 'var(--grid-bg)' }}>
               {availableColumns.map((column) => {
                 const isSelected = selectedAvailable === column.field;
@@ -156,7 +156,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                   </div>
                 );
               })}
-              {availableColumns.length === 0 && <div style={{ padding: '32px 12px', textAlign: 'center', color: 'var(--grid-text-secondary, #9ca3af)', fontSize: '14px' }}>All columns are visible</div>}
+              {availableColumns.length === 0 && <div style={{ padding: '32px 12px', textAlign: 'center', color: 'var(--grid-text-secondary)', fontSize: '14px' }}>All columns are visible</div>}
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
@@ -166,7 +166,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
             <button onClick={moveAllToAvailable} disabled={visibleColumns.length === 0} style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: visibleColumns.length === 0 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: visibleColumns.length === 0 ? 'not-allowed' : 'pointer' }} onMouseEnter={(e) => visibleColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'} onMouseLeave={(e) => visibleColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'} title="Remove all">&lt;&lt;</button>
           </div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--grid-text, #374151)', marginBottom: '8px' }}>Visible Columns ({visibleColumns.length})</div>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--grid-text)', marginBottom: '8px' }}>Visible Columns ({visibleColumns.length})</div>
             <div style={{ flex: 1, border: '1px solid var(--grid-border)', borderRadius: '4px', overflowY: 'scroll', backgroundColor: 'var(--grid-bg)' }}>
               {visibleColumns.map((column) => {
                 const isSelected = selectedVisible === column.field;
@@ -180,13 +180,13 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                     style={{
                       padding: '8px 12px',
                       cursor: 'pointer',
-                      borderBottom: '1px solid var(--grid-border, #e5e7eb)',
-                      backgroundColor: isSelected ? 'var(--grid-primary, #2563eb)' : 'var(--grid-bg, #ffffff)',
-                      color: isSelected ? 'var(--grid-text-inverse, #ffffff)' : 'var(--grid-text, #111827)',
+                      borderBottom: '1px solid var(--grid-border)',
+                      backgroundColor: isSelected ? 'var(--grid-primary)' : 'var(--grid-bg)',
+                      color: isSelected ? 'var(--grid-text-inverse)' : 'var(--grid-text)',
                       fontWeight: isSelected ? '600' : '400',
                     }}
-                    onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #eff6ff)')}
-                    onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)')}
+                    onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+                    onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
                   >
                     {column.headerName}
                   </div>
@@ -219,7 +219,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
             </button>
           </div>
         </div>
-        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: 'var(--grid-bg-alt, #f9fafb)', borderTop: '1px solid var(--grid-border, #e5e7eb)', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: 'var(--grid-bg-alt)', borderTop: '1px solid var(--grid-border)', display: 'flex', justifyContent: 'flex-end' }}>
           <button 
             onClick={() => {
               setSelectedAvailable(null);

@@ -86,11 +86,11 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           value={pageSize}
           onChange={(e) => handlePageSizeChange(Number(e.target.value))}
           onFocus={(e) => {
-            e.target.style.borderColor = 'var(--grid-primary, #0066cc)';
+            e.target.style.borderColor = 'var(--grid-primary)';
             e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = 'var(--grid-border, #d9d9d9)';
+            e.target.style.borderColor = 'var(--grid-border)';
             e.target.style.boxShadow = 'none';
           }}
         >
@@ -128,13 +128,13 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             backgroundColor: 'var(--grid-bg)',
             color: 'var(--grid-text)',
           }}
-          onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
+          onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg)'}
           onClick={() => handlePageChange(0)}
           disabled={currentPage === 0}
           title="First page"
         >
-          «
+          ï¿½
         </button>
 
         {/* Previous page button */}
@@ -152,20 +152,20 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             backgroundColor: 'var(--grid-bg)',
             color: 'var(--grid-text)',
           }}
-          onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
+          onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg)'}
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 0}
           title="Previous page"
         >
-          ‹
+          ï¿½
         </button>
 
         {/* Page numbers */}
         {getPageNumbers().map((page, index) => {
           if (page === '...') {
             return (
-              <span key={`ellipsis-${index}`} style={{ paddingLeft: '8px', paddingRight: '8px', paddingTop: '6px', paddingBottom: '6px', fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary, #bfbfbf)' }}>
+              <span key={`ellipsis-${index}`} style={{ paddingLeft: '8px', paddingRight: '8px', paddingTop: '6px', paddingBottom: '6px', fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary)' }}>
                 ...
               </span>
             );
@@ -182,14 +182,14 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
                 paddingBottom: '6px',
                 fontSize: 'var(--grid-font-size, 13px)',
                 fontWeight: isCurrentPage ? '500' : '400',
-                border: isCurrentPage ? 'var(--grid-border-width, 1px) solid var(--grid-primary, #0066cc)' : 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)',
+                border: isCurrentPage ? 'var(--grid-border-width, 1px) solid var(--grid-primary)' : 'var(--grid-border-width, 1px) solid var(--grid-border)',
                 borderRadius: 'var(--grid-border-radius, 3px)',
-                backgroundColor: isCurrentPage ? 'var(--grid-primary, #0066cc)' : 'var(--grid-bg, #ffffff)',
-                color: isCurrentPage ? 'var(--grid-text-inverse, #fff)' : 'var(--grid-text, #262626)',
+                backgroundColor: isCurrentPage ? 'var(--grid-primary)' : 'var(--grid-bg)',
+                color: isCurrentPage ? 'var(--grid-text-inverse)' : 'var(--grid-text)',
                 cursor: 'pointer',
               }}
-              onMouseEnter={(e) => !isCurrentPage && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
-              onMouseLeave={(e) => !isCurrentPage && (e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)')}
+              onMouseEnter={(e) => !isCurrentPage && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+              onMouseLeave={(e) => !isCurrentPage && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
               onClick={() => handlePageChange(page as number)}
             >
               {(page as number) + 1}
@@ -212,13 +212,13 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             backgroundColor: 'var(--grid-bg)',
             color: 'var(--grid-text)',
           }}
-          onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
+          onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg)'}
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages - 1}
           title="Next page"
         >
-          ›
+          ï¿½
         </button>
 
         {/* Last page button */}
@@ -236,13 +236,13 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             backgroundColor: 'var(--grid-bg)',
             color: 'var(--grid-text)',
           }}
-          onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
+          onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg)'}
           onClick={() => handlePageChange(totalPages - 1)}
           disabled={currentPage === totalPages - 1}
           title="Last page"
         >
-          »
+          ï¿½
         </button>
       </div>
     </div>
