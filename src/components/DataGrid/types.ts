@@ -7,6 +7,7 @@ export interface Column {
   editable?: boolean;
   sortable?: boolean;
   filterable?: boolean;
+  pinnable?: boolean;
 }
 
 export interface Row {
@@ -79,6 +80,8 @@ export interface GridState {
   columnWidths: { [field: string]: number };
   groupBy: string[]; // Array of field names to group by
   expandedGroups: ExpandedGroups; // Track which groups are expanded
+  pinnedColumnsLeft: string[];
+  pinnedColumnsRight: string[];
 }
 
 // Action types for reducer
@@ -100,13 +103,16 @@ export type GridAction =
   | { type: 'REMOVE_GROUP'; payload: string }
   | { type: 'REORDER_GROUPS'; payload: { fromIndex: number; toIndex: number } }
   | { type: 'TOGGLE_GROUP'; payload: string }
-  | { type: 'CLEAR_GROUPS' };
+  | { type: 'CLEAR_GROUPS' }
+  | { type: 'PIN_COLUMN'; payload: { field: string; side: 'left' | 'right' } }
+  | { type: 'UNPIN_COLUMN'; payload: string };
 
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
   rows: Row[];
   pageSize?: number;
+  showColumnPinning?: boolean;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;

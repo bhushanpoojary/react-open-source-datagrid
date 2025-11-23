@@ -28,6 +28,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   columns,
   rows,
   pageSize = 10,
+  showColumnPinning = true,
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -38,6 +39,17 @@ export const DataGrid: React.FC<DataGridProps> = ({
     { columns, pageSize },
     (args) => createInitialState(args.columns, args.pageSize)
   );
+
+  const pinnedLeftFields = state.pinnedColumnsLeft.filter(field => state.columnOrder.includes(field));
+  const pinnedRightFields = state.pinnedColumnsRight.filter(field => state.columnOrder.includes(field));
+  const pinnedLeftSet = new Set(pinnedLeftFields);
+  const pinnedRightSet = new Set(pinnedRightFields);
+  const middleColumns = state.columnOrder.filter(field => !pinnedLeftSet.has(field) && !pinnedRightSet.has(field));
+  const displayColumnOrder = [
+    ...pinnedLeftFields,
+    ...middleColumns,
+    ...pinnedRightFields,
+  ];
 
   // Update columns when props change
   useEffect(() => {
@@ -199,10 +211,14 @@ export const DataGrid: React.FC<DataGridProps> = ({
         <GridHeader
           columns={columns}
           columnOrder={state.columnOrder}
+          displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
           sortConfig={state.sortConfig}
           filterConfig={state.filterConfig}
           dispatch={dispatch}
+          pinnedLeft={pinnedLeftFields}
+          pinnedRight={pinnedRightFields}
+          showColumnPinning={showColumnPinning}
         />
       </div>
 
@@ -211,6 +227,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         columns={columns}
         rows={paginatedRows}
         columnOrder={state.columnOrder}
+        displayColumnOrder={displayColumnOrder}
         columnWidths={state.columnWidths}
         selectedRows={state.selection.selectedRows}
         editState={state.editState}
@@ -218,6 +235,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
         dispatch={dispatch}
         onRowClick={onRowClick}
         onCellEdit={handleCellEdit}
+        pinnedLeft={pinnedLeftFields}
+        pinnedRight={pinnedRightFields}
       />
 
       {/* Pagination */}

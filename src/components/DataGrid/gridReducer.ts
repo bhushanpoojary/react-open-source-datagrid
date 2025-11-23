@@ -30,6 +30,8 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     columnWidths,
     groupBy: [],
     expandedGroups: {},
+    pinnedColumnsLeft: [],
+    pinnedColumnsRight: [],
   };
 };
 
@@ -190,11 +192,17 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         columnOrder.push(col.field);
       });
 
+      const validFields = new Set(columnOrder);
+      const pinnedColumnsLeft = state.pinnedColumnsLeft.filter(field => validFields.has(field));
+      const pinnedColumnsRight = state.pinnedColumnsRight.filter(field => validFields.has(field));
+
       return {
         ...state,
         columns,
         columnOrder,
         columnWidths,
+        pinnedColumnsLeft,
+        pinnedColumnsRight,
       };
     }
 
@@ -249,6 +257,40 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         groupBy: [],
         expandedGroups: {},
         currentPage: 0,
+      };
+    }
+
+    case 'PIN_COLUMN': {
+      const { field, side } = action.payload;
+      const column = state.columns.find((col) => col.field === field);
+      if (column?.pinnable === false) {
+        return state;
+      }
+
+      const pinnedColumnsLeft = state.pinnedColumnsLeft.filter((f) => f !== field);
+      const pinnedColumnsRight = state.pinnedColumnsRight.filter((f) => f !== field);
+
+      if (side === 'left') {
+        return {
+          ...state,
+          pinnedColumnsLeft: [...pinnedColumnsLeft, field],
+          pinnedColumnsRight,
+        };
+      }
+
+      return {
+        ...state,
+        pinnedColumnsLeft,
+        pinnedColumnsRight: [...pinnedColumnsRight, field],
+      };
+    }
+
+    case 'UNPIN_COLUMN': {
+      const field = action.payload;
+      return {
+        ...state,
+        pinnedColumnsLeft: state.pinnedColumnsLeft.filter((f) => f !== field),
+        pinnedColumnsRight: state.pinnedColumnsRight.filter((f) => f !== field),
       };
     }
 

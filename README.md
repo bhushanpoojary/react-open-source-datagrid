@@ -13,6 +13,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ Editable cells (double-click to edit)
 - ✅ Keyboard navigation (arrow keys)
 - ✅ Sticky header
+- ✅ Column pinning (freeze left/right columns)
 
 ## Quick Start
 

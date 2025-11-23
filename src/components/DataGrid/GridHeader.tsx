@@ -4,19 +4,27 @@ import type { Column, GridAction, SortConfig } from './types';
 interface GridHeaderProps {
   columns: Column[];
   columnOrder: string[];
+  displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
   sortConfig: SortConfig;
   filterConfig: { [field: string]: string };
   dispatch: React.Dispatch<GridAction>;
+  pinnedLeft: string[];
+  pinnedRight: string[];
+  showColumnPinning: boolean;
 }
 
 export const GridHeader: React.FC<GridHeaderProps> = ({
   columns,
   columnOrder,
+  displayColumnOrder,
   columnWidths,
   sortConfig,
   filterConfig,
   dispatch,
+  pinnedLeft,
+  pinnedRight,
+  showColumnPinning,
 }) => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [resizingColumn, setResizingColumn] = useState<string | null>(null);
@@ -26,6 +34,55 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
   // Create a map for quick column lookup
   const columnMap = new Map(columns.map(col => [col.field, col]));
+
+  const pinnedLeftSet = new Set(pinnedLeft);
+  const pinnedRightSet = new Set(pinnedRight);
+
+  const leftOffsets: { [field: string]: number } = {};
+  let leftAccumulator = 0;
+  pinnedLeft.forEach((field) => {
+    leftOffsets[field] = leftAccumulator;
+    leftAccumulator += columnWidths[field] || 150;
+  });
+
+  const rightOffsets: { [field: string]: number } = {};
+  let rightAccumulator = 0;
+  [...pinnedRight].reverse().forEach((field) => {
+    rightOffsets[field] = rightAccumulator;
+    rightAccumulator += columnWidths[field] || 150;
+  });
+
+  const pinColumn = (field: string, side: 'left' | 'right') => {
+    dispatch({ type: 'PIN_COLUMN', payload: { field, side } });
+  };
+
+  const unpinColumn = (field: string) => {
+    dispatch({ type: 'UNPIN_COLUMN', payload: field });
+  };
+
+  const getStickyHeaderStyle = (field: string): React.CSSProperties => {
+    const width = `${columnWidths[field] || 150}px`;
+    const style: React.CSSProperties = { width };
+
+    if (pinnedLeftSet.has(field)) {
+      style.position = 'sticky';
+      style.left = `${leftOffsets[field]}px`;
+      style.zIndex = 30;
+      style.backgroundColor = '#f8fafc';
+    } else if (pinnedRightSet.has(field)) {
+      style.position = 'sticky';
+      style.right = `${rightOffsets[field]}px`;
+      style.zIndex = 30;
+      style.backgroundColor = '#f8fafc';
+    }
+
+    return style;
+  };
+
+  const getFilterCellStyle = (field: string): React.CSSProperties => ({
+    ...getStickyHeaderStyle(field),
+    backgroundColor: '#fff',
+  });
 
   // Handle column sorting
   const handleSort = (field: string) => {
@@ -126,12 +183,16 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
     <div ref={headerRef} className="bg-gray-100 border-b border-gray-300">
       {/* Column Headers Row */}
       <div className="flex">
-        {columnOrder.map((field) => {
+        {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
 
           const isSorted = sortConfig.field === field;
           const sortDirection = isSorted ? sortConfig.direction : null;
+          const isPinnedLeft = pinnedLeft.includes(field);
+          const isPinnedRight = pinnedRight.includes(field);
+          const showPinControls = showColumnPinning && column.pinnable !== false;
+          const headerStyle = getStickyHeaderStyle(field);
 
           return (
             <div
@@ -139,7 +200,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
               className={`relative border-r border-gray-300 flex-shrink-0 ${
                 draggedColumn === field ? 'opacity-50' : ''
               }`}
-              style={{ width: `${columnWidths[field]}px` }}
+              style={headerStyle}
               draggable
               onDragStart={(e) => handleDragStart(e, field)}
               onDragOver={handleDragOver}
@@ -151,15 +212,58 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                 onClick={() => handleSort(field)}
               >
                 <span className="truncate">{column.headerName}</span>
-                
-                {/* Sort indicator */}
-                {column.sortable !== false && (
-                  <span className="ml-2 text-xs">
-                    {sortDirection === 'asc' && '↑'}
-                    {sortDirection === 'desc' && '↓'}
-                    {!sortDirection && <span className="text-gray-400">⇅</span>}
-                  </span>
-                )}
+                <div className="flex items-center gap-1">
+                  {column.sortable !== false && (
+                    <span className="text-xs">
+                      {sortDirection === 'asc' && '↑'}
+                      {sortDirection === 'desc' && '↓'}
+                      {!sortDirection && <span className="text-gray-400">⇅</span>}
+                    </span>
+                  )}
+                  {showPinControls && (
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        className={`w-5 h-5 rounded border text-[10px] font-semibold flex items-center justify-center transition-colors ${
+                          isPinnedLeft ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 text-gray-600 hover:bg-gray-200'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          pinColumn(field, 'left');
+                        }}
+                        aria-label={`Pin ${column.headerName} to left`}
+                      >
+                        ⇤
+                      </button>
+                      <button
+                        type="button"
+                        className={`w-5 h-5 rounded border text-[10px] font-semibold flex items-center justify-center transition-colors ${
+                          isPinnedRight ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 text-gray-600 hover:bg-gray-200'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          pinColumn(field, 'right');
+                        }}
+                        aria-label={`Pin ${column.headerName} to right`}
+                      >
+                        ⇥
+                      </button>
+                      {(isPinnedLeft || isPinnedRight) && (
+                        <button
+                          type="button"
+                          className="w-5 h-5 rounded-full border border-gray-300 text-[10px] font-semibold flex items-center justify-center hover:bg-gray-200"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            unpinColumn(field);
+                          }}
+                          aria-label={`Unpin ${column.headerName}`}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Column Resizer */}
@@ -174,7 +278,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
       {/* Filter Row */}
       <div className="flex bg-white">
-        {columnOrder.map((field) => {
+        {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
 
@@ -182,7 +286,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
             <div
               key={`filter-${field}`}
               className="border-r border-gray-300 flex-shrink-0 p-1"
-              style={{ width: `${columnWidths[field]}px` }}
+              style={getFilterCellStyle(field)}
             >
               {column.filterable !== false && (
                 <input

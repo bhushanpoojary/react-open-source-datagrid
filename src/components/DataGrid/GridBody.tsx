@@ -7,6 +7,7 @@ interface GridBodyProps {
   columns: Column[];
   rows: (Row | GroupedRow)[];
   columnOrder: string[];
+  displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
   selectedRows: Set<string | number>;
   editState: EditState;
@@ -14,12 +15,15 @@ interface GridBodyProps {
   dispatch: React.Dispatch<GridAction>;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
+  pinnedLeft: string[];
+  pinnedRight: string[];
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
   columns,
   rows,
   columnOrder,
+  displayColumnOrder,
   columnWidths,
   selectedRows,
   editState,
@@ -27,12 +31,50 @@ export const GridBody: React.FC<GridBodyProps> = ({
   dispatch,
   onRowClick,
   onCellEdit,
+  pinnedLeft,
+  pinnedRight,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
   // Create a map for quick column lookup
   const columnMap = new Map(columns.map(col => [col.field, col]));
+
+  const pinnedLeftSet = new Set(pinnedLeft);
+  const pinnedRightSet = new Set(pinnedRight);
+
+  const leftOffsets: { [field: string]: number } = {};
+  let leftAccumulator = 0;
+  pinnedLeft.forEach((field) => {
+    leftOffsets[field] = leftAccumulator;
+    leftAccumulator += columnWidths[field] || 150;
+  });
+
+  const rightOffsets: { [field: string]: number } = {};
+  let rightAccumulator = 0;
+  [...pinnedRight].reverse().forEach((field) => {
+    rightOffsets[field] = rightAccumulator;
+    rightAccumulator += columnWidths[field] || 150;
+  });
+
+  const getPinnedCellStyle = (field: string): React.CSSProperties => {
+    const width = `${columnWidths[field] || 150}px`;
+    const style: React.CSSProperties = { width };
+
+    if (pinnedLeftSet.has(field)) {
+      style.position = 'sticky';
+      style.left = `${leftOffsets[field]}px`;
+      style.zIndex = 20;
+      style.backgroundColor = '#fff';
+    } else if (pinnedRightSet.has(field)) {
+      style.position = 'sticky';
+      style.right = `${rightOffsets[field]}px`;
+      style.zIndex = 20;
+      style.backgroundColor = '#fff';
+    }
+
+    return style;
+  };
 
   // Focus edit input when editing starts
   useEffect(() => {
@@ -135,7 +177,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     }
 
     const maxRowIndex = rows.length - 1;
-    const maxColIndex = columnOrder.length - 1;
+    const maxColIndex = displayColumnOrder.length - 1;
 
     let newRowIndex = rowIndex;
     let newColIndex = columnIndex;
@@ -162,7 +204,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
         // Start editing current cell
         const row = rows[rowIndex];
         if (!isGroupedRow(row)) {
-          const field = columnOrder[columnIndex];
+          const field = displayColumnOrder[columnIndex];
           const value = row[field];
           handleCellDoubleClick(row, field, value);
         }
@@ -178,7 +220,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   };
 
   return (
-    <div ref={bodyRef} className="overflow-auto" style={{ maxHeight: '500px' }}>
+    <div ref={bodyRef} className="overflow-auto" style={{ maxHeight: '500px', position: 'relative' }}>
       {rows.map((row, rowIndex) => {
         // Check if this is a group row
         if (isGroupedRow(row)) {
@@ -206,7 +248,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
             } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
             onClick={(e) => handleRowClick(row, rowIndex, e)}
           >
-            {columnOrder.map((field, columnIndex) => {
+            {displayColumnOrder.map((field, columnIndex) => {
               const column = columnMap.get(field);
               if (!column) return null;
 
@@ -216,6 +258,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
               const isCellFocused =
                 focusState?.rowIndex === rowIndex &&
                 focusState?.columnIndex === columnIndex;
+              const cellStyle = getPinnedCellStyle(field);
 
               return (
                 <div
@@ -223,7 +266,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
                     isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
                   }`}
-                  style={{ width: `${columnWidths[field]}px` }}
+                  style={cellStyle}
                   onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
                   onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
                   tabIndex={isCellFocused ? 0 : -1}
