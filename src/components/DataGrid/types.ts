@@ -95,6 +95,7 @@ export interface GridState {
   expandedGroups: ExpandedGroups; // Track which groups are expanded
   pinnedColumnsLeft: string[];
   pinnedColumnsRight: string[];
+  hiddenColumns: string[]; // Array of field names that are hidden
 }
 
 // Action types for reducer
@@ -118,7 +119,9 @@ export type GridAction =
   | { type: 'TOGGLE_GROUP'; payload: string }
   | { type: 'CLEAR_GROUPS' }
   | { type: 'PIN_COLUMN'; payload: { field: string; side: 'left' | 'right' } }
-  | { type: 'UNPIN_COLUMN'; payload: string };
+  | { type: 'UNPIN_COLUMN'; payload: string }
+  | { type: 'TOGGLE_COLUMN_VISIBILITY'; payload: string }
+  | { type: 'RESET_COLUMN_LAYOUT' };
 
 // Virtual scrolling configuration
 export interface VirtualScrollConfig {

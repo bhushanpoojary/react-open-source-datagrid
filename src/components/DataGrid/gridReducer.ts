@@ -32,6 +32,7 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     expandedGroups: {},
     pinnedColumnsLeft: [],
     pinnedColumnsRight: [],
+    hiddenColumns: [],
   };
 };
 
@@ -291,6 +292,46 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         ...state,
         pinnedColumnsLeft: state.pinnedColumnsLeft.filter((f) => f !== field),
         pinnedColumnsRight: state.pinnedColumnsRight.filter((f) => f !== field),
+      };
+    }
+
+    case 'TOGGLE_COLUMN_VISIBILITY': {
+      const field = action.payload;
+      const hiddenSet = new Set(state.hiddenColumns);
+      
+      if (hiddenSet.has(field)) {
+        // Show the column
+        hiddenSet.delete(field);
+      } else {
+        // Hide the column (but ensure at least one column remains visible)
+        const visibleColumns = state.columnOrder.filter(f => !hiddenSet.has(f));
+        if (visibleColumns.length > 1) {
+          hiddenSet.add(field);
+        }
+      }
+
+      return {
+        ...state,
+        hiddenColumns: Array.from(hiddenSet),
+      };
+    }
+
+    case 'RESET_COLUMN_LAYOUT': {
+      // Reset to original column order and show all columns
+      const columnOrder = state.columns.map(col => col.field);
+      const columnWidths: { [field: string]: number } = {};
+      
+      state.columns.forEach(col => {
+        columnWidths[col.field] = col.width || 150;
+      });
+
+      return {
+        ...state,
+        columnOrder,
+        columnWidths,
+        hiddenColumns: [],
+        pinnedColumnsLeft: [],
+        pinnedColumnsRight: [],
       };
     }
 

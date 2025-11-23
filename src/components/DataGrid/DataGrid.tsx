@@ -6,6 +6,7 @@ import { GridBody } from './GridBody';
 import { GridPagination } from './GridPagination';
 import { GroupByPanel } from './GroupByPanel';
 import { GridFooter } from './GridFooter';
+import { ColumnChooser } from './ColumnChooser';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 
@@ -44,11 +45,15 @@ export const DataGrid: React.FC<DataGridProps> = ({
     (args) => createInitialState(args.columns, args.pageSize)
   );
 
-  const pinnedLeftFields = state.pinnedColumnsLeft.filter(field => state.columnOrder.includes(field));
-  const pinnedRightFields = state.pinnedColumnsRight.filter(field => state.columnOrder.includes(field));
+  // Filter out hidden columns and arrange pinned columns
+  const hiddenSet = new Set(state.hiddenColumns);
+  const visibleColumnOrder = state.columnOrder.filter(field => !hiddenSet.has(field));
+  
+  const pinnedLeftFields = state.pinnedColumnsLeft.filter(field => visibleColumnOrder.includes(field));
+  const pinnedRightFields = state.pinnedColumnsRight.filter(field => visibleColumnOrder.includes(field));
   const pinnedLeftSet = new Set(pinnedLeftFields);
   const pinnedRightSet = new Set(pinnedRightFields);
-  const middleColumns = state.columnOrder.filter(field => !pinnedLeftSet.has(field) && !pinnedRightSet.has(field));
+  const middleColumns = visibleColumnOrder.filter(field => !pinnedLeftSet.has(field) && !pinnedRightSet.has(field));
   const displayColumnOrder = [
     ...pinnedLeftFields,
     ...middleColumns,
@@ -223,6 +228,25 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+      {/* Toolbar */}
+      <div className="relative flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-200 z-30">
+        <div className="relative flex items-center gap-2">
+          {/* Column Chooser */}
+          <ColumnChooser
+            columns={columns}
+            columnOrder={state.columnOrder}
+            hiddenColumns={state.hiddenColumns}
+            onToggleVisibility={(field: string) =>
+              dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field })
+            }
+            onReorderColumns={(fromIndex: number, toIndex: number) =>
+              dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } })
+            }
+            onResetLayout={() => dispatch({ type: 'RESET_COLUMN_LAYOUT' })}
+          />
+        </div>
+      </div>
+
       {/* Group By Panel */}
       <GroupByPanel
         columns={columns}
