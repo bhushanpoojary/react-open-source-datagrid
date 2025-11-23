@@ -1,8 +1,36 @@
 {
   "name": "react-open-source-grid",
   "private": false,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "A high-performance React DataGrid component with advanced features like virtual scrolling, infinite scrolling, tree data, market data mode, and more",
+  "main": "./dist/assets/index.js",
+  "types": "./dist/assets/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "datagrid",
+    "table",
+    "data-grid",
+    "virtual-scroll",
+    "infinite-scroll",
+    "tree-data",
+    "market-data",
+    "typescript"
+  ],
+  "author": "Bhushan Poojary",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bhushanpoojary/react-open-source-datagrid"
+  },
+  "bugs": {
+    "url": "https://github.com/bhushanpoojary/react-open-source-datagrid/issues"
+  },
+  "homepage": "https://github.com/bhushanpoojary/react-open-source-datagrid#readme",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
