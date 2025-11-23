@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import { DataGrid } from './DataGrid';
 import type { Column, Row, VirtualScrollConfig } from './DataGrid';
 
@@ -137,7 +137,7 @@ export const VirtualScrollDemo: React.FC = () => {
 
         {/* Controls */}
         <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Controls</h2>
+          <h2 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "16px", color: "#111827" }}>Controls</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Row Count Control */}

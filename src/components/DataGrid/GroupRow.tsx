@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { GroupedRow, Column, GridAction, AggregateConfig } from './types';
 import { formatAggregateValue, getAggregateLabel } from './aggregationUtils';
 
@@ -96,7 +96,7 @@ export const GroupRow: React.FC<GroupRowProps> = ({
           <div className="flex items-center gap-3 ml-4 text-sm text-gray-600">
             {displayAggregates.map(([key, value]) => (
               <span key={key} className="flex items-center gap-1">
-                <span className="text-gray-500">•</span>
+                <span style={{ color: "#6b7280" }}>•</span>
                 {formatAggregate(key, value)}
               </span>
             ))}
@@ -207,7 +207,7 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
           cellContent = (
-            <span className="text-gray-700" style={{ marginLeft: `${group.level * 24 + 12}px` }}>
+            <span style={{ color: "#374151", marginLeft: `${group.level * 24 + 12}px` }}>
               {groupLabel}
             </span>
           );
@@ -222,7 +222,7 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
                 const displayLabel = config.label || getAggregateLabel(config.function);
                 
                 return (
-                  <div key={idx} className="text-xs">
+                  <div key={idx} style={{ fontSize: "12px" }}>
                     {configs.length > 1 && (
                       <span className="text-gray-500 mr-1">{displayLabel}:</span>
                     )}

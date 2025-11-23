@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import type { Column, GridAction } from './types';
 
 interface GroupByPanelProps {
@@ -79,23 +79,27 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
 
   return (
     <div
-      className={`
-        border-b border-gray-300 p-3 min-h-[60px]
-        transition-colors duration-200
-        ${isDragOver ? 'bg-blue-50 border-blue-400' : 'bg-gray-50'}
-      `}
+      style={{
+        borderBottom: '1px solid #d1d5db',
+        padding: '12px',
+        minHeight: '60px',
+        transitionProperty: 'colors',
+        transitionDuration: '200ms',
+        backgroundColor: isDragOver ? '#eff6ff' : '#f9fafb',
+        borderBottomColor: isDragOver ? '#3b82f6' : '#d1d5db',
+      }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="flex items-center gap-2 flex-wrap">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         {groupBy.length === 0 ? (
-          <div className="text-gray-500 text-sm flex items-center gap-2">
+          <div style={{ color: '#6b7280', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             Drag columns here to group rows
           </div>
         ) : (
           <>
-            <span className="text-xs text-gray-600 font-medium">Group by:</span>
+            <span style={{ fontSize: '12px', color: '#4b5563', fontWeight: '500' }}>Group by:</span>
             {groupBy.map((field, index) => {
               const column = columnMap.get(field);
               return (
@@ -105,27 +109,51 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
                   onDragStart={(e) => handleGroupDragStart(e, index)}
                   onDrop={(e) => handleGroupDrop(e, index)}
                   onDragOver={handleGroupDragOver}
-                  className="
-                    flex items-center gap-1 px-3 py-1 
-                    bg-blue-600 text-white rounded-md text-sm
-                    cursor-move hover:bg-blue-700 transition-colors
-                    shadow-sm
-                  "
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                    paddingTop: '4px',
+                    paddingBottom: '4px',
+                    backgroundColor: '#2563eb',
+                    color: '#fff',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    cursor: 'move',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                    transitionProperty: 'background-color',
+                    transitionDuration: '200ms',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
                 >
                   {index > 0 && (
-                    <span className="text-blue-200 mr-1">→</span>
+                    <span style={{ color: '#bfdbfe', marginRight: '4px' }}>→</span>
                   )}
                   <span>{column?.headerName || field}</span>
                   <button
                     onClick={() => handleRemoveGroup(field)}
-                    className="
-                      ml-1 hover:bg-blue-800 rounded-full p-0.5
-                      transition-colors
-                    "
+                    style={{
+                      marginLeft: '4px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '2px',
+                      borderRadius: '9999px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transitionProperty: 'background-color',
+                      transitionDuration: '200ms',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e40af'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     title="Remove grouping"
                   >
                     <svg
-                      className="w-3 h-3"
+                      style={{ width: '12px', height: '12px' }}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -143,10 +171,17 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
             })}
             <button
               onClick={handleClearAll}
-              className="
-                text-xs text-gray-600 hover:text-gray-800 
-                underline ml-2
-              "
+              style={{
+                fontSize: '12px',
+                color: '#4b5563',
+                textDecoration: 'none',
+                marginLeft: '8px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#111827'; e.currentTarget.style.textDecoration = 'underline'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#4b5563'; e.currentTarget.style.textDecoration = 'none'; }}
               title="Clear all groupings"
             >
               Clear all

@@ -104,29 +104,34 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
 
   const panelContent = isOpen && (
     <>
-      <div className="fixed inset-0 z-[9999] bg-black bg-opacity-30" onClick={() => setIsOpen(false)} />
+      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.3)' }} onClick={() => setIsOpen(false)} />
       <div
         ref={panelRef}
-        className="fixed bg-white border-2 border-gray-400 rounded-lg shadow-2xl z-[10000] opacity-100"
         style={{
-          background: 'white',
+          position: 'fixed',
+          backgroundColor: '#fff',
+          border: '2px solid #9ca3af',
+          borderRadius: '8px',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          zIndex: 10000,
+          opacity: 1,
           top: `${panelPosition.top}px`,
           left: `${panelPosition.left}px`,
           width: '600px',
           maxHeight: '500px',
         }}
       >
-        <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-900">Select Columns</h3>
-          <div className="flex gap-2">
-            <button onClick={onResetLayout} className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline">Reset</button>
-            <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700">✕</button>
+        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#111827', margin: 0 }}>Select Columns</h3>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={onResetLayout} style={{ fontSize: '12px', color: '#2563eb', fontWeight: '500', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', textDecoration: 'none', padding: 0 }} onMouseEnter={(e) => { e.currentTarget.style.color = '#1d4ed8'; e.currentTarget.style.textDecoration = 'underline'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb'; e.currentTarget.style.textDecoration = 'none'; }}>Reset</button>
+            <button onClick={() => setIsOpen(false)} style={{ color: '#6b7280', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontSize: '16px', padding: 0, margin: 0 }} onMouseEnter={(e) => e.currentTarget.style.color = '#374151'} onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}>✕</button>
           </div>
         </div>
-        <div className="p-4 flex gap-3" style={{ height: '400px' }}>
-          <div className="flex-1 flex flex-col">
-            <div className="text-xs font-semibold text-gray-700 mb-2">Available Columns ({availableColumns.length})</div>
-            <div className="flex-1 border border-gray-300 rounded overflow-y-scroll bg-white">
+        <div style={{ padding: '16px', display: 'flex', gap: '12px', height: '400px' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>Available Columns ({availableColumns.length})</div>
+            <div style={{ flex: 1, border: '1px solid #d1d5db', borderRadius: '4px', overflowY: 'scroll', backgroundColor: '#fff' }}>
               {availableColumns.map((column) => {
                 const isSelected = selectedAvailable === column.field;
                 return (
@@ -144,7 +149,6 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                       color: isSelected ? '#ffffff' : '#111827',
                       fontWeight: isSelected ? '600' : '400',
                     }}
-                    className="hover:bg-blue-50"
                     onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#eff6ff')}
                     onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
                   >
@@ -152,18 +156,18 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                   </div>
                 );
               })}
-              {availableColumns.length === 0 && <div className="px-3 py-8 text-center text-gray-400 text-sm">All columns are visible</div>}
+              {availableColumns.length === 0 && <div style={{ padding: '32px 12px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>All columns are visible</div>}
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-2">
-            <button onClick={moveToVisible} disabled={!selectedAvailable} className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed" title="Add selected">&gt;</button>
-            <button onClick={moveAllToVisible} disabled={availableColumns.length === 0} className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed" title="Add all">&gt;&gt;</button>
-            <button onClick={moveToAvailable} disabled={!selectedVisible || visibleColumns.length === 1} className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed" title="Remove selected">&lt;</button>
-            <button onClick={moveAllToAvailable} disabled={visibleColumns.length === 0} className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed" title="Remove all">&lt;&lt;</button>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
+            <button onClick={moveToVisible} disabled={!selectedAvailable} style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: !selectedAvailable ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: !selectedAvailable ? 'not-allowed' : 'pointer' }} onMouseEnter={(e) => !selectedAvailable ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'} onMouseLeave={(e) => !selectedAvailable ? null : e.currentTarget.style.backgroundColor = '#3b82f6'} title="Add selected">&gt;</button>
+            <button onClick={moveAllToVisible} disabled={availableColumns.length === 0} style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: availableColumns.length === 0 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: availableColumns.length === 0 ? 'not-allowed' : 'pointer' }} onMouseEnter={(e) => availableColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'} onMouseLeave={(e) => availableColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'} title="Add all">&gt;&gt;</button>
+            <button onClick={moveToAvailable} disabled={!selectedVisible || visibleColumns.length === 1} style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: !selectedVisible || visibleColumns.length === 1 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: !selectedVisible || visibleColumns.length === 1 ? 'not-allowed' : 'pointer' }} onMouseEnter={(e) => !selectedVisible || visibleColumns.length === 1 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'} onMouseLeave={(e) => !selectedVisible || visibleColumns.length === 1 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'} title="Remove selected">&lt;</button>
+            <button onClick={moveAllToAvailable} disabled={visibleColumns.length === 0} style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: visibleColumns.length === 0 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: visibleColumns.length === 0 ? 'not-allowed' : 'pointer' }} onMouseEnter={(e) => visibleColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'} onMouseLeave={(e) => visibleColumns.length === 0 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'} title="Remove all">&lt;&lt;</button>
           </div>
-          <div className="flex-1 flex flex-col">
-            <div className="text-xs font-semibold text-gray-700 mb-2">Visible Columns ({visibleColumns.length})</div>
-            <div className="flex-1 border border-gray-300 rounded overflow-y-scroll bg-white">
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>Visible Columns ({visibleColumns.length})</div>
+            <div style={{ flex: 1, border: '1px solid #d1d5db', borderRadius: '4px', overflowY: 'scroll', backgroundColor: '#fff' }}>
               {visibleColumns.map((column) => {
                 const isSelected = selectedVisible === column.field;
                 return (
@@ -181,7 +185,6 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                       color: isSelected ? '#ffffff' : '#111827',
                       fontWeight: isSelected ? '600' : '400',
                     }}
-                    className="hover:bg-blue-50"
                     onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#eff6ff')}
                     onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
                   >
@@ -191,13 +194,15 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
               })}
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-2">
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
             <button 
               onClick={() => {
                 moveVisibleUp();
               }} 
               disabled={!selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0}
-              className="px-3 py-2 text-lg bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500" 
+              style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', fontSize: '18px', backgroundColor: !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0 ? 'not-allowed' : 'pointer' }}
+              onMouseEnter={(e) => !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'}
+              onMouseLeave={(e) => !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'}
               title="Move up">
               ▲
             </button>
@@ -206,20 +211,24 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                 moveVisibleDown();
               }} 
               disabled={!selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1}
-              className="px-3 py-2 text-lg bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500" 
+              style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', fontSize: '18px', backgroundColor: !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1 ? '#d1d5db' : '#3b82f6', color: '#fff', borderRadius: '4px', border: 'none', cursor: !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1 ? 'not-allowed' : 'pointer' }}
+              onMouseEnter={(e) => !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1 ? null : e.currentTarget.style.backgroundColor = '#1d4ed8'}
+              onMouseLeave={(e) => !selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1 ? null : e.currentTarget.style.backgroundColor = '#3b82f6'}
               title="Move down">
               ▼
             </button>
           </div>
         </div>
-        <div className="px-4 py-2 bg-gray-50 border-t border-gray-200 flex justify-end">
+        <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: '#f9fafb', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'flex-end' }}>
           <button 
             onClick={() => {
               setSelectedAvailable(null);
               setSelectedVisible(null);
               setIsOpen(false);
             }} 
-            className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+            style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: '#2563eb', color: '#fff', fontSize: '14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
           >
             Done
           </button>
@@ -239,8 +248,11 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
           }
           setIsOpen(!isOpen);
         }}
-        className="px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 flex items-center gap-2 shadow-sm transition-colors" title="Select Columns">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '6px', paddingBottom: '6px', fontSize: '14px', backgroundColor: '#fff', border: '1px solid #d1d5db', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', transitionProperty: 'colors', cursor: 'pointer' }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+        title="Select Columns">
+        <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
         </svg>
         Columns

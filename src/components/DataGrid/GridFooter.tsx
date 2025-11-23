@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { Column, AggregateConfig } from './types';
 import { formatAggregateValue, getAggregateLabel } from './aggregationUtils';
 
@@ -76,7 +76,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
   };
 
   return (
-    <div className="flex border-t-2 border-gray-300 bg-gray-50 font-semibold">
+    <div style={{ display: 'flex', borderTop: '2px solid #d1d5db', backgroundColor: '#f9fafb', fontWeight: '600' }}>
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;
@@ -87,11 +87,11 @@ export const GridFooter: React.FC<GridFooterProps> = ({
         // For the first column, show the label
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
-          cellContent = <span className="text-gray-700">{label}</span>;
+          cellContent = <span style={{ color: '#4b5563' }}>{label}</span>;
         } else if (configs && configs.length > 0) {
           // Show aggregates for this field
           cellContent = (
-            <div className="flex flex-col gap-0.5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {configs.map((config, idx) => {
                 const key = `${config.field}_${config.function}`;
                 const value = aggregates[key];
@@ -99,11 +99,11 @@ export const GridFooter: React.FC<GridFooterProps> = ({
                 const displayLabel = config.label || getAggregateLabel(config.function);
                 
                 return (
-                  <div key={idx} className="text-xs">
+                  <div key={idx} style={{ fontSize: '12px' }}>
                     {configs.length > 1 && (
-                      <span className="text-gray-500 mr-1">{displayLabel}:</span>
+                      <span style={{ color: '#6b7280', marginRight: '4px' }}>{displayLabel}:</span>
                     )}
-                    <span className="text-gray-900">{formattedValue}</span>
+                    <span style={{ color: '#111827' }}>{formattedValue}</span>
                   </div>
                 );
               })}
@@ -116,8 +116,16 @@ export const GridFooter: React.FC<GridFooterProps> = ({
         return (
           <div
             key={`footer-${field}`}
-            className="px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0"
-            style={cellStyle}
+            style={{
+              ...cellStyle,
+              paddingLeft: '12px',
+              paddingRight: '12px',
+              paddingTop: '8px',
+              paddingBottom: '8px',
+              fontSize: '14px',
+              borderRight: '1px solid #e5e7eb',
+              flexShrink: 0,
+            }}
           >
             {cellContent}
           </div>

@@ -270,10 +270,15 @@ export const GridBody: React.FC<GridBodyProps> = ({
     return (
       <div
         key={row.id}
-        className={`flex border-b border-gray-200 hover:bg-gray-50 ${
-          isSelected ? 'bg-blue-50' : ''
-        } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
-        style={style}
+        style={{
+          ...style,
+          display: 'flex',
+          borderBottom: '1px solid #e5e7eb',
+          backgroundColor: isSelected ? '#eff6ff' : isFocused ? '#dbeafe' : '#fff',
+          cursor: 'pointer',
+        }}
+        onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f9fafb')}
+        onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#fff')}
         onClick={(e) => handleRowClick(row, rowIndex, e)}
       >
         {displayColumnOrder.map((field, columnIndex) => {
@@ -291,10 +296,17 @@ export const GridBody: React.FC<GridBodyProps> = ({
           return (
             <div
               key={`${row.id}-${field}`}
-              className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
-                isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
-              }`}
-              style={cellStyle}
+              style={{
+                ...cellStyle,
+                paddingLeft: '12px',
+                paddingRight: '12px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                fontSize: '14px',
+                borderRight: '1px solid #e5e7eb',
+                flexShrink: 0,
+                outline: isCellFocused ? '2px solid #3b82f6' : 'none',
+              }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
               tabIndex={isCellFocused ? 0 : -1}
@@ -303,7 +315,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 <input
                   ref={editInputRef}
                   type="text"
-                  className="w-full px-1 py-0 border border-blue-500 rounded focus:outline-none"
+                  style={{ width: '100%', padding: '4px', border: '1px solid #3b82f6', borderRadius: '4px', outline: 'none' }}
                   value={editState.value ?? ''}
                   onChange={(e) => handleEditChange(e.target.value)}
                   onBlur={handleEditComplete}
@@ -318,7 +330,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   }}
                 />
               ) : (
-                <span className="truncate block">{cellValue ?? ''}</span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{cellValue ?? ''}</span>
               )}
             </div>
           );
@@ -362,11 +374,16 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
             return (
               <div
-                className={`flex border-b border-gray-200 hover:bg-gray-50 ${
-                  isSelected ? 'bg-blue-50' : ''
-                } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
+                style={{
+                  ...style,
+                  display: 'flex',
+                  borderBottom: '1px solid #e5e7eb',
+                  backgroundColor: isSelected ? '#eff6ff' : isFocused ? '#dbeafe' : '#fff',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f9fafb')}
+                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#fff')}
                 onClick={(e) => handleRowClick(row, index, e)}
-                style={style}
               >
                 {visibleColumns.map((colInfo, columnIndex) => {
                   const field = colInfo.field;
@@ -383,11 +400,16 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   return (
                     <div
                       key={`${row.id}-${field}`}
-                      className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
-                        isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
-                      }`}
                       style={{
                         width: `${colInfo.width}px`,
+                        paddingLeft: '12px',
+                        paddingRight: '12px',
+                        paddingTop: '8px',
+                        paddingBottom: '8px',
+                        fontSize: '14px',
+                        borderRight: '1px solid #e5e7eb',
+                        flexShrink: 0,
+                        outline: isCellFocused ? '2px solid #3b82f6' : 'none',
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
                       onKeyDown={(e) => handleKeyDown(e, index, columnIndex)}
@@ -397,7 +419,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         <input
                           ref={editInputRef}
                           type="text"
-                          className="w-full px-1 py-0 border border-blue-500 rounded focus:outline-none"
+                          style={{ width: '100%', padding: '4px', border: '1px solid #3b82f6', borderRadius: '4px', outline: 'none' }}
                           value={editState.value ?? ''}
                           onChange={(e) => handleEditChange(e.target.value)}
                           onBlur={handleEditComplete}
@@ -412,7 +434,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                           }}
                         />
                       ) : (
-                        <span className="truncate block">{cellValue ?? ''}</span>
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{cellValue ?? ''}</span>
                       )}
                     </div>
                   );
@@ -427,7 +449,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
   // Non-virtual scrolling mode (original implementation)
   return (
-    <div ref={bodyRef} className="overflow-auto" style={{ maxHeight: '500px', position: 'relative' }}>
+    <div ref={bodyRef} style={{ overflow: 'auto', maxHeight: '500px', position: 'relative' }}>
       {rows.map((row, rowIndex) => renderRowContent(row, rowIndex))}
     </div>
   );

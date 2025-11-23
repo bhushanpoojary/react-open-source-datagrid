@@ -43,14 +43,6 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
     }
   };
 
-  const handleMenuToggle = () => {
-    if (!showMenu && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setButtonRect(rect);
-    }
-    setShowMenu(!showMenu);
-  };
-
   const handleExportClick = () => {
     const data = getDataByScope();
     

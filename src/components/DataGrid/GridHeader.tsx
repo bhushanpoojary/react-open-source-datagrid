@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import type { Column, GridAction, SortConfig } from './types';
 
 interface GridHeaderProps {
@@ -180,9 +180,9 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   }, [resizingColumn, resizeStartX, resizeStartWidth, dispatch]);
 
   return (
-    <div ref={headerRef} className="bg-gray-100 border-b border-gray-300">
+    <div ref={headerRef} style={{ backgroundColor: '#f3f4f6', borderBottom: '1px solid #d1d5db' }}>
       {/* Column Headers Row */}
-      <div className="flex">
+      <div style={{ display: 'flex' }}>
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
@@ -197,10 +197,13 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
           return (
             <div
               key={field}
-              className={`relative border-r border-gray-300 flex-shrink-0 ${
-                draggedColumn === field ? 'opacity-50' : ''
-              }`}
-              style={headerStyle}
+              style={{
+                ...headerStyle,
+                position: 'relative',
+                borderRight: '1px solid #d1d5db',
+                flexShrink: 0,
+                opacity: draggedColumn === field ? 0.5 : 1,
+              }}
               draggable
               onDragStart={(e) => handleDragStart(e, field)}
               onDragOver={handleDragOver}
@@ -208,25 +211,54 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
             >
               {/* Column Header */}
               <div
-                className="px-3 py-2 font-semibold text-sm text-gray-700 cursor-pointer hover:bg-gray-200 select-none flex items-center justify-between"
+                style={{
+                  paddingLeft: '12px',
+                  paddingRight: '12px',
+                  paddingTop: '8px',
+                  paddingBottom: '8px',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  color: '#374151',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 onClick={() => handleSort(field)}
               >
-                <span className="truncate">{column.headerName}</span>
-                <div className="flex items-center gap-1">
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{column.headerName}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {column.sortable !== false && (
-                    <span className="text-xs">
+                    <span style={{ fontSize: '12px' }}>
                       {sortDirection === 'asc' && '↑'}
                       {sortDirection === 'desc' && '↓'}
-                      {!sortDirection && <span className="text-gray-400">⇅</span>}
+                      {!sortDirection && <span style={{ color: '#d1d5db' }}>⇅</span>}
                     </span>
                   )}
                   {showPinControls && (
-                    <div className="flex items-center gap-1">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <button
                         type="button"
-                        className={`w-5 h-5 rounded border text-[10px] font-semibold flex items-center justify-center transition-colors ${
-                          isPinnedLeft ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 text-gray-600 hover:bg-gray-200'
-                        }`}
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '4px',
+                          border: isPinnedLeft ? '1px solid #3b82f6' : '1px solid #d1d5db',
+                          fontSize: '10px',
+                          fontWeight: '600',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: isPinnedLeft ? '#3b82f6' : 'transparent',
+                          color: isPinnedLeft ? '#fff' : '#4b5563',
+                          cursor: 'pointer',
+                          transitionProperty: 'colors',
+                        }}
+                        onMouseEnter={(e) => !isPinnedLeft && (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                        onMouseLeave={(e) => !isPinnedLeft && (e.currentTarget.style.backgroundColor = 'transparent')}
                         onClick={(e) => {
                           e.stopPropagation();
                           pinColumn(field, 'left');
@@ -237,9 +269,23 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                       </button>
                       <button
                         type="button"
-                        className={`w-5 h-5 rounded border text-[10px] font-semibold flex items-center justify-center transition-colors ${
-                          isPinnedRight ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 text-gray-600 hover:bg-gray-200'
-                        }`}
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '4px',
+                          border: isPinnedRight ? '1px solid #3b82f6' : '1px solid #d1d5db',
+                          fontSize: '10px',
+                          fontWeight: '600',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: isPinnedRight ? '#3b82f6' : 'transparent',
+                          color: isPinnedRight ? '#fff' : '#4b5563',
+                          cursor: 'pointer',
+                          transitionProperty: 'colors',
+                        }}
+                        onMouseEnter={(e) => !isPinnedRight && (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                        onMouseLeave={(e) => !isPinnedRight && (e.currentTarget.style.backgroundColor = 'transparent')}
                         onClick={(e) => {
                           e.stopPropagation();
                           pinColumn(field, 'right');
@@ -251,7 +297,20 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                       {(isPinnedLeft || isPinnedRight) && (
                         <button
                           type="button"
-                          className="w-5 h-5 rounded-full border border-gray-300 text-[10px] font-semibold flex items-center justify-center hover:bg-gray-200"
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '9999px',
+                            border: '1px solid #d1d5db',
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           onClick={(e) => {
                             e.stopPropagation();
                             unpinColumn(field);
@@ -268,7 +327,17 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
               {/* Column Resizer */}
               <div
-                className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 z-10"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: '4px',
+                  height: '100%',
+                  cursor: 'col-resize',
+                  zIndex: 10,
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 onMouseDown={(e) => handleResizeStart(e, field)}
               />
             </div>
@@ -277,7 +346,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
       </div>
 
       {/* Filter Row */}
-      <div className="flex bg-white">
+      <div style={{ display: 'flex', backgroundColor: '#fff' }}>
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
@@ -285,17 +354,23 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
           return (
             <div
               key={`filter-${field}`}
-              className="border-r border-gray-300 flex-shrink-0 p-1"
-              style={getFilterCellStyle(field)}
+              style={{
+                ...getFilterCellStyle(field),
+                borderRight: '1px solid #d1d5db',
+                flexShrink: 0,
+                padding: '4px',
+              }}
             >
               {column.filterable !== false && (
                 <input
                   type="text"
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  style={{ width: '100%', paddingLeft: '8px', paddingRight: '8px', paddingTop: '4px', paddingBottom: '4px', fontSize: '14px', border: '1px solid #d1d5db', borderRadius: '4px', outline: 'none' }}
                   placeholder={`Filter...`}
                   value={filterConfig[field] || ''}
                   onChange={(e) => handleFilterChange(field, e.target.value)}
                   onClick={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.target.style.boxShadow = '0 0 0 1px #3b82f6'}
+                  onBlur={(e) => e.target.style.boxShadow = 'none'}
                 />
               )}
             </div>

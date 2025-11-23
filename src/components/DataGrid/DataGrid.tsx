@@ -230,10 +230,10 @@ export const DataGrid: React.FC<DataGridProps> = ({
   );
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+    <div style={{ border: '1px solid #d1d5db', borderRadius: '8px', overflow: 'hidden', backgroundColor: '#fff', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
       {/* Toolbar */}
-      <div className="relative flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-200 z-30">
-        <div className="relative flex items-center gap-2">
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb', zIndex: 30 }}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
           <ColumnChooser
             columns={columns}
@@ -267,7 +267,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       />
 
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20">
+      <div style={{ position: 'sticky', top: 0, zIndex: 20 }}>
         <GridHeader
           columns={columns}
           columnOrder={state.columnOrder}
