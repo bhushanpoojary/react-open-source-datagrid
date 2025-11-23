@@ -303,6 +303,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const isSelected = selectedRows.has(row.id);
     const isFocused = focusState?.rowIndex === rowIndex;
     const isLoadingRow = (row as any)._loading === true;
+    const isDragEnabled = dragRowConfig?.enabled && !isLoadingRow;
+    const showDragHandle = isDragEnabled && dragRowConfig.showDragHandle !== false;
+    const handlePosition = dragRowConfig?.dragHandlePosition || 'left';
 
     const rowContent = (
       <div
@@ -313,13 +316,47 @@ export const GridBody: React.FC<GridBodyProps> = ({
           minWidth: '100%',
           borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)',
           backgroundColor: isLoadingRow ? 'var(--grid-bg-alt)' : isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
-          cursor: isLoadingRow ? 'wait' : 'pointer',
+          cursor: isLoadingRow ? 'wait' : isDragEnabled ? 'grab' : 'pointer',
           transition: 'background-color 0.15s ease',
         }}
         onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
         onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
         onClick={(e) => !isLoadingRow && handleRowClick(row, rowIndex, e)}
       >
+        {/* Drag Handle - Left */}
+        {showDragHandle && handlePosition === 'left' && (
+          <div
+            style={{
+              width: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+              cursor: 'grab',
+              color: 'var(--grid-text-secondary, #9ca3af)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--grid-primary, #3b82f6)';
+              e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--grid-text-secondary, #9ca3af)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="7" cy="5" r="1.5" />
+              <circle cx="13" cy="5" r="1.5" />
+              <circle cx="7" cy="10" r="1.5" />
+              <circle cx="13" cy="10" r="1.5" />
+              <circle cx="7" cy="15" r="1.5" />
+              <circle cx="13" cy="15" r="1.5" />
+            </svg>
+          </div>
+        )}
+
         {displayColumnOrder.map((field, columnIndex) => {
           const column = columnMap.get(field);
           if (!column) return null;
@@ -402,6 +439,40 @@ export const GridBody: React.FC<GridBodyProps> = ({
             </div>
           );
         })}
+
+        {/* Drag Handle - Right */}
+        {showDragHandle && handlePosition === 'right' && (
+          <div
+            style={{
+              width: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              borderLeft: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+              cursor: 'grab',
+              color: 'var(--grid-text-secondary, #9ca3af)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--grid-primary, #3b82f6)';
+              e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--grid-text-secondary, #9ca3af)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <circle cx="7" cy="5" r="1.5" />
+              <circle cx="13" cy="5" r="1.5" />
+              <circle cx="7" cy="10" r="1.5" />
+              <circle cx="13" cy="10" r="1.5" />
+              <circle cx="7" cy="15" r="1.5" />
+              <circle cx="13" cy="15" r="1.5" />
+            </svg>
+          </div>
+        )}
       </div>
     );
 

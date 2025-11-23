@@ -52,6 +52,30 @@ button {
   --color-bg-hover: #f0f0f0;
   --color-text-primary: #262626;
   --color-text-secondary: #666666;
+
+  /* DataGrid CSS Variables */
+  --grid-border: #e5e7eb;
+  --grid-border-width: 1px;
+  --grid-border-radius: 6px;
+  --grid-bg: #ffffff;
+  --grid-bg-alt: #f9fafb;
+  --grid-header-bg: #f3f4f6;
+  --grid-footer-bg: #f9fafb;
+  --grid-text: #111827;
+  --grid-text-secondary: #6b7280;
+  --grid-text-muted: #9ca3af;
+  --grid-header-text: #374151;
+  --grid-primary: #3b82f6;
+  --grid-selected: rgba(59, 130, 246, 0.08);
+  --grid-hover: #f9fafb;
+  --grid-active: #eff6ff;
+  --grid-cell-padding: 10px 12px;
+  --grid-header-padding: 10px 12px;
+  --grid-font-size: 13px;
+  --grid-font-size-sm: 12px;
+  --grid-header-font-weight: 600;
+  --grid-shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --grid-text-inverse: #ffffff;
 }
 
 /* Scrollbar styling */

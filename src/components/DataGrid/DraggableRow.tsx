@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import type { Row, DragRowConfig } from './types';
-import { DragHandle } from './DragHandle';
 import { getDropPosition, createDragData, parseDragData, reorderRows } from './dragRowUtils';
 
 interface DraggableRowProps {
@@ -28,9 +27,6 @@ export const DraggableRow: React.FC<DraggableRowProps> = ({
   const [isOver, setIsOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
-  
-  const showDragHandle = config.showDragHandle !== false;
-  const handlePosition = config.dragHandlePosition || 'left';
 
   const handleDragStart = (e: React.DragEvent) => {
     const dragData = createDragData(row, rowIndex, sourceTableId);
@@ -145,8 +141,8 @@ export const DraggableRow: React.FC<DraggableRowProps> = ({
 
   const wrapperStyle: React.CSSProperties = {
     ...style,
-    position: 'relative',
     opacity: isDragging ? 0.5 : 1,
+    transition: 'opacity 0.2s ease',
     ...getDropIndicatorStyle(),
   };
 
@@ -161,47 +157,7 @@ export const DraggableRow: React.FC<DraggableRowProps> = ({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {/* Drag Handle - Left */}
-      {showDragHandle && handlePosition === 'left' && (
-        <div style={{ 
-          position: 'absolute', 
-          left: 0, 
-          top: 0, 
-          bottom: 0, 
-          width: '32px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          zIndex: 10,
-        }}>
-          <DragHandle position="left" isDragging={isDragging} />
-        </div>
-      )}
-      
-      {/* Row Content */}
-      <div style={{ 
-        paddingLeft: showDragHandle && handlePosition === 'left' ? '32px' : 0,
-        paddingRight: showDragHandle && handlePosition === 'right' ? '32px' : 0,
-      }}>
-        {children}
-      </div>
-      
-      {/* Drag Handle - Right */}
-      {showDragHandle && handlePosition === 'right' && (
-        <div style={{ 
-          position: 'absolute', 
-          right: 0, 
-          top: 0, 
-          bottom: 0, 
-          width: '32px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          zIndex: 10,
-        }}>
-          <DragHandle position="right" isDragging={isDragging} />
-        </div>
-      )}
+      {children}
     </div>
   );
 };
