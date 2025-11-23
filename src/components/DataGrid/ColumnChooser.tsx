@@ -126,7 +126,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
         <div className="p-4 flex gap-3" style={{ height: '400px' }}>
           <div className="flex-1 flex flex-col">
             <div className="text-xs font-semibold text-gray-700 mb-2">Available Columns ({availableColumns.length})</div>
-            <div className="flex-1 border border-gray-300 rounded overflow-y-auto bg-white">
+            <div className="flex-1 border border-gray-300 rounded overflow-y-scroll bg-white">
               {availableColumns.map((column) => {
                 const isSelected = selectedAvailable === column.field;
                 return (
@@ -163,7 +163,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
           </div>
           <div className="flex-1 flex flex-col">
             <div className="text-xs font-semibold text-gray-700 mb-2">Visible Columns ({visibleColumns.length})</div>
-            <div className="flex-1 border border-gray-300 rounded overflow-y-auto bg-white">
+            <div className="flex-1 border border-gray-300 rounded overflow-y-scroll bg-white">
               {visibleColumns.map((column) => {
                 const isSelected = selectedVisible === column.field;
                 return (
