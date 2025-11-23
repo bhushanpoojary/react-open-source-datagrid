@@ -5,9 +5,10 @@ import { CellRenderersDemo } from './components/CellRenderersDemo'
 import { ColumnFiltersDemo } from './components/ColumnFiltersDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
+import { ThemesDemo } from './components/ThemesDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite';
+type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes';
 
 interface MenuItem {
   id: DemoType;
@@ -55,6 +56,12 @@ function App() {
       label: 'Layout Persistence',
       icon: '',
       description: 'Save & restore layouts',
+    },
+    {
+      id: 'themes',
+      label: 'Theme System',
+      icon: '🎨',
+      description: 'Light, Dark, Quartz, Alpine themes',
     },
   ];
 
@@ -125,6 +132,7 @@ function App() {
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
+        {currentDemo === 'themes' && <ThemesDemo />}
       </main>
     </div>
   )

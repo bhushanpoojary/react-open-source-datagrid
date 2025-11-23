@@ -1,5 +1,5 @@
 // Export all DataGrid components and types
-export { DataGrid } from './DataGrid';
+export { DataGrid, ThemedDataGrid } from './DataGrid';
 export { VirtualScroller } from './VirtualScroller';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
@@ -7,6 +7,18 @@ export { ColumnFilters } from './ColumnFilters';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
 export { InfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
 export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
+export { ThemeSelector } from './ThemeSelector';
+export { 
+  getTheme, 
+  getThemeNames, 
+  generateThemeCSS,
+  quartzTheme,
+  alpineTheme,
+  materialTheme,
+  darkTheme,
+  themes
+} from './themes';
+export type { ThemeName, GridTheme } from './themes';
 export type { 
   Column, 
   Row, 

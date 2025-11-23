@@ -80,13 +80,13 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
   return (
     <div
       style={{
-        borderBottom: '1px solid #e2e8f0',
+        borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
         padding: '12px 16px',
         minHeight: '52px',
         transitionProperty: 'colors',
         transitionDuration: '200ms',
-        backgroundColor: isDragOver ? '#f0f6ff' : '#fafafa',
-        borderBottomColor: isDragOver ? '#0066cc' : '#e2e8f0',
+        backgroundColor: isDragOver ? 'var(--grid-active, #f0f6ff)' : 'var(--grid-bg-alt, #fafafa)',
+        borderBottomColor: isDragOver ? 'var(--grid-primary, #0066cc)' : 'var(--grid-border, #e2e8f0)',
       }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -94,12 +94,12 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         {groupBy.length === 0 ? (
-          <div style={{ color: '#999999', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontStyle: 'italic' }}>
+          <div style={{ color: 'var(--grid-text-secondary, #999999)', fontSize: 'var(--grid-font-size, 13px)', display: 'flex', alignItems: 'center', gap: '8px', fontStyle: 'italic' }}>
             📊 Drag columns here to group rows
           </div>
         ) : (
           <>
-            <span style={{ fontSize: '12px', color: '#666666', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Group by:</span>
+            <span style={{ fontSize: '12px', color: 'var(--grid-text-secondary, #666666)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Group by:</span>
             {groupBy.map((field, index) => {
               const column = columnMap.get(field);
               return (
@@ -117,23 +117,23 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
                     paddingRight: '12px',
                     paddingTop: '5px',
                     paddingBottom: '5px',
-                    backgroundColor: '#0066cc',
-                    color: '#fff',
-                    borderRadius: '4px',
-                    fontSize: '13px',
+                    backgroundColor: 'var(--grid-primary, #0066cc)',
+                    color: 'var(--grid-text-inverse, #fff)',
+                    borderRadius: 'var(--grid-border-radius, 4px)',
+                    fontSize: 'var(--grid-font-size, 13px)',
                     fontWeight: '500',
                     cursor: 'move',
-                    boxShadow: '0 2px 4px rgba(0, 102, 204, 0.15)',
+                    boxShadow: 'var(--grid-shadow-light, 0 2px 4px rgba(0, 102, 204, 0.15))',
                     transitionProperty: 'background-color, box-shadow',
                     transitionDuration: '200ms',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#0052a3';
-                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 102, 204, 0.2)';
+                    e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #0052a3)';
+                    e.currentTarget.style.boxShadow = 'var(--grid-shadow-medium, 0 4px 8px rgba(0, 102, 204, 0.2))';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#0066cc';
-                    e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 102, 204, 0.15)';
+                    e.currentTarget.style.backgroundColor = 'var(--grid-primary, #0066cc)';
+                    e.currentTarget.style.boxShadow = 'var(--grid-shadow-light, 0 2px 4px rgba(0, 102, 204, 0.15))';
                   }}
                 >
                   {index > 0 && (
@@ -181,7 +181,7 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
               onClick={handleClearAll}
               style={{
                 fontSize: '12px',
-                color: '#666666',
+                color: 'var(--grid-text-secondary, #666666)',
                 textDecoration: 'none',
                 marginLeft: '8px',
                 backgroundColor: 'transparent',
@@ -191,11 +191,11 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
                 padding: '2px 4px',
               }}
               onMouseEnter={(e) => { 
-                e.currentTarget.style.color = '#262626'; 
+                e.currentTarget.style.color = 'var(--grid-text, #262626)'; 
                 e.currentTarget.style.textDecoration = 'underline';
               }}
               onMouseLeave={(e) => { 
-                e.currentTarget.style.color = '#666666'; 
+                e.currentTarget.style.color = 'var(--grid-text-secondary, #666666)'; 
                 e.currentTarget.style.textDecoration = 'none'; 
               }}
               title="Clear all groupings"

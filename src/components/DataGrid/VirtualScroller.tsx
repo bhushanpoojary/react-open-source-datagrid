@@ -315,7 +315,8 @@ export const VirtualScroller = <T extends any>({
         className={innerClassName}
         style={{
           height: `${totalHeight}px`,
-          width: totalColumnWidth > 0 ? `${totalColumnWidth}px` : '100%',
+          minWidth: totalColumnWidth > 0 ? `${totalColumnWidth}px` : '100%',
+          width: '100%',
           position: 'relative',
         }}
       >

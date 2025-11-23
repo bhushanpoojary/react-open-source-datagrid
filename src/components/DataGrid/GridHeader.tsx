@@ -165,9 +165,9 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   }, [resizingColumn, resizeStartX, resizeStartWidth, dispatch]);
 
   return (
-    <div ref={headerRef} style={{ backgroundColor: '#f8f9fa', borderBottom: '1px solid #e2e8f0' }}>
+    <div ref={headerRef} style={{ backgroundColor: 'var(--grid-header-bg, #f8f9fa)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)', width: '100%' }}>
       {/* Column Headers Row */}
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', minWidth: '100%' }}>
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
@@ -185,7 +185,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
               style={{
                 ...headerStyle,
                 position: 'relative',
-                borderRight: '1px solid #e2e8f0',
+                borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
                 flexShrink: 0,
                 opacity: draggedColumn === field ? 0.5 : 1,
               }}
@@ -197,28 +197,26 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
               {/* Column Header */}
               <div
                 style={{
-                  paddingLeft: '12px',
-                  paddingRight: '12px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                  fontWeight: '600',
-                  fontSize: '13px',
-                  color: '#262626',
+                  padding: 'var(--grid-header-padding, 10px 12px)',
+                  fontWeight: 'var(--grid-header-font-weight, 600)',
+                  fontSize: 'var(--grid-font-size, 13px)',
+                  color: 'var(--grid-header-text, #262626)',
                   cursor: 'pointer',
                   userSelect: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   minHeight: '36px',
+                  backgroundColor: 'var(--grid-header-bg, #f5f5f5)',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f2f5'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-header-bg, #f5f5f5)'}
                 onClick={() => handleSort(field)}
               >
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{column.headerName}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {column.sortable !== false && (
-                    <span style={{ fontSize: '12px', color: sortDirection ? '#0066cc' : '#bfbfbf' }}>
+                    <span style={{ fontSize: '12px', color: sortDirection ? 'var(--grid-primary, #0066cc)' : 'var(--grid-text-secondary, #bfbfbf)' }}>
                       {sortDirection === 'asc' && '↑'}
                       {sortDirection === 'desc' && '↓'}
                       {!sortDirection && '⇅'}
@@ -232,18 +230,18 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                           width: '22px',
                           height: '22px',
                           borderRadius: '3px',
-                          border: isPinnedLeft ? '1.5px solid #0066cc' : '1px solid #bfbfbf',
+                          border: isPinnedLeft ? '1.5px solid var(--grid-primary, #0066cc)' : '1px solid var(--grid-border, #bfbfbf)',
                           fontSize: '10px',
                           fontWeight: '600',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          backgroundColor: isPinnedLeft ? '#3b82f6' : 'transparent',
-                          color: isPinnedLeft ? '#fff' : '#4b5563',
+                          backgroundColor: isPinnedLeft ? 'var(--grid-primary, #3b82f6)' : 'transparent',
+                          color: isPinnedLeft ? 'var(--grid-text-inverse, #fff)' : 'var(--grid-text-secondary, #4b5563)',
                           cursor: 'pointer',
                           transitionProperty: 'colors',
                         }}
-                        onMouseEnter={(e) => !isPinnedLeft && (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                        onMouseEnter={(e) => !isPinnedLeft && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f3f4f6)')}
                         onMouseLeave={(e) => !isPinnedLeft && (e.currentTarget.style.backgroundColor = 'transparent')}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -259,18 +257,18 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                           width: '20px',
                           height: '20px',
                           borderRadius: '4px',
-                          border: isPinnedRight ? '1px solid #3b82f6' : '1px solid #d1d5db',
+                          border: isPinnedRight ? '1.5px solid var(--grid-primary, #3b82f6)' : '1px solid var(--grid-border, #d1d5db)',
                           fontSize: '10px',
                           fontWeight: '600',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          backgroundColor: isPinnedRight ? '#0066cc' : 'transparent',
-                          color: isPinnedRight ? '#fff' : '#666666',
+                          backgroundColor: isPinnedRight ? 'var(--grid-primary, #0066cc)' : 'transparent',
+                          color: isPinnedRight ? 'var(--grid-text-inverse, #fff)' : 'var(--grid-text-secondary, #666666)',
                           cursor: 'pointer',
                           transitionProperty: 'colors',
                         }}
-                        onMouseEnter={(e) => !isPinnedRight && (e.currentTarget.style.backgroundColor = '#f0f2f5')}
+                        onMouseEnter={(e) => !isPinnedRight && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
                         onMouseLeave={(e) => !isPinnedRight && (e.currentTarget.style.backgroundColor = 'transparent')}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -287,7 +285,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                             width: '20px',
                             height: '20px',
                             borderRadius: '9999px',
-                            border: '1px solid #bfbfbf',
+                            border: '1px solid var(--grid-border, #bfbfbf)',
                             fontSize: '11px',
                             fontWeight: '600',
                             display: 'flex',
@@ -295,15 +293,15 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                             justifyContent: 'center',
                             cursor: 'pointer',
                             backgroundColor: 'transparent',
-                            color: '#666666',
+                            color: 'var(--grid-text-secondary, #666666)',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#f0f2f5';
-                            e.currentTarget.style.borderColor = '#0066cc';
+                            e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)';
+                            e.currentTarget.style.borderColor = 'var(--grid-primary, #0066cc)';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.borderColor = '#bfbfbf';
+                            e.currentTarget.style.borderColor = 'var(--grid-border, #bfbfbf)';
                           }}
                           onClick={(e) => {
                             e.stopPropagation();

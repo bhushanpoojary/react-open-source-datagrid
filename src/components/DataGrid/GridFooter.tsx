@@ -60,12 +60,12 @@ export const GridFooter: React.FC<GridFooterProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#f9fafb';
+      style.backgroundColor = 'var(--grid-footer-bg, #f9fafb)';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#f9fafb';
+      style.backgroundColor = 'var(--grid-footer-bg, #f9fafb)';
     }
 
     return style;
@@ -76,7 +76,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', borderTop: '2px solid #e2e8f0', backgroundColor: '#f8f9fa', fontWeight: '600' }}>
+    <div style={{ display: 'flex', minWidth: '100%', borderTop: '2px solid var(--grid-border, #e2e8f0)', backgroundColor: 'var(--grid-footer-bg, #f8f9fa)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;
@@ -87,7 +87,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
         // For the first column, show the label
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
-          cellContent = <span style={{ color: '#262626', fontWeight: '600' }}>{label}</span>;
+          cellContent = <span style={{ color: 'var(--grid-text, #262626)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{label}</span>;
         } else if (configs && configs.length > 0) {
           // Show aggregates for this field
           cellContent = (
@@ -101,9 +101,9 @@ export const GridFooter: React.FC<GridFooterProps> = ({
                 return (
                   <div key={idx} style={{ fontSize: '12px' }}>
                     {configs.length > 1 && (
-                      <span style={{ color: '#666666', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
+                      <span style={{ color: 'var(--grid-text-secondary, #666666)', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
                     )}
-                    <span style={{ color: '#262626', fontWeight: '600' }}>{formattedValue}</span>
+                    <span style={{ color: 'var(--grid-text, #262626)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{formattedValue}</span>
                   </div>
                 );
               })}
@@ -118,14 +118,11 @@ export const GridFooter: React.FC<GridFooterProps> = ({
             key={`footer-${field}`}
             style={{
               ...cellStyle,
-              paddingLeft: '12px',
-              paddingRight: '12px',
-              paddingTop: '10px',
-              paddingBottom: '10px',
-              fontSize: '13px',
-              borderRight: '1px solid #e2e8f0',
+              padding: 'var(--grid-cell-padding, 10px 12px)',
+              fontSize: 'var(--grid-font-size, 13px)',
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
               flexShrink: 0,
-              backgroundColor: '#f8f9fa',
+              backgroundColor: 'var(--grid-footer-bg, #f8f9fa)',
             }}
           >
             {cellContent}

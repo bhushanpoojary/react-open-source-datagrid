@@ -1,5 +1,6 @@
 // Core type definitions for the DataGrid component
 import React from 'react';
+import type { ThemeName } from './themes';
 
 export type FilterType = 'text' | 'number' | 'date' | 'set' | 'multi';
 
@@ -219,6 +220,7 @@ export interface DataGridProps {
   footerConfig?: FooterConfig;
   virtualScrollConfig?: VirtualScrollConfig;
   persistenceConfig?: PersistenceConfig;
+  theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;

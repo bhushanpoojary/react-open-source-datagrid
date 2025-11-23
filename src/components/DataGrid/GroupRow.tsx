@@ -24,12 +24,6 @@ export const GroupRow: React.FC<GroupRowProps> = ({
   const column = columns.find(col => col.field === group.field);
   const columnName = column?.headerName || group.field;
 
-  // Calculate total width
-  const totalWidth = columnOrder.reduce(
-    (sum, field) => sum + (columnWidths[field] || 150),
-    0
-  );
-
   // Toggle group expansion
   const handleToggle = () => {
     dispatch({ type: 'TOGGLE_GROUP', payload: group.groupKey });
@@ -56,7 +50,7 @@ export const GroupRow: React.FC<GroupRowProps> = ({
         cursor-pointer
       "
       style={{
-        width: `${totalWidth}px`,
+        minWidth: '100%',
         paddingLeft: `${group.level * 24 + 12}px`,
       }}
       onClick={handleToggle}
@@ -196,7 +190,7 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
   const groupLabel = `${columnName}: ${group.groupValue} Subtotal`;
 
   return (
-    <div className="flex border-t border-gray-300 bg-gray-100 font-medium text-sm">
+    <div className="flex border-t border-gray-300 bg-gray-100 font-medium text-sm" style={{ minWidth: '100%' }}>
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;

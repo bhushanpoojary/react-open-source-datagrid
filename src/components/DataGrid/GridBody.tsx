@@ -74,12 +74,12 @@ export const GridBody: React.FC<GridBodyProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#fff';
+      style.backgroundColor = 'var(--grid-bg, #fff)';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#fff';
+      style.backgroundColor = 'var(--grid-bg, #fff)';
     }
 
     return style;
@@ -274,13 +274,14 @@ export const GridBody: React.FC<GridBodyProps> = ({
         style={{
           ...style,
           display: 'flex',
-          borderBottom: '1px solid #e2e8f0',
-          backgroundColor: isLoadingRow ? '#f9fafb' : isSelected ? '#e8f0ff' : isFocused ? '#f0f6ff' : '#ffffff',
+          minWidth: '100%',
+          borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
+          backgroundColor: isLoadingRow ? 'var(--grid-bg-alt, #f9fafb)' : isSelected ? 'var(--grid-selected, #e8f0ff)' : isFocused ? 'var(--grid-active, #f0f6ff)' : 'var(--grid-bg, #ffffff)',
           cursor: isLoadingRow ? 'wait' : 'pointer',
           transition: 'background-color 0.15s ease',
         }}
-        onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = '#f8f9fa')}
-        onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = '#ffffff')}
+        onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f8f9fa)')}
+        onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)')}
         onClick={(e) => !isLoadingRow && handleRowClick(row, rowIndex, e)}
       >
         {displayColumnOrder.map((field, columnIndex) => {
@@ -300,16 +301,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
               key={`${row.id}-${field}`}
               style={{
                 ...cellStyle,
-                paddingLeft: '12px',
-                paddingRight: '12px',
-                paddingTop: '10px',
-                paddingBottom: '10px',
-                fontSize: '13px',
-                borderRight: '1px solid #e2e8f0',
+                padding: 'var(--grid-cell-padding, 10px 12px)',
+                fontSize: 'var(--grid-font-size, 13px)',
+                borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
                 flexShrink: 0,
-                outline: isCellFocused ? '2px solid #0066cc' : 'none',
+                outline: isCellFocused ? '2px solid var(--grid-primary, #0066cc)' : 'none',
                 outlineOffset: '-2px',
-                color: '#262626',
+                color: 'var(--grid-text, #262626)',
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
@@ -322,11 +320,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   style={{ 
                     width: '100%', 
                     padding: '6px 8px', 
-                    border: '1.5px solid #0066cc', 
-                    borderRadius: '3px', 
+                    border: '1.5px solid var(--grid-primary, #0066cc)', 
+                    borderRadius: 'var(--grid-border-radius, 3px)', 
                     outline: 'none',
-                    fontSize: '13px',
-                    boxShadow: '0 0 0 3px rgba(0, 102, 204, 0.1)',
+                    fontSize: 'var(--grid-font-size, 13px)',
+                    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)',
+                    backgroundColor: 'var(--grid-bg, #fff)',
+                    color: 'var(--grid-text, #262626)',
                   }}
                   value={editState.value ?? ''}
                   onChange={(e) => handleEditChange(e.target.value)}
@@ -347,7 +347,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   textOverflow: 'ellipsis', 
                   whiteSpace: 'nowrap', 
                   display: 'block',
-                  color: isLoadingRow ? '#94a3b8' : '#262626',
+                  color: isLoadingRow ? 'var(--grid-text-secondary, #94a3b8)' : 'var(--grid-text, #262626)',
                 }}>
                   {isLoadingRow ? (
                     <span style={{ 
@@ -384,7 +384,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const enableColumnVirtualization = virtualScrollConfig.enableColumnVirtualization ?? true;
 
     return (
-      <div ref={bodyRef} style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div ref={bodyRef} style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'var(--grid-bg, #ffffff)' }}>
         <VirtualScroller<Row | GroupedRow>
           items={rows}
           itemHeight={virtualScrollConfig.rowHeight || 35}
@@ -408,12 +408,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 style={{
                   ...style,
                   display: 'flex',
-                  borderBottom: '1px solid #e5e7eb',
-                  backgroundColor: isSelected ? '#eff6ff' : isFocused ? '#dbeafe' : '#fff',
+                  minWidth: '100%',
+                  borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e5e7eb)',
+                  backgroundColor: isSelected ? 'var(--grid-selected, #eff6ff)' : isFocused ? 'var(--grid-active, #dbeafe)' : 'var(--grid-bg, #fff)',
                   cursor: 'pointer',
                 }}
-                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#f9fafb')}
-                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#fff')}
+                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f9fafb)')}
+                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg, #fff)')}
                 onClick={(e) => handleRowClick(row, index, e)}
               >
                 {visibleColumns.map((colInfo, columnIndex) => {
@@ -437,10 +438,11 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         paddingRight: '12px',
                         paddingTop: '8px',
                         paddingBottom: '8px',
-                        fontSize: '14px',
-                        borderRight: '1px solid #e5e7eb',
+                        fontSize: 'var(--grid-font-size, 14px)',
+                        borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e5e7eb)',
                         flexShrink: 0,
-                        outline: isCellFocused ? '2px solid #3b82f6' : 'none',
+                        outline: isCellFocused ? '2px solid var(--grid-primary, #3b82f6)' : 'none',
+                        color: 'var(--grid-text, #262626)',
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
                       onKeyDown={(e) => handleKeyDown(e, index, columnIndex)}
@@ -450,7 +452,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         <input
                           ref={editInputRef}
                           type="text"
-                          style={{ width: '100%', padding: '4px', border: '1px solid #3b82f6', borderRadius: '4px', outline: 'none' }}
+                          style={{ width: '100%', padding: '4px', border: '1px solid var(--grid-primary, #3b82f6)', borderRadius: 'var(--grid-border-radius, 4px)', outline: 'none', backgroundColor: 'var(--grid-bg, #fff)', color: 'var(--grid-text, #262626)' }}
                           value={editState.value ?? ''}
                           onChange={(e) => handleEditChange(e.target.value)}
                           onBlur={handleEditComplete}
@@ -480,7 +482,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
   // Non-virtual scrolling mode (original implementation)
   return (
-    <div ref={bodyRef} style={{ overflow: 'auto', maxHeight: '500px', position: 'relative' }}>
+    <div ref={bodyRef} style={{ overflow: 'auto', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg, #ffffff)', width: '100%' }}>
       {rows.map((row, rowIndex) => renderRowContent(row, rowIndex))}
     </div>
   );

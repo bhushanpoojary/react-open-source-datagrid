@@ -14,6 +14,7 @@ import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
 import { LayoutPersistenceManager, debounce } from './layoutPersistence';
+import { getTheme, generateThemeCSS } from './themes';
 
 /**
  * DataGrid Component
@@ -40,6 +41,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   footerConfig,
   virtualScrollConfig,
   persistenceConfig,
+  theme = 'quartz',
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -337,9 +339,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
   );
 
   return (
-    <div style={{ border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#ffffff', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.08)' }}>
+    <div style={{ border: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)', borderRadius: 'var(--grid-border-radius, 6px)', overflow: 'hidden', backgroundColor: 'var(--grid-bg, #ffffff)', boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' }}>
       {/* Toolbar */}
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: '#fafafa', borderBottom: '1px solid #e2e8f0', zIndex: 30 }}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt, #fafafa)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)', zIndex: 30 }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
           <ColumnChooser
@@ -384,7 +386,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       />
 
       {/* Sticky Header */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 20 }}>
+      <div style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
         <GridHeader
           columns={columns}
           columnOrder={state.columnOrder}
@@ -453,6 +455,22 @@ export const DataGrid: React.FC<DataGridProps> = ({
           dispatch={dispatch}
         />
       )}
+    </div>
+  );
+};
+
+/**
+ * ThemedDataGrid - DataGrid wrapper with theme support
+ * Applies theme CSS variables to the grid container
+ */
+export const ThemedDataGrid: React.FC<DataGridProps> = (props) => {
+  const { theme = 'quartz', ...restProps } = props;
+  const currentTheme = getTheme(theme);
+  const themeStyles = generateThemeCSS(currentTheme);
+
+  return (
+    <div style={themeStyles as React.CSSProperties}>
+      <DataGrid {...restProps} theme={theme} />
     </div>
   );
 };

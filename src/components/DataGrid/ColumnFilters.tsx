@@ -65,17 +65,19 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
       onClick={(e) => e.stopPropagation()}
     >
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>
           Filter Type
         </label>
         <select
           style={{
             width: '100%',
             padding: '8px 12px',
-            border: '1px solid #d1d5db',
-            borderRadius: '6px',
-            fontSize: '14px',
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d1d5db)',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            fontSize: 'var(--grid-font-size, 14px)',
             outline: 'none',
+            backgroundColor: 'var(--grid-bg, #fff)',
+            color: 'var(--grid-text, #262626)',
           }}
           value={filterType}
           onChange={(e) => setFilterType(e.target.value as any)}
@@ -88,7 +90,7 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         </select>
       </div>
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>
           Value
         </label>
         <input
@@ -96,10 +98,12 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
           style={{
             width: '100%',
             padding: '8px 12px',
-            border: '1px solid #d1d5db',
-            borderRadius: '6px',
-            fontSize: '14px',
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d1d5db)',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            fontSize: 'var(--grid-font-size, 14px)',
             outline: 'none',
+            backgroundColor: 'var(--grid-bg, #fff)',
+            color: 'var(--grid-text, #262626)',
           }}
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -111,32 +115,32 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         <button
           style={{
             padding: '6px 12px',
-            fontSize: '14px',
-            color: '#374151',
-            backgroundColor: '#f3f4f6',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text, #374151)',
+            backgroundColor: 'var(--grid-bg-alt, #f3f4f6)',
             border: 'none',
-            borderRadius: '6px',
+            borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
           }}
           onClick={handleClear}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #e5e7eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg-alt, #f3f4f6)'}
         >
           Clear
         </button>
         <button
           style={{
             padding: '6px 12px',
-            fontSize: '14px',
-            color: '#ffffff',
-            backgroundColor: '#2563eb',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #2563eb)',
             border: 'none',
-            borderRadius: '6px',
+            borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #1d4ed8)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #2563eb)'}
         >
           Apply
         </button>
@@ -186,19 +190,19 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
         top: anchorEl ? anchorEl.getBoundingClientRect().bottom + 5 : 0,
         left: anchorEl ? anchorEl.getBoundingClientRect().left : 0,
         minWidth: '280px',
-        backgroundColor: '#ffffff',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        borderRadius: '8px',
-        border: '1px solid #e5e7eb',
+        backgroundColor: 'var(--grid-bg, #ffffff)',
+        boxShadow: 'var(--grid-shadow, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05))',
+        borderRadius: 'var(--grid-border-radius, 8px)',
+        border: '1px solid var(--grid-border, #e5e7eb)',
         padding: '16px',
         zIndex: 1000,
       }}
       onClick={(e) => e.stopPropagation()}
     >
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>Filter Type</label>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>Filter Type</label>
         <select
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+          style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
           value={filterType}
           onChange={(e) => setFilterType(e.target.value as any)}
         >
@@ -212,10 +216,10 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
         </select>
       </div>
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>Value</label>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>Value</label>
         <input
           type="number"
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+          style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Enter number..."
@@ -224,10 +228,10 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
       </div>
       {filterType === 'inRange' && (
         <div style={{ marginBottom: '12px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>To</label>
+          <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>To</label>
           <input
             type="number"
-            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+            style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
             value={value2}
             onChange={(e) => setValue2(e.target.value)}
             placeholder="Enter max value..."
@@ -236,18 +240,34 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
       )}
       <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#374151', backgroundColor: '#f3f4f6', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text, #374151)',
+            backgroundColor: 'var(--grid-bg-alt, #f3f4f6)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleClear}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #e5e7eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg-alt, #f3f4f6)'}
         >
           Clear
         </button>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#ffffff', backgroundColor: '#2563eb', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #2563eb)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #1d4ed8)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #2563eb)'}
         >
           Apply
         </button>
@@ -297,19 +317,19 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         top: anchorEl ? anchorEl.getBoundingClientRect().bottom + 5 : 0,
         left: anchorEl ? anchorEl.getBoundingClientRect().left : 0,
         minWidth: '280px',
-        backgroundColor: '#ffffff',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        borderRadius: '8px',
-        border: '1px solid #e5e7eb',
+        backgroundColor: 'var(--grid-bg, #ffffff)',
+        boxShadow: 'var(--grid-shadow, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05))',
+        borderRadius: 'var(--grid-border-radius, 8px)',
+        border: '1px solid var(--grid-border, #e5e7eb)',
         padding: '16px',
         zIndex: 1000,
       }}
       onClick={(e) => e.stopPropagation()}
     >
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>Filter Type</label>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>Filter Type</label>
         <select
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+          style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
           value={filterType}
           onChange={(e) => setFilterType(e.target.value as any)}
         >
@@ -320,10 +340,10 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         </select>
       </div>
       <div style={{ marginBottom: '12px' }}>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>Date</label>
+        <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>Date</label>
         <input
           type="date"
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+          style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           autoFocus
@@ -331,10 +351,10 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
       </div>
       {filterType === 'inRange' && (
         <div style={{ marginBottom: '12px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '4px' }}>To</label>
+          <label style={{ display: 'block', fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)', marginBottom: '4px' }}>To</label>
           <input
             type="date"
-            style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+            style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
             value={value2}
             onChange={(e) => setValue2(e.target.value)}
           />
@@ -342,18 +362,34 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
       )}
       <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#374151', backgroundColor: '#f3f4f6', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text, #374151)',
+            backgroundColor: 'var(--grid-bg-alt, #f3f4f6)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleClear}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #e5e7eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg-alt, #f3f4f6)'}
         >
           Clear
         </button>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#ffffff', backgroundColor: '#2563eb', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #2563eb)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #1d4ed8)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #2563eb)'}
         >
           Apply
         </button>
@@ -415,10 +451,10 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
         left: anchorEl ? anchorEl.getBoundingClientRect().left : 0,
         minWidth: '280px',
         maxHeight: '400px',
-        backgroundColor: '#ffffff',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        borderRadius: '8px',
-        border: '1px solid #e5e7eb',
+        backgroundColor: 'var(--grid-bg, #ffffff)',
+        boxShadow: 'var(--grid-shadow, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05))',
+        borderRadius: 'var(--grid-border-radius, 8px)',
+        border: '1px solid var(--grid-border, #e5e7eb)',
         padding: '16px',
         zIndex: 1000,
         display: 'flex',
@@ -429,7 +465,7 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
       <div style={{ marginBottom: '12px' }}>
         <input
           type="text"
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px', outline: 'none' }}
+          style={{ width: '100%', padding: '8px 12px', border: '1px solid var(--grid-border, #d1d5db)', borderRadius: 'var(--grid-border-radius, 6px)', fontSize: 'var(--grid-font-size, 14px)', outline: 'none', backgroundColor: 'var(--grid-bg, #ffffff)', color: 'var(--grid-text, #374151)' }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search values..."
@@ -438,7 +474,7 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
       </div>
       <div style={{ marginBottom: '8px' }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f9fafb)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
           <input
@@ -447,15 +483,15 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
             onChange={handleSelectAll}
             style={{ width: '16px', height: '16px', cursor: 'pointer' }}
           />
-          <span style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>(Select All)</span>
+          <span style={{ fontSize: 'var(--grid-font-size, 14px)', fontWeight: 500, color: 'var(--grid-text, #374151)' }}>(Select All)</span>
         </label>
       </div>
-      <div style={{ flex: 1, overflowY: 'auto', marginBottom: '12px', border: '1px solid #e5e7eb', borderRadius: '6px', maxHeight: '200px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', marginBottom: '12px', border: '1px solid var(--grid-border, #e5e7eb)', borderRadius: 'var(--grid-border-radius, 6px)', maxHeight: '200px' }}>
         {filteredValues.map((value, idx) => (
           <label
             key={idx}
             style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '8px' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f9fafb)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <input
@@ -464,24 +500,40 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
               onChange={() => handleToggle(value)}
               style={{ width: '16px', height: '16px', cursor: 'pointer' }}
             />
-            <span style={{ fontSize: '14px', color: '#374151' }}>{String(value)}</span>
+            <span style={{ fontSize: 'var(--grid-font-size, 14px)', color: 'var(--grid-text, #374151)' }}>{String(value)}</span>
           </label>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
+      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid var(--grid-border, #e5e7eb)' }}>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#374151', backgroundColor: '#f3f4f6', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text, #374151)',
+            backgroundColor: 'var(--grid-bg-alt, #f3f4f6)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleClear}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover, #e5e7eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg-alt, #f3f4f6)'}
         >
           Clear
         </button>
         <button
-          style={{ padding: '6px 12px', fontSize: '14px', color: '#ffffff', backgroundColor: '#2563eb', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'var(--grid-font-size, 14px)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #2563eb)',
+            border: 'none',
+            borderRadius: 'var(--grid-border-radius, 6px)',
+            cursor: 'pointer',
+          }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #1d4ed8)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #2563eb)'}
         >
           Apply ({selectedValues.size})
         </button>
@@ -537,12 +589,12 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#fff';
+      style.backgroundColor = 'var(--grid-header-bg, #fafafa)';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#fff';
+      style.backgroundColor = 'var(--grid-header-bg, #fafafa)';
     }
 
     return style;
@@ -635,7 +687,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
 
   return (
     <>
-      <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', backgroundColor: '#fafafa' }}>
+      <div style={{ display: 'flex', minWidth: '100%', borderBottom: '1px solid var(--grid-border, #e2e8f0)', backgroundColor: 'var(--grid-header-bg, #fafafa)' }}>
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column || column.filterable === false) {
@@ -644,7 +696,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                 key={field}
                 style={{
                   ...getStickyStyle(field),
-                  borderRight: '1px solid #e2e8f0',
+                  borderRight: '1px solid var(--grid-border, #e2e8f0)',
                   flexShrink: 0,
                   minHeight: '38px',
                 }}
@@ -659,7 +711,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
               key={field}
               style={{
                 ...getStickyStyle(field),
-                borderRight: '1px solid #e2e8f0',
+                borderRight: '1px solid var(--grid-border, #e2e8f0)',
                 flexShrink: 0,
                 padding: '6px 8px',
                 position: 'relative',
@@ -678,12 +730,12 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                   style={{
                     width: '100%',
                     padding: '4px 8px',
-                    fontSize: '12px',
+                    fontSize: 'var(--grid-font-size-sm, 12px)',
                     border: '1px solid',
-                    borderColor: isActive ? '#93c5fd' : '#d1d5db',
-                    borderRadius: '4px',
-                    backgroundColor: isActive ? '#eff6ff' : '#ffffff',
-                    color: isActive ? '#1e40af' : '#6b7280',
+                    borderColor: isActive ? 'var(--grid-primary-light, #93c5fd)' : 'var(--grid-border, #d1d5db)',
+                    borderRadius: 'var(--grid-border-radius, 4px)',
+                    backgroundColor: isActive ? 'var(--grid-primary-bg, #eff6ff)' : 'var(--grid-bg, #ffffff)',
+                    color: isActive ? 'var(--grid-primary-dark, #1e40af)' : 'var(--grid-text-muted, #6b7280)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -691,10 +743,10 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                     transition: 'border-color 0.15s',
                   }}
                   onMouseEnter={(e) => {
-                    if (!isActive) e.currentTarget.style.borderColor = '#9ca3af';
+                    if (!isActive) e.currentTarget.style.borderColor = 'var(--grid-border-hover, #9ca3af)';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isActive) e.currentTarget.style.borderColor = '#d1d5db';
+                    if (!isActive) e.currentTarget.style.borderColor = 'var(--grid-border, #d1d5db)';
                   }}
                 >
                   <span style={{ 
@@ -708,7 +760,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                   <svg 
                     style={{
                       flexShrink: 0,
-                      color: isActive ? '#2563eb' : '#9ca3af',
+                      color: isActive ? 'var(--grid-primary, #2563eb)' : 'var(--grid-text-muted, #9ca3af)',
                     }}
                     width="12"
                     height="12"
