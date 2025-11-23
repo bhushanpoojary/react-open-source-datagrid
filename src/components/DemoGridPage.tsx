@@ -258,10 +258,14 @@ export const DemoGridPage: React.FC = () => {
           </h2>
 
           <CodeBlock
-            title="Basic DataGrid Setup"
+            title="Installation & Basic Setup"
             language="tsx"
-            code={`import { ThemedDataGrid } from './components/DataGrid';
-import type { Column, Row } from './components/DataGrid';
+            code={`// Install the package
+npm install react-open-source-grid
+
+// Import the DataGrid
+import { ThemedDataGrid } from 'react-open-source-grid';
+import type { Column, Row } from 'react-open-source-grid';
 
 // Define your data
 const employees: Row[] = [
@@ -312,7 +316,7 @@ const columns: Column[] = [
           <CodeBlock
             title="Using Custom Cell Renderers"
             language="tsx"
-            code={`import { ThemedDataGrid, StatusChip, CurrencyCell } from './components/DataGrid';
+            code={`import { ThemedDataGrid, StatusChip, CurrencyCell } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { 
@@ -347,7 +351,7 @@ const columns: Column[] = [
             title="Handling Events"
             language="tsx"
             code={`import { useState } from 'react';
-import { ThemedDataGrid } from './components/DataGrid';
+import { ThemedDataGrid } from 'react-open-source-grid';
 
 function MyComponent() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -388,7 +392,9 @@ function MyComponent() {
           <CodeBlock
             title="Footer Aggregations"
             language="tsx"
-            code={`<ThemedDataGrid
+            code={`import { ThemedDataGrid } from 'react-open-source-grid';
+
+<ThemedDataGrid
   columns={columns}
   rows={data}
   pageSize={10}
@@ -431,8 +437,8 @@ function MyComponent() {
             title="Complete Example with All Features"
             language="tsx"
             code={`import React, { useState } from 'react';
-import { ThemedDataGrid, StatusChip, CurrencyCell } from './components/DataGrid';
-import type { Column, Row } from './components/DataGrid';
+import { ThemedDataGrid, StatusChip, CurrencyCell } from 'react-open-source-grid';
+import type { Column, Row } from 'react-open-source-grid';
 
 export const EmployeeGrid: React.FC = () => {
   const [employees, setEmployees] = useState<Row[]>([
