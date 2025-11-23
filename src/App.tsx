@@ -8,9 +8,10 @@ import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
 import { TreeDataDemo } from './components/TreeDataDemo'
 import { RowDraggingDemo } from './components/RowDraggingDemo'
+import { LiveMarketDemo } from './components/LiveMarketDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag';
+type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market';
 
 interface MenuItem {
   id: DemoType;
@@ -40,6 +41,12 @@ function App() {
       label: 'Infinite Scroll',
       icon: '',
       description: 'Server-side 100M rows',
+    },
+    {
+      id: 'market',
+      label: 'Market Data',
+      icon: '📈',
+      description: 'Live streaming with 1000+ updates/sec',
     },
     {
       id: 'tree',
@@ -143,6 +150,7 @@ function App() {
         {currentDemo === 'standard' && <DemoGridPage />}
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
         {currentDemo === 'infinite' && <InfiniteScrollDemo />}
+        {currentDemo === 'market' && <LiveMarketDemo />}
         {currentDemo === 'tree' && <TreeDataDemo />}
         {currentDemo === 'drag' && <RowDraggingDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}

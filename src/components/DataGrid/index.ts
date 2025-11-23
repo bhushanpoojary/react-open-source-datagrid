@@ -84,3 +84,37 @@ export {
   Rating,
   CurrencyCell,
 } from './CellRenderers';
+
+// Export Market Data Mode Components
+export { MarketDataGrid, withMarketData } from './MarketDataGrid';
+export type { MarketDataGridProps, WithMarketDataProps } from './MarketDataGrid';
+export { 
+  MarketDataEngine, 
+  createMarketDataEngine 
+} from './MarketDataEngine';
+export type { 
+  CellUpdate as MarketCellUpdate, 
+  FlashAnimation as MarketFlashAnimation, 
+  MarketDataRow, 
+  MarketDataEngineConfig,
+  RowUpdate 
+} from './MarketDataEngine';
+export { useMarketData } from './useMarketData';
+export type { 
+  WebSocketConfig, 
+  MarketDataSubscription, 
+  ConnectionState,
+  UseMarketDataOptions,
+  UseMarketDataReturn 
+} from './useMarketData';
+export { 
+  WebSocketMockFeed, 
+  createMockFeed,
+  createMockWebSocket 
+} from './WebSocketMockFeed';
+export type { 
+  MockMarketData, 
+  MockFeedConfig, 
+  MockWebSocket 
+} from './WebSocketMockFeed';
+export type { MarketDataConfig } from './types';

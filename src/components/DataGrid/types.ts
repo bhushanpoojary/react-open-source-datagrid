@@ -270,6 +270,36 @@ export interface DragState {
   dropPosition: 'before' | 'after' | null;
 }
 
+// Market Data Mode Configuration
+export interface MarketDataConfig {
+  enabled: boolean; // Enable market data mode
+  flashDuration?: number; // Flash animation duration in ms
+  enableFlash?: boolean; // Enable cell flash animations
+  enableLiveSorting?: boolean; // Enable real-time sorting
+  enableRankingMovement?: boolean; // Enable row position changes
+  batchInterval?: number; // Update batching interval in ms
+  maxUpdatesPerFrame?: number; // Max updates per RAF
+  cpuThreshold?: number; // CPU usage threshold for throttling
+  densityMode?: boolean; // Use compact layout
+}
+
+// Cell Update for Market Data
+export interface CellUpdate {
+  rowId: string | number;
+  field: string;
+  oldValue: any;
+  newValue: any;
+  timestamp: number;
+}
+
+// Flash Animation
+export interface FlashAnimation {
+  cellKey: string;
+  direction: 'up' | 'down';
+  startTime: number;
+  duration: number;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -281,6 +311,7 @@ export interface DataGridProps {
   persistenceConfig?: PersistenceConfig;
   treeConfig?: TreeConfig; // Configuration for tree/hierarchical data
   dragRowConfig?: DragRowConfig; // Configuration for row dragging
+  marketDataConfig?: MarketDataConfig; // Configuration for market data mode
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;
