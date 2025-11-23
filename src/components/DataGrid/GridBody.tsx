@@ -341,13 +341,15 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   }}
                 />
               ) : (
-                <span style={{ 
+                <div style={{ 
                   overflow: 'hidden', 
                   textOverflow: 'ellipsis', 
                   whiteSpace: 'nowrap', 
                   display: 'block',
                   color: '#262626',
-                }}>{cellValue ?? ''}</span>
+                }}>
+                  {column.renderCell ? column.renderCell(row) : (cellValue ?? '')}
+                </div>
               )}
             </div>
           );

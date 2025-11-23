@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { DemoGridPage } from './components/DemoGridPage'
 import { VirtualScrollDemo } from './components/VirtualScrollDemo'
+import { CellRenderersDemo } from './components/CellRenderersDemo'
 import './App.css'
 
 function App() {
-  const [currentDemo, setCurrentDemo] = useState<'standard' | 'virtual'>('standard')
+  const [currentDemo, setCurrentDemo] = useState<'standard' | 'virtual' | 'renderers'>('standard')
 
   return (
     <div className="flex flex-col h-screen bg-neutral-50">
@@ -45,6 +46,16 @@ function App() {
               >
                 Virtual Scrolling
               </button>
+              <button
+                onClick={() => setCurrentDemo('renderers')}
+                className={`px-4 py-2 rounded-md font-medium text-sm transition-all duration-200 ${
+                  currentDemo === 'renderers'
+                    ? 'bg-white text-primary-600 shadow-sm'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                Cell Renderers
+              </button>
             </div>
           </div>
         </div>
@@ -52,7 +63,9 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        {currentDemo === 'standard' ? <DemoGridPage /> : <VirtualScrollDemo />}
+        {currentDemo === 'standard' && <DemoGridPage />}
+        {currentDemo === 'virtual' && <VirtualScrollDemo />}
+        {currentDemo === 'renderers' && <CellRenderersDemo />}
       </main>
     </div>
   )

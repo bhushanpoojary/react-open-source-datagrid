@@ -18,6 +18,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Aggregation footer rows** (Total, Average, Min, Max, Count)
 - ✅ **Group-level footers** (subtotals for each group)
 - ✅ **Virtual Scrolling** (50,000+ rows, 200+ columns with ultra-fast rendering)
+- ✅ **Cell Renderer Framework** (custom components: badges, progress bars, buttons, images, icons)
 
 ## Quick Start
 
@@ -63,6 +64,8 @@ const rows: Row[] = [
 - **Architecture Guide**: See [src/components/DataGrid/ARCHITECTURE.md.ts](./src/components/DataGrid/ARCHITECTURE.md.ts)
 - **Aggregation Footer Feature**: See [AGGREGATION_FOOTER_FEATURE.md](./AGGREGATION_FOOTER_FEATURE.md)
 - **Footer Quick Reference**: See [FOOTER_QUICK_REFERENCE.md](./FOOTER_QUICK_REFERENCE.md)
+- **Cell Renderer Framework**: See [CELL_RENDERER_FRAMEWORK.md](./CELL_RENDERER_FRAMEWORK.md)
+- **Cell Renderer Quick Reference**: See [CELL_RENDERER_QUICK_REF.md](./CELL_RENDERER_QUICK_REF.md)
 
 ## Technology Stack
 

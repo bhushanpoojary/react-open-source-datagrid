@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { DataGrid } from './DataGrid';
+import { DataGrid, StatusChip, CurrencyCell } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 
 /**
@@ -46,9 +46,25 @@ export const DemoGridPage: React.FC = () => {
     { field: 'name', headerName: 'Name', width: 180, sortable: true, filterable: true, editable: true },
     { field: 'position', headerName: 'Position', width: 200, sortable: true, filterable: true, editable: true },
     { field: 'department', headerName: 'Department', width: 160, sortable: true, filterable: true, editable: true },
-    { field: 'salary', headerName: 'Salary', width: 120, sortable: true, filterable: true, editable: true },
+    { 
+      field: 'salary', 
+      headerName: 'Salary', 
+      width: 120, 
+      sortable: true, 
+      filterable: true, 
+      editable: true,
+      renderCell: (row) => <CurrencyCell amount={row.salary} />
+    },
     { field: 'joinDate', headerName: 'Join Date', width: 130, sortable: true, filterable: true, editable: true },
-    { field: 'status', headerName: 'Status', width: 100, sortable: true, filterable: true, editable: true },
+    { 
+      field: 'status', 
+      headerName: 'Status', 
+      width: 120, 
+      sortable: true, 
+      filterable: true, 
+      editable: true,
+      renderCell: (row) => <StatusChip status={row.status} />
+    },
   ];
 
   // State for event logs

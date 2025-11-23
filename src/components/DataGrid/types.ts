@@ -1,4 +1,5 @@
 // Core type definitions for the DataGrid component
+import React from 'react';
 
 export interface Column {
   field: string;
@@ -8,6 +9,7 @@ export interface Column {
   sortable?: boolean;
   filterable?: boolean;
   pinnable?: boolean;
+  renderCell?: (row: Row) => React.ReactNode; // Custom cell renderer
 }
 
 export interface Row {
