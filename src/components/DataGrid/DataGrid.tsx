@@ -70,7 +70,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
     if (onSelectionChange) {
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
-  }, [state.selection.selectedRows, onSelectionChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.selection.selectedRows]);
 
   // Apply sorting
   const sortedRows = useMemo(() => {
@@ -209,7 +210,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
         });
       });
     }
-  }, [columns, state.columnWidths]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columns]);
 
   // Handle cell edit with callback
   const handleCellEdit = useCallback(
