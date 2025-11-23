@@ -89,7 +89,7 @@ export const LiveMarketDemo: React.FC = () => {
       setRows([...updatedRows]);
     });
 
-    // Set up message handler
+    // Set up message handler BEFORE connection opens
     mockConnection.onmessage = (event: { data: string }) => {
       try {
         const data = JSON.parse(event.data);
@@ -110,10 +110,16 @@ export const LiveMarketDemo: React.FC = () => {
       }
     };
 
-    // Trigger connection to send snapshot
-    if (mockConnection.onopen) {
-      mockConnection.onopen();
-    }
+    // Set up connection handlers
+    mockConnection.onopen = () => {
+      console.log('WebSocket connection opened');
+    };
+
+    mockConnection.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    // The mock WebSocket will automatically connect and send snapshot
 
     return () => {
       unsubscribe();
