@@ -41,13 +41,12 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       }}
     >
       {/* Header with title and copy button */}
-      {(title || true) && (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '12px 16px',
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '12px 16px',
             backgroundColor: '#1e293b',
             borderBottom: '1px solid #374151',
           }}
@@ -134,7 +133,6 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
             )}
           </button>
         </div>
-      )}
 
       {/* Code content */}
       <div

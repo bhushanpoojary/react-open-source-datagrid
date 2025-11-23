@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { Column, FilterConfig, GridAction } from './types';
+import type { Column, FilterConfig, GridAction, Row } from './types';
 
 interface ColumnFiltersProps {
   columns: Column[];
@@ -9,15 +9,15 @@ interface ColumnFiltersProps {
   dispatch: React.Dispatch<GridAction>;
   pinnedLeft: string[];
   pinnedRight: string[];
-  rows: any[];
+  rows: Row[];
 }
 
 interface FilterMenuProps {
   column: Column;
-  filterValue: any;
-  onApplyFilter: (value: any) => void;
+  filterValue: FilterConfig[string];
+  onApplyFilter: (value: FilterConfig[string]) => void;
   onClose: () => void;
-  rows: any[];
+  rows: Row[];
   anchorEl: HTMLElement | null;
 }
 
@@ -28,7 +28,7 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 
   useEffect(() => {
     if (filterValue) {
-      setFilterType(filterValue.type || 'contains');
+      setFilterType((filterValue.type as typeof filterType) || 'contains');
       setValue(filterValue.value || '');
     }
   }, [filterValue]);
@@ -157,7 +157,7 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
 
   useEffect(() => {
     if (filterValue) {
-      setFilterType(filterValue.type || 'equals');
+      setFilterType((filterValue.type as typeof filterType) || 'equals');
       setValue(filterValue.value || '');
       setValue2(filterValue.value2 || '');
     }
@@ -284,7 +284,7 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 
   useEffect(() => {
     if (filterValue) {
-      setFilterType(filterValue.type || 'equals');
+      setFilterType((filterValue.type as typeof filterType) || 'equals');
       setValue(filterValue.value || '');
       setValue2(filterValue.value2 || '');
     }

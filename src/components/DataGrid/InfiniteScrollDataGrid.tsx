@@ -46,7 +46,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   pageSize = 100,
   showColumnPinning = true,
   virtualScrollConfig,
-  theme = 'quartz',
+  theme: _theme = 'quartz',
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -61,7 +61,6 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   // Initialize or use provided data source
   const [dataSourceInstance, setDataSourceInstance] = useState<ServerSideDataSource | null>(null);
   const [totalRows, setTotalRows] = useState<number | undefined>(undefined);
-  const [dataVersion, setDataVersion] = useState(0);
 
   // Initialize data source
   useEffect(() => {
@@ -78,7 +77,6 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     // Subscribe to data changes
     const unsubscribe = ds.subscribe(() => {
       setTotalRows(ds.getTotalRows());
-      setDataVersion(prev => prev + 1); // Trigger re-render when data changes
     });
     
     // Initial load
@@ -148,7 +146,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     const rowsToFetch = Math.min(totalRows, initialBatchSize);
     
     return dataSourceInstance.getRowsInRange(0, rowsToFetch);
-  }, [dataSourceInstance, totalRows, dataVersion]);
+  }, [dataSourceInstance, totalRows]);
 
   // Auto-adjust column width based on content
   useEffect(() => {

@@ -45,7 +45,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   treeConfig,
   dragRowConfig,
   tableId,
-  theme = 'quartz',
+  theme: _theme = 'quartz',
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -84,7 +84,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   }, [persistenceConfig]);
 
   // Memoize serialized versions of complex objects
-  const sortConfigStr = useMemo(() => JSON.stringify(state.sortConfig), [state.sortConfig.field, state.sortConfig.direction]);
+  const sortConfigStr = useMemo(() => JSON.stringify(state.sortConfig), [state.sortConfig]);
   const filterConfigStr = useMemo(() => JSON.stringify(state.filterConfig), [state.filterConfig]);
 
   // Get current layout state - using a stable reference
@@ -106,6 +106,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
     state.pinnedColumnsLeft,
     state.pinnedColumnsRight,
     state.hiddenColumns,
+    state.sortConfig,
+    state.filterConfig,
     sortConfigStr,
     filterConfigStr,
     state.pageSize,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { LayoutPreset } from './types';
 import { LayoutPersistenceManager } from './layoutPersistence';
 
@@ -23,12 +23,7 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load presets on mount
-  useEffect(() => {
-    loadPresets();
-  }, []);
-
-  const loadPresets = async () => {
+  const loadPresets = useCallback(async () => {
     try {
       setLoading(true);
       const loadedPresets = await manager.listPresets();
@@ -41,7 +36,12 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [manager]);
+
+  // Load presets on mount
+  useEffect(() => {
+    loadPresets();
+  }, [loadPresets]);
 
   const handleSavePreset = async () => {
     if (!presetName.trim()) {

@@ -16,8 +16,6 @@ interface GroupRowProps {
 export const GroupRow: React.FC<GroupRowProps> = ({
   group,
   columns,
-  columnOrder,
-  columnWidths,
   dispatch,
 }) => {
   // Find the column for this group
