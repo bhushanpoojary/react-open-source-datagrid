@@ -187,7 +187,7 @@ export const InfiniteScrollDemo: React.FC = () => {
       </div>
 
       {/* Implementation Code Example */}
-      <div style={{ marginTop: '20px', position: 'relative', zIndex: 0, clear: 'both' }}>
+      <div style={{ marginTop: '80px', position: 'relative', zIndex: 0, clear: 'both' }}>
         <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}>
           Implementation Example
         </h2>
