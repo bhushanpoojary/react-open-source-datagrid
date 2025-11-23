@@ -1,4 +1,4 @@
-ï»¿import React from 'react';
+import React from 'react';
 import type { GridAction } from './types';
 
 interface GridPaginationProps {
@@ -65,10 +65,10 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-footer-bg, #fafafa)', borderTop: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-footer-bg)', borderTop: 'var(--grid-border-width, 1px) solid var(--grid-border)' }}>
       {/* Left side: Page size selector */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text, #262626)', fontWeight: '500' }}>Rows per page:</span>
+        <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text)', fontWeight: '500' }}>Rows per page:</span>
         <select
           style={{ 
             paddingLeft: '8px', 
@@ -76,10 +76,10 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             paddingTop: '6px', 
             paddingBottom: '6px', 
             fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)', 
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
             borderRadius: 'var(--grid-border-radius, 3px)',
-            backgroundColor: 'var(--grid-bg, #fff)',
-            color: 'var(--grid-text, #262626)', 
+            backgroundColor: 'var(--grid-bg)',
+            color: 'var(--grid-text)', 
             outline: 'none',
             cursor: 'pointer',
           }}
@@ -101,7 +101,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
       </div>
 
       {/* Center: Row count info */}
-      <div style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary, #666666)', fontWeight: '500' }}>
+      <div style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary)', fontWeight: '500' }}>
         {totalRows === 0 ? (
           'No rows'
         ) : (
@@ -121,12 +121,12 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             paddingTop: '6px', 
             paddingBottom: '6px', 
             fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)', 
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
             borderRadius: 'var(--grid-border-radius, 3px)', 
             cursor: currentPage === 0 ? 'not-allowed' : 'pointer', 
             opacity: currentPage === 0 ? 0.5 : 1,
-            backgroundColor: 'var(--grid-bg, #ffffff)',
-            color: 'var(--grid-text, #262626)',
+            backgroundColor: 'var(--grid-bg)',
+            color: 'var(--grid-text)',
           }}
           onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
@@ -134,7 +134,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === 0}
           title="First page"
         >
-          Â«
+          «
         </button>
 
         {/* Previous page button */}
@@ -145,12 +145,12 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             paddingTop: '6px', 
             paddingBottom: '6px', 
             fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)', 
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
             borderRadius: 'var(--grid-border-radius, 3px)', 
             cursor: currentPage === 0 ? 'not-allowed' : 'pointer', 
             opacity: currentPage === 0 ? 0.5 : 1,
-            backgroundColor: 'var(--grid-bg, #ffffff)',
-            color: 'var(--grid-text, #262626)',
+            backgroundColor: 'var(--grid-bg)',
+            color: 'var(--grid-text)',
           }}
           onMouseEnter={(e) => currentPage !== 0 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
@@ -158,7 +158,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === 0}
           title="Previous page"
         >
-          â€¹
+          ‹
         </button>
 
         {/* Page numbers */}
@@ -205,12 +205,12 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             paddingTop: '6px', 
             paddingBottom: '6px', 
             fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)', 
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
             borderRadius: 'var(--grid-border-radius, 3px)', 
             cursor: currentPage === totalPages - 1 ? 'not-allowed' : 'pointer', 
             opacity: currentPage === totalPages - 1 ? 0.5 : 1,
-            backgroundColor: 'var(--grid-bg, #ffffff)',
-            color: 'var(--grid-text, #262626)',
+            backgroundColor: 'var(--grid-bg)',
+            color: 'var(--grid-text)',
           }}
           onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
@@ -218,7 +218,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === totalPages - 1}
           title="Next page"
         >
-          â€º
+          ›
         </button>
 
         {/* Last page button */}
@@ -229,12 +229,12 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
             paddingTop: '6px', 
             paddingBottom: '6px', 
             fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border, #d9d9d9)', 
+            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
             borderRadius: 'var(--grid-border-radius, 3px)', 
             cursor: currentPage === totalPages - 1 ? 'not-allowed' : 'pointer', 
             opacity: currentPage === totalPages - 1 ? 0.5 : 1,
-            backgroundColor: 'var(--grid-bg, #ffffff)',
-            color: 'var(--grid-text, #262626)',
+            backgroundColor: 'var(--grid-bg)',
+            color: 'var(--grid-text)',
           }}
           onMouseEnter={(e) => currentPage !== totalPages - 1 && (e.currentTarget.style.backgroundColor = 'var(--grid-hover, #f0f2f5)')}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-bg, #ffffff)'}
@@ -242,7 +242,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
           disabled={currentPage === totalPages - 1}
           title="Last page"
         >
-          Â»
+          »
         </button>
       </div>
     </div>

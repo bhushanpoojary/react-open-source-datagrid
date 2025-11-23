@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import type { Column, AggregateConfig } from './types';
 import { formatAggregateValue, getAggregateLabel } from './aggregationUtils';
 
@@ -76,7 +76,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
   };
 
   return (
-    <div style={{ display: 'flex', minWidth: '100%', borderTop: '2px solid var(--grid-border, #e2e8f0)', backgroundColor: 'var(--grid-footer-bg, #f8f9fa)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>
+    <div style={{ display: 'flex', minWidth: '100%', borderTop: '2px solid var(--grid-border)', backgroundColor: 'var(--grid-footer-bg)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;
@@ -87,7 +87,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
         // For the first column, show the label
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
-          cellContent = <span style={{ color: 'var(--grid-text, #262626)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{label}</span>;
+          cellContent = <span style={{ color: 'var(--grid-text)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{label}</span>;
         } else if (configs && configs.length > 0) {
           // Show aggregates for this field
           cellContent = (
@@ -103,7 +103,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
                     {configs.length > 1 && (
                       <span style={{ color: 'var(--grid-text-secondary, #666666)', marginRight: '4px', fontWeight: '500' }}>{displayLabel}:</span>
                     )}
-                    <span style={{ color: 'var(--grid-text, #262626)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{formattedValue}</span>
+                    <span style={{ color: 'var(--grid-text)', fontWeight: 'var(--grid-header-font-weight, 600)' }}>{formattedValue}</span>
                   </div>
                 );
               })}
@@ -122,7 +122,7 @@ export const GridFooter: React.FC<GridFooterProps> = ({
               fontSize: 'var(--grid-font-size, 13px)',
               borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)',
               flexShrink: 0,
-              backgroundColor: 'var(--grid-footer-bg, #f8f9fa)',
+              backgroundColor: 'var(--grid-footer-bg)',
             }}
           >
             {cellContent}

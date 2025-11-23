@@ -165,9 +165,9 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   }, [resizingColumn, resizeStartX, resizeStartWidth, dispatch]);
 
   return (
-    <div ref={headerRef} style={{ backgroundColor: 'var(--grid-header-bg, #f8f9fa)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border, #e2e8f0)', width: '100%' }}>
+    <div ref={headerRef} style={{ borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', width: '100%' }}>
       {/* Column Headers Row */}
-      <div style={{ display: 'flex', minWidth: '100%' }}>
+      <div style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column) return null;
