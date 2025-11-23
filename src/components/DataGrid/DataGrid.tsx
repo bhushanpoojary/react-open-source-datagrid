@@ -7,6 +7,7 @@ import { GridPagination } from './GridPagination';
 import { GroupByPanel } from './GroupByPanel';
 import { GridFooter } from './GridFooter';
 import { ColumnChooser } from './ColumnChooser';
+import { ExportMenu } from './ExportMenu';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 
@@ -245,6 +246,15 @@ export const DataGrid: React.FC<DataGridProps> = ({
               dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } })
             }
             onResetLayout={() => dispatch({ type: 'RESET_COLUMN_LAYOUT' })}
+          />
+
+          {/* Export Menu */}
+          <ExportMenu
+            columns={columns}
+            fullDataset={rows}
+            filteredData={filteredRows.filter((r): r is Row => !('isGroup' in r))}
+            selectedRows={state.selection.selectedRows}
+            currentPageData={paginatedRows.filter((r): r is Row => !('isGroup' in r))}
           />
         </div>
       </div>
