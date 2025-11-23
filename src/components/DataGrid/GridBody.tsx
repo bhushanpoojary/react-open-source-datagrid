@@ -29,6 +29,7 @@ interface GridBodyProps {
   dragRowConfig?: DragRowConfig;
   tableId?: string;
   onRowReorder?: (rows: Row[]) => void;
+  onScroll?: (scrollTop: number, scrollLeft: number) => void;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -53,6 +54,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   dragRowConfig,
   tableId,
   onRowReorder,
+  onScroll,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -520,6 +522,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
           columns={enableColumnVirtualization ? virtualColumns : []}
           totalColumnWidth={enableColumnVirtualization ? totalColumnWidth : 0}
           columnOverscan={virtualScrollConfig.columnOverscan || 3}
+          onScroll={onScroll}
           renderItem={(row, index, style) => renderRowContent(row, index, style)}
           renderRow={enableColumnVirtualization ? (row, index, visibleColumns, style) => {
             if (isGroupedRow(row)) {

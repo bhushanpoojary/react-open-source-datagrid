@@ -171,6 +171,7 @@
 
 .grid-container {
   flex: 1;
+  min-height: 600px;
   overflow: hidden;
   background: white;
   border-radius: 8px;

@@ -82,11 +82,6 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     // Initial load
     setTotalRows(ds.getTotalRows());
     
-    // Trigger initial data fetch
-    setTimeout(() => {
-      ds.getRowsInRange(0, 100); // Fetch first block
-    }, 0);
-    
     return () => {
       unsubscribe();
       if (!(dataSource instanceof ServerSideDataSource)) {
@@ -137,16 +132,54 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selection.selectedRows]);
 
+  // Track loaded row range for infinite scrolling
+  const [loadedRange, setLoadedRange] = useState({ start: 0, end: pageSize * 10 }); // Start with 10 pages
+  
+  // Force re-render when data source updates
+  const [dataVersion, setDataVersion] = useState(0);
+
   // Get rows for display - use data source to fetch on-demand
   const visibleRows = useMemo(() => {
-    if (!dataSourceInstance || !totalRows) return [];
+    if (!dataSourceInstance) return [];
     
-    // Get initial rows to populate the grid
-    const initialBatchSize = 1000; // Load first 1000 rows initially
-    const rowsToFetch = Math.min(totalRows, initialBatchSize);
+    // Get rows in the loaded range
+    // dataVersion is included to force recalculation when data arrives
+    return dataSourceInstance.getRowsInRange(loadedRange.start, loadedRange.end);
+  }, [dataSourceInstance, loadedRange, dataVersion]);
+
+  // Subscribe to data source changes to trigger re-renders
+  useEffect(() => {
+    if (!dataSourceInstance) return;
     
-    return dataSourceInstance.getRowsInRange(0, rowsToFetch);
-  }, [dataSourceInstance, totalRows]);
+    const unsubscribe = dataSourceInstance.subscribe(() => {
+      setDataVersion(v => v + 1);
+    });
+    
+    return unsubscribe;
+  }, [dataSourceInstance]);
+
+  // Handle scroll to load more data
+  const handleScroll = useCallback((scrollTop: number) => {
+    if (!dataSourceInstance || totalRows === undefined) return;
+    
+    const containerHeight = virtualScrollConfig?.containerHeight || 600;
+    const rowHeight = typeof virtualScrollConfig?.rowHeight === 'number' ? virtualScrollConfig.rowHeight : 35;
+    const visibleRows = Math.ceil(containerHeight / rowHeight);
+    const currentRow = Math.floor(scrollTop / rowHeight);
+    
+    // Calculate buffer (3x visible rows)
+    const buffer = visibleRows * 3;
+    const newStart = Math.max(0, currentRow - buffer);
+    const newEnd = Math.min(totalRows, currentRow + visibleRows + buffer);
+    
+    // Only update if we need to expand the range
+    if (newStart < loadedRange.start || newEnd > loadedRange.end) {
+      const expandedStart = Math.max(0, Math.min(newStart, loadedRange.start));
+      const expandedEnd = Math.max(newEnd, loadedRange.end);
+      
+      setLoadedRange({ start: expandedStart, end: expandedEnd });
+    }
+  }, [dataSourceInstance, totalRows, virtualScrollConfig, loadedRange]);
 
   // Auto-adjust column width based on content
   useEffect(() => {
@@ -313,6 +346,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
         onCellEdit={handleCellEdit}
         pinnedLeft={pinnedLeftFields}
         pinnedRight={pinnedRightFields}
+        onScroll={handleScroll}
         virtualScrollConfig={{
           ...virtualScrollConfig,
           enabled: true,
