@@ -4,6 +4,7 @@ export { VirtualScroller } from './VirtualScroller';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
 export { ColumnFilters } from './ColumnFilters';
+export { LayoutPresetsManager } from './LayoutPresetsManager';
 export type { 
   Column, 
   Row, 
@@ -15,10 +16,25 @@ export type {
   VirtualScrollConfig,
   FilterType,
   FilterValue,
-  FilterConfig
+  FilterConfig,
+  LayoutPreset,
+  StorageStrategy,
+  StorageAdapter,
+  ServerConfig,
+  UserProfileConfig,
+  PersistenceConfig
 } from './types';
 export { handleExport, exportToCSV, exportToXLSX, generateFilename } from './exportUtils';
 export type { ExportFormat, ExportScope, ExcelStyling, ExportOptions } from './exportUtils';
+export { 
+  LayoutPersistenceManager, 
+  LocalStorageAdapter, 
+  ServerAdapter, 
+  UserProfileAdapter,
+  getStorageAdapter,
+  generatePresetId,
+  createPreset
+} from './layoutPersistence';
 
 // Export Cell Renderer Components
 export {

@@ -1,5 +1,5 @@
-import React, { useReducer, useMemo, useEffect, useCallback } from 'react';
-import type { DataGridProps, Row, GroupedRow } from './types';
+import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState } from 'react';
+import type { DataGridProps, Row, GroupedRow, LayoutPreset } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
@@ -9,9 +9,11 @@ import { GridFooter } from './GridFooter';
 import { ColumnChooser } from './ColumnChooser';
 import { ExportMenu } from './ExportMenu';
 import { ColumnFilters } from './ColumnFilters';
+import { LayoutPresetsManager } from './LayoutPresetsManager';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
+import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 
 /**
  * DataGrid Component
@@ -37,9 +39,11 @@ export const DataGrid: React.FC<DataGridProps> = ({
   showColumnPinning = true,
   footerConfig,
   virtualScrollConfig,
+  persistenceConfig,
   onRowClick,
   onCellEdit,
   onSelectionChange,
+  onLayoutChange,
 }) => {
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
@@ -47,6 +51,123 @@ export const DataGrid: React.FC<DataGridProps> = ({
     { columns, pageSize },
     (args) => createInitialState(args.columns, args.pageSize)
   );
+
+  // Persistence manager instance
+  const [persistenceManager, setPersistenceManager] = useState<LayoutPersistenceManager | null>(null);
+  const autoSaveRef = useRef<(() => void) | null>(null);
+  const previousLayoutRef = useRef<string | null>(null);
+
+  // Initialize persistence manager
+  useEffect(() => {
+    if (persistenceConfig?.enabled) {
+      const manager = new LayoutPersistenceManager(persistenceConfig);
+      setPersistenceManager(manager);
+
+      // Auto-load last saved preset on mount
+      if (persistenceConfig.autoLoad) {
+        manager.loadAutoSave().then((preset) => {
+          if (preset) {
+            dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: preset.layout });
+          }
+        }).catch((error) => {
+          console.error('Failed to load auto-saved layout:', error);
+        });
+      }
+    }
+  }, [persistenceConfig]);
+
+  // Memoize serialized versions of complex objects
+  const sortConfigStr = useMemo(() => JSON.stringify(state.sortConfig), [state.sortConfig.field, state.sortConfig.direction]);
+  const filterConfigStr = useMemo(() => JSON.stringify(state.filterConfig), [state.filterConfig]);
+
+  // Get current layout state - using a stable reference
+  const getCurrentLayout = useCallback((): LayoutPreset['layout'] => {
+    return {
+      columnOrder: state.columnOrder,
+      columnWidths: state.columnWidths,
+      pinnedColumnsLeft: state.pinnedColumnsLeft,
+      pinnedColumnsRight: state.pinnedColumnsRight,
+      hiddenColumns: state.hiddenColumns,
+      sortConfig: state.sortConfig,
+      filterConfig: state.filterConfig,
+      pageSize: state.pageSize,
+      groupBy: state.groupBy,
+    };
+  }, [
+    state.columnOrder,
+    state.columnWidths,
+    state.pinnedColumnsLeft,
+    state.pinnedColumnsRight,
+    state.hiddenColumns,
+    sortConfigStr,
+    filterConfigStr,
+    state.pageSize,
+    state.groupBy,
+  ]);
+
+  // Auto-save functionality
+  useEffect(() => {
+    if (!persistenceConfig?.enabled || !persistenceConfig.autoSave || !persistenceManager) {
+      return;
+    }
+
+    // Create debounced auto-save function
+    const delay = persistenceConfig.autoSaveDelay || 1000;
+    const debouncedAutoSave = debounce(() => {
+      const layout = getCurrentLayout();
+      persistenceManager.autoSave(layout).catch((error) => {
+        console.error('Failed to auto-save layout:', error);
+      });
+    }, delay);
+
+    autoSaveRef.current = debouncedAutoSave;
+
+    // Trigger auto-save on layout changes
+    debouncedAutoSave();
+
+    return () => {
+      autoSaveRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    persistenceConfig,
+    persistenceManager,
+    state.columnOrder,
+    state.columnWidths,
+    state.pinnedColumnsLeft,
+    state.pinnedColumnsRight,
+    state.hiddenColumns,
+    sortConfigStr,
+    filterConfigStr,
+    state.pageSize,
+    state.groupBy,
+  ]);
+
+  // Notify parent of layout changes
+  useEffect(() => {
+    if (onLayoutChange) {
+      const layout = getCurrentLayout();
+      const layoutStr = JSON.stringify(layout);
+      
+      // Only trigger if layout actually changed
+      if (previousLayoutRef.current !== layoutStr) {
+        previousLayoutRef.current = layoutStr;
+        onLayoutChange(layout);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    onLayoutChange,
+    state.columnOrder,
+    state.columnWidths,
+    state.pinnedColumnsLeft,
+    state.pinnedColumnsRight,
+    state.hiddenColumns,
+    sortConfigStr,
+    filterConfigStr,
+    state.pageSize,
+    state.groupBy,
+  ]);
 
   // Filter out hidden columns and arrange pinned columns
   const hiddenSet = new Set(state.hiddenColumns);
@@ -242,6 +363,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
             selectedRows={state.selection.selectedRows}
             currentPageData={paginatedRows.filter((r): r is Row => !('isGroup' in r))}
           />
+
+          {/* Layout Presets Manager */}
+          {persistenceConfig?.enabled && persistenceManager && (
+            <LayoutPresetsManager
+              manager={persistenceManager}
+              currentLayout={getCurrentLayout()}
+              onLoadPreset={(layout) => dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: layout })}
+              onResetLayout={() => dispatch({ type: 'RESET_COLUMN_LAYOUT' })}
+            />
+          )}
         </div>
       </div>
 

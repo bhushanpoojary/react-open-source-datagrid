@@ -348,6 +348,41 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
       };
     }
 
+    case 'LOAD_LAYOUT_PRESET': {
+      const layout = action.payload;
+      
+      return {
+        ...state,
+        columnOrder: layout.columnOrder,
+        columnWidths: layout.columnWidths,
+        pinnedColumnsLeft: layout.pinnedColumnsLeft,
+        pinnedColumnsRight: layout.pinnedColumnsRight,
+        hiddenColumns: layout.hiddenColumns,
+        sortConfig: layout.sortConfig,
+        filterConfig: layout.filterConfig,
+        pageSize: layout.pageSize,
+        groupBy: layout.groupBy || [],
+        currentPage: 0, // Reset to first page when loading a preset
+      };
+    }
+
+    case 'APPLY_LAYOUT': {
+      const partialLayout = action.payload;
+      
+      return {
+        ...state,
+        ...(partialLayout.columnOrder && { columnOrder: partialLayout.columnOrder }),
+        ...(partialLayout.columnWidths && { columnWidths: partialLayout.columnWidths }),
+        ...(partialLayout.pinnedColumnsLeft && { pinnedColumnsLeft: partialLayout.pinnedColumnsLeft }),
+        ...(partialLayout.pinnedColumnsRight && { pinnedColumnsRight: partialLayout.pinnedColumnsRight }),
+        ...(partialLayout.hiddenColumns && { hiddenColumns: partialLayout.hiddenColumns }),
+        ...(partialLayout.sortConfig && { sortConfig: partialLayout.sortConfig }),
+        ...(partialLayout.filterConfig && { filterConfig: partialLayout.filterConfig }),
+        ...(partialLayout.pageSize && { pageSize: partialLayout.pageSize }),
+        ...(partialLayout.groupBy && { groupBy: partialLayout.groupBy }),
+      };
+    }
+
     default:
       return state;
   }

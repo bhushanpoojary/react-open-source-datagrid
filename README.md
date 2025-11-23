@@ -19,6 +19,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Group-level footers** (subtotals for each group)
 - ✅ **Virtual Scrolling** (50,000+ rows, 200+ columns with ultra-fast rendering)
 - ✅ **Cell Renderer Framework** (custom components: badges, progress bars, buttons, images, icons)
+- ✅ **Layout Persistence** (save/load layouts with localStorage, server, or user profile storage)
 
 ## Quick Start
 
@@ -66,6 +67,9 @@ const rows: Row[] = [
 - **Footer Quick Reference**: See [FOOTER_QUICK_REFERENCE.md](./FOOTER_QUICK_REFERENCE.md)
 - **Cell Renderer Framework**: See [CELL_RENDERER_FRAMEWORK.md](./CELL_RENDERER_FRAMEWORK.md)
 - **Cell Renderer Quick Reference**: See [CELL_RENDERER_QUICK_REF.md](./CELL_RENDERER_QUICK_REF.md)
+- **Layout Persistence**: See [LAYOUT_PERSISTENCE_INDEX.md](./LAYOUT_PERSISTENCE_INDEX.md) 🆕
+- **Layout Persistence Feature Guide**: See [LAYOUT_PERSISTENCE_FEATURE.md](./LAYOUT_PERSISTENCE_FEATURE.md)
+- **Layout Persistence Quick Reference**: See [LAYOUT_PERSISTENCE_QUICK_REF.md](./LAYOUT_PERSISTENCE_QUICK_REF.md)
 
 ## Technology Stack
 
