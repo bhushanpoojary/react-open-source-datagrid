@@ -95,40 +95,40 @@ export const VirtualScrollDemo: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-full mx-auto">
+    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '32px' }}>
+      <div style={{ maxWidth: '100%', margin: '0 auto' }}>
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+        <div style={{ marginBottom: '24px' }}>
+          <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
             Virtual Scrolling Demo
           </h1>
-          <p className="text-lg text-gray-600 mb-4">
+          <p style={{ fontSize: '18px', color: '#4b5563', marginBottom: '16px' }}>
             Ultra-fast rendering with 50,000+ rows and 200+ columns
           </p>
           
           {/* Performance Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-500">Total Rows</div>
-              <div className="text-2xl font-bold text-blue-600">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>Total Rows</div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#2563eb' }}>
                 {largeDataset.length.toLocaleString()}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-500">Total Columns</div>
-              <div className="text-2xl font-bold text-green-600">
+            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>Total Columns</div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#16a34a' }}>
                 {columns.length}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-500">Total Cells</div>
-              <div className="text-2xl font-bold text-purple-600">
+            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>Total Cells</div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#9333ea' }}>
                 {(largeDataset.length * columns.length).toLocaleString()}
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="text-sm text-gray-500">Virtualization</div>
-              <div className="text-2xl font-bold text-orange-600">
+            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>Virtualization</div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#ea580c' }}>
                 {virtualEnabled ? 'ON' : 'OFF'}
               </div>
             </div>
@@ -136,19 +136,19 @@ export const VirtualScrollDemo: React.FC = () => {
         </div>
 
         {/* Controls */}
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
+        <div style={{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '24px' }}>
           <h2 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "16px", color: "#111827" }}>Controls</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
             {/* Row Count Control */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                 Row Count
               </label>
               <select
                 value={rowCount}
                 onChange={(e) => setRowCount(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px' }}
               >
                 <option value={100}>100 rows</option>
                 <option value={1000}>1,000 rows</option>
@@ -160,13 +160,13 @@ export const VirtualScrollDemo: React.FC = () => {
 
             {/* Column Count Control */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                 Column Count
               </label>
               <select
                 value={columnCount}
                 onChange={(e) => setColumnCount(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '14px' }}
               >
                 <option value={10}>10 columns</option>
                 <option value={50}>50 columns</option>
@@ -177,16 +177,22 @@ export const VirtualScrollDemo: React.FC = () => {
 
             {/* Row Virtualization Toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                 Row Virtualization
               </label>
               <button
                 onClick={() => setVirtualEnabled(!virtualEnabled)}
-                className={`w-full px-4 py-2 rounded-md font-medium transition-colors ${
-                  virtualEnabled
-                    ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                }`}
+                style={{
+                  width: '100%',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: virtualEnabled ? '#16a34a' : '#d1d5db',
+                  color: virtualEnabled ? 'white' : '#374151',
+                  transition: 'all 0.2s',
+                }}
               >
                 {virtualEnabled ? 'Enabled' : 'Disabled'}
               </button>
@@ -194,16 +200,23 @@ export const VirtualScrollDemo: React.FC = () => {
 
             {/* Column Virtualization Toggle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
                 Column Virtualization
               </label>
               <button
                 onClick={() => setColumnVirtualEnabled(!columnVirtualEnabled)}
-                className={`w-full px-4 py-2 rounded-md font-medium transition-colors ${
-                  columnVirtualEnabled
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                }`}
+                style={{
+                  width: '100%',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: virtualEnabled ? 'pointer' : 'not-allowed',
+                  backgroundColor: columnVirtualEnabled ? '#2563eb' : '#d1d5db',
+                  color: columnVirtualEnabled ? 'white' : '#374151',
+                  transition: 'all 0.2s',
+                  opacity: virtualEnabled ? 1 : 0.5,
+                }}
                 disabled={!virtualEnabled}
               >
                 {columnVirtualEnabled ? 'Enabled' : 'Disabled'}
@@ -213,43 +226,43 @@ export const VirtualScrollDemo: React.FC = () => {
         </div>
 
         {/* Features Info */}
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h2 className="text-xl font-semibold mb-3 text-gray-800">
+        <div style={{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#1f2937' }}>
             Virtual Scrolling Features
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', fontSize: '14px', color: '#374151' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Windowing:</strong> Only renders visible rows in viewport
               </div>
             </div>
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Column Virtualization:</strong> Only renders visible columns
               </div>
             </div>
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Dynamic Row Heights:</strong> Supports variable row sizes
               </div>
             </div>
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Cell Recycling:</strong> Reuses DOM elements for performance
               </div>
             </div>
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Overscan:</strong> Pre-renders rows above/below viewport
               </div>
             </div>
-            <div className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <span style={{ color: '#16a34a', marginRight: '8px', fontSize: '14px' }}>✓</span>
               <div>
                 <strong>Smooth Scrolling:</strong> Maintains scroll position accurately
               </div>
@@ -258,15 +271,15 @@ export const VirtualScrollDemo: React.FC = () => {
         </div>
 
         {/* Performance Tips */}
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+        <div style={{ backgroundColor: '#eff6ff', borderLeft: '4px solid #3b82f6', padding: '16px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flexShrink: 0 }}>
+              <svg style={{ height: '16px', width: '16px', color: '#3b82f6' }} viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
             </div>
-            <div className="ml-3">
-              <p className="text-sm text-blue-700">
+            <div style={{ marginLeft: '12px' }}>
+              <p style={{ fontSize: '14px', color: '#1d4ed8' }}>
                 <strong>Performance Tip:</strong> Try toggling virtualization off with a large dataset 
                 to see the dramatic performance difference. With virtualization enabled, the grid can 
                 handle 100,000+ rows smoothly!
@@ -276,7 +289,7 @@ export const VirtualScrollDemo: React.FC = () => {
         </div>
 
         {/* DataGrid */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
           <DataGrid
             columns={columns}
             rows={largeDataset}
@@ -287,24 +300,24 @@ export const VirtualScrollDemo: React.FC = () => {
         </div>
 
         {/* Technical Details */}
-        <div className="mt-6 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-3 text-gray-800">
+        <div style={{ marginTop: '24px', backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#1f2937' }}>
             Technical Implementation
           </h2>
-          <div className="space-y-2 text-sm text-gray-700">
-            <p>
+          <div style={{ fontSize: '14px', color: '#374151' }}>
+            <p style={{ marginBottom: '8px' }}>
               <strong>Row Virtualization:</strong> Uses binary search to quickly find the starting 
               row index based on scroll position. Only renders visible rows plus overscan buffer.
             </p>
-            <p>
+            <p style={{ marginBottom: '8px' }}>
               <strong>Column Virtualization:</strong> Calculates visible column range based on 
               horizontal scroll position. Absolutely positions cells for smooth scrolling.
             </p>
-            <p>
+            <p style={{ marginBottom: '8px' }}>
               <strong>Dynamic Heights:</strong> Supports both fixed and dynamic row heights. 
               Measures rendered elements and caches heights for subsequent renders.
             </p>
-            <p>
+            <p style={{ marginBottom: '8px' }}>
               <strong>Cell Recycling:</strong> DOM elements are reused as you scroll, dramatically 
               reducing memory usage and improving performance.
             </p>

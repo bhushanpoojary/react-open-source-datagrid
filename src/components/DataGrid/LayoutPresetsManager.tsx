@@ -137,14 +137,24 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
       {/* Main Button */}
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className="px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
+        style={{
+          padding: '6px 12px',
+          fontSize: '14px',
+          backgroundColor: 'white',
+          border: '1px solid #d1d5db',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}
         disabled={loading}
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg style={{ width: '14px', height: '14px', flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h16" />
         </svg>
         Layout Presets
-        <svg className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg style={{ width: '14px', height: '14px', flexShrink: 0, transform: showMenu ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -154,34 +164,63 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-10"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 10,
+            }}
             onClick={() => setShowMenu(false)}
           />
           
           {/* Menu Content */}
-          <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-96 overflow-y-auto">
+          <div style={{
+            position: 'absolute',
+            right: 0,
+            marginTop: '8px',
+            width: '320px',
+            backgroundColor: 'white',
+            border: '1px solid #d1d5db',
+            borderRadius: '8px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            zIndex: 20,
+            maxHeight: '384px',
+            overflowY: 'auto',
+          }}>
             {/* Header */}
-            <div className="p-3 border-b border-gray-200 bg-gray-50">
-              <h3 className="font-semibold text-sm text-gray-900">Layout Presets</h3>
+            <div style={{ padding: '12px', borderBottom: '1px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+              <h3 style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>Layout Presets</h3>
             </div>
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 bg-red-50 border-b border-red-200">
-                <p className="text-sm text-red-600">{error}</p>
+              <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderBottom: '1px solid #fecaca' }}>
+                <p style={{ fontSize: '14px', color: '#dc2626' }}>{error}</p>
               </div>
             )}
 
             {/* Actions */}
-            <div className="p-2 border-b border-gray-200 flex gap-2">
+            <div style={{ padding: '8px', borderBottom: '1px solid #e5e7eb', display: 'flex', gap: '8px' }}>
               <button
                 onClick={() => {
                   setShowSaveDialog(true);
                   setShowMenu(false);
                 }}
-                className="flex-1 px-3 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center gap-2"
+                style={{
+                  flex: 1,
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  backgroundColor: '#2563eb',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '14px', height: '14px', flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                 </svg>
                 Save Current
@@ -191,9 +230,22 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
                   onResetLayout();
                   setShowMenu(false);
                 }}
-                className="flex-1 px-3 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center justify-center gap-2"
+                style={{
+                  flex: 1,
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  backgroundColor: '#4b5563',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '14px', height: '14px', flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 Reset
@@ -201,53 +253,85 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
             </div>
 
             {/* Presets List */}
-            <div className="max-h-64 overflow-y-auto">
+            <div style={{ maxHeight: '256px', overflowY: 'auto' }}>
               {loading && presets.length === 0 ? (
-                <div className="p-4 text-center text-gray-500 text-sm">
+                <div style={{ padding: '16px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>
                   Loading presets...
                 </div>
               ) : presets.length === 0 ? (
-                <div className="p-4 text-center text-gray-500 text-sm">
+                <div style={{ padding: '16px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>
                   No saved presets. Save your current layout to get started.
                 </div>
               ) : (
-                <div className="divide-y divide-gray-200">
+                <div>
                   {presets.map((preset) => (
                     <div
                       key={preset.id}
-                      className="p-3 hover:bg-gray-50 cursor-pointer group"
+                      style={{
+                        padding: '12px',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #e5e7eb',
+                      }}
                       onClick={() => handleLoadPreset(preset.id)}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#f9fafb';
+                        const buttons = e.currentTarget.querySelector('.preset-actions') as HTMLElement;
+                        if (buttons) buttons.style.opacity = '1';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        const buttons = e.currentTarget.querySelector('.preset-actions') as HTMLElement;
+                        if (buttons) buttons.style.opacity = '0';
+                      }}
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-gray-900 truncate">
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <h4 style={{ fontSize: '14px', fontWeight: '500', color: '#111827', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {preset.name}
                           </h4>
                           {preset.description && (
-                            <p className="text-xs text-gray-500 mt-1 truncate">
+                            <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {preset.description}
                             </p>
                           )}
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '4px' }}>
                             Updated: {formatDate(preset.updatedAt)}
                           </p>
                         </div>
-                        <div className="flex gap-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="preset-actions" style={{ display: 'flex', gap: '4px', marginLeft: '8px', opacity: 0, transition: 'opacity 0.2s' }}>
                           <button
                             onClick={(e) => handleUpdatePreset(preset, e)}
-                            className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                            style={{
+                              padding: '4px',
+                              color: '#2563eb',
+                              backgroundColor: 'transparent',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#eff6ff')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                             title="Update with current layout"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style={{ width: '14px', height: '14px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
                           </button>
                           <button
                             onClick={(e) => handleDeletePreset(preset.id, e)}
-                            className="p-1 text-red-600 hover:bg-red-50 rounded"
+                            style={{
+                              padding: '4px',
+                              color: '#dc2626',
+                              backgroundColor: 'transparent',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#fef2f2')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                             title="Delete preset"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style={{ width: '14px', height: '14px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                           </button>
@@ -267,27 +351,42 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 flex items-center justify-center"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 30,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
             onClick={() => setShowSaveDialog(false)}
           />
           
           {/* Dialog */}
-          <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
+          <div style={{ position: 'fixed', inset: 0, zIndex: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
             <div
-              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                maxWidth: '448px',
+                width: '100%',
+                padding: '24px',
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-xl font-semibold mb-4">Save Layout Preset</h2>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px' }}>Save Layout Preset</h2>
               
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded">
-                  <p className="text-sm text-red-600">{error}</p>
+                <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: '4px' }}>
+                  <p style={{ fontSize: '14px', color: '#dc2626' }}>{error}</p>
                 </div>
               )}
 
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="preset-name" className="block text-sm font-medium text-gray-700 mb-1">
+              <div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label htmlFor="preset-name" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '4px' }}>
                     Preset Name *
                   </label>
                   <input
@@ -295,28 +394,40 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
                     type="text"
                     value={presetName}
                     onChange={(e) => setPresetName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                    }}
                     placeholder="e.g., Sales Dashboard Layout"
                     autoFocus
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="preset-description" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="preset-description" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '4px' }}>
                     Description (optional)
                   </label>
                   <textarea
                     id="preset-description"
                     value={presetDescription}
                     onChange={(e) => setPresetDescription(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                    }}
                     placeholder="Add a description..."
                     rows={3}
                   />
                 </div>
               </div>
 
-              <div className="mt-6 flex gap-3 justify-end">
+              <div style={{ marginTop: '24px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                 <button
                   onClick={() => {
                     setShowSaveDialog(false);
@@ -324,14 +435,34 @@ export const LayoutPresetsManager: React.FC<LayoutPresetsManagerProps> = ({
                     setPresetDescription('');
                     setError(null);
                   }}
-                  className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    color: '#374151',
+                    backgroundColor: '#f3f4f6',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e7eb')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
                   disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSavePreset}
-                  className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    color: 'white',
+                    backgroundColor: '#2563eb',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1d4ed8')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#2563eb')}
                   disabled={loading}
                 >
                   {loading ? 'Saving...' : 'Save Preset'}

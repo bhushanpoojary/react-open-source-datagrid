@@ -290,7 +290,7 @@ export const LayoutPersistenceDemo: React.FC = () => {
               color: '#2d3748'
             }}
           >
-            <span style={{ fontSize: '20px' }}>{icon}</span>
+            <span style={{ fontSize: '16px' }}>{icon}</span>
             <span>{label}</span>
           </div>
         ))}
