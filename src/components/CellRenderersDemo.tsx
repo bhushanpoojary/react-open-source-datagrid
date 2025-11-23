@@ -290,83 +290,56 @@ export const CellRenderersDemo: React.FC = () => {
   ];
 
   return (
-    <div className="h-full bg-neutral-50 p-6">
+    <div className="h-full bg-white p-8">
       <div className="max-w-full mx-auto h-full flex flex-col">
         {/* Page Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">
+          <h1 style={{fontSize: '24px', fontWeight: '600', color: '#333', marginBottom: '4px'}}>
             Cell Renderer Framework Demo
           </h1>
-          <p className="text-neutral-600 text-sm">
+          <p style={{fontSize: '14px', color: '#666'}}>
             Showcase of custom cell renderers for rich, interactive data visualization
           </p>
         </div>
 
         {/* Cell Renderer Features */}
-        <div className="mb-6 bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
-          <h2 className="text-lg font-semibold mb-4 text-neutral-900">
-            Available Cell Renderers
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">StatusChip</span>
-              <span className="text-xs text-neutral-600">
-                Color-coded status badges with dynamic styling
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">ProgressBar</span>
-              <span className="text-xs text-neutral-600">
-                Visual progress indicators with percentage labels
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">IconCell</span>
-              <span className="text-xs text-neutral-600">
-                Cells with icons and optional text
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">ImageCell</span>
-              <span className="text-xs text-neutral-600">
-                Avatar/image cells with rounded styling
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">ButtonCell</span>
-              <span className="text-xs text-neutral-600">
-                Actionable buttons with multiple variants
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">BadgeCell</span>
-              <span className="text-xs text-neutral-600">
-                Generic badges with custom colors
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">PriorityIndicator</span>
-              <span className="text-xs text-neutral-600">
-                Priority levels with color indicators
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">Rating</span>
-              <span className="text-xs text-neutral-600">
-                Star rating display component
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-neutral-900">CurrencyCell</span>
-              <span className="text-xs text-neutral-600">
-                Formatted currency with locale support
-              </span>
-            </div>
-          </div>
+        <div style={{marginBottom: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px'}}>
+          <h3 style={{fontSize: '16px', fontWeight: '600', color: '#333', marginBottom: '12px'}}>
+            Features:
+          </h3>
+          <ul style={{margin: 0, paddingLeft: '20px', lineHeight: '1.8'}}>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>StatusChip:</strong> <span style={{color: '#0066cc'}}>Color-coded status badges with dynamic styling</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>ProgressBar:</strong> <span style={{color: '#0066cc'}}>Visual progress indicators with percentage labels</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>IconCell:</strong> <span style={{color: '#0066cc'}}>Cells with icons and optional text</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>ImageCell:</strong> <span style={{color: '#0066cc'}}>Avatar/image cells with rounded styling</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>ButtonCell:</strong> <span style={{color: '#0066cc'}}>Actionable buttons with multiple variants</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>BadgeCell:</strong> <span style={{color: '#0066cc'}}>Generic badges with custom colors</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>PriorityIndicator:</strong> <span style={{color: '#0066cc'}}>Priority levels with color indicators</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>Rating:</strong> <span style={{color: '#0066cc'}}>Star rating display component</span>
+            </li>
+            <li style={{fontSize: '14px', color: '#333'}}>
+              <strong>CurrencyCell:</strong> <span style={{color: '#0066cc'}}>Formatted currency with locale support</span>
+            </li>
+          </ul>
         </div>
 
         {/* DataGrid */}
-        <div className="flex-1 bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
+        <div className="flex-1" style={{border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden', marginBottom: '20px'}}>
           <DataGrid
             columns={columns}
             rows={projects}
@@ -382,18 +355,18 @@ export const CellRenderersDemo: React.FC = () => {
         </div>
 
         {/* Event Log */}
-        <div className="mt-6 bg-white p-4 rounded-lg shadow-sm border border-neutral-200">
-          <h3 className="text-sm font-semibold mb-2 text-neutral-900">Event Log</h3>
-          <div className="space-y-1">
+        <div style={{marginTop: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px'}}>
+          <h3 style={{fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px'}}>Event Log</h3>
+          <div style={{fontSize: '13px'}}>
             {eventLog.length === 0 ? (
-              <p className="text-xs text-neutral-500 italic">
+              <p style={{color: '#999', fontStyle: 'italic'}}>
                 Click on buttons to see events...
               </p>
             ) : (
               eventLog.map((event, index) => (
                 <div
                   key={index}
-                  className="text-xs text-neutral-700 font-mono bg-neutral-50 p-2 rounded"
+                  style={{fontSize: '12px', color: '#333', fontFamily: 'monospace', padding: '8px', marginBottom: '4px', backgroundColor: '#f5f5f5', borderRadius: '2px'}}
                 >
                   {event}
                 </div>
@@ -403,9 +376,9 @@ export const CellRenderersDemo: React.FC = () => {
         </div>
 
         {/* Usage Example */}
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
-          <h3 className="text-lg font-semibold mb-3 text-neutral-900">Usage Example</h3>
-          <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-lg text-xs overflow-x-auto">
+        <div style={{marginTop: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px', backgroundColor: '#f9f9f9'}}>
+          <h3 style={{fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px'}}>Usage Example</h3>
+          <pre style={{backgroundColor: '#2d2d2d', color: '#f8f8f2', padding: '12px', borderRadius: '4px', fontSize: '13px', overflow: 'auto', margin: 0}}>
             <code>{`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
 
 const columns = [
