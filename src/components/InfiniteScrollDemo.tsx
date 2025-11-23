@@ -13,6 +13,7 @@ import React, { useMemo } from 'react';
 import { ThemedInfiniteScrollDataGrid } from './DataGrid/InfiniteScrollDataGrid';
 import { createMockServerDataSource } from './DataGrid/ServerSideDataSource';
 import type { Column } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 
 export const InfiniteScrollDemo: React.FC = () => {
   // Define columns
@@ -193,16 +194,10 @@ export const InfiniteScrollDemo: React.FC = () => {
           Implementation Example
         </h2>
         
-        <div style={{ 
-          backgroundColor: '#1e293b', 
-          color: '#e2e8f0', 
-          padding: '16px', 
-          borderRadius: '6px', 
-          fontFamily: 'monospace',
-          fontSize: '14px',
-          overflowX: 'auto'
-        }}>
-          <pre style={{ margin: 0 }}>{`// 1. Create a server-side data source
+        <CodeBlock
+          title="Creating Server-Side Data Source"
+          language="typescript"
+          code={`// 1. Create a server-side data source
 import { ServerSideDataSource } from './DataGrid/ServerSideDataSource';
 
 const dataSource = new ServerSideDataSource({
@@ -252,8 +247,8 @@ import { createMockServerDataSource } from './DataGrid/ServerSideDataSource';
 const mockDataSource = createMockServerDataSource(
   100_000_000, // 100M rows
   300          // 300ms delay
-);`}</pre>
-        </div>
+);`}
+        />
       </div>
 
       {/* API Documentation */}
@@ -262,25 +257,10 @@ const mockDataSource = createMockServerDataSource(
           Server-Side Request/Response Format
         </h2>
         
-        <div style={{ 
-          backgroundColor: '#f8fafc', 
-          padding: '16px', 
-          borderRadius: '6px',
-          border: '1px solid #e2e8f0'
-        }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>
-            Request:
-          </h3>
-          <div style={{ 
-            backgroundColor: '#1e293b', 
-            color: '#e2e8f0', 
-            padding: '12px', 
-            borderRadius: '4px', 
-            fontFamily: 'monospace',
-            fontSize: '13px',
-            marginBottom: '16px'
-          }}>
-            <pre style={{ margin: 0 }}>{`{
+        <CodeBlock
+          title="Request Format"
+          language="json"
+          code={`{
   "startRow": 0,
   "endRow": 100,
   "sortModel": [
@@ -290,21 +270,13 @@ const mockDataSource = createMockServerDataSource(
     "age": { "type": "greaterThan", "value": 25 },
     "country": { "type": "equals", "value": "USA" }
   }
-}`}</pre>
-          </div>
+}`}
+        />
 
-          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>
-            Response:
-          </h3>
-          <div style={{ 
-            backgroundColor: '#1e293b', 
-            color: '#e2e8f0', 
-            padding: '12px', 
-            borderRadius: '4px', 
-            fontFamily: 'monospace',
-            fontSize: '13px'
-          }}>
-            <pre style={{ margin: 0 }}>{`{
+        <CodeBlock
+          title="Response Format"
+          language="json"
+          code={`{
   "rows": [
     { "id": 1, "name": "John", "age": 30, ... },
     { "id": 2, "name": "Jane", "age": 28, ... },
@@ -312,9 +284,8 @@ const mockDataSource = createMockServerDataSource(
   ],
   "totalRows": 100000000,
   "lastRow": undefined  // undefined = more data available
-}`}</pre>
-          </div>
-        </div>
+}`}
+        />
       </div>
     </div>
   );

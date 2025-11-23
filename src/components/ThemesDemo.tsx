@@ -4,6 +4,7 @@ import { ThemeSelector } from './DataGrid/ThemeSelector';
 import type { Column, Row } from './DataGrid/types';
 import type { ThemeName } from './DataGrid/themes';
 import { getTheme, generateThemeCSS } from './DataGrid/themes';
+import { CodeBlock } from './CodeBlock';
 
 /**
  * ThemesDemo - Showcase of DataGrid Theme System
@@ -301,6 +302,59 @@ export const ThemesDemo: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Code Example */}
+        <div style={{ marginTop: '24px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: theme.colors.text }}>
+            Implementation Example
+          </h2>
+          <CodeBlock
+            title="Using Custom Themes"
+            language="tsx"
+            code={`import { ThemedDataGrid } from './components/DataGrid';
+
+// Use a built-in theme
+<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  theme="quartz"
+/>
+
+// Create a custom theme
+const customTheme: Theme = {
+  name: 'custom',
+  type: 'light',
+  colors: {
+    primary: '#6366f1',
+    secondary: '#8b5cf6',
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444',
+    info: '#3b82f6',
+    text: '#1f2937',
+    textSecondary: '#6b7280',
+    background: '#ffffff',
+    backgroundSecondary: '#f9fafb',
+    border: '#e5e7eb',
+    hover: '#f3f4f6',
+    selected: '#dbeafe',
+  },
+  spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 },
+  borderRadius: { sm: 4, md: 6, lg: 8 },
+  shadows: {
+    light: '0 1px 2px rgba(0,0,0,0.05)',
+    medium: '0 2px 4px rgba(0,0,0,0.1)',
+    strong: '0 4px 6px rgba(0,0,0,0.15)',
+  },
+};
+
+<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  theme={customTheme}
+/>`}
+          />
         </div>
       </div>
     </div>

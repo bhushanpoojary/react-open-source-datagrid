@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { ThemedDataGrid, StatusChip, CurrencyCell } from './DataGrid';
 import type { Column, Row } from './DataGrid';
+import { CodeBlock } from './CodeBlock';
 
 /**
  * DemoGridPage - Example usage of the DataGrid component
@@ -248,6 +249,264 @@ export const DemoGridPage: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Code Examples */}
+        <div style={{ marginTop: '40px' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px', color: '#111827' }}>
+            Implementation Examples
+          </h2>
+
+          <CodeBlock
+            title="Basic DataGrid Setup"
+            language="tsx"
+            code={`import { ThemedDataGrid } from './components/DataGrid';
+import type { Column, Row } from './components/DataGrid';
+
+// Define your data
+const employees: Row[] = [
+  { id: 1, name: 'John Doe', position: 'Software Engineer', salary: 95000 },
+  { id: 2, name: 'Jane Smith', position: 'Product Manager', salary: 110000 },
+  // ... more rows
+];
+
+// Define columns
+const columns: Column[] = [
+  { 
+    field: 'id', 
+    headerName: 'ID', 
+    width: 70, 
+    sortable: true 
+  },
+  { 
+    field: 'name', 
+    headerName: 'Name', 
+    width: 180, 
+    sortable: true,
+    filterable: true,
+    editable: true 
+  },
+  { 
+    field: 'position', 
+    headerName: 'Position', 
+    width: 200, 
+    sortable: true 
+  },
+  { 
+    field: 'salary', 
+    headerName: 'Salary', 
+    width: 130,
+    sortable: true,
+    filterable: true
+  },
+];
+
+<ThemedDataGrid
+  columns={columns}
+  rows={employees}
+  pageSize={10}
+  theme="quartz"
+/>`}
+          />
+
+          <CodeBlock
+            title="Using Custom Cell Renderers"
+            language="tsx"
+            code={`import { ThemedDataGrid, StatusChip, CurrencyCell } from './components/DataGrid';
+
+const columns: Column[] = [
+  { 
+    field: 'name', 
+    headerName: 'Name', 
+    width: 180 
+  },
+  { 
+    field: 'status', 
+    headerName: 'Status', 
+    width: 120,
+    // Custom renderer using StatusChip component
+    renderCell: (row: Row) => <StatusChip status={row.status} />
+  },
+  { 
+    field: 'salary', 
+    headerName: 'Salary', 
+    width: 130,
+    // Custom renderer using CurrencyCell component
+    renderCell: (row: Row) => <CurrencyCell value={row.salary} />
+  },
+];
+
+<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  pageSize={10}
+/>`}
+          />
+
+          <CodeBlock
+            title="Handling Events"
+            language="tsx"
+            code={`import { useState } from 'react';
+import { ThemedDataGrid } from './components/DataGrid';
+
+function MyComponent() {
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [data, setData] = useState<Row[]>(initialData);
+
+  return (
+    <ThemedDataGrid
+      columns={columns}
+      rows={data}
+      pageSize={10}
+      
+      // Handle row selection
+      onSelectionChange={(ids) => {
+        setSelectedIds(ids);
+        console.log('Selected IDs:', ids);
+      }}
+      
+      // Handle row clicks
+      onRowClick={(row) => {
+        console.log('Clicked row:', row);
+      }}
+      
+      // Handle cell edits
+      onCellEdit={(rowIndex, field, value) => {
+        const updatedData = [...data];
+        updatedData[rowIndex] = {
+          ...updatedData[rowIndex],
+          [field]: value
+        };
+        setData(updatedData);
+        console.log('Cell edited:', { rowIndex, field, value });
+      }}
+    />
+  );
+}`}
+          />
+
+          <CodeBlock
+            title="Footer Aggregations"
+            language="tsx"
+            code={`<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  pageSize={10}
+  
+  // Enable footer with aggregations
+  footerConfig={{
+    show: true,
+    aggregates: [
+      { 
+        field: 'salary', 
+        function: 'avg', 
+        label: 'Avg Salary' 
+      },
+      { 
+        field: 'salary', 
+        function: 'sum', 
+        label: 'Total Payroll' 
+      },
+      { 
+        field: 'salary', 
+        function: 'min', 
+        label: 'Min Salary' 
+      },
+      { 
+        field: 'salary', 
+        function: 'max', 
+        label: 'Max Salary' 
+      },
+      { 
+        field: 'id', 
+        function: 'count', 
+        label: 'Total Employees' 
+      },
+    ],
+  }}
+/>`}
+          />
+
+          <CodeBlock
+            title="Complete Example with All Features"
+            language="tsx"
+            code={`import React, { useState } from 'react';
+import { ThemedDataGrid, StatusChip, CurrencyCell } from './components/DataGrid';
+import type { Column, Row } from './components/DataGrid';
+
+export const EmployeeGrid: React.FC = () => {
+  const [employees, setEmployees] = useState<Row[]>([
+    { id: 1, name: 'John Doe', position: 'Engineer', salary: 95000, status: 'Active' },
+    { id: 2, name: 'Jane Smith', position: 'Manager', salary: 110000, status: 'Active' },
+    // ... more data
+  ]);
+  
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const columns: Column[] = [
+    { field: 'id', headerName: 'ID', width: 70, sortable: true },
+    { 
+      field: 'name', 
+      headerName: 'Name', 
+      width: 180, 
+      sortable: true, 
+      filterable: true,
+      editable: true 
+    },
+    { 
+      field: 'position', 
+      headerName: 'Position', 
+      width: 200, 
+      sortable: true,
+      filterable: true 
+    },
+    { 
+      field: 'salary', 
+      headerName: 'Salary', 
+      width: 130,
+      sortable: true,
+      filterable: true,
+      renderCell: (row) => <CurrencyCell value={row.salary} />
+    },
+    { 
+      field: 'status', 
+      headerName: 'Status', 
+      width: 120,
+      sortable: true,
+      filterable: true,
+      renderCell: (row) => <StatusChip status={row.status} />
+    },
+  ];
+
+  return (
+    <ThemedDataGrid
+      columns={columns}
+      rows={employees}
+      pageSize={10}
+      theme="quartz"
+      showColumnPinning={true}
+      
+      onRowClick={(row) => console.log('Row clicked:', row)}
+      
+      onSelectionChange={(ids) => setSelectedIds(ids)}
+      
+      onCellEdit={(rowIndex, field, value) => {
+        const updated = [...employees];
+        updated[rowIndex] = { ...updated[rowIndex], [field]: value };
+        setEmployees(updated);
+      }}
+      
+      footerConfig={{
+        show: true,
+        aggregates: [
+          { field: 'salary', function: 'avg', label: 'Avg Salary' },
+          { field: 'id', function: 'count', label: 'Total' },
+        ],
+      }}
+    />
+  );
+};`}
+          />
         </div>
       </div>
     </div>

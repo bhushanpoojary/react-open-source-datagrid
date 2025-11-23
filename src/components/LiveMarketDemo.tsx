@@ -17,6 +17,7 @@ import { MarketDataEngine, createMarketDataEngine } from './DataGrid/MarketDataE
 import { createMockFeed } from './DataGrid/WebSocketMockFeed';
 import type { WebSocketMockFeed } from './DataGrid/WebSocketMockFeed';
 import type { Column, MarketDataConfig } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 import './LiveMarketDemo.css';
 
 /**
@@ -381,6 +382,54 @@ export const LiveMarketDemo: React.FC = () => {
           💡 <strong>Tips:</strong> Use Pause to freeze updates • Enable Compact mode for more data • 
           Flash animations show price direction • Watch CPU throttling in action
         </p>
+      </div>
+
+      {/* Code Example */}
+      <div style={{ marginTop: '32px', padding: '20px', backgroundColor: 'white', borderRadius: '8px' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#1f2937' }}>
+          Implementation Example
+        </h2>
+        <CodeBlock
+          title="Market Data Configuration"
+          language="tsx"
+          code={`import { MarketDataGrid, createMarketDataEngine } from './components/DataGrid';
+
+// Create market data engine
+const engine = createMarketDataEngine({
+  updateThrottleMs: 16, // 60 FPS
+  flashDuration: 500,
+  maxUpdatesPerCycle: 1000,
+});
+
+// Configure market data
+const config = {
+  flashEnabled: true,
+  densityMode: false,
+  freezeMovement: false,
+  bidAskColors: {
+    bid: '#10b981',
+    ask: '#ef4444',
+  },
+};
+
+// Connect to WebSocket feed
+const feed = createMockFeed();
+feed.subscribe((updates) => {
+  updates.forEach(update => {
+    engine.queueUpdate(update.rowId, update.field, update.value);
+  });
+});
+
+<MarketDataGrid
+  columns={columns}
+  rows={rows}
+  engine={engine}
+  config={config}
+  onCellClick={(rowId, field, value) => {
+    console.log('Cell clicked:', { rowId, field, value });
+  }}
+/>`}
+        />
       </div>
     </div>
   );

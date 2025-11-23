@@ -1,6 +1,7 @@
 ﻿import React, { useMemo, useState } from 'react';
 import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, VirtualScrollConfig } from './DataGrid';
+import { CodeBlock } from './CodeBlock';
 
 /**
  * VirtualScrollDemo - Demonstrates virtual scrolling with large datasets
@@ -327,6 +328,37 @@ export const VirtualScrollDemo: React.FC = () => {
               to prevent unnecessary re-renders. Scroll events are throttled for performance.
             </p>
           </div>
+        </div>
+
+        {/* Code Example */}
+        <div style={{ marginTop: '24px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#1f2937' }}>
+            Implementation Example
+          </h2>
+          <CodeBlock
+            title="Virtual Scrolling Configuration"
+            language="tsx"
+            code={`import { ThemedDataGrid } from './components/DataGrid';
+
+const virtualScrollConfig = {
+  enabled: true,
+  rowHeight: 35, // Fixed row height for best performance
+  containerHeight: 600,
+  overscanCount: 5, // Extra rows to render above/below viewport
+  enableColumnVirtualization: true,
+  columnOverscan: 3, // Extra columns to render
+};
+
+<ThemedDataGrid
+  columns={columns}
+  rows={largeDataset}
+  pageSize={50000}
+  virtualScrollConfig={virtualScrollConfig}
+  onCellEdit={(rowIndex, field, value) => {
+    console.log('Cell edited:', { rowIndex, field, value });
+  }}
+/>`}
+          />
         </div>
       </div>
     </div>

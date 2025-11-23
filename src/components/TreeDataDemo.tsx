@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, TreeConfig } from './DataGrid';
+import { CodeBlock } from './CodeBlock';
 
 /**
  * TreeDataDemo Component
@@ -390,16 +391,10 @@ export const TreeDataDemo: React.FC = () => {
         <h3 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px', color: '#1f2937' }}>
           Quick Example
         </h3>
-        <pre style={{
-          backgroundColor: '#1f2937',
-          color: '#e5e7eb',
-          padding: '20px',
-          borderRadius: '8px',
-          overflow: 'auto',
-          fontSize: '13px',
-          lineHeight: '1.6'
-        }}>
-{`import { ThemedDataGrid } from './components/DataGrid';
+        <CodeBlock
+          title="Tree Data Configuration"
+          language="tsx"
+          code={`import { ThemedDataGrid } from './components/DataGrid';
 
 const data = [
   { id: 1, name: 'CEO', department: 'Executive', parentId: null },
@@ -421,7 +416,7 @@ const treeConfig = {
   rows={data}
   treeConfig={treeConfig}
 />`}
-        </pre>
+        />
       </div>
     </div>
   );

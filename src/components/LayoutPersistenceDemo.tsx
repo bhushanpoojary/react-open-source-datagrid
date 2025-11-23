@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, PersistenceConfig } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 
 // Sample data with varied content
 const generateDemoData = (count: number): Row[] => {
@@ -329,6 +330,77 @@ export const LayoutPersistenceDemo: React.FC = () => {
           <li><code>GET /layouts/:key/:presetId</code> - Load specific preset</li>
           <li><code>DELETE /layouts/:key/:presetId</code> - Delete preset</li>
         </ul>
+      </div>
+
+      {/* Code Examples */}
+      <div style={{ marginTop: '40px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px', color: '#1a202c' }}>
+          Implementation Examples
+        </h2>
+        
+        <CodeBlock
+          title="Basic Configuration - LocalStorage"
+          language="tsx"
+          code={`import { ThemedDataGrid } from './components/DataGrid';
+
+<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  persistenceConfig={{
+    enabled: true,
+    storageKey: 'my-grid-layout',
+    strategy: 'localStorage',
+    autoSave: true,
+    autoSaveDelay: 1000,
+    autoLoad: true,
+  }}
+/>`}
+        />
+
+        <CodeBlock
+          title="Server-Side Persistence"
+          language="tsx"
+          code={`<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  persistenceConfig={{
+    enabled: true,
+    storageKey: 'company-grid',
+    strategy: 'server',
+    autoSave: true,
+    autoLoad: true,
+    serverConfig: {
+      baseUrl: 'https://api.example.com',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN',
+        'Content-Type': 'application/json',
+      },
+    },
+  }}
+/>`}
+        />
+
+        <CodeBlock
+          title="User Profile Persistence"
+          language="tsx"
+          code={`<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  persistenceConfig={{
+    enabled: true,
+    storageKey: 'grid-preferences',
+    strategy: 'userProfile',
+    autoSave: true,
+    autoLoad: true,
+    userProfileConfig: {
+      userId: currentUser.id,
+    },
+  }}
+  onLayoutChange={(layout) => {
+    console.log('Layout changed:', layout);
+  }}
+/>`}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DataGrid } from './DataGrid';
 import type { Column, Row } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 
 // Demo data for task prioritization
 const initialTasks: Row[] = [
@@ -252,6 +253,40 @@ export const RowDraggingDemo: React.FC = () => {
             ))
           )}
         </div>
+      </section>
+
+      {/* Implementation Example */}
+      <section style={{ marginTop: '40px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '16px', color: '#1f2937' }}>
+          Implementation Example
+        </h2>
+        <CodeBlock
+          title="Row Dragging Configuration"
+          language="tsx"
+          code={`import { DataGrid } from './components/DataGrid';
+
+const [tasks, setTasks] = useState<Row[]>(initialTasks);
+
+<DataGrid
+  columns={columns}
+  rows={tasks}
+  rowDragging={{
+    enabled: true,
+    handleField: 'drag-handle',
+    onRowReorder: (reorderedRows) => {
+      setTasks(reorderedRows);
+      console.log('Tasks reordered:', reorderedRows);
+    },
+    // Optional: Enable drag between tables
+    onRowDragEnd: (draggedRow, sourceTable, targetTable) => {
+      if (sourceTable !== targetTable) {
+        console.log('Row moved between tables');
+      }
+    }
+  }}
+  tableId="task-list"
+/>`}
+        />
       </section>
     </div>
   );

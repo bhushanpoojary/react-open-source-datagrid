@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ThemedDataGrid } from './DataGrid';
-import type { Column, Row } from './DataGrid';
+import type { Column, Row } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 import {
   StatusChip,
   ProgressBar,
@@ -377,10 +378,12 @@ export const CellRenderersDemo: React.FC = () => {
         </div>
 
         {/* Usage Example */}
-        <div style={{marginTop: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px', backgroundColor: '#f9f9f9'}}>
-          <h3 style={{fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px'}}>Usage Example</h3>
-          <pre style={{backgroundColor: '#2d2d2d', color: '#f8f8f2', padding: '12px', borderRadius: '4px', fontSize: '13px', overflow: 'auto', margin: 0}}>
-            <code>{`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
+        <div style={{marginTop: '20px'}}>
+          <h3 style={{fontSize: '18px', fontWeight: '600', color: '#333', marginBottom: '12px'}}>Usage Example</h3>
+          <CodeBlock
+            title="Using Cell Renderer Components"
+            language="tsx"
+            code={`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
 
 const columns = [
   {
@@ -406,8 +409,8 @@ const columns = [
   }
 ];
 
-<DataGrid columns={columns} rows={data} />`}</code>
-          </pre>
+<DataGrid columns={columns} rows={data} />`}
+          />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemedDataGrid } from './DataGrid';
-import type { Column, Row } from './DataGrid';
+import type { Column, Row } from './DataGrid/types';
+import { CodeBlock } from './CodeBlock';
 
 /**
  * Demo component showcasing the Column Filters feature
@@ -328,6 +329,60 @@ export const ColumnFiltersDemo: React.FC = () => {
           <li>Try the range filters for Salary and Join Date</li>
           <li>Set filters show the count of selected values</li>
         </ul>
+      </div>
+
+      {/* Code Example */}
+      <div style={{ marginTop: '32px' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#1f2937' }}>
+          Implementation Example
+        </h2>
+        <CodeBlock
+          title="Column Filter Configuration"
+          language="tsx"
+          code={`import { ThemedDataGrid } from './components/DataGrid';
+
+const columns = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+    sortable: true,
+    filterable: true,
+    filterType: 'text', // Text filter with contains/equals/startsWith/endsWith
+  },
+  {
+    field: 'age',
+    headerName: 'Age',
+    width: 100,
+    sortable: true,
+    filterable: true,
+    filterType: 'number', // Number filter with equals/greaterThan/lessThan/between
+  },
+  {
+    field: 'department',
+    headerName: 'Department',
+    width: 150,
+    sortable: true,
+    filterable: true,
+    filterType: 'set', // Set filter with checkbox selection
+  },
+  {
+    field: 'joinDate',
+    headerName: 'Join Date',
+    width: 130,
+    sortable: true,
+    filterable: true,
+    filterType: 'date', // Date filter with before/after/between
+  },
+];
+
+<ThemedDataGrid
+  columns={columns}
+  rows={data}
+  pageSize={10}
+  theme="quartz"
+/>`}
+        />
       </div>
     </div>
   );
