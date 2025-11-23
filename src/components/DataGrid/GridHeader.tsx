@@ -7,7 +7,6 @@ interface GridHeaderProps {
   displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
   sortConfig: SortConfig;
-  filterConfig: { [field: string]: string };
   dispatch: React.Dispatch<GridAction>;
   pinnedLeft: string[];
   pinnedRight: string[];
@@ -20,7 +19,6 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   displayColumnOrder,
   columnWidths,
   sortConfig,
-  filterConfig,
   dispatch,
   pinnedLeft,
   pinnedRight,
@@ -79,11 +77,6 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
     return style;
   };
 
-  const getFilterCellStyle = (field: string): React.CSSProperties => ({
-    ...getStickyHeaderStyle(field),
-    backgroundColor: '#fff',
-  });
-
   // Handle column sorting
   const handleSort = (field: string) => {
     const column = columnMap.get(field);
@@ -102,14 +95,6 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
     dispatch({
       type: 'SET_SORT',
       payload: { field: direction ? field : '', direction },
-    });
-  };
-
-  // Handle filter changes
-  const handleFilterChange = (field: string, value: string) => {
-    dispatch({
-      type: 'SET_FILTER',
-      payload: { field, value },
     });
   };
 
@@ -354,57 +339,6 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
         })}
       </div>
 
-      {/* Filter Row */}
-      <div style={{ display: 'flex', backgroundColor: '#ffffff', borderTop: '1px solid #e2e8f0' }}>
-        {displayColumnOrder.map((field) => {
-          const column = columnMap.get(field);
-          if (!column) return null;
-
-          return (
-            <div
-              key={`filter-${field}`}
-              style={{
-                ...getFilterCellStyle(field),
-                borderRight: '1px solid #e2e8f0',
-                flexShrink: 0,
-                padding: '6px',
-                backgroundColor: '#fafafa',
-              }}
-            >
-              {column.filterable !== false && (
-                <input
-                  type="text"
-                  style={{ 
-                    width: '100%', 
-                    paddingLeft: '8px', 
-                    paddingRight: '8px', 
-                    paddingTop: '6px', 
-                    paddingBottom: '6px', 
-                    fontSize: '13px', 
-                    border: '1px solid #d9d9d9', 
-                    borderRadius: '3px', 
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#262626',
-                  }}
-                  placeholder={`Search...`}
-                  value={filterConfig[field] || ''}
-                  onChange={(e) => handleFilterChange(field, e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = '#0066cc';
-                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0, 102, 204, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#d9d9d9';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

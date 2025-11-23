@@ -8,8 +8,10 @@ import { GroupByPanel } from './GroupByPanel';
 import { GridFooter } from './GridFooter';
 import { ColumnChooser } from './ColumnChooser';
 import { ExportMenu } from './ExportMenu';
+import { ColumnFilters } from './ColumnFilters';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
+import { applyFilters, hasActiveFilters } from './filterUtils';
 
 /**
  * DataGrid Component
@@ -107,28 +109,12 @@ export const DataGrid: React.FC<DataGridProps> = ({
     return sorted;
   }, [rows, state.sortConfig]);
 
-  // Apply filtering
+  // Apply filtering using the new filter utilities
   const filteredRows = useMemo(() => {
-    const filterEntries = Object.entries(state.filterConfig).filter(
-      ([, value]) => value.trim() !== ''
-    );
-
-    if (filterEntries.length === 0) {
+    if (!hasActiveFilters(state.filterConfig)) {
       return sortedRows;
     }
-
-    return sortedRows.filter((row) => {
-      return filterEntries.every(([field, filterValue]) => {
-        const cellValue = row[field];
-        
-        if (cellValue == null) return false;
-
-        // Case-insensitive partial match
-        return String(cellValue)
-          .toLowerCase()
-          .includes(filterValue.toLowerCase());
-      });
-    });
+    return applyFilters(sortedRows, state.filterConfig);
   }, [sortedRows, state.filterConfig]);
 
   // Apply grouping
@@ -274,11 +260,22 @@ export const DataGrid: React.FC<DataGridProps> = ({
           displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
           sortConfig={state.sortConfig}
-          filterConfig={state.filterConfig}
           dispatch={dispatch}
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           showColumnPinning={showColumnPinning}
+        />
+        
+        {/* Floating Filter Row */}
+        <ColumnFilters
+          columns={columns}
+          displayColumnOrder={displayColumnOrder}
+          columnWidths={state.columnWidths}
+          filterConfig={state.filterConfig}
+          dispatch={dispatch}
+          pinnedLeft={pinnedLeftFields}
+          pinnedRight={pinnedRightFields}
+          rows={filteredRows}
         />
       </div>
 

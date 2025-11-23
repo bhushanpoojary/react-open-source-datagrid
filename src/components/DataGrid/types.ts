@@ -1,6 +1,8 @@
 // Core type definitions for the DataGrid component
 import React from 'react';
 
+export type FilterType = 'text' | 'number' | 'date' | 'set' | 'multi';
+
 export interface Column {
   field: string;
   headerName: string;
@@ -9,6 +11,7 @@ export interface Column {
   sortable?: boolean;
   filterable?: boolean;
   pinnable?: boolean;
+  filterType?: FilterType; // Specify filter type for the column
   renderCell?: (row: Row) => React.ReactNode; // Custom cell renderer
 }
 
@@ -22,8 +25,16 @@ export interface SortConfig {
   direction: 'asc' | 'desc' | null;
 }
 
+// Enhanced filter configuration supporting multiple filter types
+export interface FilterValue {
+  type?: string; // Filter operation type (e.g., 'contains', 'equals', 'greaterThan', etc.)
+  value?: any;   // Primary filter value
+  value2?: any;  // Secondary value for range filters
+  values?: any[]; // Array of values for set/multi-select filters
+}
+
 export interface FilterConfig {
-  [field: string]: string;
+  [field: string]: FilterValue | null;
 }
 
 export interface SelectionState {
@@ -103,7 +114,8 @@ export interface GridState {
 // Action types for reducer
 export type GridAction =
   | { type: 'SET_SORT'; payload: SortConfig }
-  | { type: 'SET_FILTER'; payload: { field: string; value: string } }
+  | { type: 'SET_FILTER'; payload: { field: string; value: FilterValue | null } }
+  | { type: 'CLEAR_FILTERS' }
   | { type: 'SET_PAGE'; payload: number }
   | { type: 'SET_PAGE_SIZE'; payload: number }
   | { type: 'TOGGLE_ROW_SELECTION'; payload: { rowId: string | number; isMulti: boolean } }

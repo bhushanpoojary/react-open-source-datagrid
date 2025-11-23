@@ -3,6 +3,7 @@ export { DataGrid } from './DataGrid';
 export { VirtualScroller } from './VirtualScroller';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
+export { ColumnFilters } from './ColumnFilters';
 export type { 
   Column, 
   Row, 
@@ -11,7 +12,10 @@ export type {
   AggregateFunction,
   AggregateConfig,
   FooterConfig,
-  VirtualScrollConfig
+  VirtualScrollConfig,
+  FilterType,
+  FilterValue,
+  FilterConfig
 } from './types';
 export { handleExport, exportToCSV, exportToXLSX, generateFilename } from './exportUtils';
 export type { ExportFormat, ExportScope, ExcelStyling, ExportOptions } from './exportUtils';

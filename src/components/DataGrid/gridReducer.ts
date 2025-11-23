@@ -50,13 +50,26 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
 
     case 'SET_FILTER': {
       const { field, value } = action.payload;
+      const newFilterConfig = { ...state.filterConfig };
+      
+      if (value === null || value === undefined) {
+        delete newFilterConfig[field];
+      } else {
+        newFilterConfig[field] = value;
+      }
+      
       return {
         ...state,
-        filterConfig: {
-          ...state.filterConfig,
-          [field]: value,
-        },
+        filterConfig: newFilterConfig,
         currentPage: 0, // Reset to first page on filter
+      };
+    }
+
+    case 'CLEAR_FILTERS': {
+      return {
+        ...state,
+        filterConfig: {},
+        currentPage: 0,
       };
     }
 
