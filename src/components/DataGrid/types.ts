@@ -120,6 +120,16 @@ export type GridAction =
   | { type: 'PIN_COLUMN'; payload: { field: string; side: 'left' | 'right' } }
   | { type: 'UNPIN_COLUMN'; payload: string };
 
+// Virtual scrolling configuration
+export interface VirtualScrollConfig {
+  enabled: boolean;
+  rowHeight?: number | ((index: number, row: Row | GroupedRow) => number);
+  containerHeight?: number;
+  overscanCount?: number;
+  enableColumnVirtualization?: boolean;
+  columnOverscan?: number;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -127,6 +137,7 @@ export interface DataGridProps {
   pageSize?: number;
   showColumnPinning?: boolean;
   footerConfig?: FooterConfig;
+  virtualScrollConfig?: VirtualScrollConfig;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;

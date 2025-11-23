@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig } from './types';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig } from './types';
 import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
+import { VirtualScroller } from './VirtualScroller';
 
 interface GridBodyProps {
   columns: Column[];
@@ -20,6 +21,7 @@ interface GridBodyProps {
   showGroupFooters?: boolean;
   groupAggregates?: Map<string, { [key: string]: number | null }>;
   aggregateConfigs?: AggregateConfig[];
+  virtualScrollConfig?: VirtualScrollConfig;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -39,6 +41,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   showGroupFooters = false,
   groupAggregates = new Map(),
   aggregateConfigs = [],
+  virtualScrollConfig,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -225,104 +228,207 @@ export const GridBody: React.FC<GridBodyProps> = ({
     });
   };
 
+  // Render a single row (used by both virtual and non-virtual modes)
+  const renderRowContent = (row: Row | GroupedRow, rowIndex: number, style?: React.CSSProperties) => {
+    // Check if this is a group row
+    if (isGroupedRow(row)) {
+      const groupAgg = groupAggregates.get(row.groupKey) || {};
+      
+      return (
+        <React.Fragment key={row.groupKey}>
+          <GroupRow
+            group={row}
+            columns={columns}
+            columnOrder={columnOrder}
+            displayColumnOrder={displayColumnOrder}
+            columnWidths={columnWidths}
+            dispatch={dispatch}
+            pinnedLeft={pinnedLeft}
+            pinnedRight={pinnedRight}
+          />
+          {/* Render group footer if expanded and showGroupFooters is enabled */}
+          {showGroupFooters && row.isExpanded && aggregateConfigs.length > 0 && (
+            <GroupFooterRow
+              group={row}
+              columns={columns}
+              displayColumnOrder={displayColumnOrder}
+              columnWidths={columnWidths}
+              aggregates={groupAgg}
+              aggregateConfigs={aggregateConfigs}
+              pinnedLeft={pinnedLeft}
+              pinnedRight={pinnedRight}
+            />
+          )}
+        </React.Fragment>
+      );
+    }
+
+    // Regular row rendering
+    const isSelected = selectedRows.has(row.id);
+    const isFocused = focusState?.rowIndex === rowIndex;
+
+    return (
+      <div
+        key={row.id}
+        className={`flex border-b border-gray-200 hover:bg-gray-50 ${
+          isSelected ? 'bg-blue-50' : ''
+        } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
+        style={style}
+        onClick={(e) => handleRowClick(row, rowIndex, e)}
+      >
+        {displayColumnOrder.map((field, columnIndex) => {
+          const column = columnMap.get(field);
+          if (!column) return null;
+
+          const cellValue = row[field];
+          const isEditing =
+            editState.rowId === row.id && editState.field === field;
+          const isCellFocused =
+            focusState?.rowIndex === rowIndex &&
+            focusState?.columnIndex === columnIndex;
+          const cellStyle = getPinnedCellStyle(field);
+
+          return (
+            <div
+              key={`${row.id}-${field}`}
+              className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
+                isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
+              }`}
+              style={cellStyle}
+              onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+              onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
+              tabIndex={isCellFocused ? 0 : -1}
+            >
+              {isEditing ? (
+                <input
+                  ref={editInputRef}
+                  type="text"
+                  className="w-full px-1 py-0 border border-blue-500 rounded focus:outline-none"
+                  value={editState.value ?? ''}
+                  onChange={(e) => handleEditChange(e.target.value)}
+                  onBlur={handleEditComplete}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleEditComplete();
+                    } else if (e.key === 'Escape') {
+                      e.preventDefault();
+                      dispatch({ type: 'END_EDIT' });
+                    }
+                  }}
+                />
+              ) : (
+                <span className="truncate block">{cellValue ?? ''}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // Render with virtual scrolling if enabled
+  if (virtualScrollConfig?.enabled) {
+    // Prepare columns for virtualization
+    const virtualColumns = displayColumnOrder.map(field => ({
+      field,
+      width: columnWidths[field] || 150,
+    }));
+    
+    const totalColumnWidth = virtualColumns.reduce((sum, col) => sum + col.width, 0);
+    
+    // Determine if column virtualization is enabled
+    const enableColumnVirtualization = virtualScrollConfig.enableColumnVirtualization ?? true;
+
+    return (
+      <div ref={bodyRef} style={{ position: 'relative' }}>
+        <VirtualScroller<Row | GroupedRow>
+          items={rows}
+          itemHeight={virtualScrollConfig.rowHeight || 35}
+          overscanCount={virtualScrollConfig.overscanCount || 5}
+          containerHeight={virtualScrollConfig.containerHeight || 600}
+          columns={enableColumnVirtualization ? virtualColumns : []}
+          totalColumnWidth={enableColumnVirtualization ? totalColumnWidth : 0}
+          columnOverscan={virtualScrollConfig.columnOverscan || 3}
+          renderItem={(row, index, style) => renderRowContent(row, index, style)}
+          renderRow={enableColumnVirtualization ? (row, index, visibleColumns, style) => {
+            if (isGroupedRow(row)) {
+              // For group rows, render without column virtualization
+              return renderRowContent(row, index);
+            }
+
+            const isSelected = selectedRows.has(row.id);
+            const isFocused = focusState?.rowIndex === index;
+
+            return (
+              <div
+                className={`flex border-b border-gray-200 hover:bg-gray-50 ${
+                  isSelected ? 'bg-blue-50' : ''
+                } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
+                onClick={(e) => handleRowClick(row, index, e)}
+                style={style}
+              >
+                {visibleColumns.map((colInfo, columnIndex) => {
+                  const field = colInfo.field;
+                  const column = columnMap.get(field);
+                  if (!column) return null;
+
+                  const cellValue = row[field];
+                  const isEditing =
+                    editState.rowId === row.id && editState.field === field;
+                  const isCellFocused =
+                    focusState?.rowIndex === index &&
+                    focusState?.columnIndex === displayColumnOrder.indexOf(field);
+
+                  return (
+                    <div
+                      key={`${row.id}-${field}`}
+                      className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
+                        isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
+                      }`}
+                      style={{
+                        width: `${colInfo.width}px`,
+                      }}
+                      onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+                      onKeyDown={(e) => handleKeyDown(e, index, columnIndex)}
+                      tabIndex={isCellFocused ? 0 : -1}
+                    >
+                      {isEditing ? (
+                        <input
+                          ref={editInputRef}
+                          type="text"
+                          className="w-full px-1 py-0 border border-blue-500 rounded focus:outline-none"
+                          value={editState.value ?? ''}
+                          onChange={(e) => handleEditChange(e.target.value)}
+                          onBlur={handleEditComplete}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleEditComplete();
+                            } else if (e.key === 'Escape') {
+                              e.preventDefault();
+                              dispatch({ type: 'END_EDIT' });
+                            }
+                          }}
+                        />
+                      ) : (
+                        <span className="truncate block">{cellValue ?? ''}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          } : undefined}
+        />
+      </div>
+    );
+  }
+
+  // Non-virtual scrolling mode (original implementation)
   return (
     <div ref={bodyRef} className="overflow-auto" style={{ maxHeight: '500px', position: 'relative' }}>
-      {rows.map((row, rowIndex) => {
-        // Check if this is a group row
-        if (isGroupedRow(row)) {
-          const groupAgg = groupAggregates.get(row.groupKey) || {};
-          
-          return (
-            <React.Fragment key={row.groupKey}>
-              <GroupRow
-                group={row}
-                columns={columns}
-                columnOrder={columnOrder}
-                displayColumnOrder={displayColumnOrder}
-                columnWidths={columnWidths}
-                dispatch={dispatch}
-                pinnedLeft={pinnedLeft}
-                pinnedRight={pinnedRight}
-              />
-              {/* Render group footer if expanded and showGroupFooters is enabled */}
-              {showGroupFooters && row.isExpanded && aggregateConfigs.length > 0 && (
-                <GroupFooterRow
-                  group={row}
-                  columns={columns}
-                  displayColumnOrder={displayColumnOrder}
-                  columnWidths={columnWidths}
-                  aggregates={groupAgg}
-                  aggregateConfigs={aggregateConfigs}
-                  pinnedLeft={pinnedLeft}
-                  pinnedRight={pinnedRight}
-                />
-              )}
-            </React.Fragment>
-          );
-        }
-
-        // Regular row rendering
-        const isSelected = selectedRows.has(row.id);
-        const isFocused = focusState?.rowIndex === rowIndex;
-
-        return (
-          <div
-            key={row.id}
-            className={`flex border-b border-gray-200 hover:bg-gray-50 ${
-              isSelected ? 'bg-blue-50' : ''
-            } ${isFocused ? 'ring-2 ring-blue-300' : ''}`}
-            onClick={(e) => handleRowClick(row, rowIndex, e)}
-          >
-            {displayColumnOrder.map((field, columnIndex) => {
-              const column = columnMap.get(field);
-              if (!column) return null;
-
-              const cellValue = row[field];
-              const isEditing =
-                editState.rowId === row.id && editState.field === field;
-              const isCellFocused =
-                focusState?.rowIndex === rowIndex &&
-                focusState?.columnIndex === columnIndex;
-              const cellStyle = getPinnedCellStyle(field);
-
-              return (
-                <div
-                  key={`${row.id}-${field}`}
-                  className={`px-3 py-2 text-sm border-r border-gray-200 flex-shrink-0 ${
-                    isCellFocused ? 'ring-2 ring-inset ring-blue-500' : ''
-                  }`}
-                  style={cellStyle}
-                  onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
-                  onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
-                  tabIndex={isCellFocused ? 0 : -1}
-                >
-                  {isEditing ? (
-                    <input
-                      ref={editInputRef}
-                      type="text"
-                      className="w-full px-1 py-0 border border-blue-500 rounded focus:outline-none"
-                      value={editState.value ?? ''}
-                      onChange={(e) => handleEditChange(e.target.value)}
-                      onBlur={handleEditComplete}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          handleEditComplete();
-                        } else if (e.key === 'Escape') {
-                          e.preventDefault();
-                          dispatch({ type: 'END_EDIT' });
-                        }
-                      }}
-                    />
-                  ) : (
-                    <span className="truncate block">{cellValue ?? ''}</span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
+      {rows.map((row, rowIndex) => renderRowContent(row, rowIndex))}
     </div>
   );
 };

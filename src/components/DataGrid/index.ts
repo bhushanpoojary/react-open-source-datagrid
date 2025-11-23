@@ -1,5 +1,6 @@
 // Export all DataGrid components and types
 export { DataGrid } from './DataGrid';
+export { VirtualScroller } from './VirtualScroller';
 export type { 
   Column, 
   Row, 
@@ -7,5 +8,6 @@ export type {
   GroupedRow, 
   AggregateFunction,
   AggregateConfig,
-  FooterConfig
+  FooterConfig,
+  VirtualScrollConfig
 } from './types';

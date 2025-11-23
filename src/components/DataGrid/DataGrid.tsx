@@ -32,6 +32,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   pageSize = 10,
   showColumnPinning = true,
   footerConfig,
+  virtualScrollConfig,
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -248,7 +249,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       {/* Grid Body */}
       <GridBody
         columns={columns}
-        rows={paginatedRows}
+        rows={virtualScrollConfig?.enabled ? flattenedRows : paginatedRows}
         columnOrder={state.columnOrder}
         displayColumnOrder={displayColumnOrder}
         columnWidths={state.columnWidths}
@@ -263,6 +264,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         showGroupFooters={footerConfig?.showGroupFooters}
         groupAggregates={groupAggregates}
         aggregateConfigs={footerConfig?.aggregates}
+        virtualScrollConfig={virtualScrollConfig}
       />
 
       {/* Global Footer */}
@@ -278,13 +280,15 @@ export const DataGrid: React.FC<DataGridProps> = ({
         />
       )}
 
-      {/* Pagination */}
-      <GridPagination
-        currentPage={state.currentPage}
-        pageSize={state.pageSize}
-        totalRows={flattenedRows.length}
-        dispatch={dispatch}
-      />
+      {/* Pagination - Hide when virtual scrolling is enabled */}
+      {!virtualScrollConfig?.enabled && (
+        <GridPagination
+          currentPage={state.currentPage}
+          pageSize={state.pageSize}
+          totalRows={flattenedRows.length}
+          dispatch={dispatch}
+        />
+      )}
     </div>
   );
 };
