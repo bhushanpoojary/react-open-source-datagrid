@@ -81,36 +81,24 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
   const moveVisibleUp = () => {
     if (selectedVisible) {
       const index = visibleColumns.findIndex(col => col.field === selectedVisible);
-      console.log('Move Up - Current index in visible list:', index, 'Total visible:', visibleColumns.length);
       if (index > 0) {
         const globalIndex = columnOrder.indexOf(selectedVisible);
         const targetField = visibleColumns[index - 1].field;
         const targetGlobalIndex = columnOrder.indexOf(targetField);
-        console.log('Moving from global index', globalIndex, 'to', targetGlobalIndex);
         onReorderColumns(globalIndex, targetGlobalIndex);
-      } else {
-        console.log('Already at top of visible list');
       }
-    } else {
-      console.log('No column selected');
     }
   };
 
   const moveVisibleDown = () => {
     if (selectedVisible) {
       const index = visibleColumns.findIndex(col => col.field === selectedVisible);
-      console.log('Move Down - Current index in visible list:', index, 'Total visible:', visibleColumns.length);
       if (index < visibleColumns.length - 1) {
         const globalIndex = columnOrder.indexOf(selectedVisible);
         const targetField = visibleColumns[index + 1].field;
         const targetGlobalIndex = columnOrder.indexOf(targetField);
-        console.log('Moving from global index', globalIndex, 'to', targetGlobalIndex);
         onReorderColumns(globalIndex, targetGlobalIndex);
-      } else {
-        console.log('Already at bottom of visible list');
       }
-    } else {
-      console.log('No column selected');
     }
   };
 
@@ -121,6 +109,7 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
         ref={panelRef}
         className="fixed bg-white border-2 border-gray-400 rounded-lg shadow-2xl z-[10000] opacity-100"
         style={{
+          background: 'white',
           top: `${panelPosition.top}px`,
           left: `${panelPosition.left}px`,
           width: '600px',
@@ -144,15 +133,20 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                   <div 
                     key={column.field} 
                     onClick={() => { 
-                      console.log('Selected available column:', column.headerName);
                       setSelectedAvailable(column.field); 
                       setSelectedVisible(null); 
                     }}
-                    className={`px-3 py-2 cursor-pointer border-b border-gray-200 ${
-                      isSelected 
-                        ? 'bg-blue-600 text-white font-semibold' 
-                        : 'bg-white text-gray-900 hover:bg-blue-50'
-                    }`}
+                    style={{
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      borderBottom: '1px solid #e5e7eb',
+                      backgroundColor: isSelected ? '#2563eb' : '#ffffff',
+                      color: isSelected ? '#ffffff' : '#111827',
+                      fontWeight: isSelected ? '600' : '400',
+                    }}
+                    className="hover:bg-blue-50"
+                    onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#eff6ff')}
+                    onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
                   >
                     {column.headerName}
                   </div>
@@ -176,15 +170,20 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
                   <div 
                     key={column.field} 
                     onClick={() => { 
-                      console.log('Selected visible column:', column.headerName, 'field:', column.field);
                       setSelectedVisible(column.field); 
                       setSelectedAvailable(null); 
                     }}
-                    className={`px-3 py-2 cursor-pointer border-b border-gray-200 ${
-                      isSelected 
-                        ? 'bg-blue-600 text-white font-semibold' 
-                        : 'bg-white text-gray-900 hover:bg-blue-50'
-                    }`}
+                    style={{
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      borderBottom: '1px solid #e5e7eb',
+                      backgroundColor: isSelected ? '#2563eb' : '#ffffff',
+                      color: isSelected ? '#ffffff' : '#111827',
+                      fontWeight: isSelected ? '600' : '400',
+                    }}
+                    className="hover:bg-blue-50"
+                    onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#eff6ff')}
+                    onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#ffffff')}
                   >
                     {column.headerName}
                   </div>
@@ -195,7 +194,6 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
           <div className="flex flex-col justify-center gap-2">
             <button 
               onClick={() => {
-                console.log('▲ Up button clicked. Selected:', selectedVisible);
                 moveVisibleUp();
               }} 
               disabled={!selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === 0}
@@ -205,7 +203,6 @@ export const ColumnChooser: React.FC<ColumnChooserProps> = ({
             </button>
             <button 
               onClick={() => {
-                console.log('▼ Down button clicked. Selected:', selectedVisible);
                 moveVisibleDown();
               }} 
               disabled={!selectedVisible || visibleColumns.findIndex(c => c.field === selectedVisible) === visibleColumns.length - 1}
