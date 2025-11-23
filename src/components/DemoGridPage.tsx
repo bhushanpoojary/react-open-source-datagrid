@@ -98,90 +98,90 @@ export const DemoGridPage: React.FC = () => {
   };
 
   return (
-    <div className="h-full bg-neutral-50 p-6">
-      <div className="max-w-full mx-auto h-full flex flex-col">
+    <div style={{ height: '100%', backgroundColor: '#f9fafb', padding: '24px', overflow: 'auto' }}>
+      <div style={{ maxWidth: '100%', margin: '0 auto', minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
         {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">
+        <div style={{ marginBottom: '24px', flexShrink: 0 }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
             Employee Directory
           </h1>
-          <p className="text-neutral-600 text-sm">
+          <p style={{ color: '#6b7280', fontSize: '14px' }}>
             Manage and explore employee information with sorting, filtering, and advanced features
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="mb-6 bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
-          <h2 className="text-lg font-semibold mb-4 text-neutral-900">Available Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Sortable columns</span>
+        <div style={{ marginBottom: '24px', flexShrink: 0, backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#111827' }}>Available Features</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px', fontSize: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Sortable columns</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Column filtering</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Column filtering</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Pagination controls</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Pagination controls</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Column resizing</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Column resizing</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Column reordering</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Column reordering</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Row selection</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Row selection</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Editable cells</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Editable cells</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Keyboard navigation</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Keyboard navigation</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Sticky headers</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Sticky headers</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Row grouping</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Row grouping</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Aggregations</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Aggregations</span>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-primary-500 font-semibold mt-0.5">✓</span>
-              <span className="text-neutral-700">Footer aggregates</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Footer aggregates</span>
             </div>
           </div>
         </div>
 
         {/* Instructions Card */}
-        <div className="mb-6 bg-primary-50 border border-primary-200 p-5 rounded-lg">
-          <h3 className="font-semibold text-primary-900 mb-3 text-sm">How to use:</h3>
-          <ul className="text-sm text-primary-800 space-y-1.5 list-disc list-outside ml-5">
-            <li>Click column headers to sort data</li>
-            <li>Use filter boxes to search within columns</li>
-            <li>Drag column borders to resize columns</li>
-            <li>Drag headers to reorder columns</li>
-            <li>Click rows to select them (Ctrl+click for multiple)</li>
-            <li>Double-click cells to edit content</li>
-            <li>Drag headers to the Group By area to group data</li>
+        <div style={{ marginBottom: '24px', flexShrink: 0, backgroundColor: 'white', border: '1px solid #e5e7eb', padding: '20px', borderRadius: '8px' }}>
+          <h3 style={{ fontWeight: '600', color: '#111827', marginBottom: '12px', fontSize: '14px' }}>How to use:</h3>
+          <ul style={{ fontSize: '14px', color: '#374151', listStyle: 'disc', paddingLeft: '20px' }}>
+            <li style={{ marginBottom: '6px' }}>Click column headers to sort data</li>
+            <li style={{ marginBottom: '6px' }}>Use filter boxes to search within columns</li>
+            <li style={{ marginBottom: '6px' }}>Drag column borders to resize columns</li>
+            <li style={{ marginBottom: '6px' }}>Drag headers to reorder columns</li>
+            <li style={{ marginBottom: '6px' }}>Click rows to select them (Ctrl+click for multiple)</li>
+            <li style={{ marginBottom: '6px' }}>Double-click cells to edit content</li>
+            <li style={{ marginBottom: '0' }}>Drag headers to the Group By area to group data</li>
           </ul>
         </div>
 
         {/* DataGrid Container */}
-        <div className="mb-6 flex-1 min-h-0 bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
-          <div className="h-full overflow-auto">
+        <div style={{ marginBottom: '24px', flex: '1 1 auto', minHeight: '500px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+          <div style={{ height: '100%', overflow: 'auto' }}>
             <DataGrid
               columns={columns}
               rows={employees}
@@ -205,21 +205,21 @@ export const DemoGridPage: React.FC = () => {
         </div>
 
         {/* Info Panels */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', flexShrink: 0 }}>
           {/* Selection Info */}
-          <div className="bg-white p-5 rounded-lg shadow-sm border border-neutral-200">
-            <h3 className="text-sm font-semibold mb-4 text-neutral-900">
-              Selected Rows <span className="text-primary-600 font-bold">({selectedIds.length})</span>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '16px', color: '#111827' }}>
+              Selected Rows <span style={{ color: '#2563eb', fontWeight: 'bold' }}>({selectedIds.length})</span>
             </h3>
             {selectedIds.length === 0 ? (
-              <p className="text-neutral-500 text-sm">No rows selected. Click on rows to select them.</p>
+              <p style={{ color: '#6b7280', fontSize: '14px' }}>No rows selected. Click on rows to select them.</p>
             ) : (
-              <div className="space-y-2 max-h-40 overflow-y-auto">
+              <div style={{ maxHeight: '160px', overflowY: 'auto' }}>
                 {selectedIds.map((id) => {
                   const employee = employees.find((emp) => emp.id === id);
                   return (
-                    <div key={id} className="text-sm text-neutral-700 p-2 bg-primary-50 rounded border border-primary-100">
-                      <span className="font-medium text-primary-600">ID {id}</span> - {employee?.name}
+                    <div key={id} style={{ fontSize: '14px', color: '#374151', padding: '8px', backgroundColor: '#eff6ff', borderRadius: '4px', border: '1px solid #dbeafe', marginBottom: '8px' }}>
+                      <span style={{ fontWeight: '500', color: '#2563eb' }}>ID {id}</span> - {employee?.name}
                     </div>
                   );
                 })}
@@ -228,18 +228,18 @@ export const DemoGridPage: React.FC = () => {
           </div>
 
           {/* Event Log */}
-          <div className="bg-white p-5 rounded-lg shadow-sm border border-neutral-200">
-            <h3 className="text-sm font-semibold mb-4 text-neutral-900">
-              Event Log <span className="text-neutral-500 font-normal">(Last 10)</span>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '16px', color: '#111827' }}>
+              Event Log <span style={{ color: '#6b7280', fontWeight: 'normal' }}>(Last 10)</span>
             </h3>
             {eventLog.length === 0 ? (
-              <p className="text-neutral-500 text-sm">No events yet. Try interacting with the grid.</p>
+              <p style={{ color: '#6b7280', fontSize: '14px' }}>No events yet. Try interacting with the grid.</p>
             ) : (
-              <div className="space-y-2 max-h-40 overflow-y-auto">
+              <div style={{ maxHeight: '160px', overflowY: 'auto' }}>
                 {eventLog.map((event, index) => (
                   <div
                     key={index}
-                    className="text-xs text-neutral-600 p-2 bg-neutral-100 rounded border border-neutral-200 font-mono"
+                    style={{ fontSize: '12px', color: '#4b5563', padding: '8px', backgroundColor: '#f3f4f6', borderRadius: '4px', border: '1px solid #e5e7eb', fontFamily: 'monospace', marginBottom: '8px' }}
                   >
                     {event}
                   </div>

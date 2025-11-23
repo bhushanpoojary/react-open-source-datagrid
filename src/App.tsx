@@ -16,7 +16,7 @@ interface MenuItem {
 }
 
 function App() {
-  const [currentDemo, setCurrentDemo] = useState<DemoType>('persistence')
+  const [currentDemo, setCurrentDemo] = useState<DemoType>('standard')
 
   const menuItems: MenuItem[] = [
     {
