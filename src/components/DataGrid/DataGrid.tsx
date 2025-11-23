@@ -43,11 +43,14 @@ export const DataGrid: React.FC<DataGridProps> = ({
   virtualScrollConfig,
   persistenceConfig,
   treeConfig,
+  dragRowConfig,
+  tableId,
   theme = 'quartz',
   onRowClick,
   onCellEdit,
   onSelectionChange,
   onLayoutChange,
+  onRowReorder,
 }) => {
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
@@ -449,6 +452,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
         aggregateConfigs={footerConfig?.aggregates}
         virtualScrollConfig={virtualScrollConfig}
         treeConfig={treeConfig}
+        dragRowConfig={dragRowConfig}
+        tableId={tableId}
+        onRowReorder={onRowReorder}
       />
 
       {/* Global Footer */}

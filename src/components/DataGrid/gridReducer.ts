@@ -34,6 +34,13 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     pinnedColumnsRight: [],
     hiddenColumns: [],
     expandedNodes: {},
+    dragState: {
+      isDragging: false,
+      draggedRowId: null,
+      draggedRowIndex: null,
+      dropTargetIndex: null,
+      dropPosition: null,
+    },
   };
 };
 
@@ -412,6 +419,38 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
       return {
         ...state,
         expandedNodes: action.payload,
+      };
+    }
+
+    case 'SET_DRAG_STATE': {
+      return {
+        ...state,
+        dragState: action.payload,
+      };
+    }
+
+    case 'START_DRAG': {
+      return {
+        ...state,
+        dragState: {
+          ...state.dragState,
+          isDragging: true,
+          draggedRowId: action.payload.rowId,
+          draggedRowIndex: action.payload.rowIndex,
+        },
+      };
+    }
+
+    case 'END_DRAG': {
+      return {
+        ...state,
+        dragState: {
+          isDragging: false,
+          draggedRowId: null,
+          draggedRowIndex: null,
+          dropTargetIndex: null,
+          dropPosition: null,
+        },
       };
     }
 

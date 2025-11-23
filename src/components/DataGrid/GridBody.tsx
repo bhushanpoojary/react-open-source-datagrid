@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig } from './types';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig, DragRowConfig } from './types';
 import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
 import { isTreeNode } from './treeDataUtils';
 import { TreeRow } from './TreeRow';
 import { VirtualScroller } from './VirtualScroller';
+import { DraggableRow } from './DraggableRow';
 
 interface GridBodyProps {
   columns: Column[];
@@ -25,6 +26,9 @@ interface GridBodyProps {
   aggregateConfigs?: AggregateConfig[];
   virtualScrollConfig?: VirtualScrollConfig;
   treeConfig?: TreeConfig;
+  dragRowConfig?: DragRowConfig;
+  tableId?: string;
+  onRowReorder?: (rows: Row[]) => void;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -46,6 +50,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
   aggregateConfigs = [],
   virtualScrollConfig,
   treeConfig,
+  dragRowConfig,
+  tableId,
+  onRowReorder,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -297,7 +304,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const isFocused = focusState?.rowIndex === rowIndex;
     const isLoadingRow = (row as any)._loading === true;
 
-    return (
+    const rowContent = (
       <div
         key={row.id}
         style={{
@@ -397,6 +404,26 @@ export const GridBody: React.FC<GridBodyProps> = ({
         })}
       </div>
     );
+
+    // Wrap in DraggableRow if drag is enabled
+    if (dragRowConfig?.enabled && !isLoadingRow) {
+      return (
+        <DraggableRow
+          key={row.id}
+          row={row as Row}
+          rowIndex={rowIndex}
+          config={dragRowConfig}
+          sourceTableId={tableId}
+          onRowReorder={onRowReorder}
+          rows={rows as Row[]}
+          style={style}
+        >
+          {rowContent}
+        </DraggableRow>
+      );
+    }
+
+    return rowContent;
   };
 
   // Render with virtual scrolling if enabled

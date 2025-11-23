@@ -139,6 +139,7 @@ export interface GridState {
   pinnedColumnsRight: string[];
   hiddenColumns: string[]; // Array of field names that are hidden
   expandedNodes: ExpandedNodes; // Track which tree nodes are expanded
+  dragState: DragState; // Track drag-and-drop state
 }
 
 // Action types for reducer
@@ -171,7 +172,10 @@ export type GridAction =
   | { type: 'TOGGLE_TREE_NODE'; payload: string | number }
   | { type: 'EXPAND_ALL_NODES' }
   | { type: 'COLLAPSE_ALL_NODES' }
-  | { type: 'SET_EXPANDED_NODES'; payload: ExpandedNodes };
+  | { type: 'SET_EXPANDED_NODES'; payload: ExpandedNodes }
+  | { type: 'SET_DRAG_STATE'; payload: DragState }
+  | { type: 'START_DRAG'; payload: { rowId: string | number; rowIndex: number } }
+  | { type: 'END_DRAG' };
 
 // Virtual scrolling configuration
 export interface VirtualScrollConfig {
@@ -244,6 +248,28 @@ export interface PersistenceConfig {
   customAdapter?: StorageAdapter;
 }
 
+// Row dragging configuration
+export interface DragRowConfig {
+  enabled: boolean;
+  showDragHandle?: boolean; // Show explicit drag handle (default: true)
+  allowCrossGroup?: boolean; // Allow dragging across groups (default: false)
+  allowExternalDrop?: boolean; // Allow dropping from external sources (default: false)
+  dragHandlePosition?: 'left' | 'right'; // Position of drag handle (default: 'left')
+  onDragStart?: (row: Row, rowIndex: number) => void; // Called when drag starts
+  onDragEnd?: () => void; // Called when drag ends
+  onRowDrop?: (sourceIndex: number, targetIndex: number, row: Row) => void;
+  onRowMove?: (sourceIndex: number, targetIndex: number) => void;
+  onExternalDrop?: (data: any, targetIndex: number) => void;
+}
+
+export interface DragState {
+  isDragging: boolean;
+  draggedRowId: string | number | null;
+  draggedRowIndex: number | null;
+  dropTargetIndex: number | null;
+  dropPosition: 'before' | 'after' | null;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -254,9 +280,12 @@ export interface DataGridProps {
   virtualScrollConfig?: VirtualScrollConfig;
   persistenceConfig?: PersistenceConfig;
   treeConfig?: TreeConfig; // Configuration for tree/hierarchical data
+  dragRowConfig?: DragRowConfig; // Configuration for row dragging
+  tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
   onLayoutChange?: (layout: LayoutPreset['layout']) => void;
+  onRowReorder?: (rows: Row[]) => void;
 }

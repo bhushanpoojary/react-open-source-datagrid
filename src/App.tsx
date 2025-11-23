@@ -7,9 +7,10 @@ import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
 import { TreeDataDemo } from './components/TreeDataDemo'
+import { RowDraggingDemo } from './components/RowDraggingDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree';
+type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag';
 
 interface MenuItem {
   id: DemoType;
@@ -45,6 +46,12 @@ function App() {
       label: 'Tree Data',
       icon: '🌲',
       description: 'Hierarchical rows & expand/collapse',
+    },
+    {
+      id: 'drag',
+      label: 'Row Dragging',
+      icon: '↕️',
+      description: 'Drag & drop row reordering',
     },
     {
       id: 'renderers',
@@ -137,6 +144,7 @@ function App() {
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
         {currentDemo === 'infinite' && <InfiniteScrollDemo />}
         {currentDemo === 'tree' && <TreeDataDemo />}
+        {currentDemo === 'drag' && <RowDraggingDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
