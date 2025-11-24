@@ -27,82 +27,104 @@ export const GroupRow: React.FC<GroupRowProps> = ({
     dispatch({ type: 'TOGGLE_GROUP', payload: group.groupKey });
   };
 
-  // Format aggregate values
-  const formatAggregate = (key: string, value: any): string => {
-    if (key === 'count') return `${value} items`;
-    if (key.endsWith('_sum')) return `Sum: ${value.toFixed(2)}`;
-    if (key.endsWith('_avg')) return `Avg: ${value.toFixed(2)}`;
-    return `${value}`;
-  };
-
-  // Get key aggregates to display
-  const displayAggregates = Object.entries(group.aggregates || {})
-    .filter(([key]) => key === 'count' || key.endsWith('_sum') || key.endsWith('_avg'))
-    .slice(0, 3); // Show max 3 aggregates
-
   return (
     <div
-      className="
-        sticky left-0 flex items-center border-b border-gray-200
-        bg-gray-100 hover:bg-gray-150 transition-colors
-        cursor-pointer
-      "
       style={{
-        minWidth: '100%',
-        paddingLeft: `${group.level * 24 + 12}px`,
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        minWidth: 'fit-content',
+        height: 'auto',
+        minHeight: '44px',
+        paddingLeft: `${group.level * 24 + 16}px`,
+        paddingRight: '16px',
+        background: 'linear-gradient(to right, #eff6ff, #e0e7ff)',
+        backgroundColor: '#eff6ff',
+        borderBottom: '1px solid #bfdbfe',
+        cursor: 'pointer',
+        transition: 'background 150ms ease-in-out',
+        zIndex: 100,
       }}
       onClick={handleToggle}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'linear-gradient(to right, #dbeafe, #c7d2fe)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'linear-gradient(to right, #eff6ff, #e0e7ff)';
+      }}
     >
       {/* Expand/Collapse Icon */}
-      <div className="flex-shrink-0 flex items-center justify-center" style={{ width: '24px', height: '24px' }}>
+      <div style={{ 
+        flexShrink: 0, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        width: '20px', 
+        height: '20px',
+        marginRight: '8px'
+      }}>
         <svg
-          className={`text-gray-600 transition-transform duration-200 ${
-            group.isExpanded ? 'rotate-90' : ''
-          }`}
-          style={{ width: '16px', height: '16px' }}
+          style={{ 
+            width: '14px', 
+            height: '14px',
+            transform: group.isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+            transition: 'transform 200ms ease-in-out',
+          }}
           fill="none"
-          stroke="currentColor"
+          stroke="#2563eb"
           viewBox="0 0 24 24"
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={2.5}
             d="M9 5l7 7-7 7"
           />
         </svg>
       </div>
 
       {/* Group Label */}
-      <div className="flex items-center gap-2 flex-1 py-2">
-        <span className="font-semibold text-gray-700">
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '6px',
+        flexShrink: 0
+      }}>
+        <span style={{ fontWeight: 600, color: '#374151', fontSize: '13px', whiteSpace: 'nowrap' }}>
           {columnName}:
         </span>
-        <span className="text-gray-900 font-medium">
+        <span style={{ 
+          color: '#111827', 
+          fontWeight: 600, 
+          fontSize: '13px',
+          whiteSpace: 'nowrap'
+        }}>
           {group.groupValue === null || group.groupValue === undefined
             ? '(empty)'
             : String(group.groupValue)}
         </span>
-        
-        {/* Aggregates */}
-        {displayAggregates.length > 0 && (
-          <div className="flex items-center gap-3 ml-4 text-sm text-gray-600">
-            {displayAggregates.map(([key, value]) => (
-              <span key={key} className="flex items-center gap-1">
-                <span style={{ color: "#6b7280" }}>•</span>
-                {formatAggregate(key, value)}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
+      {/* Spacer */}
+      <div style={{ flex: 1, minWidth: '16px' }} />
+
       {/* Group Badge */}
-      <div className="flex-shrink-0 mr-4">
-        <span className="
-          px-2 py-1 text-xs font-medium 
-          bg-blue-100 text-blue-700 rounded
-        ">
+      <div style={{ flexShrink: 0 }}>
+        <span style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minWidth: '32px',
+          height: '24px',
+          padding: '2px 10px',
+          fontSize: '12px',
+          fontWeight: 600,
+          backgroundColor: '#2563eb',
+          color: '#ffffff',
+          borderRadius: '12px',
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        }}>
           {group.aggregates?.count || 0}
         </span>
       </div>
@@ -168,12 +190,12 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
       style.position = 'sticky';
       style.left = `${leftOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#f3f4f6';
+      style.backgroundColor = '#eff6ff';
     } else if (pinnedRightSet.has(field)) {
       style.position = 'sticky';
       style.right = `${rightOffsets[field]}px`;
       style.zIndex = 20;
-      style.backgroundColor = '#f3f4f6';
+      style.backgroundColor = '#eff6ff';
     }
 
     return style;
@@ -188,7 +210,21 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
   const groupLabel = `${columnName}: ${group.groupValue} Subtotal`;
 
   return (
-    <div className="flex border-t border-gray-300 bg-gray-100 font-medium text-sm" style={{ minWidth: '100%' }}>
+    <div 
+      style={{ 
+        display: 'flex',
+        minWidth: '100%',
+        height: 'auto',
+        minHeight: '40px',
+        borderTop: '2px solid #93c5fd',
+        background: '#eff6ff',
+        backgroundColor: '#eff6ff',
+        fontWeight: 600,
+        fontSize: '13px',
+        position: 'relative',
+        zIndex: 50
+      }}
+    >
       {displayColumnOrder.map((field, columnIndex) => {
         const column = columnMap.get(field);
         if (!column) return null;
@@ -200,14 +236,23 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
         let cellContent: React.ReactNode;
         if (isFirstColumn(field) && columnIndex === 0) {
           cellContent = (
-            <span style={{ color: "#374151", marginLeft: `${group.level * 24 + 12}px` }}>
-              {groupLabel}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+              <span 
+                style={{ 
+                  color: "#1f2937", 
+                  marginLeft: `${group.level * 24 + 16}px`,
+                  fontWeight: 600,
+                  fontSize: '13px'
+                }}
+              >
+                {groupLabel}
+              </span>
+            </div>
           );
         } else if (configs && configs.length > 0) {
           // Show aggregates for this field
           cellContent = (
-            <div className="flex flex-col gap-0.5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', justifyContent: 'center', height: '100%' }}>
               {configs.map((config, idx) => {
                 const key = `${config.field}_${config.function}`;
                 const value = aggregates[key];
@@ -217,9 +262,9 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
                 return (
                   <div key={idx} style={{ fontSize: "12px" }}>
                     {configs.length > 1 && (
-                      <span className="text-gray-500 mr-1">{displayLabel}:</span>
+                      <span style={{ color: '#4b5563', marginRight: '4px' }}>{displayLabel}:</span>
                     )}
-                    <span className="text-gray-800">{formattedValue}</span>
+                    <span style={{ color: '#111827', fontWeight: 600 }}>{formattedValue}</span>
                   </div>
                 );
               })}
@@ -232,8 +277,14 @@ export const GroupFooterRow: React.FC<GroupFooterRowProps> = ({
         return (
           <div
             key={`group-footer-${group.groupKey}-${field}`}
-            className="px-3 py-2 border-r border-gray-200 flex-shrink-0"
-            style={cellStyle}
+            style={{
+              ...cellStyle,
+              padding: '0 12px',
+              display: 'flex',
+              alignItems: 'center',
+              borderRight: '1px solid #bfdbfe',
+              flexShrink: 0
+            }}
           >
             {cellContent}
           </div>
