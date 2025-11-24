@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { HomePage } from './components/HomePage'
 import { DemoGridPage } from './components/DemoGridPage'
 import { VirtualScrollDemo } from './components/VirtualScrollDemo'
 import { CellRenderersDemo } from './components/CellRenderersDemo'
@@ -11,7 +12,7 @@ import { RowDraggingDemo } from './components/RowDraggingDemo'
 import { LiveMarketDemo } from './components/LiveMarketDemo'
 import './App.css'
 
-type DemoType = 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market';
 
 interface MenuItem {
   id: DemoType;
@@ -27,19 +28,25 @@ interface MenuCategory {
 }
 
 function App() {
-  const [currentDemo, setCurrentDemo] = useState<DemoType>('standard')
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['core', 'performance', 'features', 'customization']))
+  const [currentDemo, setCurrentDemo] = useState<DemoType>('home')
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['gettingstarted', 'performance', 'datafeatures', 'customization']))
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const menuCategories: MenuCategory[] = [
     {
-      label: 'Core Features',
-      icon: '📊',
+      label: 'Getting Started',
+      icon: '🏠',
       items: [
+        {
+          id: 'home',
+          label: 'Home',
+          icon: '🏠',
+          description: 'Overview and installation',
+        },
         {
           id: 'standard',
           label: 'Standard Demo',
-          icon: '🏠',
+          icon: '📊',
           description: 'Basic features with pagination',
         },
       ],
@@ -395,6 +402,7 @@ function App() {
 
       {/* Main Content Area */}
       <main style={{ flex: 1, overflow: 'auto', backgroundColor: '#f8fafc' }}>
+        {currentDemo === 'home' && <HomePage />}
         {currentDemo === 'standard' && <DemoGridPage />}
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
         {currentDemo === 'infinite' && <InfiniteScrollDemo />}
