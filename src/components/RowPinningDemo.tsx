@@ -22,16 +22,17 @@ export const RowPinningDemo: React.FC = () => {
     const departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations'];
     const positions = ['Manager', 'Senior', 'Junior', 'Lead', 'Director', 'VP'];
     
+    // Use deterministic values based on index for stable renders
     for (let i = 1; i <= 100; i++) {
       data.push({
         id: i,
         name: `Employee ${i}`,
         email: `employee${i}@company.com`,
-        department: departments[Math.floor(Math.random() * departments.length)],
-        position: positions[Math.floor(Math.random() * positions.length)],
-        salary: Math.floor(Math.random() * 100000) + 40000,
-        startDate: new Date(2020 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
-        performance: (Math.random() * 5).toFixed(1),
+        department: departments[i % departments.length],
+        position: positions[(i * 3) % positions.length],
+        salary: ((i * 1234) % 100000) + 40000,
+        startDate: new Date(2020 + (i % 4), (i % 12), ((i % 28) + 1)).toISOString().split('T')[0],
+        performance: ((i % 50) / 10).toFixed(1),
       });
     }
     

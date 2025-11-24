@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { TooltipState, TooltipPlacement } from './types';
 
@@ -24,7 +24,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [actualPlacement, setActualPlacement] = useState<TooltipPlacement>(state.placement);
 
   // Calculate smart placement to keep tooltip within viewport
-  useEffect(() => {
+  // Using useLayoutEffect to avoid flashing and ensure synchronous DOM updates
+  useLayoutEffect(() => {
     if (!state.isVisible || !tooltipRef.current || !state.targetRect) {
       return;
     }
@@ -113,7 +114,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
       }
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPosition({ x: finalX, y: finalY });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActualPlacement(finalPlacement);
   }, [state.isVisible, state.x, state.y, state.targetRect, state.placement, offset]);
 

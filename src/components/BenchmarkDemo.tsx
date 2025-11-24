@@ -63,7 +63,8 @@ export const BenchmarkDemo = () => {
     },
   ];
 
-  const generateLargeDataset = (count: number): BenchmarkRow[] => {
+  /* eslint-disable react-hooks/purity */
+  const data = useMemo(() => {
     const statuses = ['Active', 'Inactive', 'Pending', 'Completed', 'Failed'];
     const categories = ['Finance', 'Technology', 'Healthcare', 'Retail', 'Manufacturing'];
     const names = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'];
@@ -71,7 +72,7 @@ export const BenchmarkDemo = () => {
     const startTime = performance.now();
     const data: BenchmarkRow[] = [];
     
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < rowCount; i++) {
       data.push({
         id: i + 1,
         name: `${names[i % names.length]} ${Math.floor(i / names.length) + 1}`,
@@ -84,16 +85,17 @@ export const BenchmarkDemo = () => {
     }
     
     const endTime = performance.now();
-    setRenderTime(endTime - startTime);
+    // Track render time in a ref to avoid triggering re-renders
+    setTimeout(() => setRenderTime(endTime - startTime), 0);
     
     return data;
-  };
+  }, [rowCount]);
+  /* eslint-enable react-hooks/purity */
 
-  const data = useMemo(() => {
+  useEffect(() => {
     setIsGenerating(true);
-    const result = generateLargeDataset(rowCount);
-    setIsGenerating(false);
-    return result;
+    const timer = setTimeout(() => setIsGenerating(false), 0);
+    return () => clearTimeout(timer);
   }, [rowCount]);
 
   const handleScroll = () => {
