@@ -1,9 +1,17 @@
-import type { Row, FilterConfig, FilterValue } from './types';
+import type { Row, FilterConfig, FilterValue, FilterCondition, AdvancedFilterValue } from './types';
 
 /**
  * Apply text filter to a value
  */
-const applyTextFilter = (value: any, filter: FilterValue): boolean => {
+const applyTextFilter = (value: any, filter: FilterValue | FilterCondition): boolean => {
+  // Handle isEmpty/isNotEmpty
+  if (filter.type === 'isEmpty') {
+    return value == null || String(value).trim() === '';
+  }
+  if (filter.type === 'isNotEmpty') {
+    return value != null && String(value).trim() !== '';
+  }
+
   if (value == null) return false;
   const stringValue = String(value).toLowerCase();
   const filterValue = String(filter.value || '').toLowerCase();
@@ -15,6 +23,8 @@ const applyTextFilter = (value: any, filter: FilterValue): boolean => {
       return !stringValue.includes(filterValue);
     case 'equals':
       return stringValue === filterValue;
+    case 'notEquals':
+      return stringValue !== filterValue;
     case 'startsWith':
       return stringValue.startsWith(filterValue);
     case 'endsWith':
@@ -27,7 +37,15 @@ const applyTextFilter = (value: any, filter: FilterValue): boolean => {
 /**
  * Apply number filter to a value
  */
-const applyNumberFilter = (value: any, filter: FilterValue): boolean => {
+const applyNumberFilter = (value: any, filter: FilterValue | FilterCondition): boolean => {
+  // Handle isEmpty/isNotEmpty
+  if (filter.type === 'isEmpty') {
+    return value == null || (typeof value === 'number' && isNaN(value));
+  }
+  if (filter.type === 'isNotEmpty') {
+    return value != null && !(typeof value === 'number' && isNaN(value));
+  }
+
   if (value == null) return false;
   const numValue = typeof value === 'number' ? value : parseFloat(value);
   if (isNaN(numValue)) return false;
@@ -61,7 +79,15 @@ const applyNumberFilter = (value: any, filter: FilterValue): boolean => {
 /**
  * Apply date filter to a value
  */
-const applyDateFilter = (value: any, filter: FilterValue): boolean => {
+const applyDateFilter = (value: any, filter: FilterValue | FilterCondition): boolean => {
+  // Handle isEmpty/isNotEmpty
+  if (filter.type === 'isEmpty') {
+    return value == null;
+  }
+  if (filter.type === 'isNotEmpty') {
+    return value != null;
+  }
+
   if (value == null) return false;
   
   let dateValue: Date;
@@ -102,19 +128,27 @@ const applyDateFilter = (value: any, filter: FilterValue): boolean => {
 /**
  * Apply set/multi-select filter to a value
  */
-const applySetFilter = (value: any, filter: FilterValue): boolean => {
+const applySetFilter = (value: any, filter: FilterValue | FilterCondition): boolean => {
   if (!filter.values || filter.values.length === 0) return true;
-  return filter.values.includes(value);
+  
+  const isIncluded = filter.values.includes(value);
+  
+  // Support both 'in' and 'notIn' operations
+  if (filter.type === 'notIn') {
+    return !isIncluded;
+  }
+  
+  return isIncluded;
 };
 
 /**
  * Determine filter type based on filter value structure
  */
-const getFilterOperationType = (filter: FilterValue): 'text' | 'number' | 'date' | 'set' => {
-  if (filter.type === 'set' || filter.values) return 'set';
+const getFilterOperationType = (filter: FilterValue | FilterCondition): 'text' | 'number' | 'date' | 'set' => {
+  if (filter.type === 'set' || filter.type === 'in' || filter.type === 'notIn' || filter.values) return 'set';
   
   // Check if it's a number filter
-  if (['equals', 'notEquals', 'greaterThan', 'lessThan', 'greaterThanOrEqual', 'lessThanOrEqual'].includes(filter.type || '')) {
+  if (['equals', 'notEquals', 'greaterThan', 'lessThan', 'greaterThanOrEqual', 'lessThanOrEqual', 'inRange'].includes(filter.type || '')) {
     if (typeof filter.value === 'number' || !isNaN(parseFloat(filter.value))) {
       return 'number';
     }
@@ -137,11 +171,60 @@ const getFilterOperationType = (filter: FilterValue): 'text' | 'number' | 'date'
 };
 
 /**
- * Apply a single filter to a row
+ * Check if a filter is an advanced filter with multiple conditions
  */
-const applyFilter = (row: Row, field: string, filter: FilterValue): boolean => {
+const isAdvancedFilter = (filter: FilterValue | AdvancedFilterValue | null): filter is AdvancedFilterValue => {
+  return filter != null && 'operator' in filter && 'conditions' in filter;
+};
+
+/**
+ * Apply a single condition to a row
+ */
+const applySingleCondition = (row: Row, field: string, condition: FilterCondition): boolean => {
+  const value = row[field];
+  const filterType = getFilterOperationType(condition);
+
+  switch (filterType) {
+    case 'number':
+      return applyNumberFilter(value, condition);
+    case 'date':
+      return applyDateFilter(value, condition);
+    case 'set':
+      return applySetFilter(value, condition);
+    default:
+      return applyTextFilter(value, condition);
+  }
+};
+
+/**
+ * Apply an advanced filter with multiple conditions
+ */
+const applyAdvancedFilter = (row: Row, field: string, filter: AdvancedFilterValue): boolean => {
+  const { operator, conditions } = filter;
+
+  if (!conditions || conditions.length === 0) return true;
+
+  if (operator === 'AND') {
+    // All conditions must pass
+    return conditions.every(condition => applySingleCondition(row, field, condition));
+  } else {
+    // At least one condition must pass
+    return conditions.some(condition => applySingleCondition(row, field, condition));
+  }
+};
+
+/**
+ * Apply a single filter (simple or advanced) to a row
+ */
+const applyFilter = (row: Row, field: string, filter: FilterValue | AdvancedFilterValue): boolean => {
   if (!filter) return true;
   
+  // Check if it's an advanced filter with multiple conditions
+  if (isAdvancedFilter(filter)) {
+    return applyAdvancedFilter(row, field, filter);
+  }
+
+  // Simple filter
   const value = row[field];
   const filterType = getFilterOperationType(filter);
 

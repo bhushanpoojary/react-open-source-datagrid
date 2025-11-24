@@ -4,6 +4,7 @@ export { VirtualScroller } from './VirtualScroller';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
 export { ColumnFilters } from './ColumnFilters';
+export { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
 export { InfiniteScrollDataGrid, ThemedInfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
 export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
@@ -30,6 +31,8 @@ export type {
   VirtualScrollConfig,
   FilterType,
   FilterValue,
+  FilterCondition,
+  AdvancedFilterValue,
   FilterConfig,
   LayoutPreset,
   StorageStrategy,

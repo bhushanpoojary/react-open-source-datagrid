@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import type { Column, FilterConfig, FilterValue, GridAction, Row } from './types';
+import type { Column, FilterConfig, FilterValue, GridAction, Row, AdvancedFilterValue } from './types';
+import { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 
 interface ColumnFiltersProps {
   columns: Column[];
@@ -19,12 +20,21 @@ interface FilterMenuProps {
   onClose: () => void;
   rows: Row[];
   anchorEl: HTMLElement | null;
+  showAdvancedButton?: boolean;
+  onSwitchToAdvanced?: () => void;
 }
 
+// Helper function to check if filter is advanced
+const isAdvancedFilter = (filter: FilterConfig[string]): filter is AdvancedFilterValue => {
+  return filter != null && 'operator' in filter && 'conditions' in filter;
+};
+
 // Text Filter Component
-const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const initialFilterType = (filterValue?.type as 'contains' | 'equals' | 'startsWith' | 'endsWith' | 'notContains') || 'contains';
-  const initialValue = (filterValue?.value as string) || '';
+const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+  // Skip if it's an advanced filter
+  const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
+  const initialFilterType = (simpleFilter?.type as 'contains' | 'equals' | 'startsWith' | 'endsWith' | 'notContains') || 'contains';
+  const initialValue = (simpleFilter?.value as string) || '';
   
   const [filterType, setFilterType] = useState(initialFilterType);
   const [value, setValue] = useState(initialValue);
@@ -146,10 +156,11 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 };
 
 // Number Filter Component
-const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const initialFilterType = (filterValue?.type as 'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'inRange') || 'equals';
-  const initialValue = (filterValue?.value as string) || '';
-  const initialValue2 = (filterValue?.value2 as string) || '';
+const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+  const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
+  const initialFilterType = (simpleFilter?.type as 'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'inRange') || 'equals';
+  const initialValue = (simpleFilter?.value as string) || '';
+  const initialValue2 = (simpleFilter?.value2 as string) || '';
   
   const [filterType, setFilterType] = useState(initialFilterType);
   const [value, setValue] = useState(initialValue);
@@ -269,10 +280,11 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
 };
 
 // Date Filter Component
-const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl }) => {
-  const initialFilterType = (filterValue?.type as 'equals' | 'before' | 'after' | 'inRange') || 'equals';
-  const initialValue = (filterValue?.value as string) || '';
-  const initialValue2 = (filterValue?.value2 as string) || '';
+const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+  const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
+  const initialFilterType = (simpleFilter?.type as 'equals' | 'before' | 'after' | 'inRange') || 'equals';
+  const initialValue = (simpleFilter?.value as string) || '';
+  const initialValue2 = (simpleFilter?.value2 as string) || '';
   
   const [filterType, setFilterType] = useState(initialFilterType);
   const [value, setValue] = useState(initialValue);
@@ -387,10 +399,11 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 };
 
 // Set Filter Component (Unique dropdown values)
-const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl }) => {
+const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
   const uniqueValues = Array.from(new Set(rows.map(row => row[column.field]).filter(v => v != null)));
+  const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const [selectedValues, setSelectedValues] = useState<Set<any>>(
-    filterValue ? new Set(filterValue.values) : new Set()
+    simpleFilter && simpleFilter.values ? new Set(simpleFilter.values) : new Set()
   );
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -549,6 +562,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
 }) => {
   const [openFilterMenu, setOpenFilterMenu] = useState<string | null>(null);
   const [filterAnchors, setFilterAnchors] = useState<{ [key: string]: HTMLElement | null }>({});
+  const [advancedFilterField, setAdvancedFilterField] = useState<string | null>(null);
 
   const pinnedLeftSet = new Set(pinnedLeft);
   const pinnedRightSet = new Set(pinnedRight);
@@ -602,16 +616,32 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
 
   const handleFilterClick = (field: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    setFilterAnchors({ ...filterAnchors, [field]: event.currentTarget });
-    setOpenFilterMenu(field);
+    const filterValue = filterConfig[field];
+    
+    // If it's already an advanced filter or right-clicked, show advanced
+    if (isAdvancedFilter(filterValue) || event.shiftKey) {
+      setFilterAnchors({ ...filterAnchors, [field]: event.currentTarget });
+      setAdvancedFilterField(field);
+      setOpenFilterMenu(null);
+    } else {
+      setFilterAnchors({ ...filterAnchors, [field]: event.currentTarget });
+      setOpenFilterMenu(field);
+      setAdvancedFilterField(null);
+    }
   };
 
   const handleCloseFilter = () => {
     setOpenFilterMenu(null);
+    setAdvancedFilterField(null);
   };
 
   const handleApplyFilter = (field: string, value: FilterConfig[string]) => {
     dispatch({ type: 'SET_FILTER', payload: { field, value } });
+  };
+
+  const handleSwitchToAdvanced = (field: string) => {
+    setOpenFilterMenu(null);
+    setAdvancedFilterField(field);
   };
 
   // Close menu when clicking outside
@@ -640,6 +670,8 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
       onClose: handleCloseFilter,
       rows,
       anchorEl,
+      showAdvancedButton: true,
+      onSwitchToAdvanced: () => handleSwitchToAdvanced(column.field),
     };
 
     switch (filterType) {
@@ -656,9 +688,32 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
     }
   };
 
+  const renderAdvancedFilterMenu = (column: Column) => {
+    const filterValue = filterConfig[column.field];
+    const anchorEl = filterAnchors[column.field];
+    const advancedFilter = isAdvancedFilter(filterValue) ? filterValue : null;
+
+    return (
+      <AdvancedFilterBuilder
+        column={column}
+        filterValue={advancedFilter}
+        onApply={(value: AdvancedFilterValue | null) => handleApplyFilter(column.field, value)}
+        onClose={handleCloseFilter}
+        rows={rows}
+        anchorEl={anchorEl}
+      />
+    );
+  };
+
   const getFilterDisplayText = (field: string): string => {
     const filterValue = filterConfig[field];
     if (!filterValue) return '';
+    
+    // Handle advanced filter
+    if (isAdvancedFilter(filterValue)) {
+      const condCount = filterValue.conditions.length;
+      return `${condCount} condition${condCount > 1 ? 's' : ''} (${filterValue.operator})`;
+    }
     
     if (filterValue.type === 'set' && filterValue.values) {
       return `${filterValue.values.length} selected`;
@@ -713,6 +768,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                   cursor: 'pointer',
                 }}
                 onClick={(e) => handleFilterClick(field, e)}
+                title="Click to filter, Shift+Click for advanced filter"
               >
                 <div 
                   style={{
@@ -762,6 +818,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                 </div>
               </div>
               {openFilterMenu === field && renderFilterMenu(column)}
+              {advancedFilterField === field && renderAdvancedFilterMenu(column)}
             </div>
           );
         })}

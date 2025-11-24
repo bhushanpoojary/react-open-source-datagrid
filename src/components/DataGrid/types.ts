@@ -66,8 +66,25 @@ export interface FilterValue {
   values?: any[]; // Array of values for set/multi-select filters
 }
 
+// Multi-condition filter - supports multiple conditions with AND/OR logic
+export interface FilterCondition {
+  type: string; // Filter operation type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value2?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  values?: any[];
+}
+
+export interface AdvancedFilterValue {
+  operator: 'AND' | 'OR'; // How to combine multiple conditions
+  conditions: FilterCondition[]; // Array of filter conditions
+}
+
+// FilterConfig now supports both simple and advanced filters
 export interface FilterConfig {
-  [field: string]: FilterValue | null;
+  [field: string]: FilterValue | AdvancedFilterValue | null;
 }
 
 export interface SelectionState {
@@ -154,7 +171,7 @@ export interface GridState {
 // Action types for reducer
 export type GridAction =
   | { type: 'SET_SORT'; payload: SortConfig }
-  | { type: 'SET_FILTER'; payload: { field: string; value: FilterValue | null } }
+  | { type: 'SET_FILTER'; payload: { field: string; value: FilterValue | AdvancedFilterValue | null } }
   | { type: 'CLEAR_FILTERS' }
   | { type: 'SET_PAGE'; payload: number }
   | { type: 'SET_PAGE_SIZE'; payload: number }
