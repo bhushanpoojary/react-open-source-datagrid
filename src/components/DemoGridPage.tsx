@@ -163,6 +163,10 @@ export const DemoGridPage: React.FC = () => {
               <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
               <span style={{ color: '#374151' }}>Footer aggregates</span>
             </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <span style={{ color: '#2563eb', fontWeight: '600', marginTop: '2px' }}>✓</span>
+              <span style={{ color: '#374151' }}>Context menu</span>
+            </div>
           </div>
         </div>
 
@@ -176,6 +180,7 @@ export const DemoGridPage: React.FC = () => {
             <li style={{ marginBottom: '6px' }}>Drag headers to reorder columns</li>
             <li style={{ marginBottom: '6px' }}>Click rows to select them (Ctrl+click for multiple)</li>
             <li style={{ marginBottom: '6px' }}>Double-click cells to edit content</li>
+            <li style={{ marginBottom: '6px' }}>Right-click on cells or headers for context menu (copy, export, pin, auto-size, etc.)</li>
             <li style={{ marginBottom: '0' }}>Drag headers to the Group By area to group data</li>
           </ul>
         </div>
@@ -191,6 +196,7 @@ export const DemoGridPage: React.FC = () => {
               onRowClick={handleRowClick}
               onCellEdit={handleCellEdit}
               onSelectionChange={handleSelectionChange}
+              contextMenuConfig={{ enabled: true }}
               footerConfig={{
                 show: true,
                 showGroupFooters: true,

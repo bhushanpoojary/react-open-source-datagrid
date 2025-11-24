@@ -1,0 +1,156 @@
+/* Context Menu Styles */
+.context-menu {
+  position: fixed;
+  background: var(--context-menu-bg, #ffffff);
+  border: 1px solid var(--context-menu-border, #d0d0d0);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  max-width: 320px;
+  padding: 4px 0;
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--context-menu-text, #333333);
+  user-select: none;
+  animation: contextMenuFadeIn 0.12s ease-out;
+}
+
+@keyframes contextMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  gap: 8px;
+  position: relative;
+}
+
+.context-menu-item:hover:not(.disabled) {
+  background-color: var(--context-menu-hover-bg, #f0f0f0);
+}
+
+.context-menu-item:active:not(.disabled) {
+  background-color: var(--context-menu-active-bg, #e5e5e5);
+}
+
+.context-menu-item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.context-menu-item.danger {
+  color: var(--context-menu-danger, #dc3545);
+}
+
+.context-menu-item.danger:hover:not(.disabled) {
+  background-color: var(--context-menu-danger-hover-bg, #fff0f0);
+}
+
+.context-menu-icon {
+  font-size: 16px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.context-menu-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.context-menu-shortcut {
+  font-size: 12px;
+  color: var(--context-menu-shortcut, #888888);
+  margin-left: auto;
+  padding-left: 16px;
+}
+
+.context-menu-arrow {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--context-menu-arrow, #888888);
+}
+
+.context-menu-separator {
+  height: 1px;
+  background-color: var(--context-menu-separator, #e0e0e0);
+  margin: 4px 0;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .context-menu {
+    --context-menu-bg: #2a2a2a;
+    --context-menu-border: #404040;
+    --context-menu-text: #e0e0e0;
+    --context-menu-hover-bg: #3a3a3a;
+    --context-menu-active-bg: #4a4a4a;
+    --context-menu-separator: #404040;
+    --context-menu-shortcut: #999999;
+    --context-menu-arrow: #999999;
+    --context-menu-danger: #ff6b6b;
+    --context-menu-danger-hover-bg: #3a2a2a;
+  }
+}
+
+/* Theme-specific overrides */
+.data-grid.theme-quartz .context-menu {
+  --context-menu-bg: #ffffff;
+  --context-menu-border: #c5c5c5;
+  --context-menu-text: #000000;
+  --context-menu-hover-bg: #e6f2ff;
+  --context-menu-active-bg: #cce5ff;
+}
+
+.data-grid.theme-alpine .context-menu {
+  --context-menu-bg: #f8f9fa;
+  --context-menu-border: #dee2e6;
+  --context-menu-text: #212529;
+  --context-menu-hover-bg: #e9ecef;
+  --context-menu-active-bg: #dee2e6;
+}
+
+.data-grid.theme-balham .context-menu {
+  --context-menu-bg: #ffffff;
+  --context-menu-border: #bdc3c7;
+  --context-menu-text: #2c3e50;
+  --context-menu-hover-bg: #ecf0f1;
+  --context-menu-active-bg: #d5dbdb;
+}
+
+.data-grid.theme-material .context-menu {
+  --context-menu-bg: #ffffff;
+  --context-menu-border: #e0e0e0;
+  --context-menu-text: #212121;
+  --context-menu-hover-bg: #f5f5f5;
+  --context-menu-active-bg: #eeeeee;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus styles for accessibility */
+.context-menu-item:focus {
+  outline: 2px solid var(--context-menu-focus, #0066cc);
+  outline-offset: -2px;
+}
+
+.context-menu-item:focus:not(:focus-visible) {
+  outline: none;
+}

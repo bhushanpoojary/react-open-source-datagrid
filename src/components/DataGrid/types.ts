@@ -311,6 +311,57 @@ export interface FlashAnimation {
   duration: number;
 }
 
+// Context Menu types
+export interface ContextMenuItem {
+  id?: string;
+  label: string;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  danger?: boolean;
+  type?: 'item' | 'separator';
+  shortcut?: string;
+  submenu?: ContextMenuItem[];
+}
+
+export interface ContextMenuConfig {
+  enabled?: boolean; // Enable/disable context menu (default: true)
+  showCopy?: boolean; // Show copy options (default: true)
+  showExport?: boolean; // Show export options (default: true)
+  showColumnOptions?: boolean; // Show pin/hide/resize options (default: true)
+  showFilterByValue?: boolean; // Show filter by value option (default: true)
+  customItems?: ContextMenuItem[]; // Additional custom menu items
+  onBeforeShow?: (event: ContextMenuEvent) => ContextMenuItem[] | null; // Customize menu before showing
+}
+
+export interface ContextMenuEvent {
+  type: 'cell' | 'header' | 'row';
+  row?: Row;
+  column?: Column;
+  rowIndex?: number;
+  columnIndex?: number;
+  event: React.MouseEvent;
+}
+
+export interface ContextMenuProps {
+  x: number;
+  y: number;
+  items: ContextMenuItem[];
+  onClose: () => void;
+}
+
+export interface ContextMenuState {
+  isOpen: boolean;
+  x: number;
+  y: number;
+  items: ContextMenuItem[];
+  contextType: 'cell' | 'header' | 'row' | null;
+  targetRow?: Row;
+  targetColumn?: Column;
+  targetRowIndex?: number;
+  targetColumnIndex?: number;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -323,6 +374,7 @@ export interface DataGridProps {
   treeConfig?: TreeConfig; // Configuration for tree/hierarchical data
   dragRowConfig?: DragRowConfig; // Configuration for row dragging
   marketDataConfig?: MarketDataConfig; // Configuration for market data mode
+  contextMenuConfig?: ContextMenuConfig; // Configuration for context menu
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;

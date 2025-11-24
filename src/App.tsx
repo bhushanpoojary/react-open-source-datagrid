@@ -11,9 +11,10 @@ import { TreeDataDemo } from './components/TreeDataDemo'
 import { RowDraggingDemo } from './components/RowDraggingDemo'
 import { LiveMarketDemo } from './components/LiveMarketDemo'
 import { AccessibilityDemo } from './components/AccessibilityDemo'
+import { ContextMenuDemo } from './components/ContextMenuDemo'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market' | 'accessibility';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market' | 'accessibility' | 'contextmenu';
 
 interface MenuItem {
   id: DemoType;
@@ -97,6 +98,12 @@ function App() {
           label: 'Column Filters',
           icon: '🔍',
           description: 'Advanced filtering options',
+        },
+        {
+          id: 'contextmenu',
+          label: 'Context Menu',
+          icon: '📋',
+          description: 'Right-click menu with copy, export, & more',
         },
       ],
     },
@@ -425,6 +432,7 @@ function App() {
         {currentDemo === 'drag' && <RowDraggingDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
+        {currentDemo === 'contextmenu' && <ContextMenuDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
         {currentDemo === 'themes' && <ThemesDemo />}
       </main>

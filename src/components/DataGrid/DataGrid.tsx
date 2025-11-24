@@ -10,6 +10,8 @@ import { ColumnChooser } from './ColumnChooser';
 import { ExportMenu } from './ExportMenu';
 import { ColumnFilters } from './ColumnFilters';
 import { LayoutPresetsManager } from './LayoutPresetsManager';
+import { ContextMenu } from './ContextMenu';
+import { useContextMenu } from './useContextMenu';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
@@ -45,6 +47,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   persistenceConfig,
   treeConfig,
   dragRowConfig,
+  contextMenuConfig,
   tableId,
   theme: _theme = 'quartz',
   onRowClick,
@@ -72,6 +75,26 @@ export const DataGrid: React.FC<DataGridProps> = ({
   const [persistenceManager, setPersistenceManager] = useState<LayoutPersistenceManager | null>(null);
   const autoSaveRef = useRef<(() => void) | null>(null);
   const previousLayoutRef = useRef<string | null>(null);
+
+  // Context menu hook
+  const { contextMenu, handleContextMenu, closeContextMenu } = useContextMenu({
+    config: contextMenuConfig,
+    columns,
+    rows,
+    selectedRows: state.selection.selectedRows,
+    onPinColumn: (field, side) => dispatch({ type: 'PIN_COLUMN', payload: { field, side } }),
+    onUnpinColumn: (field) => dispatch({ type: 'UNPIN_COLUMN', payload: field }),
+    onToggleColumnVisibility: (field) => dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field }),
+    onResizeColumn: (field, width) => dispatch({ type: 'RESIZE_COLUMN', payload: { field, width } }),
+    onAutoSizeAllColumns: (widths) => {
+      Object.entries(widths).forEach(([field, width]) => {
+        dispatch({ type: 'RESIZE_COLUMN', payload: { field, width } });
+      });
+    },
+    onSetFilter: (field, value) => dispatch({ type: 'SET_FILTER', payload: { field, value } }),
+    pinnedColumnsLeft: state.pinnedColumnsLeft,
+    pinnedColumnsRight: state.pinnedColumnsRight,
+  });
 
   // Initialize persistence manager
   useEffect(() => {
@@ -457,6 +480,14 @@ export const DataGrid: React.FC<DataGridProps> = ({
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           showColumnPinning={showColumnPinning}
+          onContextMenu={(event, column, columnIndex) =>
+            handleContextMenu({
+              type: 'header',
+              column,
+              columnIndex,
+              event,
+            })
+          }
         />
         
         {/* Floating Filter Row */}
@@ -498,6 +529,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
         currentPage={state.currentPage}
         pageSize={state.pageSize}
         totalRows={flattenedRows.length}
+        onContextMenu={(event, row, column, rowIndex, columnIndex) =>
+          handleContextMenu({
+            type: 'cell',
+            row,
+            column,
+            rowIndex,
+            columnIndex,
+            event,
+          })
+        }
       />
 
       {/* Global Footer */}
@@ -520,6 +561,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
           pageSize={state.pageSize}
           totalRows={flattenedRows.length}
           dispatch={dispatch}
+        />
+      )}
+
+      {/* Context Menu */}
+      {contextMenu.isOpen && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          items={contextMenu.items}
+          onClose={closeContextMenu}
         />
       )}
     </div>

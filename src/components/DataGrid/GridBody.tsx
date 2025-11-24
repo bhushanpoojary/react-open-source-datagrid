@@ -33,6 +33,7 @@ interface GridBodyProps {
   currentPage?: number;
   pageSize?: number;
   totalRows?: number;
+  onContextMenu?: (event: React.MouseEvent, row: Row, column: Column, rowIndex: number, columnIndex: number) => void;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -61,6 +62,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   currentPage = 0,
   pageSize = 10,
   totalRows = 0,
+  onContextMenu,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -499,6 +501,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 color: 'var(--grid-text)',
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+              onContextMenu={(e) => onContextMenu?.(e, row, column, rowIndex, columnIndex)}
               onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
               tabIndex={isCellFocused ? 0 : -1}
             >
@@ -696,6 +699,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         color: 'var(--grid-text)',
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+                      onContextMenu={(e) => onContextMenu?.(e, row, column, index, columnIndex)}
                       onKeyDown={(e) => handleKeyDown(e, index, columnIndex)}
                       tabIndex={isCellFocused ? 0 : -1}
                     >

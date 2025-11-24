@@ -11,6 +11,7 @@ interface GridHeaderProps {
   pinnedLeft: string[];
   pinnedRight: string[];
   showColumnPinning: boolean;
+  onContextMenu?: (event: React.MouseEvent, column: Column, columnIndex: number) => void;
 }
 
 export const GridHeader: React.FC<GridHeaderProps> = ({
@@ -23,6 +24,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   pinnedLeft,
   pinnedRight,
   showColumnPinning,
+  onContextMenu,
 }) => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const [resizingColumn, setResizingColumn] = useState<string | null>(null);
@@ -216,6 +218,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-hover)'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-header-bg)'}
                 onClick={() => handleSort(field)}
+                onContextMenu={(e) => onContextMenu?.(e, column, colIndex)}
               >
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{column.headerName}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>

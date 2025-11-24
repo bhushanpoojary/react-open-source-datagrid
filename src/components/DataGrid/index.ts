@@ -39,7 +39,10 @@ export type {
   PersistenceConfig,
   TreeNode,
   TreeConfig,
-  ExpandedNodes
+  ExpandedNodes,
+  ContextMenuItem,
+  ContextMenuConfig,
+  ContextMenuEvent
 } from './types';
 export type { 
   ServerSideDataSourceConfig, 
