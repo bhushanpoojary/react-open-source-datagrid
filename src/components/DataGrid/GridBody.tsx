@@ -30,6 +30,9 @@ interface GridBodyProps {
   tableId?: string;
   onRowReorder?: (rows: Row[]) => void;
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
+  currentPage?: number;
+  pageSize?: number;
+  totalRows?: number;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -55,9 +58,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
   tableId,
   onRowReorder,
   onScroll,
+  currentPage = 0,
+  pageSize = 10,
+  totalRows = 0,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
+  const focusedCellRef = useRef<HTMLDivElement>(null);
 
   // Create a map for quick column lookup
   const columnMap = new Map(columns.map(col => [col.field, col]));
@@ -105,6 +112,13 @@ export const GridBody: React.FC<GridBodyProps> = ({
       editInputRef.current.select();
     }
   }, [editState.rowId, editState.field]);
+
+  // Focus the cell when focus state changes
+  useEffect(() => {
+    if (focusState && focusedCellRef.current) {
+      focusedCellRef.current.focus();
+    }
+  }, [focusState]);
 
   // Handle row click
   const handleRowClick = (row: Row, rowIndex: number, e: React.MouseEvent) => {
@@ -207,11 +221,26 @@ export const GridBody: React.FC<GridBodyProps> = ({
     switch (e.key) {
       case 'ArrowUp':
         e.preventDefault();
-        newRowIndex = Math.max(0, rowIndex - 1);
+        // If at first row and not on first page, go to previous page
+        if (rowIndex === 0 && currentPage > 0 && !virtualScrollConfig?.enabled) {
+          dispatch({ type: 'SET_PAGE', payload: currentPage - 1 });
+          // Set focus to last row of previous page
+          newRowIndex = Math.min(pageSize - 1, totalRows - currentPage * pageSize - 1);
+        } else {
+          newRowIndex = Math.max(0, rowIndex - 1);
+        }
         break;
       case 'ArrowDown':
         e.preventDefault();
-        newRowIndex = Math.min(maxRowIndex, rowIndex + 1);
+        // If at last row and not on last page, go to next page
+        const totalPages = Math.ceil(totalRows / pageSize);
+        if (rowIndex === maxRowIndex && currentPage < totalPages - 1 && !virtualScrollConfig?.enabled) {
+          dispatch({ type: 'SET_PAGE', payload: currentPage + 1 });
+          // Set focus to first row of next page
+          newRowIndex = 0;
+        } else {
+          newRowIndex = Math.min(maxRowIndex, rowIndex + 1);
+        }
         break;
       case 'ArrowLeft':
         e.preventDefault();
@@ -374,6 +403,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
           return (
             <div
               key={`${row.id}-${field}`}
+              ref={isCellFocused ? focusedCellRef : null}
               style={{
                 ...cellStyle,
                 padding: 'var(--grid-cell-padding, 10px 12px)',
@@ -562,6 +592,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   return (
                     <div
                       key={`${row.id}-${field}`}
+                      ref={isCellFocused ? focusedCellRef : null}
                       style={{
                         width: `${colInfo.width}px`,
                         paddingLeft: '12px',

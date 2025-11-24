@@ -455,6 +455,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
         dragRowConfig={dragRowConfig}
         tableId={tableId}
         onRowReorder={onRowReorder}
+        currentPage={state.currentPage}
+        pageSize={state.pageSize}
+        totalRows={flattenedRows.length}
       />
 
       {/* Global Footer */}
