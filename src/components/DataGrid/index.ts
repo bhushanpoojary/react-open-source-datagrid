@@ -43,7 +43,10 @@ export type {
   RowPinConfig,
   ContextMenuItem,
   ContextMenuConfig,
-  ContextMenuEvent
+  ContextMenuEvent,
+  TooltipConfig,
+  TooltipContent,
+  TooltipPlacement
 } from './types';
 export type { 
   ServerSideDataSourceConfig, 

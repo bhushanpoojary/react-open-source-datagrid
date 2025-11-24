@@ -36,6 +36,10 @@ interface GridBodyProps {
   pageSize?: number;
   totalRows?: number;
   onContextMenu?: (event: React.MouseEvent, row: Row, column: Column, rowIndex: number, columnIndex: number) => void;
+  onCellMouseEnter?: (event: React.MouseEvent, row: Row, column: Column, value: any) => void;
+  onCellMouseLeave?: () => void;
+  onRowMouseEnter?: (event: React.MouseEvent, row: Row, rowIndex: number) => void;
+  onRowMouseLeave?: () => void;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -67,6 +71,10 @@ export const GridBody: React.FC<GridBodyProps> = ({
   pageSize = 10,
   totalRows = 0,
   onContextMenu,
+  onCellMouseEnter,
+  onCellMouseLeave,
+  onRowMouseEnter,
+  onRowMouseLeave,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -506,6 +514,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onContextMenu={(e) => onContextMenu?.(e, row, column, rowIndex, columnIndex)}
+              onMouseEnter={(e) => onCellMouseEnter?.(e, row, column, cellValue)}
+              onMouseLeave={() => onCellMouseLeave?.()}
               onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
               tabIndex={isCellFocused ? 0 : -1}
             >
@@ -690,8 +700,14 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   backgroundColor: isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
                   cursor: 'pointer',
                 }}
-                onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
-                onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
+                onMouseEnter={(e) => {
+                  if (!isSelected) e.currentTarget.style.backgroundColor = 'var(--grid-hover)';
+                  onRowMouseEnter?.(e, row, index);
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelected) e.currentTarget.style.backgroundColor = 'var(--grid-bg)';
+                  onRowMouseLeave?.();
+                }}
                 onClick={(e) => handleRowClick(row, index, e)}
               >
                 {visibleColumns.map((colInfo, columnIndex) => {
@@ -727,6 +743,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
                       onContextMenu={(e) => onContextMenu?.(e, row, column, index, columnIndex)}
+                      onMouseEnter={(e) => onCellMouseEnter?.(e, row, column, cellValue)}
+                      onMouseLeave={() => onCellMouseLeave?.()}
                       onKeyDown={(e) => handleKeyDown(e, index, columnIndex)}
                       tabIndex={isCellFocused ? 0 : -1}
                     >

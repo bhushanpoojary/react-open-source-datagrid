@@ -12,6 +12,8 @@ import { ColumnFilters } from './ColumnFilters';
 import { LayoutPresetsManager } from './LayoutPresetsManager';
 import { ContextMenu } from './ContextMenu';
 import { useContextMenu } from './useContextMenu';
+import { Tooltip } from './Tooltip';
+import { useTooltip } from './useTooltip';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
@@ -49,6 +51,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   dragRowConfig,
   rowPinConfig,
   contextMenuConfig,
+  tooltipConfig,
   tableId,
   theme: _theme = 'quartz',
   onRowClick,
@@ -76,6 +79,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
   const [persistenceManager, setPersistenceManager] = useState<LayoutPersistenceManager | null>(null);
   const autoSaveRef = useRef<(() => void) | null>(null);
   const previousLayoutRef = useRef<string | null>(null);
+
+  // Tooltip hook
+  const { tooltipState, tooltipHandlers } = useTooltip({ config: tooltipConfig });
 
   // Context menu hook
   const { contextMenu, handleContextMenu, closeContextMenu } = useContextMenu({
@@ -596,6 +602,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
             event,
           })
         }
+        {...tooltipHandlers}
       />
 
       {/* Global Footer */}
@@ -628,6 +635,15 @@ export const DataGrid: React.FC<DataGridProps> = ({
           y={contextMenu.y}
           items={contextMenu.items}
           onClose={closeContextMenu}
+        />
+      )}
+
+      {/* Tooltip */}
+      {tooltipConfig?.enabled && (
+        <Tooltip 
+          state={tooltipState}
+          maxWidth={tooltipConfig.maxWidth}
+          offset={tooltipConfig.offset}
         />
       )}
     </div>

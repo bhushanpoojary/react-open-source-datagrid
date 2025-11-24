@@ -376,6 +376,36 @@ export interface ContextMenuState {
   targetColumnIndex?: number;
 }
 
+// Tooltip types
+export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right' | 'auto';
+
+export interface TooltipContent {
+  title?: string;
+  content: React.ReactNode;
+}
+
+export interface TooltipConfig {
+  enabled?: boolean; // Enable/disable tooltips (default: true)
+  showDelay?: number; // Delay before showing tooltip in ms (default: 500)
+  hideDelay?: number; // Delay before hiding tooltip in ms (default: 0)
+  placement?: TooltipPlacement; // Preferred placement (default: 'auto')
+  offset?: number; // Distance from target in pixels (default: 8)
+  maxWidth?: number; // Max width of tooltip in pixels (default: 300)
+  showCellTooltips?: boolean; // Show tooltips on cell hover (default: false)
+  showRowTooltips?: boolean; // Show tooltips on row hover (default: false)
+  getCellTooltip?: (row: Row, column: Column, value: any) => TooltipContent | string | null;
+  getRowTooltip?: (row: Row, rowIndex: number) => TooltipContent | string | null;
+}
+
+export interface TooltipState {
+  isVisible: boolean;
+  x: number;
+  y: number;
+  placement: TooltipPlacement;
+  content: TooltipContent | null;
+  targetRect: DOMRect | null;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -390,6 +420,7 @@ export interface DataGridProps {
   rowPinConfig?: RowPinConfig; // Configuration for row pinning
   marketDataConfig?: MarketDataConfig; // Configuration for market data mode
   contextMenuConfig?: ContextMenuConfig; // Configuration for context menu
+  tooltipConfig?: TooltipConfig; // Configuration for tooltips
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   onRowClick?: (row: Row) => void;

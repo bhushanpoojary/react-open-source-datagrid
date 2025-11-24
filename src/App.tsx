@@ -13,9 +13,10 @@ import { LiveMarketDemo } from './components/LiveMarketDemo'
 import { AccessibilityDemo } from './components/AccessibilityDemo'
 import { ContextMenuDemo } from './components/ContextMenuDemo'
 import { RowPinningDemo } from './components/RowPinningDemo'
+import { TooltipDemo } from './components/TooltipDemo'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip';
 
 interface MenuItem {
   id: DemoType;
@@ -135,6 +136,12 @@ function App() {
           label: 'Layout Persistence',
           icon: '💾',
           description: 'Save & restore layouts',
+        },
+        {
+          id: 'tooltip',
+          label: 'Tooltips',
+          icon: '💬',
+          description: 'Cell & row tooltips with smart placement',
         },
       ],
     },
@@ -441,6 +448,7 @@ function App() {
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'contextmenu' && <ContextMenuDemo />}
+        {currentDemo === 'tooltip' && <TooltipDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
         {currentDemo === 'themes' && <ThemesDemo />}
       </main>
