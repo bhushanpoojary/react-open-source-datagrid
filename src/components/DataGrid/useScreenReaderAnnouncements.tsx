@@ -15,7 +15,7 @@ interface AnnouncementOptions {
 
 export const useScreenReaderAnnouncements = () => {
   const announcementRef = useRef<string>('');
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   // Clean up timeout on unmount
   useEffect(() => {
