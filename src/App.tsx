@@ -29,6 +29,7 @@ interface MenuCategory {
 function App() {
   const [currentDemo, setCurrentDemo] = useState<DemoType>('standard')
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['core', 'performance', 'features', 'customization']))
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
   const menuCategories: MenuCategory[] = [
     {
@@ -127,6 +128,22 @@ function App() {
     setExpandedCategories(newExpanded);
   };
 
+  // Filter menu items based on search query
+  const filteredCategories = menuCategories.map(category => ({
+    ...category,
+    items: category.items.filter(item =>
+      item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.items.length > 0);
+
+  // Auto-expand categories when searching
+  const displayCategories = searchQuery ? filteredCategories : menuCategories;
+  const shouldExpand = (categoryLabel: string) => {
+    if (searchQuery) return true; // Expand all when searching
+    return expandedCategories.has(categoryLabel.toLowerCase().replace(/\s+/g, ''));
+  };
+
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#ffffff' }}>
       {/* Left Sidebar Navigation */}
@@ -153,6 +170,93 @@ function App() {
           </div>
         </div>
 
+        {/* Search Box */}
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              placeholder="Search features..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px 8px 36px',
+                fontSize: '13px',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                color: 'white',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                outline: 'none',
+                transition: 'all 0.15s',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.5)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+              }}
+            />
+            <svg 
+              style={{ 
+                position: 'absolute', 
+                left: '12px', 
+                top: '50%', 
+                transform: 'translateY(-50%)',
+                width: '16px', 
+                height: '16px',
+                fill: 'rgba(255, 255, 255, 0.5)',
+                pointerEvents: 'none'
+              }} 
+              viewBox="0 0 24 24"
+            >
+              <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                style={{
+                  position: 'absolute',
+                  right: '8px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  borderRadius: '3px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)';
+                }}
+              >
+                <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
+            )}
+          </div>
+          {searchQuery && filteredCategories.length === 0 && (
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '12px', 
+              color: 'rgba(255, 255, 255, 0.5)',
+              textAlign: 'center'
+            }}>
+              No features found
+            </div>
+          )}
+        </div>
+
         {/* Navigation Tree */}
         <nav style={{ 
           flex: 1, 
@@ -161,8 +265,8 @@ function App() {
           scrollbarWidth: 'thin',
           scrollbarColor: 'rgba(255, 255, 255, 0.3) transparent'
         }}>
-          {menuCategories.map((category) => {
-            const isExpanded = expandedCategories.has(category.label.toLowerCase().replace(/\s+/g, ''));
+          {displayCategories.map((category) => {
+            const isExpanded = shouldExpand(category.label);
             return (
               <div key={category.label} style={{ marginBottom: '8px' }}>
                 {/* Category Header */}
