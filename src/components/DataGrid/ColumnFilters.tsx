@@ -30,7 +30,7 @@ const isAdvancedFilter = (filter: FilterConfig[string]): filter is AdvancedFilte
 };
 
 // Text Filter Component
-const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced }) => {
   // Skip if it's an advanced filter
   const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const initialFilterType = (simpleFilter?.type as 'contains' | 'equals' | 'startsWith' | 'endsWith' | 'notContains') || 'contains';
@@ -156,7 +156,7 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 };
 
 // Number Filter Component
-const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced }) => {
   const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const initialFilterType = (simpleFilter?.type as 'equals' | 'notEquals' | 'greaterThan' | 'lessThan' | 'greaterThanOrEqual' | 'lessThanOrEqual' | 'inRange') || 'equals';
   const initialValue = (simpleFilter?.value as string) || '';
@@ -280,7 +280,7 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
 };
 
 // Date Filter Component
-const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter, onClose, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced }) => {
   const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const initialFilterType = (simpleFilter?.type as 'equals' | 'before' | 'after' | 'inRange') || 'equals';
   const initialValue = (simpleFilter?.value as string) || '';
@@ -399,7 +399,7 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 };
 
 // Set Filter Component (Unique dropdown values)
-const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showAdvancedButton, onSwitchToAdvanced }) => {
+const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced }) => {
   const uniqueValues = Array.from(new Set(rows.map(row => row[column.field]).filter(v => v != null)));
   const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const [selectedValues, setSelectedValues] = useState<Set<any>>(

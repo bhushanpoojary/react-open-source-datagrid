@@ -440,6 +440,9 @@ export function createMockServerDataSource(
         return Object.entries(filterModel).every(([field, filterValue]) => {
           if (!filterValue) return true;
           
+          // Skip advanced filters in this simple implementation
+          if ('operator' in filterValue) return true;
+          
           const value = row[field];
           const filterVal = filterValue.value;
           
