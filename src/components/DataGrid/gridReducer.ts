@@ -41,6 +41,8 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
       dropTargetIndex: null,
       dropPosition: null,
     },
+    pinnedRowsTop: [],
+    pinnedRowsBottom: [],
   };
 };
 
@@ -451,6 +453,47 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
           dropTargetIndex: null,
           dropPosition: null,
         },
+      };
+    }
+
+    case 'PIN_ROW_TOP': {
+      const rowId = action.payload;
+      // Remove from bottom if already pinned there
+      const pinnedRowsBottom = state.pinnedRowsBottom.filter(id => id !== rowId);
+      // Add to top if not already there
+      const pinnedRowsTop = state.pinnedRowsTop.includes(rowId)
+        ? state.pinnedRowsTop
+        : [...state.pinnedRowsTop, rowId];
+      
+      return {
+        ...state,
+        pinnedRowsTop,
+        pinnedRowsBottom,
+      };
+    }
+
+    case 'PIN_ROW_BOTTOM': {
+      const rowId = action.payload;
+      // Remove from top if already pinned there
+      const pinnedRowsTop = state.pinnedRowsTop.filter(id => id !== rowId);
+      // Add to bottom if not already there
+      const pinnedRowsBottom = state.pinnedRowsBottom.includes(rowId)
+        ? state.pinnedRowsBottom
+        : [...state.pinnedRowsBottom, rowId];
+      
+      return {
+        ...state,
+        pinnedRowsTop,
+        pinnedRowsBottom,
+      };
+    }
+
+    case 'UNPIN_ROW': {
+      const rowId = action.payload;
+      return {
+        ...state,
+        pinnedRowsTop: state.pinnedRowsTop.filter(id => id !== rowId),
+        pinnedRowsBottom: state.pinnedRowsBottom.filter(id => id !== rowId),
       };
     }
 

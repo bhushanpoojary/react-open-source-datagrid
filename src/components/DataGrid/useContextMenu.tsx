@@ -13,8 +13,13 @@ interface UseContextMenuProps {
   onResizeColumn?: (field: string, width: number) => void;
   onAutoSizeAllColumns?: (widths: { [field: string]: number }) => void;
   onSetFilter?: (field: string, value: FilterValue | null) => void;
+  onPinRowTop?: (rowId: string | number) => void;
+  onPinRowBottom?: (rowId: string | number) => void;
+  onUnpinRow?: (rowId: string | number) => void;
   pinnedColumnsLeft?: string[];
   pinnedColumnsRight?: string[];
+  pinnedRowsTop?: (string | number)[];
+  pinnedRowsBottom?: (string | number)[];
 }
 
 /**
@@ -31,8 +36,13 @@ export const useContextMenu = ({
   onResizeColumn,
   onAutoSizeAllColumns,
   onSetFilter,
+  onPinRowTop,
+  onPinRowBottom,
+  onUnpinRow,
   pinnedColumnsLeft = [],
   pinnedColumnsRight = [],
+  pinnedRowsTop = [],
+  pinnedRowsBottom = [],
 }: UseContextMenuProps) => {
   const [contextMenu, setContextMenu] = useState<ContextMenuState>({
     isOpen: false,
@@ -65,6 +75,38 @@ export const useContextMenu = ({
   const buildCellMenuItems = useCallback((row: Row, column: Column): ContextMenuItem[] => {
     const items: ContextMenuItem[] = [];
     const hasSelection = selectedRows.size > 0;
+    const rowId = row.id;
+    const isPinnedTop = pinnedRowsTop.includes(rowId);
+    const isPinnedBottom = pinnedRowsBottom.includes(rowId);
+    const isPinned = isPinnedTop || isPinnedBottom;
+
+    // Row pinning options
+    if (onPinRowTop && onPinRowBottom && onUnpinRow) {
+      if (!isPinned) {
+        items.push({
+          id: 'pin-row-top',
+          label: 'Pin Row to Top',
+          icon: '📌',
+          onClick: () => onPinRowTop(rowId),
+        });
+
+        items.push({
+          id: 'pin-row-bottom',
+          label: 'Pin Row to Bottom',
+          icon: '📌',
+          onClick: () => onPinRowBottom(rowId),
+        });
+      } else {
+        items.push({
+          id: 'unpin-row',
+          label: 'Unpin Row',
+          icon: '📍',
+          onClick: () => onUnpinRow(rowId),
+        });
+      }
+
+      items.push({ type: 'separator' } as ContextMenuItem);
+    }
 
     // Copy options
     if (menuConfig.showCopy) {
@@ -137,7 +179,7 @@ export const useContextMenu = ({
     }
 
     return items;
-  }, [menuConfig, selectedRows, columns, rows, onSetFilter]);
+  }, [menuConfig, selectedRows, columns, rows, onSetFilter, onPinRowTop, onPinRowBottom, onUnpinRow, pinnedRowsTop, pinnedRowsBottom]);
 
   // Build menu items for header context menu
   const buildHeaderMenuItems = useCallback((column: Column): ContextMenuItem[] => {

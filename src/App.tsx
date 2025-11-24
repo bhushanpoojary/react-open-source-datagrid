@@ -12,9 +12,10 @@ import { RowDraggingDemo } from './components/RowDraggingDemo'
 import { LiveMarketDemo } from './components/LiveMarketDemo'
 import { AccessibilityDemo } from './components/AccessibilityDemo'
 import { ContextMenuDemo } from './components/ContextMenuDemo'
+import { RowPinningDemo } from './components/RowPinningDemo'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market' | 'accessibility' | 'contextmenu';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu';
 
 interface MenuItem {
   id: DemoType;
@@ -92,6 +93,12 @@ function App() {
           label: 'Row Dragging',
           icon: '↕️',
           description: 'Drag & drop row reordering',
+        },
+        {
+          id: 'rowpin',
+          label: 'Row Pinning',
+          icon: '📌',
+          description: 'Pin rows to top/bottom (sticky)',
         },
         {
           id: 'filters',
@@ -430,6 +437,7 @@ function App() {
         {currentDemo === 'accessibility' && <AccessibilityDemo />}
         {currentDemo === 'tree' && <TreeDataDemo />}
         {currentDemo === 'drag' && <RowDraggingDemo />}
+        {currentDemo === 'rowpin' && <RowPinningDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
         {currentDemo === 'contextmenu' && <ContextMenuDemo />}

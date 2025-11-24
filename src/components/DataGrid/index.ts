@@ -40,6 +40,7 @@ export type {
   TreeNode,
   TreeConfig,
   ExpandedNodes,
+  RowPinConfig,
   ContextMenuItem,
   ContextMenuConfig,
   ContextMenuEvent

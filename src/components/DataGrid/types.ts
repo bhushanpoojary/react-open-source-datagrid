@@ -147,6 +147,8 @@ export interface GridState {
   hiddenColumns: string[]; // Array of field names that are hidden
   expandedNodes: ExpandedNodes; // Track which tree nodes are expanded
   dragState: DragState; // Track drag-and-drop state
+  pinnedRowsTop: (string | number)[]; // Array of row IDs pinned to top
+  pinnedRowsBottom: (string | number)[]; // Array of row IDs pinned to bottom
 }
 
 // Action types for reducer
@@ -183,7 +185,10 @@ export type GridAction =
   | { type: 'SET_EXPANDED_NODES'; payload: ExpandedNodes }
   | { type: 'SET_DRAG_STATE'; payload: DragState }
   | { type: 'START_DRAG'; payload: { rowId: string | number; rowIndex: number } }
-  | { type: 'END_DRAG' };
+  | { type: 'END_DRAG' }
+  | { type: 'PIN_ROW_TOP'; payload: string | number }
+  | { type: 'PIN_ROW_BOTTOM'; payload: string | number }
+  | { type: 'UNPIN_ROW'; payload: string | number };
 
 // Virtual scrolling configuration
 export interface VirtualScrollConfig {
@@ -254,6 +259,15 @@ export interface PersistenceConfig {
   serverConfig?: ServerConfig;
   userProfileConfig?: UserProfileConfig;
   customAdapter?: StorageAdapter;
+}
+
+// Row pinning configuration
+export interface RowPinConfig {
+  enabled: boolean; // Enable row pinning feature
+  showPinButton?: boolean; // Show pin button in row (default: false)
+  maxPinnedTop?: number; // Max rows pinned to top (default: unlimited)
+  maxPinnedBottom?: number; // Max rows pinned to bottom (default: unlimited)
+  onPinChange?: (pinnedTop: (string | number)[], pinnedBottom: (string | number)[]) => void;
 }
 
 // Row dragging configuration
@@ -373,6 +387,7 @@ export interface DataGridProps {
   persistenceConfig?: PersistenceConfig;
   treeConfig?: TreeConfig; // Configuration for tree/hierarchical data
   dragRowConfig?: DragRowConfig; // Configuration for row dragging
+  rowPinConfig?: RowPinConfig; // Configuration for row pinning
   marketDataConfig?: MarketDataConfig; // Configuration for market data mode
   contextMenuConfig?: ContextMenuConfig; // Configuration for context menu
   tableId?: string; // Unique ID for multi-table drag-and-drop

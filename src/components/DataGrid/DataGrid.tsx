@@ -47,6 +47,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   persistenceConfig,
   treeConfig,
   dragRowConfig,
+  rowPinConfig,
   contextMenuConfig,
   tableId,
   theme: _theme = 'quartz',
@@ -92,8 +93,13 @@ export const DataGrid: React.FC<DataGridProps> = ({
       });
     },
     onSetFilter: (field, value) => dispatch({ type: 'SET_FILTER', payload: { field, value } }),
+    onPinRowTop: rowPinConfig?.enabled ? (rowId) => dispatch({ type: 'PIN_ROW_TOP', payload: rowId }) : undefined,
+    onPinRowBottom: rowPinConfig?.enabled ? (rowId) => dispatch({ type: 'PIN_ROW_BOTTOM', payload: rowId }) : undefined,
+    onUnpinRow: rowPinConfig?.enabled ? (rowId) => dispatch({ type: 'UNPIN_ROW', payload: rowId }) : undefined,
     pinnedColumnsLeft: state.pinnedColumnsLeft,
     pinnedColumnsRight: state.pinnedColumnsRight,
+    pinnedRowsTop: state.pinnedRowsTop,
+    pinnedRowsBottom: state.pinnedRowsBottom,
   });
 
   // Initialize persistence manager
@@ -237,6 +243,14 @@ export const DataGrid: React.FC<DataGridProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selection.selectedRows]);
 
+  // Notify parent of pinned row changes
+  useEffect(() => {
+    if (rowPinConfig?.onPinChange) {
+      rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
+
   // Announce sorting changes to screen readers
   useEffect(() => {
     if (state.sortConfig.field) {
@@ -330,12 +344,53 @@ export const DataGrid: React.FC<DataGridProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.currentPage, state.pageSize]);
 
-  // Apply pagination
+  // Separate pinned and unpinned rows
+  const { pinnedRowsTopData, pinnedRowsBottomData, unpinnedRows } = useMemo(() => {
+    const pinnedTopSet = new Set(state.pinnedRowsTop);
+    const pinnedBottomSet = new Set(state.pinnedRowsBottom);
+    
+    const pinnedTop: (Row | GroupedRow)[] = [];
+    const pinnedBottom: (Row | GroupedRow)[] = [];
+    const unpinned: (Row | GroupedRow)[] = [];
+    
+    // Separate rows based on pinning status
+    flattenedRows.forEach(row => {
+      const rowId = 'id' in row ? row.id : ('groupKey' in row ? row.groupKey : null);
+      if (rowId !== null) {
+        if (pinnedTopSet.has(rowId)) {
+          pinnedTop.push(row);
+        } else if (pinnedBottomSet.has(rowId)) {
+          pinnedBottom.push(row);
+        } else {
+          unpinned.push(row);
+        }
+      } else {
+        unpinned.push(row);
+      }
+    });
+    
+    // Maintain order of pinned rows as stored in state
+    const orderedPinnedTop = state.pinnedRowsTop
+      .map(id => pinnedTop.find(row => ('id' in row ? row.id : ('groupKey' in row ? row.groupKey : null)) === id))
+      .filter((row): row is Row | GroupedRow => row !== undefined);
+    
+    const orderedPinnedBottom = state.pinnedRowsBottom
+      .map(id => pinnedBottom.find(row => ('id' in row ? row.id : ('groupKey' in row ? row.groupKey : null)) === id))
+      .filter((row): row is Row | GroupedRow => row !== undefined);
+    
+    return {
+      pinnedRowsTopData: orderedPinnedTop,
+      pinnedRowsBottomData: orderedPinnedBottom,
+      unpinnedRows: unpinned,
+    };
+  }, [flattenedRows, state.pinnedRowsTop, state.pinnedRowsBottom]);
+
+  // Apply pagination to unpinned rows only
   const paginatedRows = useMemo(() => {
     const startIndex = state.currentPage * state.pageSize;
     const endIndex = startIndex + state.pageSize;
-    return flattenedRows.slice(startIndex, endIndex);
-  }, [flattenedRows, state.currentPage, state.pageSize]);
+    return unpinnedRows.slice(startIndex, endIndex);
+  }, [unpinnedRows, state.currentPage, state.pageSize]);
 
   // Compute global footer aggregations
   const globalAggregates = useMemo(() => {
@@ -506,7 +561,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
       {/* Grid Body */}
       <GridBody
         columns={columns}
-        rows={virtualScrollConfig?.enabled ? flattenedRows : paginatedRows}
+        rows={virtualScrollConfig?.enabled ? unpinnedRows : paginatedRows}
+        pinnedRowsTop={pinnedRowsTopData}
+        pinnedRowsBottom={pinnedRowsBottomData}
         columnOrder={state.columnOrder}
         displayColumnOrder={displayColumnOrder}
         columnWidths={state.columnWidths}
@@ -528,7 +585,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         onRowReorder={onRowReorder}
         currentPage={state.currentPage}
         pageSize={state.pageSize}
-        totalRows={flattenedRows.length}
+        totalRows={unpinnedRows.length}
         onContextMenu={(event, row, column, rowIndex, columnIndex) =>
           handleContextMenu({
             type: 'cell',
@@ -559,7 +616,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
         <GridPagination
           currentPage={state.currentPage}
           pageSize={state.pageSize}
-          totalRows={flattenedRows.length}
+          totalRows={unpinnedRows.length}
           dispatch={dispatch}
         />
       )}
