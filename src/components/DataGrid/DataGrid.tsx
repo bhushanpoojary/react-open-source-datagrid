@@ -16,6 +16,7 @@ import { applyFilters, hasActiveFilters } from './filterUtils';
 import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 import { getTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
+import { useScreenReaderAnnouncements, ScreenReaderAnnouncer } from './useScreenReaderAnnouncements';
 
 /**
  * DataGrid Component
@@ -58,6 +59,14 @@ export const DataGrid: React.FC<DataGridProps> = ({
     { columns, pageSize },
     (args) => createInitialState(args.columns, args.pageSize)
   );
+
+  // Screen reader announcements hook
+  const { 
+    announcementRef, 
+    announceSorting, 
+    announceSelection, 
+    announcePagination 
+  } = useScreenReaderAnnouncements();
 
   // Persistence manager instance
   const [persistenceManager, setPersistenceManager] = useState<LayoutPersistenceManager | null>(null);
@@ -196,13 +205,25 @@ export const DataGrid: React.FC<DataGridProps> = ({
     dispatch({ type: 'RESET_COLUMNS', payload: columns });
   }, [columns]);
 
-  // Notify parent of selection changes
+  // Notify parent of selection changes and announce to screen readers
   useEffect(() => {
     if (onSelectionChange) {
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
+    announceSelection(state.selection.selectedRows.size);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selection.selectedRows]);
+
+  // Announce sorting changes to screen readers
+  useEffect(() => {
+    if (state.sortConfig.field) {
+      const column = columns.find(c => c.field === state.sortConfig.field);
+      if (column) {
+        announceSorting(column.headerName, state.sortConfig.direction);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.sortConfig.field, state.sortConfig.direction]);
 
   // Apply sorting
   const sortedRows = useMemo(() => {
@@ -275,6 +296,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
     }
     return flattenGroupedRows(groupedRows as (Row | GroupedRow)[]);
   }, [groupedRows, state.groupBy]);
+
+  // Announce pagination changes to screen readers
+  useEffect(() => {
+    const totalPages = Math.ceil(flattenedRows.length / state.pageSize);
+    const rowCount = Math.min(state.pageSize, flattenedRows.length - state.currentPage * state.pageSize);
+    if (rowCount > 0) {
+      announcePagination(state.currentPage, totalPages, rowCount);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.currentPage, state.pageSize]);
 
   // Apply pagination
   const paginatedRows = useMemo(() => {
@@ -359,7 +390,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
   );
 
   return (
-    <div style={{ border: 'var(--grid-border-width, 1px) solid var(--grid-border)', borderRadius: 'var(--grid-border-radius, 6px)', overflow: 'hidden', backgroundColor: 'var(--grid-bg)', boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' }}>
+    <div 
+      role="grid" 
+      aria-label="Data Grid"
+      aria-rowcount={flattenedRows.length}
+      aria-colcount={displayColumnOrder.length}
+      style={{ border: 'var(--grid-border-width, 1px) solid var(--grid-border)', borderRadius: 'var(--grid-border-radius, 6px)', overflow: 'hidden', backgroundColor: 'var(--grid-bg)', boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' }}
+    >
+      {/* Screen Reader Announcements - Live Region */}
+      <ScreenReaderAnnouncer message={announcementRef.current} priority="polite" />
+      
       {/* Toolbar */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -406,7 +446,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       />
 
       {/* Sticky Header */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
+      <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
         <GridHeader
           columns={columns}
           columnOrder={state.columnOrder}

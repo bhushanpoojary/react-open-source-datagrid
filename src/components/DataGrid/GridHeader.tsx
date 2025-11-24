@@ -167,8 +167,8 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   return (
     <div ref={headerRef} style={{ borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', width: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
       {/* Column Headers Row */}
-      <div style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
-        {displayColumnOrder.map((field) => {
+      <div role="row" style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
+        {displayColumnOrder.map((field, colIndex) => {
           const column = columnMap.get(field);
           if (!column) return null;
 
@@ -182,6 +182,10 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
           return (
             <div
               key={field}
+              role="columnheader"
+              aria-colindex={colIndex + 1}
+              aria-sort={sortDirection === 'asc' ? 'ascending' : sortDirection === 'desc' ? 'descending' : 'none'}
+              aria-label={`${column.headerName} column${sortDirection ? `, sorted ${sortDirection === 'asc' ? 'ascending' : 'descending'}` : ''}`}
               style={{
                 ...headerStyle,
                 position: 'relative',

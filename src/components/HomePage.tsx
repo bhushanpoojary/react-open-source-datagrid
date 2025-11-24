@@ -250,6 +250,19 @@ export function HomePage() {
             'Filter persistence'
           ]}
         />
+
+        {/* Accessibility */}
+        <FeatureCard
+          icon="♿"
+          title="Accessibility (A11y)"
+          description="WCAG 2.1 AA compliant with full keyboard navigation and screen reader support."
+          features={[
+            'Keyboard navigation',
+            'ARIA attributes',
+            'Screen reader support',
+            'Focus management'
+          ]}
+        />
       </div>
 
       {/* Getting Started */}

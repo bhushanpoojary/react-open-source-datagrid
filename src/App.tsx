@@ -10,9 +10,10 @@ import { ThemesDemo } from './components/ThemesDemo'
 import { TreeDataDemo } from './components/TreeDataDemo'
 import { RowDraggingDemo } from './components/RowDraggingDemo'
 import { LiveMarketDemo } from './components/LiveMarketDemo'
+import { AccessibilityDemo } from './components/AccessibilityDemo'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'market' | 'accessibility';
 
 interface MenuItem {
   id: DemoType;
@@ -120,6 +121,18 @@ function App() {
           label: 'Layout Persistence',
           icon: '💾',
           description: 'Save & restore layouts',
+        },
+      ],
+    },
+    {
+      label: 'Accessibility',
+      icon: '♿',
+      items: [
+        {
+          id: 'accessibility',
+          label: 'Accessibility (A11y)',
+          icon: '♿',
+          description: 'Keyboard navigation & ARIA support',
         },
       ],
     },
@@ -407,6 +420,7 @@ function App() {
         {currentDemo === 'virtual' && <VirtualScrollDemo />}
         {currentDemo === 'infinite' && <InfiniteScrollDemo />}
         {currentDemo === 'market' && <LiveMarketDemo />}
+        {currentDemo === 'accessibility' && <AccessibilityDemo />}
         {currentDemo === 'tree' && <TreeDataDemo />}
         {currentDemo === 'drag' && <RowDraggingDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}

@@ -250,14 +250,92 @@ export const GridBody: React.FC<GridBodyProps> = ({
         e.preventDefault();
         newColIndex = Math.min(maxColIndex, columnIndex + 1);
         break;
+      case 'Home':
+        e.preventDefault();
+        if (e.ctrlKey || e.metaKey) {
+          // Ctrl+Home: Go to first cell
+          newRowIndex = 0;
+          newColIndex = 0;
+        } else {
+          // Home: Go to first column in current row
+          newColIndex = 0;
+        }
+        break;
+      case 'End':
+        e.preventDefault();
+        if (e.ctrlKey || e.metaKey) {
+          // Ctrl+End: Go to last cell
+          newRowIndex = maxRowIndex;
+          newColIndex = maxColIndex;
+        } else {
+          // End: Go to last column in current row
+          newColIndex = maxColIndex;
+        }
+        break;
+      case 'PageUp':
+        e.preventDefault();
+        if (currentPage > 0 && !virtualScrollConfig?.enabled) {
+          dispatch({ type: 'SET_PAGE', payload: currentPage - 1 });
+          newRowIndex = 0;
+        } else {
+          newRowIndex = Math.max(0, rowIndex - Math.floor(pageSize / 2));
+        }
+        break;
+      case 'PageDown':
+        e.preventDefault();
+        const totalPagesForPageDown = Math.ceil(totalRows / pageSize);
+        if (currentPage < totalPagesForPageDown - 1 && !virtualScrollConfig?.enabled) {
+          dispatch({ type: 'SET_PAGE', payload: currentPage + 1 });
+          newRowIndex = 0;
+        } else {
+          newRowIndex = Math.min(maxRowIndex, rowIndex + Math.floor(pageSize / 2));
+        }
+        break;
+      case ' ':
+      case 'Spacebar': // For older browsers
+        e.preventDefault();
+        // Space: Toggle row selection
+        const row = rows[rowIndex];
+        if (!isGroupedRow(row)) {
+          const isMulti = e.ctrlKey || e.metaKey;
+          dispatch({
+            type: 'TOGGLE_ROW_SELECTION',
+            payload: { rowId: row.id, isMulti },
+          });
+        }
+        return; // Don't update focus
       case 'Enter':
         e.preventDefault();
         // Start editing current cell
-        const row = rows[rowIndex];
-        if (!isGroupedRow(row)) {
+        const rowForEdit = rows[rowIndex];
+        if (!isGroupedRow(rowForEdit)) {
           const field = displayColumnOrder[columnIndex];
-          const value = row[field];
-          handleCellDoubleClick(row, field, value);
+          const value = rowForEdit[field];
+          handleCellDoubleClick(rowForEdit, field, value);
+        }
+        break;
+      case 'Tab':
+        e.preventDefault();
+        if (e.shiftKey) {
+          // Shift+Tab: Move to previous cell (with wrapping)
+          if (columnIndex === 0) {
+            if (rowIndex > 0) {
+              newRowIndex = rowIndex - 1;
+              newColIndex = maxColIndex;
+            }
+          } else {
+            newColIndex = columnIndex - 1;
+          }
+        } else {
+          // Tab: Move to next cell (with wrapping)
+          if (columnIndex === maxColIndex) {
+            if (rowIndex < maxRowIndex) {
+              newRowIndex = rowIndex + 1;
+              newColIndex = 0;
+            }
+          } else {
+            newColIndex = columnIndex + 1;
+          }
         }
         break;
       default:
@@ -341,6 +419,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const rowContent = (
       <div
         key={row.id}
+        role="row"
+        aria-rowindex={rowIndex + 2}
+        aria-selected={isSelected}
         style={{
           ...style,
           display: 'flex',
@@ -404,6 +485,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
             <div
               key={`${row.id}-${field}`}
               ref={isCellFocused ? focusedCellRef : null}
+              role="gridcell"
+              aria-colindex={columnIndex + 1}
+              aria-readonly={column.editable === false}
               style={{
                 ...cellStyle,
                 padding: 'var(--grid-cell-padding, 10px 12px)',
@@ -543,7 +627,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const enableColumnVirtualization = virtualScrollConfig.enableColumnVirtualization ?? true;
 
     return (
-      <div ref={bodyRef} style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'var(--grid-bg)' }}>
+      <div ref={bodyRef} role="rowgroup" style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'var(--grid-bg)' }}>
         <VirtualScroller<Row | GroupedRow>
           items={rows}
           itemHeight={virtualScrollConfig.rowHeight || 35}
@@ -565,6 +649,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
             return (
               <div
+                role="row"
+                aria-rowindex={index + 2}
+                aria-selected={isSelected}
                 style={{
                   ...style,
                   display: 'flex',
@@ -593,6 +680,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
                     <div
                       key={`${row.id}-${field}`}
                       ref={isCellFocused ? focusedCellRef : null}
+                      role="gridcell"
+                      aria-colindex={displayColumnOrder.indexOf(field) + 1}
+                      aria-readonly={column.editable === false}
                       style={{
                         width: `${colInfo.width}px`,
                         paddingLeft: '12px',
@@ -643,7 +733,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
   // Non-virtual scrolling mode (original implementation)
   return (
-    <div ref={bodyRef} style={{ overflow: 'auto', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg)', width: '100%' }}>
+    <div ref={bodyRef} role="rowgroup" style={{ overflow: 'auto', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg)', width: '100%' }}>
       {rows.map((row, rowIndex) => renderRowContent(row, rowIndex))}
     </div>
   );

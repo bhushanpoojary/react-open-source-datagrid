@@ -21,6 +21,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Cell Renderer Framework** (custom components: badges, progress bars, buttons, images, icons)
 - ✅ **Layout Persistence** (save/load layouts with localStorage, server, or user profile storage)
 - ✅ **Infinite Scrolling with Server-Side DataSource** (100M+ rows with server-side filtering, sorting, and caching)
+- ✅ **Accessibility (A11y)** (WCAG 2.1 AA compliant with full keyboard navigation, ARIA support, and screen reader compatibility)
 
 ## Quick Start
 
