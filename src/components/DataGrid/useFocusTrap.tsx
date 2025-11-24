@@ -5,6 +5,7 @@
  * Ensures keyboard navigation stays within the trapped area for accessibility.
  */
 
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useRef } from 'react';
 
 interface FocusTrapOptions {

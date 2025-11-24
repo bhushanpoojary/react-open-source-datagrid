@@ -5,6 +5,7 @@
  * Provides accessible feedback for grid actions like sorting, filtering, selection, and navigation.
  */
 
+/* eslint-disable react-refresh/only-export-components */
 import React, { useRef, useCallback, useEffect } from 'react';
 
 interface AnnouncementOptions {
