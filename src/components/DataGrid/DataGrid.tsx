@@ -475,6 +475,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
   return (
     <div 
+      data-testid="data-grid"
       role="grid" 
       aria-label="Data Grid"
       aria-rowcount={flattenedRows.length}

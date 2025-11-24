@@ -15,9 +15,11 @@ import { AccessibilityDemo } from './components/AccessibilityDemo'
 import { ContextMenuDemo } from './components/ContextMenuDemo'
 import { RowPinningDemo } from './components/RowPinningDemo'
 import { TooltipDemo } from './components/TooltipDemo'
+import { BenchmarkDemo } from './components/BenchmarkDemo'
+import { FeatureGallery } from './components/FeatureGallery'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery';
 
 interface MenuItem {
   id: DemoType;
@@ -161,6 +163,24 @@ function App() {
           label: 'Accessibility (A11y)',
           icon: '♿',
           description: 'Keyboard navigation & ARIA support',
+        },
+      ],
+    },
+    {
+      label: 'Playground',
+      icon: '🧪',
+      items: [
+        {
+          id: 'gallery',
+          label: 'Feature Gallery',
+          icon: '🎯',
+          description: 'Browse all features with live demos',
+        },
+        {
+          id: 'benchmark',
+          label: 'Benchmark (1M rows)',
+          icon: '🚀',
+          description: 'Test performance with massive datasets',
         },
       ],
     },
@@ -459,6 +479,8 @@ function App() {
         {currentDemo === 'tooltip' && <TooltipDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
         {currentDemo === 'themes' && <ThemesDemo />}
+        {currentDemo === 'gallery' && <FeatureGallery />}
+        {currentDemo === 'benchmark' && <BenchmarkDemo />}
       </main>
     </div>
   )

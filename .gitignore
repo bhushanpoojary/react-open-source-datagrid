@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Test artifacts
+cypress/screenshots
+cypress/videos
+cypress/downloads
+playwright-report
+test-results
+.playwright

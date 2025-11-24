@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import type { Column, Row } from './types';
 
 export type ExportFormat = 'csv' | 'xlsx';
@@ -49,132 +49,100 @@ export const exportToCSV = (
 /**
  * Converts a dataset to XLSX format with optional styling and triggers download
  */
-export const exportToXLSX = (
+export const exportToXLSX = async (
   data: Row[],
   columns: Column[],
   options: {
     filename?: string;
     styling?: ExcelStyling;
   } = {}
-): void => {
+): Promise<void> => {
   const { filename = 'export.xlsx', styling = 'basic' } = options;
 
-  // Create worksheet data
-  const headers = columns.map(col => col.headerName);
-  const rows = data.map(row =>
-    columns.map(col => {
-      const value = row[col.field];
-      return value ?? '';
-    })
-  );
-
-  const worksheetData = [headers, ...rows];
-
   // Create workbook and worksheet
-  const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Sheet1');
 
-  // Apply styling if professional is selected
-  if (styling === 'professional') {
-    applyProfessionalStyling(worksheet, worksheetData, columns);
-  }
+  // Add header row
+  const headers = columns.map(col => col.headerName);
+  worksheet.addRow(headers);
+
+  // Add data rows
+  data.forEach(row => {
+    const rowData = columns.map(col => row[col.field] ?? '');
+    worksheet.addRow(rowData);
+  });
 
   // Set column widths
-  const colWidths = columns.map(col => {
+  worksheet.columns = columns.map(col => {
     const headerLength = col.headerName.length;
     const maxDataLength = Math.max(
       ...data.map(row => String(row[col.field] ?? '').length)
     );
-    return Math.max(headerLength, maxDataLength) + 2;
+    const width = Math.max(headerLength, maxDataLength) + 2;
+    return { width: Math.min(width, 50) };
   });
-  worksheet['!cols'] = colWidths.map(w => ({ wch: Math.min(w, 50) }));
+
+  // Apply styling if professional is selected
+  if (styling === 'professional') {
+    applyProfessionalStylingExcelJS(worksheet, columns);
+  }
 
   // Download
-  XLSX.writeFile(workbook, filename);
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { 
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+  });
+  downloadFile(blob, filename);
 };
 
 /**
- * Applies professional styling to XLSX worksheet
+ * Applies professional styling to ExcelJS worksheet
  */
-const applyProfessionalStyling = (
-  worksheet: XLSX.WorkSheet,
-  data: any[][],
-  columns: Column[]
+const applyProfessionalStylingExcelJS = (
+  worksheet: ExcelJS.Worksheet,
+  _columns: Column[]
 ): void => {
-  // Header styling
-  const headerFill = {
-    patternType: 'solid',
-    fgColor: { rgb: 'FF2F5496' }, // Dark blue
+  // Style header row
+  const headerRow = worksheet.getRow(1);
+  headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+  headerRow.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF2F5496' } // Dark blue
   };
+  headerRow.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+  headerRow.height = 20;
 
-  const headerFont = {
-    bold: true,
-    color: { rgb: 'FFFFFFFF' }, // White text
-    size: 11,
-  };
-
-  const headerAlignment = {
-    horizontal: 'center' as const,
-    vertical: 'center' as const,
-    wrapText: true,
-  };
-
-  const borderStyle = {
-    style: 'thin' as const,
-    color: { rgb: 'FFD3D3D3' },
-  };
-
-  const border = {
-    left: borderStyle,
-    right: borderStyle,
-    top: borderStyle,
-    bottom: borderStyle,
-  };
-
-  // Apply header styling
-  for (let colIndex = 0; colIndex < columns.length; colIndex++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-    if (!worksheet[cellRef]) {
-      worksheet[cellRef] = { t: 's', v: '' };
-    }
-    worksheet[cellRef].s = {
-      fill: headerFill as any,
-      font: headerFont,
-      alignment: headerAlignment,
-      border,
-    };
-  }
-
-  // Apply data row styling
-  const altRowFill = {
-    patternType: 'solid',
-    fgColor: { rgb: 'FFF2F2F2' }, // Light gray for alternating rows
-  };
-
-  const dataAlignment = {
-    horizontal: 'left' as const,
-    vertical: 'center' as const,
-  };
-
-  for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
-    for (let colIndex = 0; colIndex < columns.length; colIndex++) {
-      const cellRef = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
-      if (!worksheet[cellRef]) {
-        worksheet[cellRef] = { t: 's', v: '' };
-      }
-      
-      const isAltRow = rowIndex % 2 === 0;
-      worksheet[cellRef].s = {
-        fill: isAltRow ? (altRowFill as any) : undefined,
-        alignment: dataAlignment,
-        border,
+  // Apply borders and styling to all cells
+  worksheet.eachRow((row, rowNumber) => {
+    row.eachCell((cell) => {
+      // Add borders to all cells
+      cell.border = {
+        top: { style: 'thin', color: { argb: 'FFD3D3D3' } },
+        left: { style: 'thin', color: { argb: 'FFD3D3D3' } },
+        bottom: { style: 'thin', color: { argb: 'FFD3D3D3' } },
+        right: { style: 'thin', color: { argb: 'FFD3D3D3' } }
       };
-    }
-  }
+
+      // Alternate row coloring for data rows
+      if (rowNumber > 1 && rowNumber % 2 === 0) {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFF2F2F2' } // Light gray
+        };
+      }
+
+      // Left align data cells
+      if (rowNumber > 1) {
+        cell.alignment = { horizontal: 'left', vertical: 'middle' };
+      }
+    });
+  });
 
   // Freeze header row
-  worksheet['!freeze'] = { xSplit: 0, ySplit: 1 };
+  worksheet.views = [{ state: 'frozen', ySplit: 1 }];
 };
 
 /**
@@ -206,11 +174,11 @@ export const generateFilename = (
 /**
  * Handles the complete export process
  */
-export const handleExport = (
+export const handleExport = async (
   data: Row[],
   columns: Column[],
   options: ExportOptions
-): void => {
+): Promise<void> => {
   if (data.length === 0) {
     alert('No data to export');
     return;
@@ -221,7 +189,7 @@ export const handleExport = (
   if (options.format === 'csv') {
     exportToCSV(data, columns, filename);
   } else if (options.format === 'xlsx') {
-    exportToXLSX(data, columns, {
+    await exportToXLSX(data, columns, {
       filename,
       styling: options.styling,
     });
