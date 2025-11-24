@@ -58,6 +58,8 @@ jobs:
           start: npm run preview
           wait-on: 'http://localhost:4173'
           wait-on-timeout: 120
+        env:
+          CYPRESS_BASE_URL: http://localhost:4173/react-open-source-datagrid
       
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
