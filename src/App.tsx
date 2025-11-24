@@ -4,6 +4,7 @@ import { DemoGridPage } from './components/DemoGridPage'
 import { VirtualScrollDemo } from './components/VirtualScrollDemo'
 import { CellRenderersDemo } from './components/CellRenderersDemo'
 import { ColumnFiltersDemo } from './components/ColumnFiltersDemo'
+import { FacetedSearchDemo } from './components/FacetedSearchDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
@@ -16,7 +17,7 @@ import { RowPinningDemo } from './components/RowPinningDemo'
 import { TooltipDemo } from './components/TooltipDemo'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip';
 
 interface MenuItem {
   id: DemoType;
@@ -106,6 +107,12 @@ function App() {
           label: 'Column Filters',
           icon: '🔍',
           description: 'Advanced filtering options',
+        },
+        {
+          id: 'faceted',
+          label: 'Faceted Search',
+          icon: '🎯',
+          description: 'Filter panel with value counts',
         },
         {
           id: 'contextmenu',
@@ -447,6 +454,7 @@ function App() {
         {currentDemo === 'rowpin' && <RowPinningDemo />}
         {currentDemo === 'renderers' && <CellRenderersDemo />}
         {currentDemo === 'filters' && <ColumnFiltersDemo />}
+        {currentDemo === 'faceted' && <FacetedSearchDemo />}
         {currentDemo === 'contextmenu' && <ContextMenuDemo />}
         {currentDemo === 'tooltip' && <TooltipDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
