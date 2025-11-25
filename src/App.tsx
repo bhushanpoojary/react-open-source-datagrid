@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { HomePage } from './components/HomePage'
 import { DemoGridPage } from './components/DemoGridPage'
 import { VirtualScrollDemo } from './components/VirtualScrollDemo'
@@ -29,6 +30,7 @@ interface MenuItem {
   label: string;
   icon: string;
   description: string;
+  path: string;
 }
 
 interface MenuCategory {
@@ -37,10 +39,43 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
+// Route to DemoType mapping
+const pathToDemoMap: Record<string, DemoType> = {
+  '/': 'home',
+  '/demo/standard': 'standard',
+  '/demo/virtual-scrolling': 'virtual',
+  '/demo/cell-renderers': 'renderers',
+  '/demo/column-filters': 'filters',
+  '/demo/faceted-search': 'faceted',
+  '/demo/layout-persistence': 'persistence',
+  '/demo/infinite-scroll': 'infinite',
+  '/demo/themes': 'themes',
+  '/demo/density-mode': 'density',
+  '/demo/tree-data': 'tree',
+  '/demo/row-dragging': 'drag',
+  '/demo/row-pinning': 'rowpin',
+  '/demo/market-data': 'market',
+  '/demo/accessibility': 'accessibility',
+  '/demo/context-menu': 'contextmenu',
+  '/demo/tooltip': 'tooltip',
+  '/demo/benchmark': 'benchmark',
+  '/demo/feature-gallery': 'gallery',
+  '/api/reference': 'api-reference',
+  '/api/demo': 'api-demo',
+};
+
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [currentDemo, setCurrentDemo] = useState<DemoType>('home')
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['gettingstarted', 'performance', 'datafeatures', 'customization', 'documentation']))
   const [searchQuery, setSearchQuery] = useState<string>('')
+
+  // Sync currentDemo with URL
+  useEffect(() => {
+    const demo = pathToDemoMap[location.pathname] || 'home';
+    setCurrentDemo(demo);
+  }, [location.pathname]);
 
   const menuCategories: MenuCategory[] = [
     {
@@ -52,12 +87,14 @@ function App() {
           label: 'Home',
           icon: '🏠',
           description: 'Overview and installation',
+          path: '/',
         },
         {
           id: 'standard',
           label: 'Standard Demo',
           icon: '📊',
           description: 'Basic features with pagination',
+          path: '/demo/standard',
         },
       ],
     },
@@ -70,18 +107,21 @@ function App() {
           label: 'Virtual Scrolling',
           icon: '🚀',
           description: 'High-performance rendering',
+          path: '/demo/virtual-scrolling',
         },
         {
           id: 'infinite',
           label: 'Infinite Scroll',
           icon: '♾️',
           description: 'Server-side 100M rows',
+          path: '/demo/infinite-scroll',
         },
         {
           id: 'market',
           label: 'Market Data',
           icon: '📈',
           description: 'Live streaming with 1000+ updates/sec',
+          path: '/demo/market-data',
         },
       ],
     },
@@ -94,36 +134,42 @@ function App() {
           label: 'Tree Data',
           icon: '🌲',
           description: 'Hierarchical rows & expand/collapse',
+          path: '/demo/tree-data',
         },
         {
           id: 'drag',
           label: 'Row Dragging',
           icon: '↕️',
           description: 'Drag & drop row reordering',
+          path: '/demo/row-dragging',
         },
         {
           id: 'rowpin',
           label: 'Row Pinning',
           icon: '📌',
           description: 'Pin rows to top/bottom (sticky)',
+          path: '/demo/row-pinning',
         },
         {
           id: 'filters',
           label: 'Column Filters',
           icon: '🔍',
           description: 'Advanced filtering options',
+          path: '/demo/column-filters',
         },
         {
           id: 'faceted',
           label: 'Faceted Search',
           icon: '🎯',
           description: 'Filter panel with value counts',
+          path: '/demo/faceted-search',
         },
         {
           id: 'contextmenu',
           label: 'Context Menu',
           icon: '📋',
           description: 'Right-click menu with copy, export, & more',
+          path: '/demo/context-menu',
         },
       ],
     },
@@ -136,30 +182,35 @@ function App() {
           label: 'Cell Renderers',
           icon: '🎭',
           description: 'Custom cell components',
+          path: '/demo/cell-renderers',
         },
         {
           id: 'themes',
           label: 'Theme System',
           icon: '🎨',
           description: 'Light, Dark, Quartz, Alpine themes',
+          path: '/demo/themes',
         },
         {
           id: 'density',
           label: 'Density Modes',
           icon: '📏',
           description: 'Compact/Normal/Comfortable spacing',
+          path: '/demo/density-mode',
         },
         {
           id: 'persistence',
           label: 'Layout Persistence',
           icon: '💾',
           description: 'Save & restore layouts',
+          path: '/demo/layout-persistence',
         },
         {
           id: 'tooltip',
           label: 'Tooltips',
           icon: '💬',
           description: 'Cell & row tooltips with smart placement',
+          path: '/demo/tooltip',
         },
       ],
     },
@@ -172,6 +223,7 @@ function App() {
           label: 'Accessibility (A11y)',
           icon: '♿',
           description: 'Keyboard navigation & ARIA support',
+          path: '/demo/accessibility',
         },
       ],
     },
@@ -184,12 +236,14 @@ function App() {
           label: 'Grid API Reference',
           icon: '📖',
           description: '100+ methods for programmatic control',
+          path: '/api/reference',
         },
         {
           id: 'api-demo',
           label: 'Interactive API Demo',
           icon: '🎮',
           description: 'Try all API methods with live examples',
+          path: '/api/demo',
         },
       ],
     },
@@ -202,12 +256,14 @@ function App() {
           label: 'Feature Gallery',
           icon: '🎯',
           description: 'Browse all features with live demos',
+          path: '/demo/feature-gallery',
         },
         {
           id: 'benchmark',
           label: 'Benchmark (1M rows)',
           icon: '🚀',
           description: 'Test performance with massive datasets',
+          path: '/demo/benchmark',
         },
       ],
     },
@@ -405,7 +461,7 @@ function App() {
                     {category.items.map((item) => (
                       <button
                         key={item.id}
-                        onClick={() => setCurrentDemo(item.id)}
+                        onClick={() => navigate(item.path)}
                         style={{
                           width: '100%',
                           display: 'flex',
@@ -491,27 +547,29 @@ function App() {
 
       {/* Main Content Area */}
       <main style={{ flex: 1, overflow: 'auto', backgroundColor: '#f8fafc' }}>
-        {currentDemo === 'home' && <HomePage />}
-        {currentDemo === 'standard' && <DemoGridPage />}
-        {currentDemo === 'virtual' && <VirtualScrollDemo />}
-        {currentDemo === 'infinite' && <InfiniteScrollDemo />}
-        {currentDemo === 'market' && <LiveMarketDemo />}
-        {currentDemo === 'accessibility' && <AccessibilityDemo />}
-        {currentDemo === 'tree' && <TreeDataDemo />}
-        {currentDemo === 'drag' && <RowDraggingDemo />}
-        {currentDemo === 'rowpin' && <RowPinningDemo />}
-        {currentDemo === 'renderers' && <CellRenderersDemo />}
-        {currentDemo === 'filters' && <ColumnFiltersDemo />}
-        {currentDemo === 'faceted' && <FacetedSearchDemo />}
-        {currentDemo === 'contextmenu' && <ContextMenuDemo />}
-        {currentDemo === 'tooltip' && <TooltipDemo />}
-        {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
-        {currentDemo === 'themes' && <ThemesDemo />}
-        {currentDemo === 'density' && <DensityModeDemo />}
-        {currentDemo === 'gallery' && <FeatureGallery />}
-        {currentDemo === 'benchmark' && <BenchmarkDemo />}
-        {currentDemo === 'api-reference' && <CompleteApiReferencePage />}
-        {currentDemo === 'api-demo' && <GridApiDemoPage />}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/demo/standard" element={<DemoGridPage />} />
+          <Route path="/demo/virtual-scrolling" element={<VirtualScrollDemo />} />
+          <Route path="/demo/infinite-scroll" element={<InfiniteScrollDemo />} />
+          <Route path="/demo/market-data" element={<LiveMarketDemo />} />
+          <Route path="/demo/accessibility" element={<AccessibilityDemo />} />
+          <Route path="/demo/tree-data" element={<TreeDataDemo />} />
+          <Route path="/demo/row-dragging" element={<RowDraggingDemo />} />
+          <Route path="/demo/row-pinning" element={<RowPinningDemo />} />
+          <Route path="/demo/cell-renderers" element={<CellRenderersDemo />} />
+          <Route path="/demo/column-filters" element={<ColumnFiltersDemo />} />
+          <Route path="/demo/faceted-search" element={<FacetedSearchDemo />} />
+          <Route path="/demo/context-menu" element={<ContextMenuDemo />} />
+          <Route path="/demo/tooltip" element={<TooltipDemo />} />
+          <Route path="/demo/layout-persistence" element={<LayoutPersistenceDemo />} />
+          <Route path="/demo/themes" element={<ThemesDemo />} />
+          <Route path="/demo/density-mode" element={<DensityModeDemo />} />
+          <Route path="/demo/feature-gallery" element={<FeatureGallery />} />
+          <Route path="/demo/benchmark" element={<BenchmarkDemo />} />
+          <Route path="/api/reference" element={<CompleteApiReferencePage />} />
+          <Route path="/api/demo" element={<GridApiDemoPage />} />
+        </Routes>
       </main>
     </div>
   )
