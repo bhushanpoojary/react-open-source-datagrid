@@ -229,12 +229,18 @@ export function HomePage() {
         <FeatureCard
           icon="🎨"
           title="Theme System"
-          description="Beautiful built-in themes inspired by AG-Grid's design system."
+          description="10 beautiful built-in themes with modern design aesthetics and easy customization."
           features={[
-            'Light theme',
-            'Dark theme',
-            'Quartz theme',
-            'Alpine theme'
+            'Quartz & Alpine themes',
+            'Material Design theme',
+            'Dark mode theme',
+            'Nord (Arctic) theme',
+            'Dracula theme',
+            'Solarized Light & Dark',
+            'Monokai theme',
+            'One Dark theme',
+            'Easy theme switching',
+            'Custom theme support'
           ]}
         />
 

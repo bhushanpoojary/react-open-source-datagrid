@@ -184,7 +184,7 @@ function App() {
           id: 'themes',
           label: 'Theme System',
           icon: '🎨',
-          description: 'Light, Dark, Quartz, Alpine themes',
+          description: '10 built-in themes: Quartz, Alpine, Material, Dark, Nord, Dracula, Solarized, Monokai, One Dark',
           path: '/demo/themes',
         },
         {
