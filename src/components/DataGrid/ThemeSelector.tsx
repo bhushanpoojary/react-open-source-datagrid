@@ -20,6 +20,12 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     { value: 'alpine', label: 'Alpine (Classic Business)' },
     { value: 'material', label: 'Material' },
     { value: 'dark', label: 'Dark Mode' },
+    { value: 'nord', label: 'Nord (Arctic)' },
+    { value: 'dracula', label: 'Dracula' },
+    { value: 'solarized-light', label: 'Solarized Light' },
+    { value: 'solarized-dark', label: 'Solarized Dark' },
+    { value: 'monokai', label: 'Monokai' },
+    { value: 'one-dark', label: 'One Dark' },
   ];
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

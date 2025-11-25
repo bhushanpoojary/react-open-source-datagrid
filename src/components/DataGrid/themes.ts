@@ -3,7 +3,7 @@
  * Provides multiple pre-built themes: Quartz, Alpine, Material, Dark
  */
 
-export type ThemeName = 'quartz' | 'alpine' | 'material' | 'dark';
+export type ThemeName = 'quartz' | 'alpine' | 'material' | 'dark' | 'nord' | 'dracula' | 'solarized-light' | 'solarized-dark' | 'monokai' | 'one-dark';
 
 export interface GridTheme {
   name: ThemeName;
@@ -296,6 +296,342 @@ export const darkTheme: GridTheme = {
 };
 
 /**
+ * Nord Theme - Cool, arctic-inspired colors
+ */
+export const nordTheme: GridTheme = {
+  name: 'nord',
+  displayName: 'Nord (Arctic)',
+  colors: {
+    background: '#eceff4',
+    backgroundAlt: '#e5e9f0',
+    headerBackground: '#d8dee9',
+    footerBackground: '#e5e9f0',
+    border: '#d8dee9',
+    borderLight: '#e5e9f0',
+    text: '#2e3440',
+    textSecondary: '#4c566a',
+    textInverse: '#eceff4',
+    headerText: '#2e3440',
+    hover: '#e5e9f0',
+    active: '#d8dee9',
+    selected: '#d8dee9',
+    primary: '#5e81ac',
+    primaryHover: '#81a1c1',
+    primaryLight: '#88c0d0',
+    primaryDark: '#5e81ac',
+    primaryBackground: '#d8dee9',
+    textMuted: '#4c566a',
+    borderHover: '#4c566a',
+    success: '#a3be8c',
+    warning: '#ebcb8b',
+    error: '#bf616a',
+    info: '#88c0d0',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '6px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 1px 3px rgba(0, 0, 0, 0.12)',
+    medium: '0 3px 6px rgba(0, 0, 0, 0.15)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.18)',
+  },
+};
+
+/**
+ * Dracula Theme - Popular purple-tinted dark theme
+ */
+export const draculaTheme: GridTheme = {
+  name: 'dracula',
+  displayName: 'Dracula',
+  colors: {
+    background: '#282a36',
+    backgroundAlt: '#21222c',
+    headerBackground: '#44475a',
+    footerBackground: '#21222c',
+    border: '#44475a',
+    borderLight: '#6272a4',
+    text: '#f8f8f2',
+    textSecondary: '#6272a4',
+    textInverse: '#282a36',
+    headerText: '#f8f8f2',
+    hover: '#44475a',
+    active: '#6272a4',
+    selected: '#44475a',
+    primary: '#bd93f9',
+    primaryHover: '#caa9fa',
+    primaryLight: '#d6bcfb',
+    primaryDark: '#9b72dd',
+    primaryBackground: '#44475a',
+    textMuted: '#6272a4',
+    borderHover: '#bd93f9',
+    success: '#50fa7b',
+    warning: '#f1fa8c',
+    error: '#ff5555',
+    info: '#8be9fd',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '"Fira Code", "Consolas", monospace, -apple-system, BlinkMacSystemFont, "Segoe UI"',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '8px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 2px 4px rgba(0, 0, 0, 0.4)',
+    medium: '0 4px 8px rgba(0, 0, 0, 0.5)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.6)',
+  },
+};
+
+/**
+ * Solarized Light Theme - Precision colors for readability
+ */
+export const solarizedLightTheme: GridTheme = {
+  name: 'solarized-light',
+  displayName: 'Solarized Light',
+  colors: {
+    background: '#fdf6e3',
+    backgroundAlt: '#eee8d5',
+    headerBackground: '#eee8d5',
+    footerBackground: '#eee8d5',
+    border: '#93a1a1',
+    borderLight: '#eee8d5',
+    text: '#657b83',
+    textSecondary: '#93a1a1',
+    textInverse: '#fdf6e3',
+    headerText: '#586e75',
+    hover: '#eee8d5',
+    active: '#93a1a1',
+    selected: '#d3cbb7',
+    primary: '#268bd2',
+    primaryHover: '#2aa198',
+    primaryLight: '#6c71c4',
+    primaryDark: '#073642',
+    primaryBackground: '#eee8d5',
+    textMuted: '#93a1a1',
+    borderHover: '#657b83',
+    success: '#859900',
+    warning: '#b58900',
+    error: '#dc322f',
+    info: '#268bd2',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '"Source Code Pro", "Menlo", "Monaco", monospace',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '4px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 1px 3px rgba(0, 0, 0, 0.08)',
+    medium: '0 3px 6px rgba(0, 0, 0, 0.12)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.15)',
+  },
+};
+
+/**
+ * Solarized Dark Theme - Dark variant of Solarized
+ */
+export const solarizedDarkTheme: GridTheme = {
+  name: 'solarized-dark',
+  displayName: 'Solarized Dark',
+  colors: {
+    background: '#002b36',
+    backgroundAlt: '#073642',
+    headerBackground: '#073642',
+    footerBackground: '#073642',
+    border: '#586e75',
+    borderLight: '#073642',
+    text: '#839496',
+    textSecondary: '#657b83',
+    textInverse: '#002b36',
+    headerText: '#93a1a1',
+    hover: '#073642',
+    active: '#586e75',
+    selected: '#094757',
+    primary: '#268bd2',
+    primaryHover: '#2aa198',
+    primaryLight: '#6c71c4',
+    primaryDark: '#073642',
+    primaryBackground: '#073642',
+    textMuted: '#657b83',
+    borderHover: '#839496',
+    success: '#859900',
+    warning: '#b58900',
+    error: '#dc322f',
+    info: '#268bd2',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '"Source Code Pro", "Menlo", "Monaco", monospace',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '4px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 2px 4px rgba(0, 0, 0, 0.3)',
+    medium: '0 4px 8px rgba(0, 0, 0, 0.4)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.5)',
+  },
+};
+
+/**
+ * Monokai Theme - Vibrant colors on dark background
+ */
+export const monokaiTheme: GridTheme = {
+  name: 'monokai',
+  displayName: 'Monokai',
+  colors: {
+    background: '#272822',
+    backgroundAlt: '#1e1f1c',
+    headerBackground: '#3e3d32',
+    footerBackground: '#1e1f1c',
+    border: '#49483e',
+    borderLight: '#3e3d32',
+    text: '#f8f8f2',
+    textSecondary: '#75715e',
+    textInverse: '#272822',
+    headerText: '#f8f8f2',
+    hover: '#3e3d32',
+    active: '#49483e',
+    selected: '#49483e',
+    primary: '#66d9ef',
+    primaryHover: '#a6e22e',
+    primaryLight: '#e6db74',
+    primaryDark: '#ae81ff',
+    primaryBackground: '#3e3d32',
+    textMuted: '#75715e',
+    borderHover: '#66d9ef',
+    success: '#a6e22e',
+    warning: '#e6db74',
+    error: '#f92672',
+    info: '#66d9ef',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '"Fira Code", "Monaco", "Consolas", monospace',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '6px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 2px 4px rgba(0, 0, 0, 0.5)',
+    medium: '0 4px 8px rgba(0, 0, 0, 0.6)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.7)',
+  },
+};
+
+/**
+ * One Dark Theme - Atom's iconic dark theme
+ */
+export const oneDarkTheme: GridTheme = {
+  name: 'one-dark',
+  displayName: 'One Dark',
+  colors: {
+    background: '#282c34',
+    backgroundAlt: '#21252b',
+    headerBackground: '#2c313c',
+    footerBackground: '#21252b',
+    border: '#3e4451',
+    borderLight: '#2c313c',
+    text: '#abb2bf',
+    textSecondary: '#5c6370',
+    textInverse: '#282c34',
+    headerText: '#abb2bf',
+    hover: '#2c313c',
+    active: '#3e4451',
+    selected: '#3e4451',
+    primary: '#61afef',
+    primaryHover: '#528bff',
+    primaryLight: '#84b9f0',
+    primaryDark: '#4e88c7',
+    primaryBackground: '#2c313c',
+    textMuted: '#5c6370',
+    borderHover: '#528bff',
+    success: '#98c379',
+    warning: '#e5c07b',
+    error: '#e06c75',
+    info: '#61afef',
+  },
+  spacing: {
+    cellPadding: '12px 16px',
+    headerPadding: '12px 16px',
+    rowHeight: '48px',
+  },
+  typography: {
+    fontFamily: '"Fira Code", "Menlo", "Monaco", "Consolas", monospace',
+    fontSize: '14px',
+    fontSizeSmall: '12px',
+    fontWeight: '400',
+    headerFontWeight: '600',
+  },
+  borders: {
+    width: '1px',
+    radius: '6px',
+    style: 'solid',
+  },
+  shadows: {
+    light: '0 2px 4px rgba(0, 0, 0, 0.4)',
+    medium: '0 4px 8px rgba(0, 0, 0, 0.5)',
+    heavy: '0 8px 16px rgba(0, 0, 0, 0.6)',
+  },
+};
+
+/**
  * Theme registry - all available themes
  */
 export const themes: Record<ThemeName, GridTheme> = {
@@ -303,6 +639,12 @@ export const themes: Record<ThemeName, GridTheme> = {
   alpine: alpineTheme,
   material: materialTheme,
   dark: darkTheme,
+  nord: nordTheme,
+  dracula: draculaTheme,
+  'solarized-light': solarizedLightTheme,
+  'solarized-dark': solarizedDarkTheme,
+  monokai: monokaiTheme,
+  'one-dark': oneDarkTheme,
 };
 
 /**

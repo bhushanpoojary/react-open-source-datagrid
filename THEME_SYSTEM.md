@@ -40,6 +40,60 @@ A comprehensive theming system for the DataGrid component that allows you to swi
   - Bright primary color (#4a9eff)
   - VS Code-inspired palette
 
+### 5. Nord (Arctic)
+- **Description**: Cool, arctic-inspired theme with frost-toned colors
+- **Best For**: Minimalist apps, Nordic aesthetic lovers
+- **Key Features**:
+  - Frost white backgrounds (#eceff4)
+  - Blue-gray primary (#5e81ac)
+  - Muted, harmonious color palette
+  - Excellent readability
+
+### 6. Dracula
+- **Description**: Popular purple-tinted dark theme beloved by developers
+- **Best For**: Coding environments, creative applications
+- **Key Features**:
+  - Dark purple background (#282a36)
+  - Vibrant purple primary (#bd93f9)
+  - Cyan, pink, and green accents
+  - High contrast for readability
+
+### 7. Solarized Light
+- **Description**: Precision colors designed for optimal readability
+- **Best For**: Long reading sessions, academic work
+- **Key Features**:
+  - Warm beige background (#fdf6e3)
+  - Scientifically calibrated colors
+  - Reduced eye strain
+  - Excellent for extended use
+
+### 8. Solarized Dark
+- **Description**: Dark variant of the precision Solarized theme
+- **Best For**: Night coding, reduced glare
+- **Key Features**:
+  - Deep blue-green background (#002b36)
+  - Same calibrated color scheme as light variant
+  - Perfect contrast ratios
+  - Minimal eye fatigue
+
+### 9. Monokai
+- **Description**: Vibrant colors on dark background, sublime and iconic
+- **Best For**: Code editors, creative workspaces
+- **Key Features**:
+  - Charcoal background (#272822)
+  - Neon cyan, green, and yellow accents
+  - High saturation colors
+  - Developer favorite
+
+### 10. One Dark
+- **Description**: Atom editor's iconic dark theme
+- **Best For**: Modern development environments
+- **Key Features**:
+  - Soft dark background (#282c34)
+  - Blue primary (#61afef)
+  - Balanced, professional colors
+  - Easy on the eyes
+
 ## Usage
 
 ### Basic Usage
@@ -246,7 +300,7 @@ Get all available theme names.
 ```typescript
 import { getThemeNames } from './DataGrid/themes';
 
-const names = getThemeNames(); // ['quartz', 'alpine', 'material', 'dark']
+const names = getThemeNames(); // ['quartz', 'alpine', 'material', 'dark', 'nord', 'dracula', 'solarized-light', 'solarized-dark', 'monokai', 'one-dark']
 ```
 
 ### generateThemeCSS(theme)

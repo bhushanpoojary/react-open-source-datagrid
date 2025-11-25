@@ -23,7 +23,8 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Infinite Scrolling with Server-Side DataSource** (100M+ rows with server-side filtering, sorting, and caching)
 - ✅ **Accessibility (A11y)** (WCAG 2.1 AA compliant with full keyboard navigation, ARIA support, and screen reader compatibility)
 - ✅ **Context Menu** (right-click menu with copy, export, pin/unpin, auto-size, hide, filter by value, and custom actions)
-- ✅ **Density Modes** (Ultra Compact/Compact/Normal/Comfortable spacing with segmented control and persistent preferences) 🆕
+- ✅ **Density Modes** (Ultra Compact/Compact/Normal/Comfortable spacing with segmented control and persistent preferences)
+- ✅ **10 Beautiful Themes** (Quartz, Alpine, Material, Dark Mode, Nord, Dracula, Solarized Light/Dark, Monokai, One Dark) 🆕
 
 ## Quick Start
 
@@ -76,8 +77,10 @@ const rows: Row[] = [
 - **Layout Persistence Quick Reference**: See [LAYOUT_PERSISTENCE_QUICK_REF.md](./LAYOUT_PERSISTENCE_QUICK_REF.md)
 - **Context Menu**: See [CONTEXT_MENU_FEATURE.md](./CONTEXT_MENU_FEATURE.md)
 - **Context Menu Quick Reference**: See [CONTEXT_MENU_QUICK_REF.md](./CONTEXT_MENU_QUICK_REF.md)
-- **Density Modes**: See [DENSITY_MODE_INDEX.md](./DENSITY_MODE_INDEX.md) 🆕
+- **Density Modes**: See [DENSITY_MODE_INDEX.md](./DENSITY_MODE_INDEX.md)
 - **Density Mode Quick Reference**: See [DENSITY_MODE_QUICK_REF.md](./DENSITY_MODE_QUICK_REF.md)
+- **Theme System**: See [THEME_SYSTEM.md](./THEME_SYSTEM.md) 🆕
+- **Themes Overview**: See [THEMES_OVERVIEW.md](./THEMES_OVERVIEW.md) 🆕
 
 ## Technology Stack
 
@@ -259,3 +262,54 @@ Response:
 - [INFINITE_SCROLLING_INDEX.md](./INFINITE_SCROLLING_INDEX.md) - Documentation index
 - [INFINITE_SCROLLING_FEATURE.md](./INFINITE_SCROLLING_FEATURE.md) - Complete guide
 - [INFINITE_SCROLLING_QUICK_REF.md](./INFINITE_SCROLLING_QUICK_REF.md) - Quick reference
+
+## Themes
+
+Choose from **10 beautiful pre-built themes** to match your application's design:
+
+```tsx
+import { ThemedDataGrid, ThemeSelector } from './components/DataGrid';
+import type { ThemeName } from './components/DataGrid/themes';
+
+function App() {
+  const [theme, setTheme] = useState<ThemeName>('quartz');
+  
+  return (
+    <>
+      <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
+      <ThemedDataGrid
+        columns={columns}
+        rows={rows}
+        theme={theme}
+      />
+    </>
+  );
+}
+```
+
+**Available Themes:**
+
+**Light Themes:**
+- `quartz` - Modern white with clean aesthetics
+- `alpine` - Classic business professional
+- `material` - Material Design inspired
+- `nord` - Arctic-inspired minimalist
+- `solarized-light` - Precision colors for readability
+
+**Dark Themes:**
+- `dark` - VS Code inspired dark mode
+- `dracula` - Popular purple-tinted theme
+- `solarized-dark` - Dark variant of Solarized
+- `monokai` - Vibrant Sublime-style colors
+- `one-dark` - Atom editor's iconic theme
+
+**Features:**
+- Instant theme switching with CSS variables
+- Comprehensive color palettes
+- Consistent spacing and typography
+- Custom shadows and borders per theme
+- Easy theme customization
+
+**See also:**
+- [THEME_SYSTEM.md](./THEME_SYSTEM.md) - Complete theme documentation
+- [THEMES_OVERVIEW.md](./THEMES_OVERVIEW.md) - Visual comparison of all themes

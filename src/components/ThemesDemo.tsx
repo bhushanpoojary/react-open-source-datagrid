@@ -14,6 +14,12 @@ import { CodeBlock } from './CodeBlock';
  * - Alpine (Classic Business)
  * - Material
  * - Dark Mode
+ * - Nord (Arctic)
+ * - Dracula
+ * - Solarized Light
+ * - Solarized Dark
+ * - Monokai
+ * - One Dark
  */
 export const ThemesDemo: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>('quartz');
