@@ -291,95 +291,184 @@ export const CellRenderersDemo: React.FC = () => {
   ];
 
   return (
-    <div className="h-full bg-white p-8">
-      <div className="max-w-full mx-auto h-full flex flex-col">
-        {/* Page Header */}
-        <div className="mb-6">
-          <h1 style={{fontSize: '24px', fontWeight: '600', color: '#333', marginBottom: '4px'}}>
-            Cell Renderer Framework Demo
-          </h1>
-          <p style={{fontSize: '14px', color: '#666'}}>
-            Showcase of custom cell renderers for rich, interactive data visualization
-          </p>
-        </div>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
+      {/* Page Header */}
+      <div style={{ 
+        padding: '32px 40px 24px', 
+        borderBottom: '1px solid #e5e7eb',
+        backgroundColor: '#ffffff'
+      }}>
+        <h1 style={{ 
+          fontSize: '28px', 
+          fontWeight: '700', 
+          color: '#111827', 
+          marginBottom: '8px',
+          letterSpacing: '-0.01em'
+        }}>
+          Cell Renderer Framework Demo
+        </h1>
+        <p style={{ 
+          fontSize: '15px', 
+          color: '#6b7280',
+          lineHeight: '1.5'
+        }}>
+          Showcase of custom cell renderers for rich, interactive data visualization
+        </p>
+      </div>
 
-        {/* Cell Renderer Features */}
-        <div style={{marginBottom: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px'}}>
-          <h3 style={{fontSize: '16px', fontWeight: '600', color: '#333', marginBottom: '12px'}}>
-            Features:
-          </h3>
-          <ul style={{margin: 0, paddingLeft: '20px', lineHeight: '1.8'}}>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>StatusChip:</strong> <span style={{color: '#0066cc'}}>Color-coded status badges with dynamic styling</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>ProgressBar:</strong> <span style={{color: '#0066cc'}}>Visual progress indicators with percentage labels</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>IconCell:</strong> <span style={{color: '#0066cc'}}>Cells with icons and optional text</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>ImageCell:</strong> <span style={{color: '#0066cc'}}>Avatar/image cells with rounded styling</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>ButtonCell:</strong> <span style={{color: '#0066cc'}}>Actionable buttons with multiple variants</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>BadgeCell:</strong> <span style={{color: '#0066cc'}}>Generic badges with custom colors</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>PriorityIndicator:</strong> <span style={{color: '#0066cc'}}>Priority levels with color indicators</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>Rating:</strong> <span style={{color: '#0066cc'}}>Star rating display component</span>
-            </li>
-            <li style={{fontSize: '14px', color: '#333'}}>
-              <strong>CurrencyCell:</strong> <span style={{color: '#0066cc'}}>Formatted currency with locale support</span>
-            </li>
-          </ul>
+      {/* Cell Renderer Features */}
+      <div style={{ 
+        padding: '24px 40px',
+        backgroundColor: '#f9fafb',
+        borderBottom: '1px solid #e5e7eb'
+      }}>
+        <h3 style={{ 
+          fontSize: '14px', 
+          fontWeight: '600', 
+          color: '#374151', 
+          marginBottom: '16px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
+        }}>
+          Features:
+        </h3>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '12px'
+        }}>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>💠</span>
+            <div>
+              <strong>StatusChip:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Color-coded status badges with dynamic styling</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>📊</span>
+            <div>
+              <strong>ProgressBar:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Visual progress indicators with percentage labels</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>🎨</span>
+            <div>
+              <strong>IconCell:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Cells with icons and optional text</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>👤</span>
+            <div>
+              <strong>ImageCell:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Avatar/image cells with rounded styling</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>🔘</span>
+            <div>
+              <strong>ButtonCell:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Actionable buttons with multiple variants</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>🏷️</span>
+            <div>
+              <strong>BadgeCell:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Generic badges with custom colors</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>⚡</span>
+            <div>
+              <strong>PriorityIndicator:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Priority levels with color indicators</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>⭐</span>
+            <div>
+              <strong>Rating:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Star rating display component</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '14px', color: '#374151', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>💰</span>
+            <div>
+              <strong>CurrencyCell:</strong>{' '}
+              <span style={{ color: '#2563eb' }}>Formatted currency with locale support</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* DataGrid */}
-        <div className="flex-1" style={{border: '1px solid #e0e0e0', borderRadius: '4px', overflow: 'hidden', marginBottom: '20px'}}>
-          <ThemedDataGrid
-            columns={columns}
-            rows={projects}
-            pageSize={10}
-            theme="quartz"
-            footerConfig={{
-              show: true,
-              aggregates: [
-                { field: 'budget', function: 'sum', label: 'Total Budget' },
-                { field: 'progress', function: 'avg', label: 'Avg Progress' },
-              ],
-            }}
-          />
-        </div>
+      {/* DataGrid Container */}
+      <div style={{ flex: 1, padding: '24px 40px', overflow: 'auto' }}>
+        <ThemedDataGrid
+          columns={columns}
+          rows={projects}
+          pageSize={10}
+          theme="quartz"
+          footerConfig={{
+            show: true,
+            aggregates: [
+              { field: 'budget', function: 'sum', label: 'Total Budget' },
+              { field: 'progress', function: 'avg', label: 'Avg Progress' },
+            ],
+          }}
+        />
 
         {/* Event Log */}
-        <div style={{marginTop: '20px', padding: '16px', border: '1px solid #e0e0e0', borderRadius: '4px'}}>
-          <h3 style={{fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px'}}>Event Log</h3>
-          <div style={{fontSize: '13px'}}>
-            {eventLog.length === 0 ? (
-              <p style={{color: '#999', fontStyle: 'italic'}}>
-                Click on buttons to see events...
-              </p>
-            ) : (
-              eventLog.map((event, index) => (
+        {eventLog.length > 0 && (
+          <div style={{ 
+            marginTop: '24px', 
+            padding: '20px', 
+            backgroundColor: '#f9fafb',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px'
+          }}>
+            <h3 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              color: '#374151', 
+              marginBottom: '12px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}>
+              Event Log
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {eventLog.map((event, index) => (
                 <div
                   key={index}
-                  style={{fontSize: '12px', color: '#333', fontFamily: 'monospace', padding: '8px', marginBottom: '4px', backgroundColor: '#f5f5f5', borderRadius: '2px'}}
+                  style={{ 
+                    fontSize: '13px', 
+                    color: '#1f2937', 
+                    fontFamily: 'monospace', 
+                    padding: '10px 12px',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '4px'
+                  }}
                 >
                   {event}
                 </div>
-              ))
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Usage Example */}
-        <div style={{marginTop: '20px'}}>
-          <h3 style={{fontSize: '18px', fontWeight: '600', color: '#333', marginBottom: '12px'}}>Usage Example</h3>
+        <div style={{ marginTop: '32px' }}>
+          <h3 style={{ 
+            fontSize: '18px', 
+            fontWeight: '600', 
+            color: '#111827', 
+            marginBottom: '16px'
+          }}>
+            Usage Example
+          </h3>
           <CodeBlock
             title="Using Cell Renderer Components"
             language="tsx"
