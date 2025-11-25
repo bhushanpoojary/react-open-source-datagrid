@@ -14,6 +14,8 @@ import { ContextMenu } from './ContextMenu';
 import { useContextMenu } from './useContextMenu';
 import { Tooltip } from './Tooltip';
 import { useTooltip } from './useTooltip';
+import { DensityToggle } from './DensityToggle';
+import { useDensityMode } from './useDensityMode';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
@@ -54,6 +56,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
   tooltipConfig,
   tableId,
   theme: _theme = 'quartz',
+  densityMode: _densityMode = 'normal',
+  showDensityToggle = false,
+  onDensityChange,
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -66,6 +71,20 @@ export const DataGrid: React.FC<DataGridProps> = ({
     { columns, pageSize },
     (args) => createInitialState(args.columns, args.pageSize)
   );
+
+  // Density mode hook
+  const { densityMode, setDensityMode, densityStyles } = useDensityMode({
+    initialMode: _densityMode,
+    persist: true,
+    onChange: onDensityChange,
+  });
+
+  // Sync external densityMode prop with internal state
+  useEffect(() => {
+    if (_densityMode && _densityMode !== densityMode) {
+      setDensityMode(_densityMode);
+    }
+  }, [_densityMode, densityMode, setDensityMode]);
 
   // Screen reader announcements hook
   const { 
@@ -480,7 +499,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
       aria-label="Data Grid"
       aria-rowcount={flattenedRows.length}
       aria-colcount={displayColumnOrder.length}
-      style={{ border: 'var(--grid-border-width, 1px) solid var(--grid-border)', borderRadius: 'var(--grid-border-radius, 6px)', overflow: 'hidden', backgroundColor: 'var(--grid-bg)', boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' }}
+      style={{ 
+        ...densityStyles as React.CSSProperties,
+        border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
+        borderRadius: 'var(--grid-border-radius, 6px)', 
+        overflow: 'hidden', 
+        backgroundColor: 'var(--grid-bg)', 
+        boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', 
+        fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' 
+      }}
+      className={`data-grid density-${densityMode}`}
     >
       {/* Screen Reader Announcements - Live Region */}
       <ScreenReaderAnnouncer message={announcementRef.current} priority="polite" />
@@ -521,6 +549,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
             />
           )}
         </div>
+
+        {/* Density Toggle */}
+        {showDensityToggle && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '13px', color: 'var(--grid-text-secondary)', fontWeight: '500' }}>
+              Density:
+            </span>
+            <DensityToggle value={densityMode} onChange={setDensityMode} />
+          </div>
+        )}
       </div>
 
       {/* Group By Panel */}

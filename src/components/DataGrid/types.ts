@@ -1,6 +1,7 @@
 // Core type definitions for the DataGrid component
 import React from 'react';
 import type { ThemeName } from './themes';
+import type { DensityMode } from './densityModes';
 
 export type FilterType = 'text' | 'number' | 'date' | 'set' | 'multi';
 
@@ -440,6 +441,9 @@ export interface DataGridProps {
   tooltipConfig?: TooltipConfig; // Configuration for tooltips
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
+  densityMode?: DensityMode; // Density mode: compact, normal, or comfortable
+  showDensityToggle?: boolean; // Show density mode toggle control (default: false)
+  onDensityChange?: (mode: DensityMode) => void; // Callback when density changes
   onRowClick?: (row: Row) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onCellEdit?: (rowIndex: number, field: string, value: any) => void;

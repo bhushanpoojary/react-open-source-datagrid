@@ -8,6 +8,7 @@ import { FacetedSearchDemo } from './components/FacetedSearchDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
+import { DensityModeDemo } from './components/DensityModeDemo'
 import { TreeDataDemo } from './components/TreeDataDemo'
 import { RowDraggingDemo } from './components/RowDraggingDemo'
 import { LiveMarketDemo } from './components/LiveMarketDemo'
@@ -19,7 +20,7 @@ import { BenchmarkDemo } from './components/BenchmarkDemo'
 import { FeatureGallery } from './components/FeatureGallery'
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery';
 
 interface MenuItem {
   id: DemoType;
@@ -139,6 +140,12 @@ function App() {
           label: 'Theme System',
           icon: '🎨',
           description: 'Light, Dark, Quartz, Alpine themes',
+        },
+        {
+          id: 'density',
+          label: 'Density Modes',
+          icon: '📏',
+          description: 'Compact/Normal/Comfortable spacing',
         },
         {
           id: 'persistence',
@@ -479,6 +486,7 @@ function App() {
         {currentDemo === 'tooltip' && <TooltipDemo />}
         {currentDemo === 'persistence' && <LayoutPersistenceDemo />}
         {currentDemo === 'themes' && <ThemesDemo />}
+        {currentDemo === 'density' && <DensityModeDemo />}
         {currentDemo === 'gallery' && <FeatureGallery />}
         {currentDemo === 'benchmark' && <BenchmarkDemo />}
       </main>

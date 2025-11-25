@@ -22,6 +22,19 @@ export {
   themes
 } from './themes';
 export type { ThemeName, GridTheme } from './themes';
+export { DensityToggle } from './DensityToggle';
+export { useDensityMode } from './useDensityMode';
+export type { UseDensityModeOptions, UseDensityModeReturn } from './useDensityMode';
+export {
+  getDensityConfig,
+  getDensityModes,
+  getDensityLabel,
+  generateDensityCSS,
+  saveDensityMode,
+  loadDensityMode,
+  densityConfigs
+} from './densityModes';
+export type { DensityMode, DensityConfig } from './densityModes';
 export type { 
   Column, 
   Row, 

@@ -23,6 +23,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Infinite Scrolling with Server-Side DataSource** (100M+ rows with server-side filtering, sorting, and caching)
 - ✅ **Accessibility (A11y)** (WCAG 2.1 AA compliant with full keyboard navigation, ARIA support, and screen reader compatibility)
 - ✅ **Context Menu** (right-click menu with copy, export, pin/unpin, auto-size, hide, filter by value, and custom actions)
+- ✅ **Density Modes** (Compact/Normal/Comfortable spacing with segmented control and persistent preferences) 🆕
 
 ## Quick Start
 
@@ -73,8 +74,10 @@ const rows: Row[] = [
 - **Layout Persistence**: See [LAYOUT_PERSISTENCE_INDEX.md](./LAYOUT_PERSISTENCE_INDEX.md)
 - **Layout Persistence Feature Guide**: See [LAYOUT_PERSISTENCE_FEATURE.md](./LAYOUT_PERSISTENCE_FEATURE.md)
 - **Layout Persistence Quick Reference**: See [LAYOUT_PERSISTENCE_QUICK_REF.md](./LAYOUT_PERSISTENCE_QUICK_REF.md)
-- **Context Menu**: See [CONTEXT_MENU_FEATURE.md](./CONTEXT_MENU_FEATURE.md) 🆕
+- **Context Menu**: See [CONTEXT_MENU_FEATURE.md](./CONTEXT_MENU_FEATURE.md)
 - **Context Menu Quick Reference**: See [CONTEXT_MENU_QUICK_REF.md](./CONTEXT_MENU_QUICK_REF.md)
+- **Density Modes**: See [DENSITY_MODE_INDEX.md](./DENSITY_MODE_INDEX.md) 🆕
+- **Density Mode Quick Reference**: See [DENSITY_MODE_QUICK_REF.md](./DENSITY_MODE_QUICK_REF.md)
 
 ## Technology Stack
 
