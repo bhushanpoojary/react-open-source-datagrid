@@ -10,21 +10,22 @@ describe('Market Data Mode', () => {
   });
 
   it('should display grid with data', () => {
-    cy.get('[role="row"]').should('have.length.greaterThan', 1);
+    // Market data grid uses custom classes, not ARIA roles
+    cy.get('.market-grid-row').should('have.length.greaterThan', 0);
   });
 
   it('should have column headers', () => {
-    cy.get('[role="columnheader"]').should('have.length.greaterThan', 0);
+    cy.get('.market-grid-header-cell').should('have.length.greaterThan', 0);
   });
 
   it('should render cells with data', () => {
     // Verify cells exist
-    cy.get('[role="row"]').eq(1).find('[role="cell"]').should('exist');
+    cy.get('.market-grid-cell').should('exist');
   });
 
   it('should maintain grid visibility', () => {
     // Grid should remain visible and functional
     cy.get('[data-testid="data-grid"]').should('be.visible');
-    cy.get('[role="row"]').should('have.length.greaterThan', 0);
+    cy.get('.market-grid-row').should('have.length.greaterThan', 0);
   });
 });
