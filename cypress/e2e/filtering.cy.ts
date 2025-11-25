@@ -5,7 +5,7 @@ describe('Column Filtering', () => {
   });
 
   it('should render column filters demo', () => {
-    cy.contains('Column Filtering').should('be.visible');
+    cy.contains('Column Filters Demo').should('be.visible');
     cy.get('[data-testid="data-grid"]').should('be.visible');
   });
 

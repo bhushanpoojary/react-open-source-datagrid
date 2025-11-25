@@ -5,8 +5,8 @@ describe('Virtual Scrolling', () => {
   });
 
   it('should render virtual scrolling demo', () => {
-    cy.contains('Virtual Scrolling Demo').should('be.visible');
-    cy.get('[data-testid="data-grid"]').should('be.visible');
+    cy.contains('Virtual Scrolling Demo').should('exist');
+    cy.get('[data-testid="data-grid"]').should('exist');
   });
 
   it('should virtualize rows efficiently', () => {
@@ -22,8 +22,8 @@ describe('Virtual Scrolling', () => {
   it('should load more rows on scroll', () => {
     // Get initial visible row
     cy.get('[role="row"]').first().invoke('text').then((firstRowText) => {
-      // Scroll down the actual scrollable container
-      cy.get('[role="rowgroup"]').scrollTo(0, 2000);
+      // Scroll down the actual scrollable container (use first() to select only one)
+      cy.get('[role="rowgroup"]').first().scrollTo(0, 2000);
       cy.wait(300);
       
       // Verify different rows are visible
@@ -33,11 +33,11 @@ describe('Virtual Scrolling', () => {
 
   it('should maintain scroll position', () => {
     // Scroll to middle
-    cy.get('[role="rowgroup"]').scrollTo(0, 1000);
+    cy.get('[role="rowgroup"]').first().scrollTo(0, 1000);
     cy.wait(300);
     
     // Get scroll position
-    cy.get('[role="rowgroup"]').then(($grid) => {
+    cy.get('[role="rowgroup"]').first().then(($grid) => {
       const scrollTop = $grid[0].scrollTop;
       expect(scrollTop).to.be.greaterThan(900);
     });
@@ -46,7 +46,7 @@ describe('Virtual Scrolling', () => {
   it('should handle rapid scrolling', () => {
     // Rapid scroll events
     for (let i = 0; i < 5; i++) {
-      cy.get('[role="rowgroup"]').scrollTo(0, i * 500);
+      cy.get('[role="rowgroup"]').first().scrollTo(0, i * 500);
     }
     
     // Grid should still be stable

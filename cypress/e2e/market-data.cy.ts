@@ -5,7 +5,7 @@ describe('Market Data Mode', () => {
   });
 
   it('should render market data demo', () => {
-    cy.contains('Market Data').should('be.visible');
+    cy.contains('Live Market Data').should('be.visible');
     cy.get('[data-testid="data-grid"]').should('be.visible');
   });
 
