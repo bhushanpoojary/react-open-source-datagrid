@@ -1,0 +1,11 @@
+# robots.txt for React DataGrid
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://bhushanpoojary.github.io/react-open-source-datagrid/sitemap.xml
+
+# Crawl-delay (optional, prevents overloading server)
+Crawl-delay: 1
