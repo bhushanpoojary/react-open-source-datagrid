@@ -67,15 +67,11 @@ const pathToDemoMap: Record<string, DemoType> = {
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [currentDemo, setCurrentDemo] = useState<DemoType>('home')
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['gettingstarted', 'performance', 'datafeatures', 'customization', 'documentation']))
   const [searchQuery, setSearchQuery] = useState<string>('')
 
-  // Sync currentDemo with URL
-  useEffect(() => {
-    const demo = pathToDemoMap[location.pathname] || 'home';
-    setCurrentDemo(demo);
-  }, [location.pathname]);
+  // Derive currentDemo directly from URL
+  const currentDemo = pathToDemoMap[location.pathname] || 'home';
 
   const menuCategories: MenuCategory[] = [
     {

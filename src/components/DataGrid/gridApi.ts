@@ -690,7 +690,7 @@ export class GridApiImpl implements GridApi {
     }
 
     // Get rows to export
-    let rowsToExport = params?.onlySelected 
+    const rowsToExport = params?.onlySelected 
       ? this.getSelectedRows()
       : params?.onlyFiltered
       ? this.getFilteredRows()
