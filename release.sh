@@ -1,20 +1,38 @@
 #!/bin/bash
 
 # Release script for creating Git tags and triggering deployment
-# Usage: ./release.sh <version>
+# Usage: ./release.sh [version]
 # Example: ./release.sh 1.0.6
+# If no version provided, auto-increments patch version from latest tag
 
 set -e
 
+# Get the latest tag
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+LATEST_VERSION=${LATEST_TAG#v}
+
 if [ -z "$1" ]; then
-  echo "Error: Version number required"
-  echo "Usage: ./release.sh <version>"
-  echo "Example: ./release.sh 1.0.6"
-  exit 1
+  # Auto-increment patch version
+  IFS='.' read -r -a VERSION_PARTS <<< "$LATEST_VERSION"
+  MAJOR=${VERSION_PARTS[0]}
+  MINOR=${VERSION_PARTS[1]}
+  PATCH=${VERSION_PARTS[2]}
+  PATCH=$((PATCH + 1))
+  VERSION="$MAJOR.$MINOR.$PATCH"
+  echo "No version specified. Auto-incrementing from $LATEST_VERSION to $VERSION"
+else
+  VERSION=$1
 fi
 
-VERSION=$1
 TAG="v${VERSION}"
+
+# Check if version already exists on npm
+if npm view react-open-source-grid@${VERSION} version 2>/dev/null; then
+  echo "Error: Version ${VERSION} already exists on npm"
+  echo "Latest version: ${LATEST_VERSION}"
+  echo "Please use a higher version number"
+  exit 1
+fi
 
 echo "Creating release ${TAG}..."
 

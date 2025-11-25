@@ -1,15 +1,52 @@
 # Release script for creating Git tags and triggering deployment
-# Usage: .\release.ps1 <version>
+# Usage: .\release.ps1 [version]
 # Example: .\release.ps1 1.0.6
+# If no version provided, auto-increments patch version from latest tag
 
 param(
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
     [string]$Version
 )
 
 $ErrorActionPreference = "Stop"
 
+# Get the latest tag
+try {
+    $LatestTag = git describe --tags --abbrev=0 2>$null
+    if (-not $LatestTag) {
+        $LatestTag = "v0.0.0"
+    }
+} catch {
+    $LatestTag = "v0.0.0"
+}
+
+$LatestVersion = $LatestTag -replace '^v', ''
+
+if (-not $Version) {
+    # Auto-increment patch version
+    $VersionParts = $LatestVersion -split '\.'
+    $Major = [int]$VersionParts[0]
+    $Minor = [int]$VersionParts[1]
+    $Patch = [int]$VersionParts[2]
+    $Patch++
+    $Version = "$Major.$Minor.$Patch"
+    Write-Host "No version specified. Auto-incrementing from $LatestVersion to $Version" -ForegroundColor Yellow
+}
+
 $TAG = "v$Version"
+
+# Check if version already exists on npm
+try {
+    $NpmVersion = npm view react-open-source-grid@$Version version 2>$null
+    if ($NpmVersion) {
+        Write-Host "Error: Version $Version already exists on npm" -ForegroundColor Red
+        Write-Host "Latest version: $LatestVersion" -ForegroundColor Yellow
+        Write-Host "Please use a higher version number" -ForegroundColor Yellow
+        exit 1
+    }
+} catch {
+    # Version doesn't exist, continue
+}
 
 Write-Host "Creating release $TAG..." -ForegroundColor Cyan
 

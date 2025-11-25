@@ -17,15 +17,25 @@ This project uses **Git tags** for version management instead of manually updati
 
 **On Windows (PowerShell):**
 ```powershell
+# Auto-increment patch version (e.g., v1.0.5 → v1.0.6)
+.\release.ps1
+
+# Or specify exact version
 .\release.ps1 1.0.6
 ```
 
 **On Linux/Mac:**
 ```bash
+# Auto-increment patch version
+./release.sh
+
+# Or specify exact version
 ./release.sh 1.0.6
 ```
 
 The script will:
+- Get latest Git tag and auto-increment patch version (if no version specified)
+- Check if version already exists on npm (prevents duplicate publishes)
 - Check for uncommitted changes
 - Create a Git tag (e.g., `v1.0.6`)
 - Push the tag to GitHub
@@ -101,6 +111,22 @@ View release progress:
 - **npm:** https://www.npmjs.com/package/react-open-source-grid
 
 ## Troubleshooting
+
+### Version already exists on npm
+**Error:** `403 Forbidden - You cannot publish over the previously published versions`
+
+**Solution:** The release scripts now check for existing npm versions before creating tags.
+
+```powershell
+# Check what's the next version
+.\release.ps1  # Will show auto-incremented version
+
+# Or manually check npm
+npm view react-open-source-grid version  # Shows latest published
+
+# List all Git tags
+git tag -l
+```
 
 ### Tag already exists
 ```bash

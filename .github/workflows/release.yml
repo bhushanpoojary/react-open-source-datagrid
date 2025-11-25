@@ -63,30 +63,52 @@ jobs:
       
       - name: Extract version from tag
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Releasing version: $VERSION"
       
       - name: Update package.json version
         run: |
           npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
+          echo "Updated package.json to version ${{ steps.get_version.outputs.VERSION }}"
+      
+      - name: Check if version exists on npm
+        id: check_version
+        continue-on-error: true
+        run: |
+          if npm view react-open-source-grid@${{ steps.get_version.outputs.VERSION }} version 2>/dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Error: Version ${{ steps.get_version.outputs.VERSION }} already exists on npm"
+            echo "Please create a new tag with a higher version number"
+            exit 1
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "✅ Version ${{ steps.get_version.outputs.VERSION }} is new"
+          fi
       
       - name: Install dependencies
         run: npm ci
       
       - name: Build
+        if: steps.check_version.outcome == 'success'
         run: npm run build
       
       - name: Publish to npm
+        if: steps.check_version.outcome == 'success'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Deploy to GitHub Pages
+        if: steps.check_version.outcome == 'success'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
       
       - name: Create GitHub Release
+        if: steps.check_version.outcome == 'success'
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
