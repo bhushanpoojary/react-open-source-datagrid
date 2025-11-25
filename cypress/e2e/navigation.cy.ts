@@ -17,7 +17,7 @@ describe('Navigation', () => {
     
     // Navigate to Cell Renderers demo
     cy.get('aside').contains('button', 'Cell Renderers').click();
-    cy.contains('Cell Renderers Demo').should('be.visible');
+    cy.contains('Cell Renderer Framework Demo').should('be.visible');
   });
 
   it('should search for features', () => {
