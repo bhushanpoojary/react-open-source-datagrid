@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - develop
+    tags-ignore:
+      - 'v*.*.*'  # Don't run on version tags (release.yml handles those)
   pull_request:
     branches:
       - main
