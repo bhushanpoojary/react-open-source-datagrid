@@ -59,8 +59,9 @@ export const LiveMarketDemo: React.FC = () => {
   // Update engine config when settings change
   useEffect(() => {
     if (engineRef.current) {
-      // Engine config is immutable, so we'd need to recreate or expose setters
-      // For now, settings apply on next mount
+      // Update config dynamically
+      (engineRef.current as any).config.enableFlash = flashEnabled;
+      (engineRef.current as any).config.enableRankingMovement = !freezeMovement;
     }
   }, [flashEnabled, freezeMovement]);
 
@@ -288,6 +289,7 @@ export const LiveMarketDemo: React.FC = () => {
           <button
             className={`control-btn ${isPaused ? 'paused' : 'active'}`}
             onClick={handlePauseResume}
+            title={isPaused ? 'Resume live data streaming' : 'Pause live data streaming'}
           >
             {isPaused ? '▶ Resume' : '⏸ Pause'}
           </button>
@@ -295,6 +297,7 @@ export const LiveMarketDemo: React.FC = () => {
           <button
             className={`control-btn ${densityMode ? 'active' : ''}`}
             onClick={handleToggleDensity}
+            title={densityMode ? 'Switch to normal row height' : 'Switch to compact row height'}
           >
             {densityMode ? '□ Normal' : '▪ Compact'}
           </button>
@@ -302,6 +305,7 @@ export const LiveMarketDemo: React.FC = () => {
           <button
             className={`control-btn ${flashEnabled ? 'active' : ''}`}
             onClick={handleToggleFlash}
+            title={flashEnabled ? 'Disable cell flash animations on value changes' : 'Enable cell flash animations on value changes'}
           >
             {flashEnabled ? '✓ Flash On' : '✗ Flash Off'}
           </button>
@@ -309,6 +313,7 @@ export const LiveMarketDemo: React.FC = () => {
           <button
             className={`control-btn ${freezeMovement ? 'active' : ''}`}
             onClick={handleToggleFreeze}
+            title={freezeMovement ? 'Enable live ranking - rows reorder by rank' : 'Freeze ranking - prevent row reordering'}
           >
             {freezeMovement ? '🔒 Frozen' : '🔓 Live Rank'}
           </button>
@@ -316,6 +321,7 @@ export const LiveMarketDemo: React.FC = () => {
           <button
             className={`control-btn ${showMetrics ? 'active' : ''}`}
             onClick={handleToggleMetrics}
+            title={showMetrics ? 'Hide performance statistics' : 'Show performance statistics'}
           >
             {showMetrics ? '📊 Hide Stats' : '📊 Show Stats'}
           </button>
