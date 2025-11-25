@@ -67,6 +67,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onSelectionChange,
   onLayoutChange,
   onRowReorder,
+  onGridReady,
 }, ref) => {
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
@@ -222,6 +223,13 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     }
     return gridApiRef.current;
   }, [state, columns, rows, persistenceManager]);
+
+  // Call onGridReady when API is initialized
+  useEffect(() => {
+    if (gridApiRef.current && onGridReady) {
+      onGridReady(gridApiRef.current);
+    }
+  }, [onGridReady]);
 
   // Cleanup on unmount
   useEffect(() => {

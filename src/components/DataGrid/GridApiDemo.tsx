@@ -9,9 +9,17 @@ import type { GridApi, Column, Row } from './index';
 export const GridApiDemo: React.FC = () => {
   const gridRef = useRef<GridApi>(null);
   const [logs, setLogs] = useState<string[]>([]);
+  const [isGridReady, setIsGridReady] = useState(false);
 
   const addLog = (message: string) => {
     setLogs(prev => [...prev.slice(-9), `${new Date().toLocaleTimeString()}: ${message}`]);
+  };
+
+  // onGridReady callback - called when grid API is initialized
+  const handleGridReady = (api: GridApi) => {
+    setIsGridReady(true);
+    addLog('✅ Grid API is ready! You can now call API methods.');
+    console.log('Grid API instance:', api);
   };
 
   // Sample data
@@ -381,6 +389,9 @@ export const GridApiDemo: React.FC = () => {
       </div>
 
       {/* DataGrid with API ref */}
+      <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: isGridReady ? '#d4edda' : '#f8d7da', borderRadius: '4px', border: `1px solid ${isGridReady ? '#c3e6cb' : '#f5c6cb'}` }}>
+        <strong>Grid Status:</strong> {isGridReady ? '✅ Ready' : '⏳ Initializing...'}
+      </div>
       <DataGrid
         ref={gridRef}
         columns={columns}
@@ -389,12 +400,43 @@ export const GridApiDemo: React.FC = () => {
         theme="quartz"
         densityMode="normal"
         showDensityToggle
+        onGridReady={handleGridReady}
         onSelectionChange={(selectedIds) => {
           addLog(`Selection changed: ${selectedIds.length} row(s)`);
         }}
       />
 
       {/* API Documentation */}
+      <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#e8f5e9', borderRadius: '8px', marginBottom: '20px' }}>
+        <h3 style={{ marginTop: 0 }}>📘 Using onGridReady Event</h3>
+        <p style={{ fontSize: '14px', lineHeight: '1.6' }}>
+          The <code>onGridReady</code> callback is fired when the grid API is fully initialized and ready to use. 
+          This is similar to AG-Grid's <code>onGridReady</code> event.
+        </p>
+        <pre style={{ backgroundColor: '#fff', padding: '15px', borderRadius: '4px', overflow: 'auto', fontSize: '13px' }}>
+{`// Example usage
+const MyComponent = () => {
+  const gridRef = useRef<GridApi>(null);
+
+  const handleGridReady = (api: GridApi) => {
+    console.log('Grid is ready!', api);
+    
+    // Now you can safely call API methods
+    api.sizeColumnsToFit();
+    api.setFilterModel({ name: { value: 'John' } });
+  };
+
+  return (
+    <DataGrid
+      ref={gridRef}
+      columns={columns}
+      rows={rows}
+      onGridReady={handleGridReady}  // ✅ Called when API is ready
+    />
+  );
+};`}</pre>
+      </div>
+
       <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
         <h3>Grid API Methods Available</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>

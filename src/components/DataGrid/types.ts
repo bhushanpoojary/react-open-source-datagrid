@@ -2,6 +2,7 @@
 import React from 'react';
 import type { ThemeName } from './themes';
 import type { DensityMode } from './densityModes';
+import type { GridApi } from './gridApi.types';
 
 export type FilterType = 'text' | 'number' | 'date' | 'set' | 'multi';
 
@@ -474,4 +475,5 @@ export interface DataGridProps {
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
   onLayoutChange?: (layout: LayoutPreset['layout']) => void;
   onRowReorder?: (rows: Row[]) => void;
+  onGridReady?: (api: GridApi) => void; // Called when grid API is ready
 }
