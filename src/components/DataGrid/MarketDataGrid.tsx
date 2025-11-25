@@ -203,7 +203,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   const containerClassName = `market-data-grid ${config?.densityMode ? 'density-compact' : ''} ${className}`.trim();
 
   return (
-    <div ref={tableRef} className={containerClassName}>
+    <div ref={tableRef} className={containerClassName} data-testid="data-grid">
       {renderHeader()}
       {renderBody()}
     </div>
