@@ -206,7 +206,31 @@ export type GridAction =
   | { type: 'END_DRAG' }
   | { type: 'PIN_ROW_TOP'; payload: string | number }
   | { type: 'PIN_ROW_BOTTOM'; payload: string | number }
-  | { type: 'UNPIN_ROW'; payload: string | number };
+  | { type: 'UNPIN_ROW'; payload: string | number }
+  // Grid API actions
+  | { type: 'SET_ROW_DATA'; payload: Row[] }
+  | { type: 'SET_COLUMN_DEFS'; payload: Column[] }
+  | { type: 'SORT_COLUMN'; payload: string }
+  | { type: 'SET_SORT_MODEL'; payload: SortConfig[] }
+  | { type: 'CLEAR_ALL_FILTERS' }
+  | { type: 'CLEAR_ALL_SORTING' }
+  | { type: 'SELECT_ROW'; payload: { rowId: string | number; ctrlKey: boolean } }
+  | { type: 'DESELECT_ROW'; payload: string | number }
+  | { type: 'SELECT_ALL_ROWS' }
+  | { type: 'DESELECT_ALL_ROWS' }
+  | { type: 'CLEAR_FOCUS' }
+  | { type: 'START_EDITING'; payload: { rowId: string | number; field: string; value: any } }
+  | { type: 'CANCEL_EDITING' }
+  | { type: 'SAVE_EDIT' }
+  | { type: 'REFRESH_CELLS'; payload?: unknown }
+  | { type: 'REFRESH_HEADER' }
+  | { type: 'REDRAW_ROWS'; payload?: unknown }
+  | { type: 'SHOW_OVERLAY'; payload: 'loading' | 'noRows' }
+  | { type: 'HIDE_OVERLAY' }
+  | { type: 'SET_CURRENT_PAGE'; payload: number }
+  | { type: 'SET_GROUP_BY'; payload: string[] }
+  | { type: 'RECALCULATE_LAYOUT' }
+  | { type: 'RESET_COLUMN_STATE' };
 
 // Virtual scrolling configuration
 export interface VirtualScrollConfig {

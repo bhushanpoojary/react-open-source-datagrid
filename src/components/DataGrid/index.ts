@@ -1,6 +1,24 @@
 // Export all DataGrid components and types
 export { DataGrid, ThemedDataGrid } from './DataGrid'; // ThemedDataGrid is now an alias for backward compatibility
 export { VirtualScroller } from './VirtualScroller';
+
+// Export Grid API types and implementation
+export type {
+  GridApi,
+  RowNode,
+  RowModel,
+  ColKey,
+  ColumnState,
+  RefreshCellsParams,
+  RedrawRowsParams,
+  CsvExportParams,
+  ExcelExportParams,
+  RowDataTransaction,
+  RowNodeTransaction,
+  CellRange,
+  StartEditingCellParams,
+} from './gridApi.types';
+export { GridApiImpl } from './gridApi';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
 export { ColumnFilters } from './ColumnFilters';
@@ -109,6 +127,9 @@ export {
   Rating,
   CurrencyCell,
 } from './CellRenderers';
+
+// Export Grid API Demo
+export { GridApiDemo } from './GridApiDemo';
 
 // Export Market Data Mode Components
 export { MarketDataGrid, withMarketData } from './MarketDataGrid';

@@ -18,9 +18,11 @@ import { RowPinningDemo } from './components/RowPinningDemo'
 import { TooltipDemo } from './components/TooltipDemo'
 import { BenchmarkDemo } from './components/BenchmarkDemo'
 import { FeatureGallery } from './components/FeatureGallery'
+import { CompleteApiReferencePage } from './components/CompleteApiReferencePage';
+import { GridApiDemoPage } from './components/GridApiDemoPage';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo';
 
 interface MenuItem {
   id: DemoType;
@@ -37,7 +39,7 @@ interface MenuCategory {
 
 function App() {
   const [currentDemo, setCurrentDemo] = useState<DemoType>('home')
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['gettingstarted', 'performance', 'datafeatures', 'customization']))
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['gettingstarted', 'performance', 'datafeatures', 'customization', 'documentation']))
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const menuCategories: MenuCategory[] = [
@@ -170,6 +172,24 @@ function App() {
           label: 'Accessibility (A11y)',
           icon: '♿',
           description: 'Keyboard navigation & ARIA support',
+        },
+      ],
+    },
+    {
+      label: 'Documentation',
+      icon: '📚',
+      items: [
+        {
+          id: 'api-reference',
+          label: 'Grid API Reference',
+          icon: '📖',
+          description: '100+ methods for programmatic control',
+        },
+        {
+          id: 'api-demo',
+          label: 'Interactive API Demo',
+          icon: '🎮',
+          description: 'Try all API methods with live examples',
         },
       ],
     },
@@ -489,6 +509,8 @@ function App() {
         {currentDemo === 'density' && <DensityModeDemo />}
         {currentDemo === 'gallery' && <FeatureGallery />}
         {currentDemo === 'benchmark' && <BenchmarkDemo />}
+        {currentDemo === 'api-reference' && <CompleteApiReferencePage />}
+        {currentDemo === 'api-demo' && <GridApiDemoPage />}
       </main>
     </div>
   )

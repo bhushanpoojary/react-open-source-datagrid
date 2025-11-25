@@ -1,5 +1,8 @@
 import type { GridState, GridAction, Column } from './types';
 
+// Re-export types for convenience
+export type { GridState, GridAction };
+
 // Initial state factory
 export const createInitialState = (columns: Column[], pageSize: number = 10): GridState => {
   const columnWidths: { [field: string]: number } = {};

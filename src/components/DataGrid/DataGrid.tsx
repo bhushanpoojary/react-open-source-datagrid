@@ -1,4 +1,4 @@
-import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState } from 'react';
+import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import type { DataGridProps, Row, GroupedRow, LayoutPreset, TreeNode } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
@@ -23,6 +23,8 @@ import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 import { getTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
 import { useScreenReaderAnnouncements, ScreenReaderAnnouncer } from './useScreenReaderAnnouncements';
+import { GridApiImpl } from './gridApi';
+import type { GridApi } from './gridApi.types';
 
 /**
  * DataGrid Component
@@ -40,8 +42,9 @@ import { useScreenReaderAnnouncements, ScreenReaderAnnouncer } from './useScreen
  * - Editable cells (double-click to edit, Enter to confirm, Escape to cancel)
  * - Keyboard navigation (arrow keys to move focus, Enter to edit)
  * - Sticky header (header stays visible when scrolling)
+ * - Grid API: Programmatic control via ref (AG Grid-inspired API)
  */
-export const DataGrid: React.FC<DataGridProps> = ({
+export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   columns,
   rows,
   pageSize = 10,
@@ -64,13 +67,19 @@ export const DataGrid: React.FC<DataGridProps> = ({
   onSelectionChange,
   onLayoutChange,
   onRowReorder,
-}) => {
+}, ref) => {
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
     gridReducer,
     { columns, pageSize },
     (args) => createInitialState(args.columns, args.pageSize)
   );
+
+  // Container ref for Grid API
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Grid API instance ref
+  const gridApiRef = useRef<GridApiImpl | null>(null);
 
   // Density mode hook
   const { densityMode, setDensityMode, densityStyles } = useDensityMode({
@@ -180,6 +189,48 @@ export const DataGrid: React.FC<DataGridProps> = ({
     state.pageSize,
     state.groupBy,
   ]);
+
+  // Initialize and expose Grid API via ref
+  useEffect(() => {
+    if (!gridApiRef.current) {
+      gridApiRef.current = new GridApiImpl(
+        state,
+        dispatch,
+        columns,
+        rows,
+        containerRef,
+        persistenceManager
+      );
+    } else {
+      // Update API with latest state and data
+      gridApiRef.current.updateState(state);
+      gridApiRef.current.updateData(columns, rows);
+    }
+  }, [state, columns, rows, persistenceManager]);
+
+  // Expose Grid API via ref
+  useImperativeHandle(ref, () => {
+    if (!gridApiRef.current) {
+      gridApiRef.current = new GridApiImpl(
+        state,
+        dispatch,
+        columns,
+        rows,
+        containerRef,
+        persistenceManager
+      );
+    }
+    return gridApiRef.current;
+  }, [state, columns, rows, persistenceManager]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (gridApiRef.current) {
+        gridApiRef.current.destroy();
+      }
+    };
+  }, []);
 
   // Auto-save functionality
   useEffect(() => {
@@ -500,6 +551,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
   return (
     <div 
+      ref={containerRef}
       data-testid="data-grid"
       role="grid" 
       aria-label="Data Grid"
@@ -694,7 +746,10 @@ export const DataGrid: React.FC<DataGridProps> = ({
       )}
     </div>
   );
-};
+});
+
+// Set display name for better debugging
+DataGrid.displayName = 'DataGrid';
 
 /**
  * ThemedDataGrid - Legacy alias for backward compatibility
