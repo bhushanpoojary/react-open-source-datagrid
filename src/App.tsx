@@ -257,7 +257,8 @@ function App() {
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           backgroundColor: '#0f172a'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+            <img src="/logo.png" alt="Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
             <span style={{ fontSize: '24px', fontWeight: 'bold' }}>React DataGrid</span>
           </div>
           <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.6)' }}>
