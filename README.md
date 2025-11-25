@@ -81,6 +81,7 @@ const rows: Row[] = [
 - **Density Mode Quick Reference**: See [DENSITY_MODE_QUICK_REF.md](./DENSITY_MODE_QUICK_REF.md)
 - **Theme System**: See [THEME_SYSTEM.md](./THEME_SYSTEM.md) 🆕
 - **Themes Overview**: See [THEMES_OVERVIEW.md](./THEMES_OVERVIEW.md) 🆕
+- **Theme Integration**: See [THEME_INTEGRATION_MIGRATION.md](./THEME_INTEGRATION_MIGRATION.md) - Migration guide
 
 ## Technology Stack
 
@@ -268,7 +269,7 @@ Response:
 Choose from **10 beautiful pre-built themes** to match your application's design:
 
 ```tsx
-import { ThemedDataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from './components/DataGrid';
 import type { ThemeName } from './components/DataGrid/themes';
 
 function App() {
@@ -277,7 +278,7 @@ function App() {
   return (
     <>
       <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={rows}
         theme={theme}

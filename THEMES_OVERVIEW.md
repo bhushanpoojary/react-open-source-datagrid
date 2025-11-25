@@ -128,13 +128,13 @@ Perfect for: Modern development
 
 ### Switch Between Themes
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid } from './components/DataGrid';
 
 function App() {
   const [theme, setTheme] = useState('quartz');
   
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
       theme={theme} // Try: 'nord', 'dracula', 'monokai', etc.

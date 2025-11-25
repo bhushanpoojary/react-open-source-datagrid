@@ -62,6 +62,12 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   const [dataSourceInstance, setDataSourceInstance] = useState<ServerSideDataSource | null>(null);
   const [totalRows, setTotalRows] = useState<number | undefined>(undefined);
 
+  // Theme styles - generate CSS variables from theme
+  const themeStyles = useMemo(() => {
+    const currentTheme = getTheme(_theme);
+    return generateThemeCSS(currentTheme);
+  }, [_theme]);
+
   // Initialize data source
   useEffect(() => {
     let ds: ServerSideDataSource;
@@ -241,6 +247,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
 
   return (
     <div style={{ 
+      ...themeStyles as React.CSSProperties,
       border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
       borderRadius: 'var(--grid-border-radius, 6px)', 
       backgroundColor: 'var(--grid-bg)', 
@@ -376,19 +383,9 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
 };
 
 /**
- * ThemedInfiniteScrollDataGrid - InfiniteScrollDataGrid wrapper with theme support
- * Applies theme CSS variables to the grid container
+ * ThemedInfiniteScrollDataGrid - Legacy alias for backward compatibility
+ * @deprecated Use InfiniteScrollDataGrid directly with theme prop instead
  */
-export const ThemedInfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = (props) => {
-  const { theme = 'quartz', ...restProps } = props;
-  const currentTheme = getTheme(theme);
-  const themeStyles = generateThemeCSS(currentTheme);
-
-  return (
-    <div style={themeStyles as React.CSSProperties}>
-      <InfiniteScrollDataGrid {...restProps} theme={theme} />
-    </div>
-  );
-};
+export const ThemedInfiniteScrollDataGrid = InfiniteScrollDataGrid;
 
 export default InfiniteScrollDataGrid;

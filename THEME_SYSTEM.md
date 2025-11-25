@@ -98,6 +98,8 @@ A comprehensive theming system for the DataGrid component that allows you to swi
 
 ### Basic Usage
 
+Simply pass the `theme` prop to the DataGrid component:
+
 ```tsx
 import { DataGrid } from './DataGrid';
 import type { ThemeName } from './DataGrid/themes';
@@ -109,7 +111,7 @@ function MyComponent() {
     <DataGrid
       columns={columns}
       rows={rows}
-      theme={theme}
+      theme={theme} // Theme is applied directly!
     />
   );
 }
@@ -119,16 +121,13 @@ function MyComponent() {
 
 ```tsx
 import { DataGrid, ThemeSelector } from './DataGrid';
-import { getTheme, generateThemeCSS } from './DataGrid/themes';
 import type { ThemeName } from './DataGrid/themes';
 
 function MyComponent() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>('quartz');
-  const theme = getTheme(currentTheme);
-  const themeStyles = generateThemeCSS(theme);
 
   return (
-    <div style={themeStyles as React.CSSProperties}>
+    <div>
       <ThemeSelector 
         currentTheme={currentTheme} 
         onThemeChange={setCurrentTheme} 
@@ -137,26 +136,27 @@ function MyComponent() {
       <DataGrid
         columns={columns}
         rows={rows}
+        theme={currentTheme}
       />
     </div>
   );
 }
 ```
 
-### Using ThemedDataGrid Wrapper
+### Switching Themes Dynamically
 
 ```tsx
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid } from './DataGrid';
 import type { ThemeName } from './DataGrid/themes';
 
 function MyComponent() {
   const [theme, setTheme] = useState<ThemeName>('dark');
 
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
-      theme={theme}
+      theme={theme} // Change this value to switch themes instantly!
     />
   );
 }

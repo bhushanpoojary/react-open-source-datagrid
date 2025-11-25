@@ -246,20 +246,19 @@ export const ThemesDemo: React.FC = () => {
         </div>
 
         {/* DataGrid with Theme */}
-        <div style={themeStyles as React.CSSProperties}>
-          <DataGrid
-            columns={columns}
-            rows={products}
-            pageSize={10}
-            footerConfig={{
-              show: true,
-              aggregates: [
-                { field: 'price', function: 'avg', label: 'Avg Price' },
-                { field: 'stock', function: 'sum', label: 'Total Stock' },
-              ],
-            }}
-          />
-        </div>
+        <DataGrid
+          columns={columns}
+          rows={products}
+          pageSize={10}
+          theme={currentTheme}
+          footerConfig={{
+            show: true,
+            aggregates: [
+              { field: 'price', function: 'avg', label: 'Avg Price' },
+              { field: 'stock', function: 'sum', label: 'Total Stock' },
+            ],
+          }}
+        />
 
         {/* Theme Color Palette */}
         <div style={{
@@ -318,48 +317,34 @@ export const ThemesDemo: React.FC = () => {
           <CodeBlock
             title="Using Custom Themes"
             language="tsx"
-            code={`import { ThemedDataGrid } from './components/DataGrid';
+            code={`import { DataGrid, ThemeSelector } from './components/DataGrid';
+import type { ThemeName } from './components/DataGrid/themes';
 
-// Use a built-in theme
-<ThemedDataGrid
-  columns={columns}
-  rows={data}
-  theme="quartz"
-/>
+function App() {
+  const [theme, setTheme] = useState<ThemeName>('quartz');
+  
+  return (
+    <>
+      <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
+      
+      <DataGrid
+        columns={columns}
+        rows={data}
+        theme={theme} // Themes applied directly!
+      />
+    </>
+  );
+}
 
-// Create a custom theme
-const customTheme: Theme = {
-  name: 'custom',
-  type: 'light',
-  colors: {
-    primary: '#6366f1',
-    secondary: '#8b5cf6',
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#3b82f6',
-    text: '#1f2937',
-    textSecondary: '#6b7280',
-    background: '#ffffff',
-    backgroundSecondary: '#f9fafb',
-    border: '#e5e7eb',
-    hover: '#f3f4f6',
-    selected: '#dbeafe',
-  },
-  spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 },
-  borderRadius: { sm: 4, md: 6, lg: 8 },
-  shadows: {
-    light: '0 1px 2px rgba(0,0,0,0.05)',
-    medium: '0 2px 4px rgba(0,0,0,0.1)',
-    strong: '0 4px 6px rgba(0,0,0,0.15)',
-  },
-};
+// Available themes:
+// 'quartz', 'alpine', 'material', 'dark', 
+// 'nord', 'dracula', 'solarized-light', 
+// 'solarized-dark', 'monokai', 'one-dark'
 
-<ThemedDataGrid
-  columns={columns}
-  rows={data}
-  theme={customTheme}
-/>`}
+// Switch themes dynamically
+<DataGrid theme="nord" columns={columns} rows={data} />
+<DataGrid theme="dracula" columns={columns} rows={data} />
+<DataGrid theme="monokai" columns={columns} rows={data} />`}
           />
         </div>
       </div>

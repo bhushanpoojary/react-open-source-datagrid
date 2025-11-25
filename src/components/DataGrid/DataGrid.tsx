@@ -86,6 +86,12 @@ export const DataGrid: React.FC<DataGridProps> = ({
     }
   }, [_densityMode, densityMode, setDensityMode]);
 
+  // Theme styles - generate CSS variables from theme
+  const themeStyles = useMemo(() => {
+    const currentTheme = getTheme(_theme);
+    return generateThemeCSS(currentTheme);
+  }, [_theme]);
+
   // Screen reader announcements hook
   const { 
     announcementRef, 
@@ -500,6 +506,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
       aria-rowcount={flattenedRows.length}
       aria-colcount={displayColumnOrder.length}
       style={{ 
+        ...themeStyles as React.CSSProperties,
         ...densityStyles as React.CSSProperties,
         border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
         borderRadius: 'var(--grid-border-radius, 6px)', 
@@ -690,17 +697,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
 };
 
 /**
- * ThemedDataGrid - DataGrid wrapper with theme support
- * Applies theme CSS variables to the grid container
+ * ThemedDataGrid - Legacy alias for backward compatibility
+ * @deprecated Use DataGrid directly with theme prop instead
  */
-export const ThemedDataGrid: React.FC<DataGridProps> = (props) => {
-  const { theme = 'quartz', ...restProps } = props;
-  const currentTheme = getTheme(theme);
-  const themeStyles = generateThemeCSS(currentTheme);
-
-  return (
-    <div style={themeStyles as React.CSSProperties}>
-      <DataGrid {...restProps} theme={theme} />
-    </div>
-  );
-};
+export const ThemedDataGrid = DataGrid;

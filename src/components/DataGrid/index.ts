@@ -1,5 +1,5 @@
 // Export all DataGrid components and types
-export { DataGrid, ThemedDataGrid } from './DataGrid';
+export { DataGrid, ThemedDataGrid } from './DataGrid'; // ThemedDataGrid is now an alias for backward compatibility
 export { VirtualScroller } from './VirtualScroller';
 export { ColumnChooser } from './ColumnChooser';
 export { ExportMenu } from './ExportMenu';
@@ -8,7 +8,7 @@ export { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 export { FacetedSearch } from './FacetedSearch';
 export type { FacetConfig, FacetedSearchProps } from './FacetedSearch';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
-export { InfiniteScrollDataGrid, ThemedInfiniteScrollDataGrid } from './InfiniteScrollDataGrid';
+export { InfiniteScrollDataGrid, ThemedInfiniteScrollDataGrid } from './InfiniteScrollDataGrid'; // ThemedInfiniteScrollDataGrid is now an alias for backward compatibility
 export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
 export { ThemeSelector } from './ThemeSelector';
 export { 
