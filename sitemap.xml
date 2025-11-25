@@ -3,7 +3,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/</loc>
+    <loc>https://reactdatagrid.dev/</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
   
   <!-- Standard Demo -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/standard</loc>
+    <loc>https://reactdatagrid.dev/demo/standard</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -19,7 +19,7 @@
   
   <!-- Virtual Scrolling -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/virtual-scrolling</loc>
+    <loc>https://reactdatagrid.dev/demo/virtual-scrolling</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -27,7 +27,7 @@
   
   <!-- Infinite Scroll -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/infinite-scroll</loc>
+    <loc>https://reactdatagrid.dev/demo/infinite-scroll</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -35,7 +35,7 @@
   
   <!-- Market Data -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/market-data</loc>
+    <loc>https://reactdatagrid.dev/demo/market-data</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -43,7 +43,7 @@
   
   <!-- Tree Data -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/tree-data</loc>
+    <loc>https://reactdatagrid.dev/demo/tree-data</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -51,7 +51,7 @@
   
   <!-- Cell Renderers -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/cell-renderers</loc>
+    <loc>https://reactdatagrid.dev/demo/cell-renderers</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -59,7 +59,7 @@
   
   <!-- Column Filters -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/column-filters</loc>
+    <loc>https://reactdatagrid.dev/demo/column-filters</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -67,7 +67,7 @@
   
   <!-- Faceted Search -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/faceted-search</loc>
+    <loc>https://reactdatagrid.dev/demo/faceted-search</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -75,7 +75,7 @@
   
   <!-- Layout Persistence -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/layout-persistence</loc>
+    <loc>https://reactdatagrid.dev/demo/layout-persistence</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -83,7 +83,7 @@
   
   <!-- Themes -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/themes</loc>
+    <loc>https://reactdatagrid.dev/demo/themes</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -91,7 +91,7 @@
   
   <!-- Density Mode -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/density-mode</loc>
+    <loc>https://reactdatagrid.dev/demo/density-mode</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -99,7 +99,7 @@
   
   <!-- Row Dragging -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/row-dragging</loc>
+    <loc>https://reactdatagrid.dev/demo/row-dragging</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -107,7 +107,7 @@
   
   <!-- Row Pinning -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/row-pinning</loc>
+    <loc>https://reactdatagrid.dev/demo/row-pinning</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -115,7 +115,7 @@
   
   <!-- Accessibility -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/accessibility</loc>
+    <loc>https://reactdatagrid.dev/demo/accessibility</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -123,7 +123,7 @@
   
   <!-- Context Menu -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/context-menu</loc>
+    <loc>https://reactdatagrid.dev/demo/context-menu</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -131,7 +131,7 @@
   
   <!-- Tooltip -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/tooltip</loc>
+    <loc>https://reactdatagrid.dev/demo/tooltip</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -139,7 +139,7 @@
   
   <!-- Feature Gallery -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/feature-gallery</loc>
+    <loc>https://reactdatagrid.dev/demo/feature-gallery</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -147,7 +147,7 @@
   
   <!-- Benchmark -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/demo/benchmark</loc>
+    <loc>https://reactdatagrid.dev/demo/benchmark</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -155,7 +155,7 @@
   
   <!-- API Reference -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/api/reference</loc>
+    <loc>https://reactdatagrid.dev/api/reference</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -163,7 +163,7 @@
   
   <!-- API Demo -->
   <url>
-    <loc>https://bhushanpoojary.github.io/react-open-source-datagrid/api/demo</loc>
+    <loc>https://reactdatagrid.dev/api/demo</loc>
     <lastmod>2025-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
