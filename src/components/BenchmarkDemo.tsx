@@ -8,12 +8,13 @@ interface BenchmarkRow {
   value: number;
   status: string;
   category: string;
-  timestamp: Date;
+  timestamp: string;
   description: string;
 }
 
 export const BenchmarkDemo = () => {
   const [rowCount, setRowCount] = useState<number>(100000);
+  const [activeRowCount, setActiveRowCount] = useState<number>(100000);
   const [isGenerating, setIsGenerating] = useState(false);
   const [renderTime, setRenderTime] = useState<number>(0);
   const [scrollPerformance, setScrollPerformance] = useState<string>('');
@@ -70,33 +71,66 @@ export const BenchmarkDemo = () => {
     const names = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'];
     
     const startTime = performance.now();
-    const data: BenchmarkRow[] = [];
     
-    for (let i = 0; i < rowCount; i++) {
-      data.push({
+    // Pre-allocate array for better performance
+    const data: BenchmarkRow[] = new Array(activeRowCount);
+    
+    // Pre-compute array lengths to avoid repeated access
+    const namesLen = names.length;
+    const statusesLen = statuses.length;
+    const categoriesLen = categories.length;
+    
+    // Generate pre-computed date strings for better performance
+    const baseDate = Date.now();
+    const yearInMs = 365 * 24 * 60 * 60 * 1000;
+    
+    for (let i = 0; i < activeRowCount; i++) {
+      const nameIdx = i % namesLen;
+      const nameNum = Math.floor(i / namesLen) + 1;
+      
+      // Use faster date calculation
+      const randomOffset = Math.floor(Math.random() * yearInMs);
+      const date = new Date(baseDate - randomOffset);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      
+      data[i] = {
         id: i + 1,
-        name: `${names[i % names.length]} ${Math.floor(i / names.length) + 1}`,
+        name: `${names[nameIdx]} ${nameNum}`,
         value: Math.floor(Math.random() * 100000),
-        status: statuses[i % statuses.length],
-        category: categories[i % categories.length],
-        timestamp: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000),
+        status: statuses[i % statusesLen],
+        category: categories[i % categoriesLen],
+        timestamp: `${year}-${month}-${day}`,
         description: `Sample description for row ${i + 1} with some additional text`,
-      });
+      };
     }
     
     const endTime = performance.now();
     // Track render time in a ref to avoid triggering re-renders
-    setTimeout(() => setRenderTime(endTime - startTime), 0);
+    setTimeout(() => {
+      setRenderTime(endTime - startTime);
+      setIsGenerating(false);
+    }, 0);
     
     return data;
-  }, [rowCount]);
+  }, [activeRowCount]);
   /* eslint-enable react-hooks/purity */
 
+  // Handle row count changes with proper loading state
   useEffect(() => {
+    if (rowCount === activeRowCount) return;
+    
+    // Show loading immediately
     setIsGenerating(true);
-    const timer = setTimeout(() => setIsGenerating(false), 0);
+    
+    // Use setTimeout to ensure loading UI renders before heavy computation
+    const timer = setTimeout(() => {
+      setActiveRowCount(rowCount);
+    }, 50);
+    
     return () => clearTimeout(timer);
-  }, [rowCount]);
+  }, [rowCount, activeRowCount]);
 
   const handleScroll = () => {
     const fps = 60;
@@ -250,12 +284,35 @@ export const BenchmarkDemo = () => {
         {isGenerating && (
           <div style={{ 
             marginTop: '16px', 
-            padding: '12px', 
+            padding: '16px 20px', 
             backgroundColor: '#fef3c7', 
-            borderRadius: '6px',
-            color: '#92400e'
+            border: '2px solid #fbbf24',
+            borderRadius: '8px',
+            color: '#78350f',
+            fontSize: '16px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            boxShadow: '0 4px 6px rgba(251, 191, 36, 0.2)'
           }}>
-            ⏳ Generating {rowCount.toLocaleString()} rows...
+            <div style={{
+              width: '24px',
+              height: '24px',
+              border: '3px solid #78350f',
+              borderTopColor: 'transparent',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }} />
+            <div>
+              <div>⚡ Generating {rowCount.toLocaleString()} rows...</div>
+              <div style={{ fontSize: '13px', fontWeight: 400, color: '#92400e', marginTop: '4px' }}>
+                Please wait, browser may appear unresponsive for large datasets
+              </div>
+            </div>
+            <style>
+              {`@keyframes spin { to { transform: rotate(360deg); } }`}
+            </style>
           </div>
         )}
       </div>
@@ -291,7 +348,14 @@ export const BenchmarkDemo = () => {
         <DataGrid
           columns={columns}
           rows={data}
-          pageSize={50}
+          pageSize={100}
+          theme="quartz"
+          virtualScrollConfig={{
+            enabled: true,
+            rowHeight: 40,
+            containerHeight: 600,
+            enableColumnVirtualization: true,
+          }}
         />
       </div>
 
