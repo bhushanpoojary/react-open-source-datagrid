@@ -35,11 +35,6 @@ button {
   margin: 0;
 }
 
-/* Professional Tailwind styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Professional color palette inspired by AG-Grid */
 :root {
   --color-primary: #0066cc;
