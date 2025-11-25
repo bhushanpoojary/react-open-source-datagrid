@@ -1,7 +1,7 @@
 describe('Market Data Mode', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.get('aside').contains('button', 'Market Data').click();
+    cy.visit('/demo/market-data');
+    cy.contains('Live Market Data', { timeout: 10000 }).should('exist');
   });
 
   it('should render market data demo', () => {

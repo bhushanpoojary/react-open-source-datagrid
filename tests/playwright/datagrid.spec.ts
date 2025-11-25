@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('DataGrid Core Features', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: /Standard Demo/i }).click();
+    await page.goto('/demo/standard');
+    await page.locator('[data-testid="data-grid"]').waitFor({ timeout: 10000 });
   });
 
   test('should render grid with data', async ({ page }) => {

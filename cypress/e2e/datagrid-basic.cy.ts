@@ -1,7 +1,7 @@
 describe('DataGrid Basic Functionality', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.get('aside').contains('button', 'Standard Demo').click();
+    cy.visit('/demo/standard');
+    cy.get('[data-testid="data-grid"]', { timeout: 10000 }).should('exist');
   });
 
   it('should render the grid with data', () => {

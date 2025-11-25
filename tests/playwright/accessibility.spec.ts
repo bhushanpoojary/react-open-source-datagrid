@@ -2,9 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Accessibility', () => {
   test('should have proper ARIA roles', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: /Standard Demo/i }).click();
-    
+    await page.goto('/demo/standard');
+
     // Check for grid role
     const grid = page.locator('[role="grid"]');
     await expect(grid).toBeVisible();
@@ -19,8 +18,7 @@ test.describe('Accessibility', () => {
   });
 
   test('should be keyboard navigable', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: /Standard Demo/i }).click();
+    await page.goto('/demo/standard');
     
     // Focus on grid
     const grid = page.locator('[data-testid="data-grid"]');

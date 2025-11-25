@@ -1,7 +1,7 @@
 describe('Tree Data', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.get('aside').contains('button', 'Tree Data').click();
+    cy.visit('/demo/tree-data');
+    cy.get('[data-testid="data-grid"]', { timeout: 10000 }).should('exist');
   });
 
   it('should render tree data demo', () => {

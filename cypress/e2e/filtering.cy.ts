@@ -1,7 +1,7 @@
 describe('Column Filtering', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.get('aside').contains('button', 'Column Filters').click();
+    cy.visit('/demo/column-filters');
+    cy.get('[data-testid="data-grid"]', { timeout: 10000 }).should('exist');
   });
 
   it('should render column filters demo', () => {

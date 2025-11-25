@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Virtual Scrolling Performance', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: /Virtual Scrolling/i }).click();
+    await page.goto('/demo/virtual-scrolling');
+    await page.locator('[data-testid="data-grid"]').waitFor({ timeout: 10000 });
   });
 
   test('should virtualize rows efficiently', async ({ page }) => {

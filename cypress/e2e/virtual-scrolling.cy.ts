@@ -1,7 +1,7 @@
 describe('Virtual Scrolling', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.get('aside').contains('button', 'Virtual Scrolling').click();
+    cy.visit('/demo/virtual-scrolling');
+    cy.get('[data-testid="data-grid"]', { timeout: 10000 }).should('exist');
   });
 
   it('should render virtual scrolling demo', () => {
