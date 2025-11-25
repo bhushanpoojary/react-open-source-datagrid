@@ -1,9 +1,9 @@
 /**
  * DataGrid Density Mode System
- * Provides Compact, Normal, and Comfortable display modes with CSS variables
+ * Provides Ultra Compact, Compact, Normal, and Comfortable display modes with CSS variables
  */
 
-export type DensityMode = 'compact' | 'normal' | 'comfortable';
+export type DensityMode = 'ultraCompact' | 'compact' | 'normal' | 'comfortable';
 
 export interface DensityConfig {
   mode: DensityMode;
@@ -19,6 +19,14 @@ export interface DensityConfig {
  * Defines row height, padding, and font sizes for each density mode
  */
 export const densityConfigs: Record<DensityMode, DensityConfig> = {
+  ultraCompact: {
+    mode: 'ultraCompact',
+    rowHeight: '24px',
+    cellPadding: '2px 6px',
+    headerPadding: '4px 6px',
+    fontSize: '12px',
+    fontSizeSmall: '10px',
+  },
   compact: {
     mode: 'compact',
     rowHeight: '32px',
@@ -71,7 +79,7 @@ export function generateDensityCSS(mode: DensityMode): Record<string, string> {
  * Get all density mode names
  */
 export function getDensityModes(): DensityMode[] {
-  return ['compact', 'normal', 'comfortable'];
+  return ['ultraCompact', 'compact', 'normal', 'comfortable'];
 }
 
 /**
@@ -79,6 +87,7 @@ export function getDensityModes(): DensityMode[] {
  */
 export function getDensityLabel(mode: DensityMode): string {
   const labels: Record<DensityMode, string> = {
+    ultraCompact: 'Ultra Compact',
     compact: 'Compact',
     normal: 'Normal',
     comfortable: 'Comfortable',
@@ -103,7 +112,7 @@ export function saveDensityMode(mode: DensityMode, key = 'grid-density-mode'): v
 export function loadDensityMode(key = 'grid-density-mode'): DensityMode | null {
   try {
     const saved = localStorage.getItem(key);
-    if (saved && (saved === 'compact' || saved === 'normal' || saved === 'comfortable')) {
+    if (saved && (saved === 'ultraCompact' || saved === 'compact' || saved === 'normal' || saved === 'comfortable')) {
       return saved as DensityMode;
     }
   } catch (error) {

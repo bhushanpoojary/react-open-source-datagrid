@@ -158,7 +158,7 @@ function MyComponent() {
       columns={columns}
       rows={data}
       showDensityToggle={true}  // Show density toggle in toolbar
-      densityMode="normal"      // Initial density: compact | normal | comfortable
+      densityMode="normal"      // Initial density: ultraCompact | compact | normal | comfortable
     />
   );
 }`;
@@ -191,6 +191,13 @@ function MyToolbar() {
 
   const cssVariablesCode = `/* CSS Variables set by density mode */
 
+/* Ultra Compact Mode */
+--grid-row-height: 24px;
+--grid-cell-padding: 2px 6px;
+--grid-header-padding: 4px 6px;
+--grid-font-size: 12px;
+--grid-font-size-sm: 10px;
+
 /* Compact Mode */
 --grid-row-height: 32px;
 --grid-cell-padding: 4px 8px;
@@ -213,6 +220,7 @@ function MyToolbar() {
 --grid-font-size-sm: 13px;`;
 
   const densityConfig = {
+    ultraCompact: { rowHeight: '24px', cellPadding: '2px 6px', fontSize: '12px' },
     compact: { rowHeight: '32px', cellPadding: '4px 8px', fontSize: '13px' },
     normal: { rowHeight: '44px', cellPadding: '10px 12px', fontSize: '14px' },
     comfortable: { rowHeight: '56px', cellPadding: '14px 16px', fontSize: '15px' },
@@ -234,7 +242,7 @@ function MyToolbar() {
             Density Mode System
           </h1>
           <p style={{ fontSize: '18px', color: '#6b7280', marginBottom: '24px' }}>
-            Control data density with Compact, Normal, and Comfortable modes
+            Control data density with Ultra Compact, Compact, Normal, and Comfortable modes
           </p>
 
           {/* Feature Highlights */}
@@ -252,10 +260,10 @@ function MyToolbar() {
             }}>
               <div style={{ fontSize: '24px', marginBottom: '8px' }}>🎯</div>
               <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '4px', color: '#1e40af' }}>
-                Three Density Modes
+                Four Density Modes
               </h3>
               <p style={{ fontSize: '14px', color: '#1e3a8a' }}>
-                Compact, Normal, and Comfortable spacing options
+                Ultra Compact, Compact, Normal, and Comfortable spacing
               </p>
             </div>
 
@@ -464,11 +472,21 @@ function MyToolbar() {
           <div style={{ display: 'grid', gap: '16px' }}>
             <div style={{ padding: '16px', backgroundColor: '#f9fafb', borderRadius: '6px' }}>
               <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#111827' }}>
+                🔹 Ultra Compact Mode
+              </h3>
+              <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6' }}>
+                Maximum data density for professional traders, data analysts, and power users who need to see the most information possible. 
+                Ultra-tight spacing shows 50%+ more rows than normal mode. Best for large monitors and experienced users.
+              </p>
+            </div>
+
+            <div style={{ padding: '16px', backgroundColor: '#f9fafb', borderRadius: '6px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#111827' }}>
                 🔹 Compact Mode
               </h3>
               <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6' }}>
-                Ideal for power users, financial trading dashboards, and scenarios where maximum data density is needed. 
-                Displays more rows on screen with minimal spacing.
+                High data density with improved readability compared to ultra compact. 
+                Ideal for power users and financial dashboards where efficiency matters.
               </p>
             </div>
 

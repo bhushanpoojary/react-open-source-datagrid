@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Density Mode system provides three display modes (Compact, Normal, Comfortable) to control the spacing and sizing of grid elements. Users can toggle between modes using a segmented control, and their preference is automatically saved to localStorage.
+The Density Mode system provides four display modes (Ultra Compact, Compact, Normal, Comfortable) to control the spacing and sizing of grid elements. Users can toggle between modes using a segmented control, and their preference is automatically saved to localStorage.
 
 ## Features
 
@@ -94,7 +94,7 @@ function MyToolbar() {
 ### DensityMode Type
 
 ```typescript
-type DensityMode = 'compact' | 'normal' | 'comfortable';
+type DensityMode = 'ultraCompact' | 'compact' | 'normal' | 'comfortable';
 ```
 
 ### DensityConfig Interface

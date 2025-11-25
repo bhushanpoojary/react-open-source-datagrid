@@ -1,11 +1,12 @@
 # Density Mode Quick Reference
 
-## 🎯 Three Modes
+## 🎯 Four Modes
 
 ```
-Compact      →  32px rows, 4px/8px padding, 13px font
-Normal       →  44px rows, 10px/12px padding, 14px font
-Comfortable  →  56px rows, 14px/16px padding, 15px font
+Ultra Compact  →  24px rows, 2px/6px padding, 12px font
+Compact        →  32px rows, 4px/8px padding, 13px font
+Normal         →  44px rows, 10px/12px padding, 14px font
+Comfortable    →  56px rows, 14px/16px padding, 15px font
 ```
 
 ## ⚡ Quick Setup

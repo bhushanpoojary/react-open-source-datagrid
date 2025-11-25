@@ -66,7 +66,7 @@ import { DensityToggle } from './DataGrid';
 - **`useDensityMode`** - Manage density state and persistence
 
 ### Types
-- **`DensityMode`** - `'compact' | 'normal' | 'comfortable'`
+- **`DensityMode`** - `'ultraCompact' | 'compact' | 'normal' | 'comfortable'`
 - **`DensityConfig`** - Configuration object interface
 
 ### Utilities

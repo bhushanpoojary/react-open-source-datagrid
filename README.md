@@ -23,7 +23,7 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Infinite Scrolling with Server-Side DataSource** (100M+ rows with server-side filtering, sorting, and caching)
 - ✅ **Accessibility (A11y)** (WCAG 2.1 AA compliant with full keyboard navigation, ARIA support, and screen reader compatibility)
 - ✅ **Context Menu** (right-click menu with copy, export, pin/unpin, auto-size, hide, filter by value, and custom actions)
-- ✅ **Density Modes** (Compact/Normal/Comfortable spacing with segmented control and persistent preferences) 🆕
+- ✅ **Density Modes** (Ultra Compact/Compact/Normal/Comfortable spacing with segmented control and persistent preferences) 🆕
 
 ## Quick Start
 

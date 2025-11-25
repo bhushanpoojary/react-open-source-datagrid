@@ -29,7 +29,7 @@ export const DensityToggle: React.FC<DensityToggleProps> = ({
   className = '',
   disabled = false,
 }) => {
-  const modes: DensityMode[] = ['compact', 'normal', 'comfortable'];
+  const modes: DensityMode[] = ['ultraCompact', 'compact', 'normal', 'comfortable'];
 
   return (
     <div 
