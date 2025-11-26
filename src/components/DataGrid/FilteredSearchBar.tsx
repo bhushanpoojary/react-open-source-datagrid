@@ -71,10 +71,6 @@ export const FilteredSearchBar: React.FC<FilteredSearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filter options based on input
-  useEffect(() => {
-    setHighlightedIndex(0);
-  }, [inputValue, selectedFilterField, filters]);
 
   // Add token
   const addToken = (field: string, value: string | string[]) => {
