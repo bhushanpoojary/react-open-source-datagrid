@@ -49,7 +49,23 @@ export const FilteredSearchBar: React.FC<FilteredSearchBarProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedFilterField, setSelectedFilterField] = useState<string | null>(null);
-  const [filteredOptions, setFilteredOptions] = useState<FilterOption[]>(filters);
+  const filteredOptions = React.useMemo(() => {
+    if (!selectedFilterField) {
+      return filters.filter(f => 
+        f.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+        f.field.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    } else {
+      const selectedFilter = filters.find(f => f.field === selectedFilterField);
+      if (selectedFilter?.type === 'select' || selectedFilter?.type === 'multiselect') {
+        const filtered = selectedFilter.options?.filter(opt =>
+          opt.toLowerCase().includes(inputValue.toLowerCase())
+        ) || [];
+        return [{ ...selectedFilter, options: filtered }];
+      }
+    }
+    return filters;
+  }, [inputValue, selectedFilterField, filters]);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,21 +73,6 @@ export const FilteredSearchBar: React.FC<FilteredSearchBarProps> = ({
 
   // Filter options based on input
   useEffect(() => {
-    if (!selectedFilterField) {
-      const filtered = filters.filter(f => 
-        f.label.toLowerCase().includes(inputValue.toLowerCase()) ||
-        f.field.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setFilteredOptions(filtered);
-    } else {
-      const selectedFilter = filters.find(f => f.field === selectedFilterField);
-      if (selectedFilter?.type === 'select' || selectedFilter?.type === 'multiselect') {
-        const filtered = selectedFilter.options?.filter(opt =>
-          opt.toLowerCase().includes(inputValue.toLowerCase())
-        ) || [];
-        setFilteredOptions([{ ...selectedFilter, options: filtered }]);
-      }
-    }
     setHighlightedIndex(0);
   }, [inputValue, selectedFilterField, filters]);
 
