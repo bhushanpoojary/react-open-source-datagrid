@@ -6,6 +6,7 @@ import { VirtualScrollDemo } from './components/VirtualScrollDemo'
 import { CellRenderersDemo } from './components/CellRenderersDemo'
 import { ColumnFiltersDemo } from './components/ColumnFiltersDemo'
 import { FacetedSearchDemo } from './components/FacetedSearchDemo'
+import { FilteredSearchDemo } from './components/FilteredSearchDemo'
 import { LayoutPersistenceDemo } from './components/LayoutPersistenceDemo'
 import { InfiniteScrollDemo } from './components/InfiniteScrollDemo'
 import { ThemesDemo } from './components/ThemesDemo'
@@ -23,7 +24,7 @@ import { CompleteApiReferencePage } from './components/CompleteApiReferencePage'
 import { GridApiDemoPage } from './components/GridApiDemoPage';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo';
 
 interface MenuItem {
   id: DemoType;
@@ -47,6 +48,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/demo/cell-renderers': 'renderers',
   '/demo/column-filters': 'filters',
   '/demo/faceted-search': 'faceted',
+  '/demo/filtered-search': 'filtered-search',
   '/demo/layout-persistence': 'persistence',
   '/demo/infinite-scroll': 'infinite',
   '/demo/themes': 'themes',
@@ -159,6 +161,13 @@ function App() {
           icon: '🎯',
           description: 'Filter panel with value counts',
           path: '/demo/faceted-search',
+        },
+        {
+          id: 'filtered-search',
+          label: 'Filtered Search Bar',
+          icon: '🔍',
+          description: 'GitLab-style token-based search',
+          path: '/demo/filtered-search',
         },
         {
           id: 'contextmenu',
@@ -556,6 +565,7 @@ function App() {
           <Route path="/demo/cell-renderers" element={<CellRenderersDemo />} />
           <Route path="/demo/column-filters" element={<ColumnFiltersDemo />} />
           <Route path="/demo/faceted-search" element={<FacetedSearchDemo />} />
+          <Route path="/demo/filtered-search" element={<FilteredSearchDemo />} />
           <Route path="/demo/context-menu" element={<ContextMenuDemo />} />
           <Route path="/demo/tooltip" element={<TooltipDemo />} />
           <Route path="/demo/layout-persistence" element={<LayoutPersistenceDemo />} />

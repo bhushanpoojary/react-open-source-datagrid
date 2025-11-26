@@ -25,6 +25,8 @@ export { ColumnFilters } from './ColumnFilters';
 export { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 export { FacetedSearch } from './FacetedSearch';
 export type { FacetConfig, FacetedSearchProps } from './FacetedSearch';
+export { FilteredSearchBar } from './FilteredSearchBar';
+export type { SearchToken, FilterOption, FilteredSearchBarProps } from './FilteredSearchBar';
 export { LayoutPresetsManager } from './LayoutPresetsManager';
 export { InfiniteScrollDataGrid, ThemedInfiniteScrollDataGrid } from './InfiniteScrollDataGrid'; // ThemedInfiniteScrollDataGrid is now an alias for backward compatibility
 export { ServerSideDataSource, createMockServerDataSource } from './ServerSideDataSource';
