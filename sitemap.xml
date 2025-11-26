@@ -68,7 +68,15 @@
   <!-- Faceted Search -->
   <url>
     <loc>https://reactdatagrid.dev/demo/faceted-search</loc>
-    <lastmod>2025-11-25</lastmod>
+    <lastmod>2025-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Filtered Search Bar -->
+  <url>
+    <loc>https://reactdatagrid.dev/demo/filtered-search</loc>
+    <lastmod>2025-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
