@@ -10,7 +10,9 @@
  * - Keyboard navigation
  */
 
-import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import type { KeyboardEvent } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface SearchToken {
   id: string;
@@ -79,7 +81,7 @@ export const FilteredSearchBar: React.FC<FilteredSearchBarProps> = ({
     if (!filter || tokens.length >= maxTokens) return;
 
     const newToken: SearchToken = {
-      id: `${field}-${Date.now()}`,
+      id: `${field}-${uuidv4()}`,
       field,
       label: filter.label,
       value,
