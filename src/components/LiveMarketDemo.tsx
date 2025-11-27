@@ -293,7 +293,7 @@ export const LiveMarketDemo: React.FC = () => {
       <div className="demo-header">
         <h1>Live Market Data Grid</h1>
         <p className="demo-description">
-          High-performance streaming market data with 400+ updates/sec
+          High-performance streaming market data with 1000+ updates/sec
         </p>
       </div>
 
