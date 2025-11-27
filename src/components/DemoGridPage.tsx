@@ -290,9 +290,7 @@ export const DemoGridPage: React.FC = () => {
           <CodeBlock
             title="Installation & Basic Setup"
             language="tsx"
-            code={`// Install the package
-npm install react-open-source-grid
-
+            code={`
 // Import the DataGrid
 import { DataGrid} from 'react-open-source-grid';
 import type { Column, Row } from 'react-open-source-grid';
