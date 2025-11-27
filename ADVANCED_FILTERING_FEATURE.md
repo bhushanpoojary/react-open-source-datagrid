@@ -66,7 +66,7 @@ The advanced filter is automatically available on all filterable columns. Users 
 ### Programmatic Usage
 
 ```typescript
-import { DataGrid, AdvancedFilterValue } from './components/DataGrid';
+import { DataGrid, AdvancedFilterValue } from 'react-open-source-grid';
 
 // Define advanced filter
 const advancedFilter: AdvancedFilterValue = {

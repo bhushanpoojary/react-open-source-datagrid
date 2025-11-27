@@ -106,7 +106,7 @@ I have successfully implemented **AG Grid-style infinite scrolling with server-s
 ### Quick Start
 
 ```typescript
-import { InfiniteScrollDataGrid, createMockServerDataSource } from './components/DataGrid';
+import { InfiniteScrollDataGrid, createMockServerDataSource } from 'react-open-source-grid';
 
 // Create mock data source (100M rows)
 const dataSource = createMockServerDataSource(100_000_000, 300);
@@ -123,7 +123,7 @@ const dataSource = createMockServerDataSource(100_000_000, 300);
 ### With Real Server
 
 ```typescript
-import { ServerSideDataSource } from './components/DataGrid';
+import { ServerSideDataSource } from 'react-open-source-grid';
 
 const dataSource = new ServerSideDataSource({
   blockSize: 100,

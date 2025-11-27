@@ -179,7 +179,7 @@ This directory contains comprehensive documentation for the Infinite Scrolling f
 
 ```typescript
 // Create data source
-import { ServerSideDataSource } from './components/DataGrid';
+import { ServerSideDataSource } from 'react-open-source-grid';
 
 const ds = new ServerSideDataSource({
   blockSize: 100,
@@ -201,7 +201,7 @@ const ds = new ServerSideDataSource({
 />
 
 // Mock for testing
-import { createMockServerDataSource } from './components/DataGrid';
+import { createMockServerDataSource } from 'react-open-source-grid';
 const mockDS = createMockServerDataSource(100_000_000, 300);
 ```
 

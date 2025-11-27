@@ -3,7 +3,7 @@
 ## Basic Setup
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 const data = [
   { id: 1, name: 'Parent', parentId: null },
@@ -103,21 +103,21 @@ const categories = [
 
 ### Build Tree from Flat Data
 ```tsx
-import { buildTreeFromFlat } from './components/DataGrid';
+import { buildTreeFromFlat } from 'react-open-source-grid';
 
 const treeNodes = buildTreeFromFlat(flatData, treeConfig);
 ```
 
 ### Flatten Tree
 ```tsx
-import { flattenTree } from './components/DataGrid';
+import { flattenTree } from 'react-open-source-grid';
 
 const visibleNodes = flattenTree(treeNodes, expandedNodes, treeConfig);
 ```
 
 ### Expand/Collapse All
 ```tsx
-import { expandAllNodes, collapseAllNodes } from './components/DataGrid';
+import { expandAllNodes, collapseAllNodes } from 'react-open-source-grid';
 
 // Expand all
 const allExpanded = expandAllNodes(treeNodes, treeConfig);
@@ -130,7 +130,7 @@ dispatch({ type: 'SET_EXPANDED_NODES', payload: allCollapsed });
 
 ### Toggle Single Node
 ```tsx
-import { toggleNodeExpansion } from './components/DataGrid';
+import { toggleNodeExpansion } from 'react-open-source-grid';
 
 const newState = toggleNodeExpansion(nodeId, currentExpandedNodes);
 dispatch({ type: 'SET_EXPANDED_NODES', payload: newState });
@@ -138,7 +138,7 @@ dispatch({ type: 'SET_EXPANDED_NODES', payload: newState });
 
 ### Get Descendants
 ```tsx
-import { getDescendantIds } from './components/DataGrid';
+import { getDescendantIds } from 'react-open-source-grid';
 
 const descendants = getDescendantIds(node, treeConfig);
 // Returns: [childId1, childId2, grandchildId1, ...]
@@ -146,7 +146,7 @@ const descendants = getDescendantIds(node, treeConfig);
 
 ### Get Node Path
 ```tsx
-import { getNodePath } from './components/DataGrid';
+import { getNodePath } from 'react-open-source-grid';
 
 const path = getNodePath(nodeId, treeNodes, treeConfig);
 // Returns: [rootId, parentId, nodeId] or null
@@ -154,7 +154,7 @@ const path = getNodePath(nodeId, treeNodes, treeConfig);
 
 ### Filter Tree
 ```tsx
-import { filterTree } from './components/DataGrid';
+import { filterTree } from 'react-open-source-grid';
 
 const filtered = filterTree(
   treeNodes,
@@ -165,7 +165,7 @@ const filtered = filterTree(
 
 ### Check if Tree Node
 ```tsx
-import { isTreeNode } from './components/DataGrid';
+import { isTreeNode } from 'react-open-source-grid';
 
 if (isTreeNode(row)) {
   console.log('Level:', row.level);

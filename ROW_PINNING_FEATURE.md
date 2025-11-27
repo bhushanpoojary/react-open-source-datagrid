@@ -255,8 +255,8 @@ const buildCellMenuItems = (row: Row, column: Column) => {
 ### Basic Setup
 
 ```tsx
-import { DataGrid} from './components/DataGrid';
-import type { RowPinConfig } from './components/DataGrid';
+import { DataGrid} from 'react-open-source-grid';
+import type { RowPinConfig } from 'react-open-source-grid';
 
 const App = () => {
   const rowPinConfig: RowPinConfig = {

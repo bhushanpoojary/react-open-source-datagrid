@@ -3,8 +3,8 @@
 ## 🎯 Quick Start
 
 ```typescript
-import { DataGrid } from './components/DataGrid';
-import type { Column } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { Column } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { 

@@ -41,8 +41,8 @@ Open http://localhost:5173 to see the demo.
 ## Usage
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
-import type { Column, Row } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { Column, Row } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -170,7 +170,7 @@ export default defineConfig([
 For large datasets (50,000+ rows, 200+ columns), enable virtual scrolling:
 
 ```tsx
-import { DataGrid, VirtualScrollConfig } from './components/DataGrid';
+import { DataGrid, VirtualScrollConfig } from 'react-open-source-grid';
 
 const virtualConfig: VirtualScrollConfig = {
   enabled: true,
@@ -202,7 +202,7 @@ const virtualConfig: VirtualScrollConfig = {
 For massive datasets (100M+ rows), use server-side infinite scrolling:
 
 ```tsx
-import { InfiniteScrollDataGrid, ServerSideDataSource } from './components/DataGrid';
+import { InfiniteScrollDataGrid, ServerSideDataSource } from 'react-open-source-grid';
 
 // Create data source
 const dataSource = new ServerSideDataSource({
@@ -269,7 +269,7 @@ Response:
 Choose from **10 beautiful pre-built themes** to match your application's design:
 
 ```tsx
-import { DataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from 'react-open-source-grid';
 import type { ThemeName } from './components/DataGrid/themes';
 
 function App() {

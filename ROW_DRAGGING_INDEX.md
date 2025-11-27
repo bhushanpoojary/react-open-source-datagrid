@@ -29,7 +29,7 @@ Enable users to reorder rows via drag-and-drop within a DataGrid or across multi
 ## Quick Start
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
 
 function App() {

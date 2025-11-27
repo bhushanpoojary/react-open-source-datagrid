@@ -7,8 +7,8 @@ Row pinning allows you to keep important rows visible at the top or bottom of th
 ## Basic Usage
 
 ```tsx
-import { DataGrid} from './components/DataGrid';
-import type { RowPinConfig } from './components/DataGrid';
+import { DataGrid} from 'react-open-source-grid';
+import type { RowPinConfig } from 'react-open-source-grid';
 
 const rowPinConfig: RowPinConfig = {
   enabled: true,
@@ -129,8 +129,8 @@ dispatch({ type: 'PIN_ROW_TOP', payload: vipEmployeeId });
 
 ```tsx
 import React, { useMemo, useState } from 'react';
-import { DataGrid} from './components/DataGrid';
-import type { Column, Row, RowPinConfig } from './components/DataGrid';
+import { DataGrid} from 'react-open-source-grid';
+import type { Column, Row, RowPinConfig } from 'react-open-source-grid';
 
 export const RowPinningExample: React.FC = () => {
   const [pinnedTop, setPinnedTop] = useState<(string | number)[]>([]);

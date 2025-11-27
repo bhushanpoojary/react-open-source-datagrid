@@ -213,7 +213,7 @@ The **Layout Presets / Persistence** feature has been successfully implemented f
 
 3. **Programmatic Access**
    ```tsx
-   import { LayoutPersistenceManager } from './components/DataGrid';
+   import { LayoutPersistenceManager } from 'react-open-source-grid';
    
    const manager = new LayoutPersistenceManager(config);
    await manager.savePreset(preset);

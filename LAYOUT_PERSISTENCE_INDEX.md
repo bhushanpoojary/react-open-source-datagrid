@@ -126,7 +126,7 @@ src/components/
 ### 1. Basic Usage
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}
@@ -225,7 +225,7 @@ await manager.loadAutoSave();          // Load auto-saved
 ### Helper Functions
 
 ```typescript
-import { createPreset, generatePresetId } from './components/DataGrid';
+import { createPreset, generatePresetId } from 'react-open-source-grid';
 
 const id = generatePresetId();
 const preset = createPreset('My Layout', layout, 'Description');

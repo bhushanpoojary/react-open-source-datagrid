@@ -48,7 +48,7 @@ This implementation provides AG Grid-style infinite scrolling capabilities for h
 ### Basic Usage
 
 ```typescript
-import { InfiniteScrollDataGrid, ServerSideDataSource } from './components/DataGrid';
+import { InfiniteScrollDataGrid, ServerSideDataSource } from 'react-open-source-grid';
 
 // Create a data source
 const dataSource = new ServerSideDataSource({
@@ -129,7 +129,7 @@ Your server endpoint should accept requests in this format:
 For testing and development, use the mock data source:
 
 ```typescript
-import { createMockServerDataSource } from './components/DataGrid';
+import { createMockServerDataSource } from 'react-open-source-grid';
 
 const mockDataSource = createMockServerDataSource(
   100_000_000, // 100 million rows

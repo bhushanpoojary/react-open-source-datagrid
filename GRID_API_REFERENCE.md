@@ -8,7 +8,7 @@ The DataGrid component now exposes a comprehensive **Grid API** inspired by AG G
 
 ```tsx
 import React, { useRef } from 'react';
-import { DataGrid, GridApi } from './components/DataGrid';
+import { DataGrid, GridApi } from 'react-open-source-grid';
 
 function MyComponent() {
   const gridRef = useRef<GridApi>(null);
@@ -664,7 +664,7 @@ interface CsvExportParams {
 
 ```tsx
 import React, { useRef, useEffect } from 'react';
-import { DataGrid, GridApi } from './components/DataGrid';
+import { DataGrid, GridApi } from 'react-open-source-grid';
 
 function App() {
   const gridRef = useRef<GridApi>(null);

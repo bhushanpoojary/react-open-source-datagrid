@@ -82,7 +82,7 @@
 │  QUICK START                                                     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  import { DataGrid } from './components/DataGrid';               │
+│  import { DataGrid } from 'react-open-source-grid';               │
 │                                                                  │
 │  <DataGrid                                                       │
 │    columns={columns}                                             │

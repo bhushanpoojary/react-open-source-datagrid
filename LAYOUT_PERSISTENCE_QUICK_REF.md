@@ -3,7 +3,7 @@
 ## 🚀 Quick Start
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}
@@ -81,7 +81,7 @@ persistenceConfig={{
 ## 💻 Programmatic API
 
 ```tsx
-import { LayoutPersistenceManager, createPreset } from './components/DataGrid';
+import { LayoutPersistenceManager, createPreset } from 'react-open-source-grid';
 
 // Initialize
 const manager = new LayoutPersistenceManager(config);
@@ -128,7 +128,7 @@ DELETE /api/layouts/:key/:id     # Delete preset
 ## 🔨 Custom Storage Adapter
 
 ```typescript
-import { StorageAdapter, LayoutPreset } from './components/DataGrid';
+import { StorageAdapter, LayoutPreset } from 'react-open-source-grid';
 
 class CustomAdapter implements StorageAdapter {
   async save(key: string, preset: LayoutPreset): Promise<void> {

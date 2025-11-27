@@ -26,8 +26,8 @@ npm run dev
 ### Use in Your Project
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
-import type { Column, Row } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { Column, Row } from 'react-open-source-grid';
 
 // Define columns
 const columns: Column[] = [

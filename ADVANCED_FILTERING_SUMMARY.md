@@ -137,7 +137,7 @@ All filter types now support:
 ### For Developers
 ```typescript
 // Import types
-import { AdvancedFilterValue, FilterCondition } from './components/DataGrid';
+import { AdvancedFilterValue, FilterCondition } from 'react-open-source-grid';
 
 // Create advanced filter
 const filter: AdvancedFilterValue = {

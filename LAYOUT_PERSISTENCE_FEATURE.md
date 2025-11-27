@@ -34,7 +34,7 @@ You can also implement custom storage adapters for other persistence mechanisms.
 ### Enable Persistence with LocalStorage
 
 ```tsx
-import { DataGrid, PersistenceConfig } from './components/DataGrid';
+import { DataGrid, PersistenceConfig } from 'react-open-source-grid';
 
 const persistenceConfig: PersistenceConfig = {
   enabled: true,
@@ -193,7 +193,7 @@ const persistenceConfig: PersistenceConfig = {
 Implement your own storage mechanism by creating a custom adapter:
 
 ```typescript
-import { StorageAdapter, LayoutPreset } from './components/DataGrid';
+import { StorageAdapter, LayoutPreset } from 'react-open-source-grid';
 
 class DatabaseAdapter implements StorageAdapter {
   async save(key: string, preset: LayoutPreset): Promise<void> {
@@ -270,7 +270,7 @@ const persistenceConfig: PersistenceConfig = {
 Get notified when the layout changes:
 
 ```tsx
-import { LayoutPreset } from './components/DataGrid';
+import { LayoutPreset } from 'react-open-source-grid';
 
 const handleLayoutChange = (layout: LayoutPreset['layout']) => {
   console.log('Layout changed:', layout);
@@ -293,7 +293,7 @@ const handleLayoutChange = (layout: LayoutPreset['layout']) => {
 import { 
   LayoutPersistenceManager, 
   createPreset 
-} from './components/DataGrid';
+} from 'react-open-source-grid';
 
 // Initialize manager
 const manager = new LayoutPersistenceManager({
@@ -335,7 +335,7 @@ const autoSaved = await manager.loadAutoSave();
 The built-in UI for managing presets:
 
 ```tsx
-import { LayoutPresetsManager } from './components/DataGrid';
+import { LayoutPresetsManager } from 'react-open-source-grid';
 
 <LayoutPresetsManager
   manager={persistenceManager}
@@ -422,7 +422,7 @@ Always give users a way to reset to defaults:
 
 ```tsx
 import React, { useState } from 'react';
-import { DataGrid, PersistenceConfig } from './components/DataGrid';
+import { DataGrid, PersistenceConfig } from 'react-open-source-grid';
 
 export const MyGrid = () => {
   const [layoutVersion, setLayoutVersion] = useState(0);

@@ -221,7 +221,7 @@ const clearFilter = (field: string) => {
 ```typescript
 import { useState, useMemo } from 'react';
 import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { DataGrid} from './components/DataGrid';
+import { DataGrid} from 'react-open-source-grid';
 
 function ProductCatalog() {
   const [products] = useState(loadProducts());

@@ -147,7 +147,7 @@ Successfully implemented AG Grid-style infinite scrolling with server-side data 
 ### Basic Usage
 
 ```typescript
-import { InfiniteScrollDataGrid, ServerSideDataSource } from './components/DataGrid';
+import { InfiniteScrollDataGrid, ServerSideDataSource } from 'react-open-source-grid';
 
 const dataSource = new ServerSideDataSource({
   getRows: async (request) => {
@@ -169,7 +169,7 @@ const dataSource = new ServerSideDataSource({
 ### Mock Testing
 
 ```typescript
-import { createMockServerDataSource } from './components/DataGrid';
+import { createMockServerDataSource } from 'react-open-source-grid';
 
 const mockDS = createMockServerDataSource(100_000_000, 300);
 

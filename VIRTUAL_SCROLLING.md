@@ -46,8 +46,8 @@ The `VirtualScroller` component is a reusable, high-performance virtualization e
 ### Basic Example
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
-import type { VirtualScrollConfig } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { VirtualScrollConfig } from 'react-open-source-grid';
 
 const virtualScrollConfig: VirtualScrollConfig = {
   enabled: true,

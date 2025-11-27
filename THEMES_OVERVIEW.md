@@ -128,7 +128,7 @@ Perfect for: Modern development
 
 ### Switch Between Themes
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState('quartz');
@@ -145,7 +145,7 @@ function App() {
 
 ### With Theme Selector
 ```tsx
-import { DataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState('one-dark');

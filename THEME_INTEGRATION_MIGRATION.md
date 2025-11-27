@@ -17,7 +17,7 @@ We've simplified the theme system by **integrating theme support directly into t
 ### Before (Old Way)
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
 ### After (New Way - Recommended)
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 function App() {
   return (
@@ -63,7 +63,7 @@ function App() {
 ### Before
 
 ```tsx
-import { DataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from 'react-open-source-grid';
 import { getTheme, generateThemeCSS } from './components/DataGrid/themes';
 
 function App() {
@@ -82,7 +82,7 @@ function App() {
 ### After
 
 ```tsx
-import { DataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState('quartz');

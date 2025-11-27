@@ -5,7 +5,7 @@
 Enable virtual scrolling for large datasets:
 
 ```tsx
-import { DataGrid, VirtualScrollConfig } from './components/DataGrid';
+import { DataGrid, VirtualScrollConfig } from 'react-open-source-grid';
 
 const virtualConfig: VirtualScrollConfig = {
   enabled: true,
@@ -127,7 +127,7 @@ interface DataGridProps {
 
 ```tsx
 import React, { useMemo } from 'react';
-import { DataGrid, Column, Row, VirtualScrollConfig } from './components/DataGrid';
+import { DataGrid, Column, Row, VirtualScrollConfig } from 'react-open-source-grid';
 
 export const LargeDatasetDemo = () => {
   // Generate 50,000 rows

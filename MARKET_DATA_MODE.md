@@ -70,7 +70,7 @@ import {
   createMarketDataEngine,
   useMarketData,
   createMockFeed 
-} from './components/DataGrid';
+} from 'react-open-source-grid';
 
 function MarketDataPage() {
   // 1. Create engine

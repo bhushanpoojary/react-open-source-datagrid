@@ -53,7 +53,7 @@ This feature provides hierarchical data visualization with expand/collapse funct
 ### 30-Second Quickstart
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 const data = [
   { id: 1, name: 'CEO', parentId: null },

@@ -85,7 +85,7 @@ Condition 2: After → 2024-01-01     (recent)
 ## Programmatic Usage
 
 ```typescript
-import { AdvancedFilterValue } from './components/DataGrid';
+import { AdvancedFilterValue } from 'react-open-source-grid';
 
 const filter: AdvancedFilterValue = {
   operator: 'AND',  // or 'OR'

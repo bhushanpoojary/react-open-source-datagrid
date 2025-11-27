@@ -61,8 +61,8 @@ npm run dev
 ### Basic Example
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
-import type { Column, Row } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { Column, Row } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -209,7 +209,7 @@ Applied as useMemo chains: raw data → sorted → filtered → paginated for op
 For large datasets (50,000+ rows, 200+ columns), the DataGrid supports virtual scrolling:
 
 ```tsx
-import { DataGrid, VirtualScrollConfig } from './components/DataGrid';
+import { DataGrid, VirtualScrollConfig } from 'react-open-source-grid';
 
 const virtualConfig: VirtualScrollConfig = {
   enabled: true,

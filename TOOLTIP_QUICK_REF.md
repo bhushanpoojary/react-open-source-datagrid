@@ -15,7 +15,7 @@ Row-level and cell-level tooltips with smart placement, delays, and support for 
 ## Basic Usage
 
 ```tsx
-import { DataGrid, type TooltipConfig } from './components/DataGrid';
+import { DataGrid, type TooltipConfig } from 'react-open-source-grid';
 
 const tooltipConfig: TooltipConfig = {
   enabled: true,
@@ -280,7 +280,7 @@ import type {
   TooltipConfig, 
   TooltipContent, 
   TooltipPlacement 
-} from './components/DataGrid';
+} from 'react-open-source-grid';
 ```
 
 ## Related Features

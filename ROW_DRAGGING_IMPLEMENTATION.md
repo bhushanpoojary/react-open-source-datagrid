@@ -182,7 +182,7 @@ interface DragRowConfig {
 ## 🚀 Usage Example
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
 
 function MyApp() {

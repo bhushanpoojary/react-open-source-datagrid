@@ -3,7 +3,7 @@
 ## Basic Setup
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
 
 const [rows, setRows] = useState(myData);
@@ -217,7 +217,7 @@ const newRows = reorderRows(rows, sourceIndex, targetIndex);
 ## Complete Example
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
 
 function TaskList() {

@@ -3,7 +3,7 @@
 ## 🚀 Quick Start
 
 ```typescript
-import { InfiniteScrollDataGrid, createMockServerDataSource } from './components/DataGrid';
+import { InfiniteScrollDataGrid, createMockServerDataSource } from 'react-open-source-grid';
 
 // Create mock data source (100M rows)
 const dataSource = createMockServerDataSource(100_000_000, 300);

@@ -245,7 +245,7 @@ Filters respect column pinning:
 ## Example: Complete Filter Setup
 
 ```typescript
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { 

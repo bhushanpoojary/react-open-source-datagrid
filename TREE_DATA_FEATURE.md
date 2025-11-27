@@ -20,7 +20,7 @@ The Tree Data feature allows you to display hierarchical data structures in the 
 ### Basic Tree Data Example
 
 ```tsx
-import { DataGrid, TreeConfig } from './components/DataGrid';
+import { DataGrid, TreeConfig } from 'react-open-source-grid';
 
 // Your flat data with parent-child relationships
 const employees = [
@@ -244,7 +244,7 @@ The DataGrid exports several utility functions for working with tree data:
 Converts flat data into a hierarchical tree structure.
 
 ```typescript
-import { buildTreeFromFlat } from './components/DataGrid';
+import { buildTreeFromFlat } from 'react-open-source-grid';
 
 const treeNodes = buildTreeFromFlat(flatData, {
   idField: 'id',
@@ -258,7 +258,7 @@ const treeNodes = buildTreeFromFlat(flatData, {
 Flattens a tree structure into an array respecting expand/collapse state.
 
 ```typescript
-import { flattenTree } from './components/DataGrid';
+import { flattenTree } from 'react-open-source-grid';
 
 const visibleNodes = flattenTree(treeNodes, expandedNodes, treeConfig);
 ```
@@ -268,7 +268,7 @@ const visibleNodes = flattenTree(treeNodes, expandedNodes, treeConfig);
 Toggles the expanded state of a single node.
 
 ```typescript
-import { toggleNodeExpansion } from './components/DataGrid';
+import { toggleNodeExpansion } from 'react-open-source-grid';
 
 const newExpandedNodes = toggleNodeExpansion(nodeId, currentExpandedNodes);
 ```
@@ -278,7 +278,7 @@ const newExpandedNodes = toggleNodeExpansion(nodeId, currentExpandedNodes);
 Creates an expanded state map with all nodes expanded.
 
 ```typescript
-import { expandAllNodes } from './components/DataGrid';
+import { expandAllNodes } from 'react-open-source-grid';
 
 const allExpanded = expandAllNodes(treeNodes, treeConfig);
 dispatch({ type: 'SET_EXPANDED_NODES', payload: allExpanded });
@@ -289,7 +289,7 @@ dispatch({ type: 'SET_EXPANDED_NODES', payload: allExpanded });
 Creates an expanded state map with all nodes collapsed.
 
 ```typescript
-import { collapseAllNodes } from './components/DataGrid';
+import { collapseAllNodes } from 'react-open-source-grid';
 
 const allCollapsed = collapseAllNodes(treeNodes, treeConfig);
 dispatch({ type: 'SET_EXPANDED_NODES', payload: allCollapsed });
@@ -300,7 +300,7 @@ dispatch({ type: 'SET_EXPANDED_NODES', payload: allCollapsed });
 Gets all descendant node IDs of a given node.
 
 ```typescript
-import { getDescendantIds } from './components/DataGrid';
+import { getDescendantIds } from 'react-open-source-grid';
 
 const descendants = getDescendantIds(node, treeConfig);
 // Returns: [childId1, childId2, grandchildId1, ...]
@@ -311,7 +311,7 @@ const descendants = getDescendantIds(node, treeConfig);
 Gets the path from root to a specific node.
 
 ```typescript
-import { getNodePath } from './components/DataGrid';
+import { getNodePath } from 'react-open-source-grid';
 
 const path = getNodePath(targetNodeId, treeNodes, treeConfig);
 // Returns: [rootId, parentId, targetNodeId] or null if not found
@@ -322,7 +322,7 @@ const path = getNodePath(targetNodeId, treeNodes, treeConfig);
 Gets the maximum depth of the tree.
 
 ```typescript
-import { getTreeDepth } from './components/DataGrid';
+import { getTreeDepth } from 'react-open-source-grid';
 
 const maxDepth = getTreeDepth(treeNodes, treeConfig);
 // Returns: number (e.g., 3 for a tree with 3 levels)
@@ -333,7 +333,7 @@ const maxDepth = getTreeDepth(treeNodes, treeConfig);
 Counts total number of nodes in the tree.
 
 ```typescript
-import { countTreeNodes } from './components/DataGrid';
+import { countTreeNodes } from 'react-open-source-grid';
 
 const totalNodes = countTreeNodes(treeNodes, treeConfig);
 ```
@@ -343,7 +343,7 @@ const totalNodes = countTreeNodes(treeNodes, treeConfig);
 Filters tree nodes by a predicate, keeping matching nodes and their ancestors.
 
 ```typescript
-import { filterTree } from './components/DataGrid';
+import { filterTree } from 'react-open-source-grid';
 
 const filteredTree = filterTree(
   treeNodes,
@@ -357,7 +357,7 @@ const filteredTree = filterTree(
 Type guard to check if a row is a tree node.
 
 ```typescript
-import { isTreeNode } from './components/DataGrid';
+import { isTreeNode } from 'react-open-source-grid';
 
 if (isTreeNode(row)) {
   console.log('Node level:', row.level);
@@ -487,7 +487,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 
 ```tsx
 import { useReducer } from 'react';
-import { expandAllNodes, collapseAllNodes, buildTreeFromFlat } from './components/DataGrid';
+import { expandAllNodes, collapseAllNodes, buildTreeFromFlat } from 'react-open-source-grid';
 
 function TreeGridWithControls() {
   const [state, dispatch] = useReducer(gridReducer, initialState);
@@ -539,7 +539,7 @@ You can customize the expand/collapse icons by modifying the TreeRow component o
 ### Filtering Tree Data
 
 ```tsx
-import { filterTree } from './components/DataGrid';
+import { filterTree } from 'react-open-source-grid';
 
 const [searchTerm, setSearchTerm] = useState('');
 

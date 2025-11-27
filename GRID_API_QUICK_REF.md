@@ -3,7 +3,7 @@
 ## Setup
 
 ```tsx
-import { DataGrid, GridApi } from './components/DataGrid';
+import { DataGrid, GridApi } from 'react-open-source-grid';
 
 const gridRef = useRef<GridApi>(null);
 

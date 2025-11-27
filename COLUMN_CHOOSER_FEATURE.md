@@ -36,7 +36,7 @@ The Column Chooser feature allows users to control column visibility and reorder
 The ColumnChooser is automatically integrated into the DataGrid toolbar:
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}
@@ -49,7 +49,7 @@ import { DataGrid } from './components/DataGrid';
 You can also use the ColumnChooser component standalone:
 
 ```tsx
-import { ColumnChooser } from './components/DataGrid';
+import { ColumnChooser } from 'react-open-source-grid';
 
 <ColumnChooser
   columns={columns}

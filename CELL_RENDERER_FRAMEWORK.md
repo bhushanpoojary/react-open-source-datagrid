@@ -435,7 +435,7 @@ import {
   PriorityIndicator,
   Rating,
   CurrencyCell,
-} from './components/DataGrid';
+} from 'react-open-source-grid';
 ```
 
 ## Browser Support

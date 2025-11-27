@@ -20,7 +20,7 @@ The Row Dragging feature enables users to interactively reorder rows within a Da
 ### Simple Row Reordering
 
 ```tsx
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
 
 function MyComponent() {

@@ -185,7 +185,7 @@ The filter system integrates with:
 ## 📝 Usage Example
 
 ```typescript
-import { DataGrid } from './components/DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 const columns = [
   { field: 'name', headerName: 'Name', filterType: 'text' },

@@ -59,7 +59,7 @@ This directory contains complete documentation for the Advanced Filtering featur
 
 ### For Developers
 ```typescript
-import { DataGrid, AdvancedFilterValue } from './components/DataGrid';
+import { DataGrid, AdvancedFilterValue } from 'react-open-source-grid';
 
 // Create advanced filter
 const filter: AdvancedFilterValue = {
