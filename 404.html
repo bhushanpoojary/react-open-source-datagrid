@@ -4,16 +4,17 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      // Only redirect if not already at index.html or root
-      var path = window.location.pathname;
-      var isRoot = path === '/' || path.endsWith('/index.html');
-      if (!isRoot) {
-        // Redirect to root, preserving path, query, and hash for React Router
-        var search = window.location.search;
-        var hash = window.location.hash;
-        var redirectUrl = '/' + path.replace(/^\//, '') + search + hash;
-        window.location.replace(redirectUrl);
-      }
+      (function () {
+        var l = window.location;
+        // If we already came through the redirect, don't loop
+        if (l.search.indexOf('from404=1') !== -1) {
+          return;
+        }
+        var path = l.pathname + l.search + l.hash;
+        // Always go to root, encoding the original path
+        var redirectUrl = '/?from404=1&path=' + encodeURIComponent(path);
+        l.replace(redirectUrl);
+      })();
     </script>
   </head>
   <body>
