@@ -37,11 +37,11 @@ export const LiveMarketDemo: React.FC = () => {
   useEffect(() => {
     if (!engineRef.current) {
       const engine = createMarketDataEngine({
-        flashDuration: 500,
+        flashDuration: 250, // Even shorter flash
         enableFlash: flashEnabled,
-        batchInterval: 16,
-        maxUpdatesPerFrame: 2000,
-        cpuThreshold: 0.9, // Higher threshold to reduce throttling
+        batchInterval: 50, // Slower DOM updates to reduce CPU load (~20 FPS)
+        maxUpdatesPerFrame: 3000, // Allow more updates per frame
+        cpuThreshold: 0.95, // Very high threshold before throttling
         enableLiveSorting: false,
         enableRankingMovement: !freezeMovement,
       });
@@ -99,10 +99,11 @@ export const LiveMarketDemo: React.FC = () => {
     if (!engineRef.current) return;
 
     const { feed, createConnection } = createMockFeed({
-      updateFrequency: 25, // 25 updates/sec per symbol (50 symbols × 25 = 1250 updates/sec)
+      symbols: undefined, // Use default 50 symbols
+      updateFrequency: 30, // 30 updates/sec per symbol - push harder to test limits
       priceVolatility: 0.003, // 0.3% volatility
-      burstProbability: 0.15, // 15% burst chance
-      burstSize: 8,
+      burstProbability: 0.05, // 5% burst chance - minimal bursts
+      burstSize: 3, // Very small burst size
     });
 
     feedRef.current = feed;
@@ -310,7 +311,7 @@ export const LiveMarketDemo: React.FC = () => {
       <div className="demo-header">
         <h1>Live Market Data Grid</h1>
         <p className="demo-description">
-          High-performance streaming market data with 1000+ updates/sec
+          High-performance streaming market data with 400+ updates/sec
         </p>
       </div>
 

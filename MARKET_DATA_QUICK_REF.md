@@ -51,7 +51,7 @@ const engineRef = useRef(createMarketDataEngine({
 }));
 
 const { feed, createConnection } = createMockFeed({
-  updateFrequency: 20, // 20 updates/sec per symbol
+  updateFrequency: 8, // 8 updates/sec per symbol
 });
 feed.start();
 ```
@@ -112,7 +112,7 @@ const columns = [
 ```typescript
 {
   symbols: ['AAPL', 'GOOGL'],  // Symbol list
-  updateFrequency: 20,          // Updates/sec per symbol
+  updateFrequency: 8,          // Updates/sec per symbol
   priceVolatility: 0.003,       // 0.3% volatility
   burstProbability: 0.15,       // 15% burst chance
   burstSize: 8,                 // Updates per burst
