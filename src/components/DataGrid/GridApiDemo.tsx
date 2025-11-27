@@ -453,63 +453,271 @@ const MyComponent = () => {
 };`}</pre>
       </div>
 
-      <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>Grid API Methods Available</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
-          <div>
-            <h4>Data & Model</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>setRowData(rows)</code></li>
-              <li><code>applyTransaction(tx)</code></li>
-              <li><code>getModel()</code></li>
-              <li><code>getDisplayedRowCount()</code></li>
-              <li><code>forEachNode(callback)</code></li>
+      <div style={{ 
+        marginTop: '30px', 
+        padding: '24px', 
+        background: 'linear-gradient(to bottom right, #ffffff, #f9fafb)',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+      }}>
+        <h3 style={{ 
+          fontSize: '20px', 
+          fontWeight: '700', 
+          marginBottom: '20px', 
+          color: '#111827',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{ 
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '32px',
+            height: '32px',
+            backgroundColor: '#3b82f6',
+            borderRadius: '8px',
+            color: 'white',
+            fontSize: '18px'
+          }}>⚡</span>
+          Grid API Methods Available
+        </h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#3b82f6',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>📊</span> Data & Model
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#10b981', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setRowData(rows)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#10b981', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>applyTransaction(tx)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#10b981', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getModel()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#10b981', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getDisplayedRowCount()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#10b981', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>forEachNode(callback)</code>
+              </li>
             </ul>
           </div>
-          <div>
-            <h4>Columns</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>getColumnDefs()</code></li>
-              <li><code>setColumnVisible(key, visible)</code></li>
-              <li><code>setColumnPinned(key, pinned)</code></li>
-              <li><code>autoSizeColumns(keys?)</code></li>
-              <li><code>sizeColumnsToFit()</code></li>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#8b5cf6',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>📋</span> Columns
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#8b5cf6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getColumnDefs()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#8b5cf6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setColumnVisible(key, visible)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#8b5cf6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setColumnPinned(key, pinned)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#8b5cf6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>autoSizeColumns(keys?)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#8b5cf6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>sizeColumnsToFit()</code>
+              </li>
             </ul>
           </div>
-          <div>
-            <h4>Filtering & Sorting</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>getFilterModel()</code></li>
-              <li><code>setFilterModel(model)</code></li>
-              <li><code>getSortModel()</code></li>
-              <li><code>setSortModel(model)</code></li>
-              <li><code>clearAllFilters()</code></li>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#f59e0b',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>🔍</span> Filtering & Sorting
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#f59e0b', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getFilterModel()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#f59e0b', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setFilterModel(model)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#f59e0b', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getSortModel()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#f59e0b', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setSortModel(model)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#f59e0b', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>clearAllFilters()</code>
+              </li>
             </ul>
           </div>
-          <div>
-            <h4>Selection</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>getSelectedRows()</code></li>
-              <li><code>selectAll()</code></li>
-              <li><code>deselectAll()</code></li>
-              <li><code>selectAllFiltered()</code></li>
-              <li><code>getSelectedRowCount()</code></li>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#ec4899',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>✅</span> Selection
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#ec4899', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getSelectedRows()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#ec4899', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>selectAll()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#ec4899', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>deselectAll()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#ec4899', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>selectAllFiltered()</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#ec4899', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getSelectedRowCount()</code>
+              </li>
             </ul>
           </div>
-          <div>
-            <h4>Navigation</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>ensureIndexVisible(index)</code></li>
-              <li><code>setFocusedCell(row, col)</code></li>
-              <li><code>clearFocusedCell()</code></li>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#14b8a6',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>🧭</span> Navigation
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#14b8a6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>ensureIndexVisible(index)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#14b8a6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>setFocusedCell(row, col)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#14b8a6', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>clearFocusedCell()</code>
+              </li>
             </ul>
           </div>
-          <div>
-            <h4>Export</h4>
-            <ul style={{ fontSize: '13px', lineHeight: '1.6' }}>
-              <li><code>exportDataAsCsv(params?)</code></li>
-              <li><code>getDataAsCsv(params?)</code></li>
-              <li><code>copySelectedRowsToClipboard()</code></li>
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#ffffff', 
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <h4 style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '12px', 
+              color: '#06b6d4',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>📤</span> Export
+            </h4>
+            <ul style={{ fontSize: '13px', lineHeight: '1.8', listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#06b6d4', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>exportDataAsCsv(params?)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#06b6d4', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>getDataAsCsv(params?)</code>
+              </li>
+              <li style={{ padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#06b6d4', fontSize: '10px' }}>●</span>
+                <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>copySelectedRowsToClipboard()</code>
+              </li>
             </ul>
           </div>
         </div>
