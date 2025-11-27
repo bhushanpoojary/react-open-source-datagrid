@@ -87,9 +87,9 @@ Users can now select from 10 themes using the ThemeSelector component or by pass
 <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
 
 // Direct theme application
-<ThemedDataGrid theme="nord" columns={columns} rows={rows} />
-<ThemedDataGrid theme="dracula" columns={columns} rows={rows} />
-<ThemedDataGrid theme="monokai" columns={columns} rows={rows} />
+<DataGrid theme="nord" columns={columns} rows={rows} />
+<DataGrid theme="dracula" columns={columns} rows={rows} />
+<DataGrid theme="monokai" columns={columns} rows={rows} />
 ```
 
 ## Color Palettes

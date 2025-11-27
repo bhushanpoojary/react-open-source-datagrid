@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row } from './DataGrid/types';
 import { CodeBlock } from './CodeBlock';
 
@@ -303,7 +303,7 @@ export const ColumnFiltersDemo: React.FC = () => {
         overflow: 'hidden',
         boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
       }}>
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={rows}
           pageSize={10}
@@ -339,7 +339,7 @@ export const ColumnFiltersDemo: React.FC = () => {
         <CodeBlock
           title="Column Filter Configuration"
           language="tsx"
-          code={`import { ThemedDataGrid } from './components/DataGrid';
+          code={`import { DataGrid} from './components/DataGrid';
 
 const columns = [
   {
@@ -376,7 +376,7 @@ const columns = [
   },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   pageSize={10}

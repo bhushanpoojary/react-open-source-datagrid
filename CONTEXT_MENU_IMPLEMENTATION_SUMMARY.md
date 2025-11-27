@@ -121,10 +121,10 @@ Successfully implemented a comprehensive right-click context menu system for the
 ## Usage Example
 
 ```typescript
-import { ThemedDataGrid, ContextMenuConfig, ContextMenuItem } from './DataGrid';
+import { DataGrid, ContextMenuConfig, ContextMenuItem } from './DataGrid';
 
 // Basic usage
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -160,7 +160,7 @@ const contextMenuConfig: ContextMenuConfig = {
   },
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={contextMenuConfig}

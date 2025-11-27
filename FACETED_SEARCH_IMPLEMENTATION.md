@@ -234,7 +234,7 @@ interface FilterConfig {
 ## 🚀 Integration Points
 
 ### Works With:
-- ✅ DataGrid (ThemedDataGrid)
+- ✅ DataGrid (DataGrid)
 - ✅ Column Filters
 - ✅ Advanced Filtering
 - ✅ Sorting

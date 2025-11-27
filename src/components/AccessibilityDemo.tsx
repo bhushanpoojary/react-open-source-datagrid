@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
 
@@ -126,7 +126,7 @@ export const AccessibilityDemo: React.FC = () => {
           </div>
         </div>
         
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={rows}
           pageSize={5}
@@ -245,11 +245,11 @@ export const AccessibilityDemo: React.FC = () => {
         <CodeBlock
           title="Basic Accessible Grid"
           language="tsx"
-          code={`import { ThemedDataGrid } from './DataGrid';
+          code={`import { DataGrid} from './DataGrid';
 
 function AccessibleGrid() {
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
       pageSize={10}

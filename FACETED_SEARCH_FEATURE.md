@@ -53,7 +53,7 @@ Faceted search is a filtering UI pattern that displays available filter options 
 
 ```typescript
 import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 import { useState, useMemo } from 'react';
 
 function ProductCatalog() {
@@ -98,7 +98,7 @@ function ProductCatalog() {
         onClearAll={() => setFilterConfig({})}
         className="w-80"
       />
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={filteredData}
         pageSize={20}

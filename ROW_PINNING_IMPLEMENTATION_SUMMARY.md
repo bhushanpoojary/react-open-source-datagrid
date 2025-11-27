@@ -117,7 +117,7 @@ interface RowPinConfig {
 ## Usage Example
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 import type { RowPinConfig } from './components/DataGrid';
 
 const rowPinConfig: RowPinConfig = {
@@ -129,7 +129,7 @@ const rowPinConfig: RowPinConfig = {
   },
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   rowPinConfig={rowPinConfig}

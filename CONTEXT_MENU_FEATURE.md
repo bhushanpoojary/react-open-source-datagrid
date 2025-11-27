@@ -26,7 +26,7 @@ The DataGrid now includes a comprehensive right-click context menu system that p
 ## Basic Usage
 
 ```typescript
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, ContextMenuConfig } from './DataGrid';
 
 const columns: Column[] = [
@@ -41,7 +41,7 @@ const rows: Row[] = [
 ];
 
 // Basic context menu (all features enabled)
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -75,7 +75,7 @@ const contextMenuConfig: ContextMenuConfig = {
   showFilterByValue: true,  // Show filter by value
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={contextMenuConfig}
@@ -360,7 +360,7 @@ The context menu is built with accessibility in mind:
 ### Example 1: Basic Context Menu
 
 ```typescript
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -408,7 +408,7 @@ const contextMenuConfig: ContextMenuConfig = {
 ### Context menu not appearing
 
 - Check that `contextMenuConfig.enabled` is `true` (or not set, as it defaults to true)
-- Ensure you're using the `ThemedDataGrid` component
+- Ensure you're using the `DataGrid` component
 - Check browser console for errors
 
 ### Menu items not working

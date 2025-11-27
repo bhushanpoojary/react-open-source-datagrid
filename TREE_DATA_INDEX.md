@@ -53,7 +53,7 @@ This feature provides hierarchical data visualization with expand/collapse funct
 ### 30-Second Quickstart
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid } from './components/DataGrid';
 
 const data = [
   { id: 1, name: 'CEO', parentId: null },
@@ -61,7 +61,7 @@ const data = [
   { id: 3, name: 'Engineer', parentId: 2 },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={[{ field: 'name', headerName: 'Name' }]}
   rows={data}
   treeConfig={{ enabled: true }}
@@ -130,7 +130,7 @@ const data = [
 
 ### Beginner: Basic Tree
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={flatData}
   treeConfig={{ enabled: true }}
 />
@@ -139,7 +139,7 @@ const data = [
 
 ### Intermediate: Custom Icons
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={fileData}
   columns={[{
     field: 'name',
@@ -154,7 +154,7 @@ const data = [
 
 ### Advanced: Lazy Loading
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{
     enabled: true,
@@ -172,7 +172,7 @@ const data = [
 
 ### With Virtual Scrolling
 ```tsx
-<ThemedDataGrid
+<DataGrid
   treeConfig={{ enabled: true }}
   virtualScrollConfig={{ enabled: true, rowHeight: 40 }}
 />
@@ -189,7 +189,7 @@ const filtered = filterTree(
 
 ### With Custom Theme
 ```tsx
-<ThemedDataGrid
+<DataGrid
   treeConfig={{ enabled: true }}
   theme="dark"
 />

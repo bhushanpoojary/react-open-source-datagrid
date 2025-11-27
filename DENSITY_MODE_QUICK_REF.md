@@ -61,7 +61,7 @@ import type { DensityMode } from './DataGrid';
 
 ### With Theme
 ```tsx
-<ThemedDataGrid
+<DataGrid
   theme="quartz"
   showDensityToggle={true}
   columns={columns}

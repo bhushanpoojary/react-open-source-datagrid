@@ -790,8 +790,4 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 // Set display name for better debugging
 DataGrid.displayName = 'DataGrid';
 
-/**
- * ThemedDataGrid - Legacy alias for backward compatibility
- * @deprecated Use DataGrid directly with theme prop instead
- */
-export const ThemedDataGrid = DataGrid;
+// ...existing code...

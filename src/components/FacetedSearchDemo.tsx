@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import { FacetedSearch } from './DataGrid/FacetedSearch';
 import type { FacetConfig } from './DataGrid/FacetedSearch';
 import type { Column, Row, FilterConfig } from './DataGrid/types';
@@ -345,7 +345,7 @@ export const FacetedSearchDemo: React.FC = () => {
               </div>
               {/* Data Grid */}
               <div style={{ flex: 1, overflow: 'hidden' }}>
-                <ThemedDataGrid
+                <DataGrid
                   columns={ecommerceColumns}
                   rows={filteredEcommerceData}
                   pageSize={20}
@@ -369,7 +369,7 @@ export const FacetedSearchDemo: React.FC = () => {
               </div>
               {/* Data Grid */}
               <div style={{ flex: 1, overflow: 'hidden' }}>
-                <ThemedDataGrid
+                <DataGrid
                   columns={analyticsColumns}
                   rows={filteredAnalyticsData}
                   pageSize={20}
@@ -468,7 +468,7 @@ export const FacetedSearchDemo: React.FC = () => {
           title="Basic Setup"
           language="typescript"
           code={`import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 
 const columns = [
   { field: 'name', headerName: 'Product', width: 200 },
@@ -502,7 +502,7 @@ function ProductCatalog() {
         onFilterChange={handleFilterChange}
         onClearAll={() => setFilterConfig({})}
       />
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={filteredData}
         pageSize={20}
@@ -590,7 +590,7 @@ function ProductListing() {
         <div style={{ padding: '16px' }}>
           <h2>Showing {filteredData.length} of {data.length} products</h2>
         </div>
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={filteredData}
           pageSize={20}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, TreeConfig } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
 
@@ -334,7 +334,7 @@ export const TreeDataDemo: React.FC = () => {
           border: '1px solid #e5e7eb',
         }}
       >
-        <ThemedDataGrid
+        <DataGrid
           columns={config.columns}
           rows={config.data}
           pageSize={20}
@@ -394,7 +394,7 @@ export const TreeDataDemo: React.FC = () => {
         <CodeBlock
           title="Tree Data Configuration"
           language="tsx"
-          code={`import { ThemedDataGrid } from './components/DataGrid';
+          code={`import { DataGrid} from './components/DataGrid';
 
 const data = [
   { id: 1, name: 'CEO', department: 'Executive', parentId: null },
@@ -411,7 +411,7 @@ const treeConfig = {
   indentSize: 24,
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={treeConfig}

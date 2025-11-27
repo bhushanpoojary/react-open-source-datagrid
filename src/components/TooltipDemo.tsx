@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, TooltipConfig } from './DataGrid/types';
 
 interface SampleData {
@@ -269,7 +269,7 @@ export const TooltipDemo = () => {
 
       {/* DataGrid */}
       <div style={{ flex: 1, minHeight: 0 }}>
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={data}
           theme="quartz"

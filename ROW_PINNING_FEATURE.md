@@ -255,7 +255,7 @@ const buildCellMenuItems = (row: Row, column: Column) => {
 ### Basic Setup
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 import type { RowPinConfig } from './components/DataGrid';
 
 const App = () => {
@@ -264,7 +264,7 @@ const App = () => {
   };
 
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
       rowPinConfig={rowPinConfig}
@@ -303,7 +303,7 @@ const virtualScrollConfig: VirtualScrollConfig = {
   overscanCount: 5,
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={largeDataset}
   rowPinConfig={rowPinConfig}

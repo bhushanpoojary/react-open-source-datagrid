@@ -131,7 +131,7 @@ const { densityMode, setDensityMode, densityStyles } = useDensityMode();
 
 ### 3. With Theme
 ```tsx
-<ThemedDataGrid
+<DataGrid
   theme="quartz"
   showDensityToggle={true}
   columns={columns}

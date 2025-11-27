@@ -1,5 +1,5 @@
 // Export all DataGrid components and types
-export { DataGrid, ThemedDataGrid } from './DataGrid'; // ThemedDataGrid is now an alias for backward compatibility
+export { DataGrid } from './DataGrid'; // DataGrid is now the main export
 export { VirtualScroller } from './VirtualScroller';
 
 // Export Grid API types and implementation

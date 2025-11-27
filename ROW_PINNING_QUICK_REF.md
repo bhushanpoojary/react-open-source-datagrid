@@ -7,7 +7,7 @@ Row pinning allows you to keep important rows visible at the top or bottom of th
 ## Basic Usage
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 import type { RowPinConfig } from './components/DataGrid';
 
 const rowPinConfig: RowPinConfig = {
@@ -17,7 +17,7 @@ const rowPinConfig: RowPinConfig = {
   },
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   rowPinConfig={rowPinConfig}
@@ -129,7 +129,7 @@ dispatch({ type: 'PIN_ROW_TOP', payload: vipEmployeeId });
 
 ```tsx
 import React, { useMemo, useState } from 'react';
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 import type { Column, Row, RowPinConfig } from './components/DataGrid';
 
 export const RowPinningExample: React.FC = () => {
@@ -167,7 +167,7 @@ export const RowPinningExample: React.FC = () => {
         <h3>Pinned to Bottom: {pinnedBottom.length} rows</h3>
       </div>
       
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={rows}
         rowPinConfig={rowPinConfig}
@@ -192,7 +192,7 @@ const virtualScrollConfig: VirtualScrollConfig = {
   containerHeight: 600,
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={largeDataset}
   rowPinConfig={rowPinConfig}

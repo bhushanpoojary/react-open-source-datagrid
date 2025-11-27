@@ -3,7 +3,7 @@
 ## Basic Setup
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid } from './components/DataGrid';
 
 const data = [
   { id: 1, name: 'Parent', parentId: null },
@@ -16,7 +16,7 @@ const treeConfig = {
   parentIdField: 'parentId',
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={treeConfig}
@@ -48,7 +48,7 @@ const employees = [
   { id: 3, name: 'Engineer', parentId: 2 },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={[
     { field: 'name', headerName: 'Name' },
     { field: 'position', headerName: 'Position' },
@@ -66,7 +66,7 @@ const files = [
   { id: 'file1', name: 'readme.txt', type: 'file', parentId: 'proj' },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={[
     { 
       field: 'name', 
@@ -89,7 +89,7 @@ const categories = [
   { id: 'laptop', name: 'Laptops', count: 45, parentId: 'comp' },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={[
     { field: 'name', headerName: 'Category' },
     { field: 'count', headerName: 'Products' },
@@ -216,7 +216,7 @@ const handleNodeExpand = async (node: TreeNode) => {
   }
 };
 
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{
     enabled: true,
@@ -229,7 +229,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 ## Custom Indentation
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{
     enabled: true,
@@ -241,7 +241,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 ## Event Handlers
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{
     enabled: true,
@@ -259,7 +259,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 
 ### With Virtual Scrolling
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={largeDataset}
   treeConfig={{ enabled: true }}
   virtualScrollConfig={{ 
@@ -272,7 +272,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 
 ### With Pagination
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{ enabled: true }}
   pageSize={50}
@@ -281,7 +281,7 @@ const handleNodeExpand = async (node: TreeNode) => {
 
 ### With Lazy Loading
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{ 
     enabled: true,
@@ -321,7 +321,7 @@ const data = [
 ## Combining with Other Features
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={{ enabled: true }}           // ✅ Tree data
@@ -340,19 +340,19 @@ const data = [
 
 ```tsx
 // ✅ Tree mode (grouping is disabled)
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{ enabled: true }}
 />
 
 // ✅ Grouping mode (tree is disabled)
-<ThemedDataGrid
+<DataGrid
   rows={data}
   // groupBy functionality available
 />
 
 // ❌ Cannot use both simultaneously
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{ enabled: true }}
   // Grouping will be ignored
@@ -370,7 +370,7 @@ const data = [
 ### Issue: Poor performance with large trees
 **Solution**: Enable virtual scrolling and/or lazy loading:
 ```tsx
-<ThemedDataGrid
+<DataGrid
   rows={data}
   treeConfig={{ enabled: true, lazyLoad: true }}
   virtualScrollConfig={{ enabled: true }}

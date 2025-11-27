@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, ContextMenuConfig, ContextMenuItem } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
 
@@ -82,7 +82,7 @@ export const ContextMenuDemo: React.FC = () => {
     customItems: showCustomItems ? customMenuItems : [],
   }), [enableContextMenu, showCopy, showExport, showColumnOptions, showFilterByValue, showCustomItems, customMenuItems]);
 
-  const exampleCode = `import { ThemedDataGrid } from './DataGrid';
+  const exampleCode = `import { DataGrid} from './DataGrid';
 import type { Column, Row, ContextMenuConfig } from './DataGrid';
 
 const columns: Column[] = [
@@ -113,7 +113,7 @@ const contextMenuConfig: ContextMenuConfig = {
   ],
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={contextMenuConfig}
@@ -224,7 +224,7 @@ const contextMenuConfig: ContextMenuConfig = {
 
       {/* DataGrid */}
       <div style={{ height: '600px', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={rows}
           pageSize={20}

@@ -70,10 +70,10 @@
 ## 🔧 Usage
 
 ```tsx
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 
 // Accessibility features are built-in
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   pageSize={10}

@@ -221,7 +221,7 @@ const clearFilter = (field: string) => {
 ```typescript
 import { useState, useMemo } from 'react';
 import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid} from './components/DataGrid';
 
 function ProductCatalog() {
   const [products] = useState(loadProducts());
@@ -284,7 +284,7 @@ function ProductCatalog() {
 
         {/* Grid */}
         <div className="flex-1 overflow-auto">
-          <ThemedDataGrid
+          <DataGrid
             columns={columns}
             rows={filteredProducts}
             pageSize={20}

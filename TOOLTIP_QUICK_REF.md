@@ -15,7 +15,7 @@ Row-level and cell-level tooltips with smart placement, delays, and support for 
 ## Basic Usage
 
 ```tsx
-import { ThemedDataGrid, type TooltipConfig } from './components/DataGrid';
+import { DataGrid, type TooltipConfig } from './components/DataGrid';
 
 const tooltipConfig: TooltipConfig = {
   enabled: true,
@@ -39,7 +39,7 @@ const tooltipConfig: TooltipConfig = {
   }
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   tooltipConfig={tooltipConfig}

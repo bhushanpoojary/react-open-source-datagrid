@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, RowPinConfig, VirtualScrollConfig } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
 
@@ -207,7 +207,7 @@ export const RowPinningDemo: React.FC = () => {
 
         {/* Data Grid */}
         <div style={{ marginBottom: '32px' }}>
-          <ThemedDataGrid
+          <DataGrid
             columns={columns}
             rows={sampleData}
             pageSize={20}
@@ -280,7 +280,7 @@ export const RowPinningDemo: React.FC = () => {
           <CodeBlock
             title="Basic Row Pinning Configuration"
             language="tsx"
-            code={`import { ThemedDataGrid } from './components/DataGrid';
+            code={`import { DataGrid} from './components/DataGrid';
 import type { RowPinConfig } from './components/DataGrid';
 
 const rowPinConfig: RowPinConfig = {
@@ -290,7 +290,7 @@ const rowPinConfig: RowPinConfig = {
   },
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   rowPinConfig={rowPinConfig}
@@ -315,7 +315,7 @@ const virtualScrollConfig: VirtualScrollConfig = {
   containerHeight: 600,
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={largeDataset}
   rowPinConfig={rowPinConfig}

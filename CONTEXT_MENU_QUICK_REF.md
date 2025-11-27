@@ -3,7 +3,7 @@
 ## Enable Context Menu
 
 ```typescript
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -68,7 +68,7 @@ const customItems: ContextMenuItem[] = [
   },
 ];
 
-<ThemedDataGrid
+<DataGrid
   contextMenuConfig={{ customItems }}
 />
 ```

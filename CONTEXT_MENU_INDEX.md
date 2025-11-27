@@ -89,9 +89,9 @@ Technical details including:
 ### 1. Basic Setup (30 seconds)
 
 ```typescript
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -111,7 +111,7 @@ const contextMenuConfig = {
   showFilterByValue: true,  // Show filter by value
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={contextMenuConfig}
@@ -160,7 +160,7 @@ const contextMenuConfig = {
 
 ### Example 1: Minimal Setup
 ```typescript
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{ enabled: true }}
@@ -169,7 +169,7 @@ const contextMenuConfig = {
 
 ### Example 2: Copy and Export Only
 ```typescript
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{
@@ -184,7 +184,7 @@ const contextMenuConfig = {
 
 ### Example 3: Custom Menu Items
 ```typescript
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   contextMenuConfig={{

@@ -20,7 +20,7 @@ The Tree Data feature allows you to display hierarchical data structures in the 
 ### Basic Tree Data Example
 
 ```tsx
-import { ThemedDataGrid, TreeConfig } from './components/DataGrid';
+import { DataGrid, TreeConfig } from './components/DataGrid';
 
 // Your flat data with parent-child relationships
 const employees = [
@@ -44,7 +44,7 @@ const treeConfig: TreeConfig = {
 
 function App() {
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={employees}
       treeConfig={treeConfig}
@@ -383,7 +383,7 @@ const columns = [
   { field: 'position', headerName: 'Position', width: 180 },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={orgChartData}
   treeConfig={{ enabled: true }}
@@ -416,7 +416,7 @@ const columns = [
   { field: 'size', headerName: 'Size', width: 120 },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={fileData}
   treeConfig={{ enabled: true, indentSize: 32 }}
@@ -448,7 +448,7 @@ const columns = [
   },
 ];
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={categoryData}
   treeConfig={{ enabled: true }}
@@ -472,7 +472,7 @@ const handleNodeExpand = async (node: TreeNode) => {
   }
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={{
@@ -510,7 +510,7 @@ function TreeGridWithControls() {
         <button onClick={handleExpandAll}>Expand All</button>
         <button onClick={handleCollapseAll}>Collapse All</button>
       </div>
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={data}
         treeConfig={treeConfig}
@@ -557,7 +557,7 @@ const filteredData = useMemo(() => {
   return flattenToArray(filtered);
 }, [data, searchTerm]);
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={filteredData}
   treeConfig={treeConfig}
@@ -634,7 +634,7 @@ For large datasets, consider:
 - Virtualizing with `virtualScrollConfig`
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={largeDataset}
   treeConfig={{ enabled: true, lazyLoad: true }}
@@ -647,7 +647,7 @@ For large datasets, consider:
 Tree data works seamlessly with other DataGrid features:
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={{ enabled: true }}
@@ -675,7 +675,7 @@ const handleExpand = useCallback((node) => {
   console.log('Expanded:', node);
 }, []);  // Memoize callback
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={{ ...treeConfig, onNodeExpand: handleExpand }}
@@ -688,7 +688,7 @@ const handleExpand = useCallback((node) => {
 
 ```tsx
 // Tree mode takes precedence
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   treeConfig={{ enabled: true }}  // Tree mode active

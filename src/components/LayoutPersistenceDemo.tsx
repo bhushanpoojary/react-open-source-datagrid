@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, PersistenceConfig } from './DataGrid/types';
 import { CodeBlock } from './CodeBlock';
 
@@ -298,7 +298,7 @@ export const LayoutPersistenceDemo: React.FC = () => {
       </div>
 
       {/* DataGrid */}
-      <ThemedDataGrid
+      <DataGrid
         columns={columns}
         rows={data}
         pageSize={10}
@@ -341,9 +341,9 @@ export const LayoutPersistenceDemo: React.FC = () => {
         <CodeBlock
           title="Basic Configuration - LocalStorage"
           language="tsx"
-          code={`import { ThemedDataGrid } from './components/DataGrid';
+          code={`import { DataGrid} from './components/DataGrid';
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={data}
   persistenceConfig={{
@@ -360,7 +360,7 @@ export const LayoutPersistenceDemo: React.FC = () => {
         <CodeBlock
           title="Server-Side Persistence"
           language="tsx"
-          code={`<ThemedDataGrid
+          code={`<DataGrid
   columns={columns}
   rows={data}
   persistenceConfig={{
@@ -383,7 +383,7 @@ export const LayoutPersistenceDemo: React.FC = () => {
         <CodeBlock
           title="User Profile Persistence"
           language="tsx"
-          code={`<ThemedDataGrid
+          code={`<DataGrid
   columns={columns}
   rows={data}
   persistenceConfig={{

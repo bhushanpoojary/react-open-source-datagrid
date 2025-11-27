@@ -188,7 +188,7 @@ const treeConfig = {
   parentIdField: 'parentId',
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={flatData}
   treeConfig={treeConfig}

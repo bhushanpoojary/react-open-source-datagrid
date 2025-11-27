@@ -164,10 +164,10 @@ DataGrid (role="grid")
 
 ### Basic Implementation
 ```tsx
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 
 // Accessibility is automatic - no configuration needed
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   pageSize={10}

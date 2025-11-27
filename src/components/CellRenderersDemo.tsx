@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row } from './DataGrid/types';
 import { CodeBlock } from './CodeBlock';
 import {
@@ -405,7 +405,7 @@ export const CellRenderersDemo: React.FC = () => {
 
       {/* DataGrid Container */}
       <div style={{ flex: 1, padding: '24px 40px', overflow: 'auto' }}>
-        <ThemedDataGrid
+        <DataGrid
           columns={columns}
           rows={projects}
           pageSize={10}

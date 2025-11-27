@@ -167,11 +167,11 @@ The grid uses roving tabindex pattern:
 ### Basic Implementation
 
 ```tsx
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 
 function MyApp() {
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
       pageSize={10}
@@ -202,7 +202,7 @@ const columns: Column[] = [
 The grid handles keyboard events internally, but you can extend functionality:
 
 ```tsx
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={rows}
   onRowClick={(row) => {
@@ -230,7 +230,7 @@ expect.extend(toHaveNoViolations);
 
 test('DataGrid has no accessibility violations', async () => {
   const { container } = render(
-    <ThemedDataGrid columns={columns} rows={rows} />
+    <DataGridcolumns={columns} rows={rows} />
   );
   const results = await axe(container);
   expect(results).toHaveNoViolations();
@@ -244,7 +244,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 test('keyboard navigation works', async () => {
-  render(<ThemedDataGrid columns={columns} rows={rows} />);
+  render(<DataGridcolumns={columns} rows={rows} />);
   
   const firstCell = screen.getAllByRole('gridcell')[0];
   firstCell.focus();
@@ -340,7 +340,7 @@ function MyGrid() {
     announce('Custom action completed successfully');
   };
   
-  return <ThemedDataGrid {...props} />;
+  return <DataGrid{...props} />;
 }
 ```
 

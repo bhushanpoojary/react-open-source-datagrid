@@ -2,7 +2,7 @@
 
 ## What Changed?
 
-We've simplified the theme system by **integrating theme support directly into the `DataGrid` component**. You no longer need to use the `ThemedDataGrid` wrapper component.
+We've simplified the theme system by **integrating theme support directly into the `DataGrid` component**. You no longer need to use the `DataGrid` wrapper component.
 
 ## Benefits
 
@@ -10,18 +10,18 @@ We've simplified the theme system by **integrating theme support directly into t
 ✅ **Less boilerplate** - No wrapper div needed  
 ✅ **Better DX** - More intuitive to use  
 ✅ **Consistent pattern** - Matches other popular UI libraries  
-✅ **Fully backward compatible** - `ThemedDataGrid` still works as an alias
+✅ **Fully backward compatible** - `DataGrid` still works as an alias
 
 ## Migration
 
 ### Before (Old Way)
 
 ```tsx
-import { ThemedDataGrid } from './components/DataGrid';
+import { DataGrid } from './components/DataGrid';
 
 function App() {
   return (
-    <ThemedDataGrid
+    <DataGrid
       columns={columns}
       rows={rows}
       theme="quartz"
@@ -48,11 +48,11 @@ function App() {
 
 ## No Breaking Changes
 
-**Important:** `ThemedDataGrid` is now an alias to `DataGrid`, so all existing code continues to work without any changes. You can migrate at your own pace.
+**Important:** `DataGrid` is now an alias to `DataGrid`, so all existing code continues to work without any changes. You can migrate at your own pace.
 
 ```tsx
 // This still works! (but we recommend using DataGrid directly)
-<ThemedDataGrid theme="nord" columns={columns} rows={rows} />
+<DataGrid theme="nord" columns={columns} rows={rows} />
 
 // Equivalent to:
 <DataGrid theme="nord" columns={columns} rows={rows} />
@@ -63,7 +63,7 @@ function App() {
 ### Before
 
 ```tsx
-import { ThemedDataGrid, ThemeSelector } from './components/DataGrid';
+import { DataGrid, ThemeSelector } from './components/DataGrid';
 import { getTheme, generateThemeCSS } from './components/DataGrid/themes';
 
 function App() {
@@ -73,7 +73,7 @@ function App() {
   return (
     <div style={themeStyles}>
       <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
-      <ThemedDataGrid columns={columns} rows={rows} theme={theme} />
+      <DataGrid columns={columns} rows={rows} theme={theme} />
     </div>
   );
 }
@@ -131,11 +131,11 @@ No TypeScript changes needed - all types remain the same. Both components accept
 
 ## Deprecation Notice
 
-`ThemedDataGrid` and `ThemedInfiniteScrollDataGrid` are marked as deprecated but will remain as aliases for backward compatibility. We recommend updating to use `DataGrid` and `InfiniteScrollDataGrid` directly with the `theme` prop.
+`DataGrid` and `ThemedInfiniteScrollDataGrid` are marked as deprecated but will remain as aliases for backward compatibility. We recommend updating to use `DataGrid` and `InfiniteScrollDataGrid` directly with the `theme` prop.
 
 ## Summary
 
-- ✅ Use `<DataGrid theme="..." />` instead of `<ThemedDataGrid theme="..." />`
+- ✅ Use `<DataGrid theme="..." />` instead of `<DataGridtheme="..." />`
 - ✅ No wrapper div needed
 - ✅ All existing code still works (backward compatible)
 - ✅ Simpler, cleaner API

@@ -1,5 +1,5 @@
 ﻿import React, { useMemo, useState } from 'react';
-import { ThemedDataGrid } from './DataGrid';
+import { DataGrid} from './DataGrid';
 import type { Column, Row, VirtualScrollConfig } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
 
@@ -291,7 +291,7 @@ export const VirtualScrollDemo: React.FC = () => {
 
         {/* DataGrid */}
         <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-          <ThemedDataGrid
+          <DataGrid
             columns={columns}
             rows={largeDataset}
             theme="quartz"
@@ -338,7 +338,7 @@ export const VirtualScrollDemo: React.FC = () => {
           <CodeBlock
             title="Virtual Scrolling Configuration"
             language="tsx"
-            code={`import { ThemedDataGrid } from './components/DataGrid';
+            code={`import { DataGrid} from './components/DataGrid';
 
 const virtualScrollConfig = {
   enabled: true,
@@ -349,7 +349,7 @@ const virtualScrollConfig = {
   columnOverscan: 3, // Extra columns to render
 };
 
-<ThemedDataGrid
+<DataGrid
   columns={columns}
   rows={largeDataset}
   pageSize={50000}
