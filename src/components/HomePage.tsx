@@ -57,10 +57,10 @@ export function HomePage() {
             fontFamily: 'monospace',
             fontSize: '14px'
           }}>
-            <code style={{ flex: 1 }}>npm install react-open-source-datagrid</code>
+            <code style={{ flex: 1 }}>npm install react-open-source-grid</code>
             <button
               onClick={() => {
-                navigator.clipboard.writeText('npm install react-open-source-datagrid');
+                navigator.clipboard.writeText('npm install react-open-source-grid');
               }}
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
