@@ -1,10 +1,10 @@
 {
   "name": "react-open-source-grid",
   "private": false,
-  "version": "1.4.7",
+  "version": "1.4.8",
   "type": "module",
   "description": "A high-performance React DataGrid component with advanced features like virtual scrolling, infinite scrolling, tree data, market data mode, and more",
-  "main": "./dist/assets/index-TXCthnGG.js",
+  "main": "./dist/assets/index.js",
   "types": "./dist/assets/index.d.ts",
   "files": [
     "dist",
@@ -36,6 +36,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "postbuild": "node ./scripts/generate-types-entry.cjs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "test": "npm run test:playwright && npm run test:cypress",

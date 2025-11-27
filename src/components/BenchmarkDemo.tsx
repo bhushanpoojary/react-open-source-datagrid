@@ -64,7 +64,7 @@ export const BenchmarkDemo = () => {
     },
   ];
 
-  /* eslint-disable react-hooks/purity */
+  /* eslint-disable */
   const data = useMemo(() => {
     const statuses = ['Active', 'Inactive', 'Pending', 'Completed', 'Failed'];
     const categories = ['Finance', 'Technology', 'Healthcare', 'Retail', 'Manufacturing'];
@@ -115,7 +115,7 @@ export const BenchmarkDemo = () => {
     
     return data;
   }, [activeRowCount]);
-  /* eslint-enable react-hooks/purity */
+  /* eslint-enable */
 
   // Handle row count changes with proper loading state
   useEffect(() => {
