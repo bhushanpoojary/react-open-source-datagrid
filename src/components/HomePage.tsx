@@ -58,6 +58,7 @@ export function HomePage() {
             fontSize: '14px'
           }}>
             <code style={{ flex: 1 }}>npm install react-open-source-grid</code>
+            <code style={{ flex: 1 }}>import 'react-open-source-grid/dist/lib/index.css';</code>
             <button
               onClick={() => {
                 navigator.clipboard.writeText('npm install react-open-source-grid');
