@@ -436,6 +436,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
         role="row"
         aria-rowindex={rowIndex + 2}
         aria-selected={isSelected}
+        data-row-index={rowIndex}
         style={{
           ...style,
           display: 'flex',

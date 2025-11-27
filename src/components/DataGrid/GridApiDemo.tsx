@@ -249,10 +249,17 @@ export const GridApiDemo: React.FC = () => {
     const api = gridRef.current;
     if (!api) return;
 
-    const rowCount = api.getDisplayedRowCount();
-    const middleIndex = Math.floor(rowCount / 2);
+    // Get current page info
+    const currentPage = api.paginationGetCurrentPage();
+    const pageSize = api.paginationGetPageSize();
+    
+    // Calculate the middle row index of the current page
+    const pageStartIndex = currentPage * pageSize;
+    const rowsOnPage = Math.min(pageSize, api.getDisplayedRowCount() - pageStartIndex);
+    const middleIndex = Math.floor(rowsOnPage / 2);
+    
     api.ensureIndexVisible(middleIndex, 'middle');
-    addLog(`Scrolled to row ${middleIndex}`);
+    addLog(`Scrolled to row ${middleIndex} (middle of page ${currentPage + 1})`);
   };
 
   const handleFocusCell = () => {

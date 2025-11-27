@@ -303,6 +303,7 @@ export const TreeRow: React.FC<TreeRowProps> = ({
 
   return (
     <div
+      data-row-index={rowIndex}
       style={{
         display: 'flex',
         minWidth: '100%',
