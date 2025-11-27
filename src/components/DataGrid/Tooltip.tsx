@@ -114,9 +114,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
       }
     }
 
-    // ...existing code...
+    
     setTimeout(() => setPosition({ x: finalX, y: finalY }), 0);
-    // ...existing code...
+    
     setTimeout(() => setActualPlacement(finalPlacement), 0);
   }, [state.isVisible, state.x, state.y, state.targetRect, state.placement, offset]);
 

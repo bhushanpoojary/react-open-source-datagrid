@@ -6,7 +6,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * Copy this file to get started quickly with live market data.
  */
 /* eslint-disable */
-// ...existing code...
+
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { MarketDataGrid, createMarketDataEngine, useMarketData, createMockFeed, } from './DataGrid';
 /**

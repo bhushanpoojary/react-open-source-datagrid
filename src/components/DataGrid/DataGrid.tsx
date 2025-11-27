@@ -221,7 +221,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         setInternalRows
       );
     }
-    // ...existing code...
+    
   }, []);
   
   // Update API state after render to avoid accessing refs during render
@@ -263,7 +263,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       onGridReadyCalledRef.current = true;
       onGridReadyCallbackRef.current(gridApiRef.current);
     }
-    // ...existing code...
+    
   }, []);
 
   // Cleanup on unmount
@@ -298,7 +298,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     return () => {
       autoSaveRef.current = null;
     };
-    // ...existing code...
+    
   }, [
     persistenceConfig,
     persistenceManager,
@@ -325,7 +325,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         onLayoutChange(layout);
       }
     }
-    // ...existing code...
+    
   }, [
     onLayoutChange,
     state.columnOrder,
@@ -365,7 +365,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
     announceSelection(state.selection.selectedRows.size);
-    // ...existing code...
+    
   }, [state.selection.selectedRows]);
 
   // Notify parent of pinned row changes (skip initial mount)
@@ -375,7 +375,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
     }
     pinnedRowsMountedRef.current = true;
-    // ...existing code...
+    
   }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
 
   // Announce sorting changes to screen readers
@@ -386,7 +386,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         announceSorting(column.headerName, state.sortConfig.direction);
       }
     }
-    // ...existing code...
+    
   }, [state.sortConfig.field, state.sortConfig.direction]);
 
   // Apply sorting
@@ -468,7 +468,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     if (rowCount > 0) {
       announcePagination(state.currentPage, totalPages, rowCount);
     }
-    // ...existing code...
+    
   }, [state.currentPage, state.pageSize]);
 
   // Separate pinned and unpinned rows
@@ -576,7 +576,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         });
       });
     }
-    // ...existing code...
+    
   }, [columns]);
 
   // Handle cell edit with callback
@@ -616,7 +616,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     >
       {/* Screen Reader Announcements - Live Region */}
       <ScreenReaderAnnouncer message={announcementMessage} priority="polite" />
-        // ...existing code...
+        
       
       {/* Toolbar */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }}>
@@ -797,4 +797,4 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 // Set display name for better debugging
 DataGrid.displayName = 'DataGrid';
 
-// ...existing code...
+

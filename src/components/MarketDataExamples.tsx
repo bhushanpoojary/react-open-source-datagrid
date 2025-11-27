@@ -6,7 +6,7 @@
  */
 
 /* eslint-disable */
-// ...existing code...
+
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { 
   MarketDataGrid,

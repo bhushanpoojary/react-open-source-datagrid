@@ -30,7 +30,7 @@ export const MarketDataGrid = ({ columns, rows, config, className = '', onCellCl
         rowsRef.current = rows;
     }, [rows]);
     // Enhanced columns with market data formatting
-    // ...existing code...
+    
     const enhancedColumns = useMemo(() => {
         return columns.map(col => {
             // Add custom renderers for market data fields

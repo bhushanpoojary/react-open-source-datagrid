@@ -22,3 +22,25 @@ if (jsBundle) {
 } else {
   console.warn('No hashed index-*.js bundle found in', outDir);
 }
+
+// Copy any .d.ts files from src into dist/assets so they are packaged with the tarball.
+const srcDir = path.resolve(__dirname, '..', 'src');
+const targetComponentsDir = path.join(outDir, 'components');
+
+function copyDtsFiles(srcRoot, destRoot) {
+  if (!fs.existsSync(srcRoot)) return;
+  const entries = fs.readdirSync(srcRoot, { withFileTypes: true });
+  for (const ent of entries) {
+    const srcPath = path.join(srcRoot, ent.name);
+    const destPath = path.join(destRoot, ent.name);
+    if (ent.isDirectory()) {
+      copyDtsFiles(srcPath, destPath);
+    } else if (ent.isFile() && srcPath.endsWith('.d.ts')) {
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.copyFileSync(srcPath, destPath);
+      console.log('Copied', srcPath, '->', destPath);
+    }
+  }
+}
+
+copyDtsFiles(path.join(srcDir, 'components'), targetComponentsDir);

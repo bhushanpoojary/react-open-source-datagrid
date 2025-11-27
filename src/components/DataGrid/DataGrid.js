@@ -163,7 +163,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
         if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
             gridApiRef.current = new GridApiImpl(state, dispatch, columns, activeRows, containerRef, persistenceManager, setInternalRows);
         }
-        // ...existing code...
+        
     }, []);
     // Update API state after render to avoid accessing refs during render
     useEffect(() => {
@@ -192,7 +192,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
             onGridReadyCalledRef.current = true;
             onGridReadyCallbackRef.current(gridApiRef.current);
         }
-        // ...existing code...
+        
     }, []);
     // Cleanup on unmount
     useEffect(() => {
@@ -221,7 +221,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
         return () => {
             autoSaveRef.current = null;
         };
-        // ...existing code...
+        
     }, [
         persistenceConfig,
         persistenceManager,
@@ -246,7 +246,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
                 onLayoutChange(layout);
             }
         }
-        // ...existing code...
+        
     }, [
         onLayoutChange,
         state.columnOrder,
@@ -282,7 +282,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
             onSelectionChange(Array.from(state.selection.selectedRows));
         }
         announceSelection(state.selection.selectedRows.size);
-        // ...existing code...
+        
     }, [state.selection.selectedRows]);
     // Notify parent of pinned row changes (skip initial mount)
     const pinnedRowsMountedRef = useRef(false);
@@ -291,7 +291,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
             rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
         }
         pinnedRowsMountedRef.current = true;
-        // ...existing code...
+        
     }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
     // Announce sorting changes to screen readers
     useEffect(() => {
@@ -301,7 +301,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
                 announceSorting(column.headerName, state.sortConfig.direction);
             }
         }
-        // ...existing code...
+        
     }, [state.sortConfig.field, state.sortConfig.direction]);
     // Apply sorting
     const sortedRows = useMemo(() => {
@@ -374,7 +374,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
         if (rowCount > 0) {
             announcePagination(state.currentPage, totalPages, rowCount);
         }
-        // ...existing code...
+        
     }, [state.currentPage, state.pageSize]);
     // Separate pinned and unpinned rows
     const { pinnedRowsTopData, pinnedRowsBottomData, unpinnedRows } = useMemo(() => {
@@ -470,7 +470,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
                 });
             });
         }
-        // ...existing code...
+        
     }, [columns]);
     // Handle cell edit with callback
     const handleCellEdit = useCallback((rowIndex, field, value) => {
@@ -493,8 +493,8 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
             boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))',
             fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)'
         }, className: `data-grid density-${densityMode}`, children: [_jsx(ScreenReaderAnnouncer, { message: announcementMessage, priority: "polite" })
-            // ...existing code...
-            , "// ...existing code...", _jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }, children: [_jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx(ColumnChooser, { columns: columns, columnOrder: state.columnOrder, hiddenColumns: state.hiddenColumns, onToggleVisibility: (field) => dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field }), onReorderColumns: (fromIndex, toIndex) => dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }), _jsx(ExportMenu, { columns: columns, fullDataset: rows, filteredData: filteredRows.filter((r) => !('isGroup' in r)), selectedRows: state.selection.selectedRows, currentPageData: paginatedRows.filter((r) => !('isGroup' in r)) }), persistenceConfig?.enabled && persistenceManager && (_jsx(LayoutPresetsManager, { manager: persistenceManager, currentLayout: getCurrentLayout(), onLoadPreset: (layout) => dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: layout }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }))] }), showDensityToggle && (_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx("span", { style: { fontSize: '13px', color: 'var(--grid-text-secondary)', fontWeight: '500' }, children: "Density:" }), _jsx(DensityToggle, { value: densityMode, onChange: setDensityMode })] }))] }), _jsx(GroupByPanel, { columns: columns, groupBy: state.groupBy, dispatch: dispatch }), _jsxs("div", { role: "rowgroup", style: { position: 'sticky', top: 0, zIndex: 20, width: '100%' }, children: [_jsx(GridHeader, { columns: columns, columnOrder: state.columnOrder, displayColumnOrder: displayColumnOrder, columnWidths: state.columnWidths, sortConfig: state.sortConfig, dispatch: dispatch, pinnedLeft: pinnedLeftFields, pinnedRight: pinnedRightFields, showColumnPinning: showColumnPinning, onContextMenu: (event, column, columnIndex) => handleContextMenu({
+            
+            , "", _jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }, children: [_jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx(ColumnChooser, { columns: columns, columnOrder: state.columnOrder, hiddenColumns: state.hiddenColumns, onToggleVisibility: (field) => dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field }), onReorderColumns: (fromIndex, toIndex) => dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }), _jsx(ExportMenu, { columns: columns, fullDataset: rows, filteredData: filteredRows.filter((r) => !('isGroup' in r)), selectedRows: state.selection.selectedRows, currentPageData: paginatedRows.filter((r) => !('isGroup' in r)) }), persistenceConfig?.enabled && persistenceManager && (_jsx(LayoutPresetsManager, { manager: persistenceManager, currentLayout: getCurrentLayout(), onLoadPreset: (layout) => dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: layout }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }))] }), showDensityToggle && (_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx("span", { style: { fontSize: '13px', color: 'var(--grid-text-secondary)', fontWeight: '500' }, children: "Density:" }), _jsx(DensityToggle, { value: densityMode, onChange: setDensityMode })] }))] }), _jsx(GroupByPanel, { columns: columns, groupBy: state.groupBy, dispatch: dispatch }), _jsxs("div", { role: "rowgroup", style: { position: 'sticky', top: 0, zIndex: 20, width: '100%' }, children: [_jsx(GridHeader, { columns: columns, columnOrder: state.columnOrder, displayColumnOrder: displayColumnOrder, columnWidths: state.columnWidths, sortConfig: state.sortConfig, dispatch: dispatch, pinnedLeft: pinnedLeftFields, pinnedRight: pinnedRightFields, showColumnPinning: showColumnPinning, onContextMenu: (event, column, columnIndex) => handleContextMenu({
                             type: 'header',
                             column,
                             columnIndex,

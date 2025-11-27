@@ -28,7 +28,7 @@ export const useFocusTrap = (options: {
   useEffect(() => {
     if (!enabled || !containerRef.current) return;
     previouslyFocusedElement.current = document.activeElement as HTMLElement;
-    // ...existing code...
+    
     const getFocusableElements = (): HTMLElement[] => {
       if (!containerRef.current) return [];
 

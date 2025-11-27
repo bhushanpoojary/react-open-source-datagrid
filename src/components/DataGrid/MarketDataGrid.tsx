@@ -27,7 +27,7 @@ import './MarketDataGrid.css';
 export interface MarketDataGridProps {
   columns: Column[];
   rows: Row[];
-  engine: MarketDataEngine;
+  engine: MarketDataEngine | null;
   config?: MarketDataConfig;
   className?: string;
   onCellClick?: (rowId: string | number, field: string, value: any) => void;
@@ -57,7 +57,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   }, [rows]);
 
   // Enhanced columns with market data formatting
-  // ...existing code...
+  
   const enhancedColumns = useMemo(() => {
     return columns.map(col => {
       // Add custom renderers for market data fields

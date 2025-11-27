@@ -12,7 +12,7 @@
  * - Connection state tracking
  */
 
-// ...existing code...
+
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { MarketDataEngine } from './MarketDataEngine';
 import type { RowUpdate, MarketDataRow } from './MarketDataEngine';

@@ -12,7 +12,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * - Flash animations
  */
 /* eslint-disable */
-// ...existing code...
+
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MarketDataGrid } from './DataGrid/MarketDataGrid';

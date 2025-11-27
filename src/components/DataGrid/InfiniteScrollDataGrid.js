@@ -97,7 +97,7 @@ export const InfiniteScrollDataGrid = ({ columns, dataSource, pageSize = 100, sh
         if (onSelectionChange) {
             onSelectionChange(Array.from(state.selection.selectedRows));
         }
-        // ...existing code...
+        
     }, [state.selection.selectedRows]);
     // Track loaded row range for infinite scrolling
     const [loadedRange, setLoadedRange] = useState({ start: 0, end: pageSize * 15 }); // Start with 15 pages
@@ -167,7 +167,7 @@ export const InfiniteScrollDataGrid = ({ columns, dataSource, pageSize = 100, sh
                 });
             });
         }
-        // ...existing code...
+        
     }, [columns]);
     // Handle cell edit
     const handleCellEdit = useCallback((rowIndex, field, value) => {

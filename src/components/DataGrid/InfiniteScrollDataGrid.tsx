@@ -136,7 +136,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     if (onSelectionChange) {
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
-    // ...existing code...
+    
   }, [state.selection.selectedRows]);
 
   // Track loaded row range for infinite scrolling
@@ -218,7 +218,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
         });
       });
     }
-    // ...existing code...
+    
   }, [columns]);
 
   // Handle cell edit
