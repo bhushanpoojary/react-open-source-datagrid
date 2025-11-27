@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      // Redirect to index.html, preserving path, query, and hash
-      var pathname = window.location.pathname;
-      var search = window.location.search;
-      var hash = window.location.hash;
-      var redirectUrl = '/' + pathname.replace(/^\//, '') + search + hash;
-      window.location.replace(redirectUrl);
+      // Only redirect if not already at index.html or root
+      if (!window.location.pathname.endsWith('/index.html') && window.location.pathname !== '/') {
+        var pathname = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        var redirectUrl = '/' + pathname.replace(/^\//, '') + search + hash;
+        window.location.replace(redirectUrl);
+      }
     </script>
   </head>
   <body>
