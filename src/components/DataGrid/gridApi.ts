@@ -477,9 +477,15 @@ export class GridApiImpl implements GridApi {
 
   selectAll(): void {
     this.ensureNotDestroyed();
-    // Select all rows by adding each row ID
-    this.rows.forEach(row => {
-      this.dispatch({ type: 'SELECT_ROW', payload: { rowId: row.id, ctrlKey: true } });
+    // Select all rows at once using SELECT_RANGE action for efficiency
+    const rowIds = this.rows.map(row => row.id);
+    this.dispatch({ 
+      type: 'SELECT_RANGE', 
+      payload: { 
+        startIndex: 0, 
+        endIndex: this.rows.length - 1, 
+        rowIds 
+      } 
     });
     this.fireEvent('selectionChanged', { api: this });
   }
@@ -493,8 +499,14 @@ export class GridApiImpl implements GridApi {
   selectAllFiltered(): void {
     this.ensureNotDestroyed();
     const filteredRows = this.getFilteredRows();
-    filteredRows.forEach(row => {
-      this.dispatch({ type: 'SELECT_ROW', payload: { rowId: row.id, ctrlKey: true } });
+    const rowIds = filteredRows.map(row => row.id);
+    this.dispatch({ 
+      type: 'SELECT_RANGE', 
+      payload: { 
+        startIndex: 0, 
+        endIndex: filteredRows.length - 1, 
+        rowIds 
+      } 
     });
     this.fireEvent('selectionChanged', { api: this });
   }
