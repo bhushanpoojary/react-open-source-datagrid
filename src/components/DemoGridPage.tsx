@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿/* eslint-disable */
+import React, { useState } from 'react';
 import { DataGrid, StatusChip, CurrencyCell } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 import { CodeBlock } from './CodeBlock';

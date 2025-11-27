@@ -10,7 +10,7 @@
  * - Virtual scrolling
  */
 
-import React, { useReducer, useMemo, useEffect, useCallback, useState } from 'react';
+import React, { useReducer, useMemo, useEffect, useCallback, useState, useLayoutEffect } from 'react';
 import type { Column, Row, VirtualScrollConfig } from './types';
 import type { ServerSideDataSourceConfig } from './ServerSideDataSource';
 import { ServerSideDataSource } from './ServerSideDataSource';
@@ -69,25 +69,19 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   }, [_theme]);
 
   // Initialize data source
-  useEffect(() => {
+  useLayoutEffect(() => {
     let ds: ServerSideDataSource;
-    
     if (dataSource instanceof ServerSideDataSource) {
       ds = dataSource;
     } else {
       ds = new ServerSideDataSource(dataSource);
     }
-    
-    setDataSourceInstance(ds);
-    
     // Subscribe to data changes
     const unsubscribe = ds.subscribe(() => {
       setTotalRows(ds.getTotalRows());
     });
-    
-    // Initial load
-    setTotalRows(ds.getTotalRows());
-    
+    // Set instance in a separate effect
+    setTimeout(() => setDataSourceInstance(ds), 0);
     return () => {
       unsubscribe();
       if (!(dataSource instanceof ServerSideDataSource)) {
@@ -95,6 +89,13 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
       }
     };
   }, [dataSource]);
+
+  // Initial load for totalRows after instance creation
+  useEffect(() => {
+    if (dataSourceInstance) {
+      setTimeout(() => setTotalRows(dataSourceInstance.getTotalRows()), 0);
+    }
+  }, [dataSourceInstance]);
 
   // Update data source when sort changes
   useEffect(() => {
@@ -135,7 +136,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
     if (onSelectionChange) {
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [state.selection.selectedRows]);
 
   // Track loaded row range for infinite scrolling
@@ -217,7 +218,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
         });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [columns]);
 
   // Handle cell edit

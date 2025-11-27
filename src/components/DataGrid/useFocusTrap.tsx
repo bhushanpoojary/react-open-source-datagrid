@@ -5,21 +5,15 @@
  * Ensures keyboard navigation stays within the trapped area for accessibility.
  */
 
-/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useRef } from 'react';
 
-interface FocusTrapOptions {
+export const useFocusTrap = (options: {
   enabled?: boolean;
   initialFocus?: 'first' | 'last' | HTMLElement | null;
-  returnFocus?: boolean; // Return focus to trigger element on unmount
-  escapeDeactivates?: boolean; // Allow Escape key to deactivate trap
+  returnFocus?: boolean;
+  escapeDeactivates?: boolean;
   onEscape?: () => void;
-}
-
-/**
- * Hook to trap focus within a container element
- */
-export const useFocusTrap = (options: FocusTrapOptions = {}) => {
+} = {}) => {
   const {
     enabled = true,
     initialFocus = 'first',
@@ -28,16 +22,13 @@ export const useFocusTrap = (options: FocusTrapOptions = {}) => {
     onEscape,
   } = options;
 
-  const containerRef = useRef<HTMLElement | null>(null);
+  const containerRef = React.useRef<HTMLElement | null>(null);
   const previouslyFocusedElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!enabled || !containerRef.current) return;
-
-    // Save the currently focused element
     previouslyFocusedElement.current = document.activeElement as HTMLElement;
-
-    // Get all focusable elements within the container
+    // ...existing code...
     const getFocusableElements = (): HTMLElement[] => {
       if (!containerRef.current) return [];
 
@@ -134,26 +125,4 @@ export const useFocusTrap = (options: FocusTrapOptions = {}) => {
   return containerRef;
 };
 
-/**
- * Component wrapper for focus trap
- */
-interface FocusTrapProps extends FocusTrapOptions {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export const FocusTrap: React.FC<FocusTrapProps> = ({
-  children,
-  className,
-  style,
-  ...options
-}) => {
-  const trapRef = useFocusTrap(options);
-
-  return (
-    <div ref={trapRef as React.RefObject<HTMLDivElement>} className={className} style={style}>
-      {children}
-    </div>
-  );
-};
+// If you need the FocusTrap component, import it from './FocusTrap'

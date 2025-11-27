@@ -69,6 +69,12 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onRowReorder,
   onGridReady,
 }, ref) => {
+  // Place hooks here
+  const { announcementRef } = useScreenReaderAnnouncements();
+  const [announcementMessage, setAnnouncementMessage] = useState('');
+  useEffect(() => {
+    setAnnouncementMessage(announcementRef.current ?? '');
+  }, [announcementRef]);
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
     gridReducer,
@@ -217,7 +223,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         setInternalRows
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, []);
   
   // Update API state on every render (using ref to avoid effect dependencies)
@@ -257,7 +263,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       onGridReadyCalledRef.current = true;
       onGridReadyCallbackRef.current(gridApiRef.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, []);
 
   // Cleanup on unmount
@@ -292,7 +298,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     return () => {
       autoSaveRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [
     persistenceConfig,
     persistenceManager,
@@ -319,7 +325,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         onLayoutChange(layout);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [
     onLayoutChange,
     state.columnOrder,
@@ -359,7 +365,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       onSelectionChange(Array.from(state.selection.selectedRows));
     }
     announceSelection(state.selection.selectedRows.size);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [state.selection.selectedRows]);
 
   // Notify parent of pinned row changes (skip initial mount)
@@ -369,7 +375,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
     }
     pinnedRowsMountedRef.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
 
   // Announce sorting changes to screen readers
@@ -380,7 +386,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         announceSorting(column.headerName, state.sortConfig.direction);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [state.sortConfig.field, state.sortConfig.direction]);
 
   // Apply sorting
@@ -462,7 +468,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     if (rowCount > 0) {
       announcePagination(state.currentPage, totalPages, rowCount);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [state.currentPage, state.pageSize]);
 
   // Separate pinned and unpinned rows
@@ -570,7 +576,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // ...existing code...
   }, [columns]);
 
   // Handle cell edit with callback
@@ -609,7 +615,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       className={`data-grid density-${densityMode}`}
     >
       {/* Screen Reader Announcements - Live Region */}
-      <ScreenReaderAnnouncer message={announcementRef.current} priority="polite" />
+      <ScreenReaderAnnouncer message={announcementMessage} priority="polite" />
+        // ...existing code...
       
       {/* Toolbar */}
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }}>

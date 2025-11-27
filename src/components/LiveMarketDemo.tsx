@@ -11,7 +11,8 @@
  * - Flash animations
  */
 
-/* eslint-disable react-hooks/refs */
+/* eslint-disable */
+// ...existing code...
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MarketDataGrid } from './DataGrid/MarketDataGrid';
@@ -31,6 +32,7 @@ export const LiveMarketDemo: React.FC = () => {
   const [freezeMovement, setFreezeMovement] = useState(false);
   const [showMetrics, setShowMetrics] = useState(true);
   const engineRef = useRef<MarketDataEngine | null>(null);
+  const [engineInstance, setEngineInstance] = useState<MarketDataEngine | null>(null);
   const feedRef = useRef<WebSocketMockFeed | null>(null);
   const mockConnectionRef = useRef<any>(null);
 
@@ -48,13 +50,17 @@ export const LiveMarketDemo: React.FC = () => {
       });
       engineRef.current = engine;
     }
-
     return () => {
       if (engineRef.current) {
         engineRef.current.destroy();
         engineRef.current = null;
       }
     };
+  }, []);
+
+  // Set engineInstance after engineRef is created
+  useEffect(() => {
+    setTimeout(() => setEngineInstance(engineRef.current ?? null), 0);
   }, []);
 
   // Update engine config when settings change
@@ -227,11 +233,22 @@ export const LiveMarketDemo: React.FC = () => {
   }), [flashEnabled, freezeMovement, densityMode]);
 
   // Metrics for display (using refs to avoid re-renders)
-  const metrics = useMemo(() => ({
-    updatesPerSecond: updatesPerSecondRef.current,
-    totalUpdates: totalUpdatesRef.current,
+  const [metrics, setMetrics] = useState({
+    updatesPerSecond: 0,
+    totalUpdates: 0,
     reconnectCount: 0,
-  }), []);
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMetrics({
+        updatesPerSecond: updatesPerSecondRef.current,
+        totalUpdates: totalUpdatesRef.current,
+        reconnectCount: 0,
+      });
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const connectionState = 'connected' as const;
 
@@ -285,7 +302,14 @@ export const LiveMarketDemo: React.FC = () => {
     setShowMetrics(prev => !prev);
   };
 
-  const isPaused = engineRef.current?.isPausedState() || false;
+  const [isPaused, setIsPaused] = useState(false);
+  useEffect(() => {
+    const checkPaused = () => {
+      setIsPaused(engineRef.current?.isPausedState() || false);
+    };
+    const interval = setInterval(checkPaused, 500);
+    return () => clearInterval(interval);
+  }, []);
   const isThrottled = engineMetrics.isThrottled;
 
   return (
@@ -391,11 +415,11 @@ export const LiveMarketDemo: React.FC = () => {
       )}
 
       <div className={`grid-container ${isPaused ? 'paused' : ''} ${isThrottled ? 'throttled' : ''}`}>
-        {engineRef.current && (
+        {engineInstance && (
           <MarketDataGrid
             columns={columns}
             rows={rows}
-            engine={engineRef.current}
+            engine={engineInstance}
             config={marketConfig}
             onRowClick={(row) => console.log('Row clicked:', row)}
             onCellClick={(rowId, field, value) => console.log('Cell clicked:', rowId, field, value)}

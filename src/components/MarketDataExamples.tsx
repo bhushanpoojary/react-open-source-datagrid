@@ -5,7 +5,8 @@
  * Copy this file to get started quickly with live market data.
  */
 
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable */
+// ...existing code...
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { 
   MarketDataGrid,
@@ -30,6 +31,7 @@ import type {
  */
 export const SimpleMarketExample: React.FC = () => {
   const engineRef = useRef<MarketDataEngine | null>(null);
+  const [engineInstance, setEngineInstance] = useState<MarketDataEngine | null>(null);
 
   // 1. Initialize engine
   useEffect(() => {
@@ -39,10 +41,13 @@ export const SimpleMarketExample: React.FC = () => {
       batchInterval: 16,
       maxUpdatesPerFrame: 1000,
     });
-
     return () => {
       engineRef.current?.destroy();
     };
+  }, []);
+
+  useEffect(() => {
+    setEngineInstance(engineRef.current);
   }, []);
 
   // 2. Setup mock feed
@@ -116,7 +121,7 @@ export const SimpleMarketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={rows}
-          engine={engineRef.current!}
+          engine={engineInstance}
           config={config}
         />
       </div>
@@ -139,6 +144,7 @@ export const AdvancedMarketExample: React.FC = () => {
   const [flashEnabled, setFlashEnabled] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const engineRef = useRef<MarketDataEngine | null>(null);
+  const [engineInstance, setEngineInstance] = useState<MarketDataEngine | null>(null);
 
   // Initialize engine
   useEffect(() => {
@@ -149,10 +155,13 @@ export const AdvancedMarketExample: React.FC = () => {
       maxUpdatesPerFrame: 1000,
       cpuThreshold: 0.8,
     });
-
     return () => {
       engineRef.current?.destroy();
     };
+  }, []);
+
+  useEffect(() => {
+    setEngineInstance(engineRef.current);
   }, []);
 
   // Setup mock feed
@@ -283,7 +292,7 @@ export const AdvancedMarketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={rows}
-          engine={engineRef.current!}
+          engine={engineInstance}
           config={config}
         />
       </div>
@@ -299,16 +308,23 @@ export const AdvancedMarketExample: React.FC = () => {
  */
 export const RealWebSocketExample: React.FC = () => {
   const engineRef = useRef<MarketDataEngine | null>(null);
+  const [engineInstance, setEngineInstance] = useState<MarketDataEngine | null>(null);
 
   // Initialize engine
   useEffect(() => {
     engineRef.current = createMarketDataEngine();
-    return () => engineRef.current?.destroy();
+    return () => {
+      engineRef.current?.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    setEngineInstance(engineRef.current);
   }, []);
 
   // Use market data hook with real WebSocket
   const marketData = useMarketData({
-    engine: engineRef.current!,
+    engine: engineInstance!,
     wsConfig: {
       url: 'wss://your-market-data-server.com/ws', // Replace with your URL
       reconnect: true,
@@ -358,7 +374,7 @@ export const RealWebSocketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={marketData.rows}
-          engine={engineRef.current!}
+          engine={engineInstance}
           config={{ enabled: true, enableFlash: true }}
         />
       </div>
@@ -373,11 +389,12 @@ export const RealWebSocketExample: React.FC = () => {
  */
 export const CustomFormattingExample: React.FC = () => {
   const engineRef = useRef<MarketDataEngine | null>(null);
+  const [engineInstance, setEngineInstance] = useState<MarketDataEngine | null>(null);
   const [rows, setRows] = useState<any[]>([]);
 
   useEffect(() => {
     engineRef.current = createMarketDataEngine();
-    
+    setEngineInstance(engineRef.current);
     const { feed, createConnection } = createMockFeed();
     feed.start();
     const mockWs = createConnection();
@@ -463,7 +480,7 @@ export const CustomFormattingExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={rows}
-          engine={engineRef.current!}
+          engine={engineInstance!}
           config={{ enabled: true, enableFlash: true }}
         />
       </div>

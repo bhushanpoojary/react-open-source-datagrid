@@ -5,19 +5,13 @@
  * Provides accessible feedback for grid actions like sorting, filtering, selection, and navigation.
  */
 
-/* eslint-disable react-refresh/only-export-components */
 import React, { useRef, useCallback, useEffect } from 'react';
-
-interface AnnouncementOptions {
-  priority?: 'polite' | 'assertive';
-  delay?: number; // Delay in ms before announcement (useful for debouncing)
-}
+// If you need the announcer component, import it from './ScreenReaderAnnouncer'
 
 export const useScreenReaderAnnouncements = () => {
-  const announcementRef = useRef<string>('');
+  const announcementRef = React.useRef<string>('');
   const timeoutRef = useRef<number | null>(null);
 
-  // Clean up timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -26,17 +20,11 @@ export const useScreenReaderAnnouncements = () => {
     };
   }, []);
 
-  /**
-   * Announce a message to screen readers
-   */
-  const announce = useCallback((message: string, options: AnnouncementOptions = {}) => {
+  const announce = useCallback((message: string, options: { priority?: 'polite' | 'assertive'; delay?: number } = {}) => {
     const { delay = 0 } = options;
-
-    // Clear any pending announcements
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-
     if (delay > 0) {
       timeoutRef.current = setTimeout(() => {
         announcementRef.current = message;
@@ -153,29 +141,4 @@ export const useScreenReaderAnnouncements = () => {
   };
 };
 
-/**
- * Helper component to render the live region
- */
-export const ScreenReaderAnnouncer: React.FC<{ message: string; priority?: 'polite' | 'assertive' }> = ({ 
-  message, 
-  priority = 'polite' 
-}) => {
-  return (
-    <div
-      role={priority === 'assertive' ? 'alert' : 'status'}
-      aria-live={priority}
-      aria-atomic="true"
-      style={{
-        position: 'absolute',
-        left: '-10000px',
-        width: '1px',
-        height: '1px',
-        overflow: 'hidden',
-        clip: 'rect(0, 0, 0, 0)',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {message}
-    </div>
-  );
-};
+// ...existing code...

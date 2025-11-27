@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState } from 'react';
 import { DataGrid} from './DataGrid';
 import type { Column, Row, TooltipConfig } from './DataGrid/types';

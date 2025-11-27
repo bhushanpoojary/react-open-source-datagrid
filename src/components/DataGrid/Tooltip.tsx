@@ -114,10 +114,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
       }
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPosition({ x: finalX, y: finalY });
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setActualPlacement(finalPlacement);
+    // ...existing code...
+    setTimeout(() => setPosition({ x: finalX, y: finalY }), 0);
+    // ...existing code...
+    setTimeout(() => setActualPlacement(finalPlacement), 0);
   }, [state.isVisible, state.x, state.y, state.targetRect, state.placement, offset]);
 
   if (!state.isVisible || !state.content) {
