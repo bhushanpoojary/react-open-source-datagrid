@@ -11,35 +11,59 @@ import { CodeBlock } from './CodeBlock';
  * - Event handlers for row clicks, cell edits, and selection changes
  * - Customizable column configuration
  */
+// Helper function to generate employee data
+const generateEmployeeData = (count: number): Row[] => {
+  const firstNames = ['John', 'Jane', 'Bob', 'Alice', 'Charlie', 'Diana', 'Evan', 'Fiona', 'George', 'Hannah', 
+    'Ian', 'Julia', 'Kevin', 'Laura', 'Michael', 'Nina', 'Oscar', 'Paula', 'Quinn', 'Rachel',
+    'Samuel', 'Tina', 'Uma', 'Victor', 'Wendy', 'Xavier', 'Yara', 'Zoe', 'Adam', 'Beth',
+    'Chris', 'Debbie', 'Edward', 'Faith', 'Gary', 'Helen', 'Isaac', 'Jenny', 'Keith', 'Lisa'];
+  
+  const lastNames = ['Doe', 'Smith', 'Johnson', 'Williams', 'Brown', 'Prince', 'Davis', 'Garcia', 'Miller', 'Wilson',
+    'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Lee', 'Walker',
+    'Hall', 'Allen', 'Young', 'King', 'Scott', 'Green', 'Baker', 'Adams', 'Nelson', 'Carter',
+    'Mitchell', 'Roberts', 'Turner', 'Phillips', 'Campbell', 'Parker', 'Evans', 'Edwards', 'Collins', 'Stewart'];
+  
+  const positions = ['Software Engineer', 'Product Manager', 'UX Designer', 'DevOps Engineer', 'Data Analyst',
+    'Marketing Manager', 'Sales Representative', 'HR Specialist', 'QA Engineer', 'Content Writer',
+    'Backend Developer', 'Frontend Developer', 'Business Analyst', 'UI Designer', 'System Administrator',
+    'Customer Support', 'Senior Engineer', 'Scrum Master', 'Security Analyst', 'Finance Manager',
+    'Legal Counsel', 'Technical Writer', 'Cloud Architect', 'Mobile Developer', 'Account Manager'];
+  
+  const departments = ['Engineering', 'Product', 'Design', 'Analytics', 'Marketing', 'Sales',
+    'Human Resources', 'Support', 'IT', 'Security', 'Finance', 'Legal', 'Documentation'];
+  
+  const statuses = ['Active', 'Active', 'Active', 'Inactive', 'Pending'];
+  
+  const employees: Row[] = [];
+  
+  for (let i = 1; i <= count; i++) {
+    const firstName = firstNames[(i - 1) % firstNames.length];
+    const lastName = lastNames[Math.floor((i - 1) / firstNames.length) % lastNames.length];
+    const name = `${firstName} ${lastName} ${i > 40 ? i : ''}`.trim();
+    
+    // Generate a date within the last 5 years
+    const year = 2019 + (i % 6);
+    const month = (i % 12) + 1;
+    const day = ((i * 7) % 28) + 1;
+    const joinDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    
+    employees.push({
+      id: i,
+      name,
+      position: positions[(i - 1) % positions.length],
+      department: departments[(i - 1) % departments.length],
+      salary: 50000 + ((i * 1234) % 100000),
+      joinDate,
+      status: statuses[(i - 1) % statuses.length],
+    });
+  }
+  
+  return employees;
+};
+
 export const DemoGridPage: React.FC = () => {
-  // Sample data: Employee records
-  const [employees, setEmployees] = useState<Row[]>([
-    { id: 1, name: 'John Doe', position: 'Software Engineer', department: 'Engineering', salary: 95000, joinDate: '2020-03-15', status: 'Active' },
-    { id: 2, name: 'Jane Smith', position: 'Product Manager', department: 'Product', salary: 110000, joinDate: '2019-07-22', status: 'Active' },
-    { id: 3, name: 'Bob Johnson', position: 'UX Designer', department: 'Design', salary: 85000, joinDate: '2021-01-10', status: 'Active' },
-    { id: 4, name: 'Alice Williams', position: 'DevOps Engineer', department: 'Engineering', salary: 100000, joinDate: '2020-09-05', status: 'Active' },
-    { id: 5, name: 'Charlie Brown', position: 'Data Analyst', department: 'Analytics', salary: 80000, joinDate: '2021-06-12', status: 'Active' },
-    { id: 6, name: 'Diana Prince', position: 'Marketing Manager', department: 'Marketing', salary: 95000, joinDate: '2019-11-30', status: 'Active' },
-    { id: 7, name: 'Evan Davis', position: 'Sales Representative', department: 'Sales', salary: 70000, joinDate: '2022-02-14', status: 'Active' },
-    { id: 8, name: 'Fiona Garcia', position: 'HR Specialist', department: 'Human Resources', salary: 75000, joinDate: '2020-05-20', status: 'Active' },
-    { id: 9, name: 'George Miller', position: 'QA Engineer', department: 'Engineering', salary: 82000, joinDate: '2021-08-03', status: 'Active' },
-    { id: 10, name: 'Hannah Wilson', position: 'Content Writer', department: 'Marketing', salary: 65000, joinDate: '2022-01-25', status: 'Active' },
-    { id: 11, name: 'Ian Moore', position: 'Backend Developer', department: 'Engineering', salary: 98000, joinDate: '2020-10-12', status: 'Active' },
-    { id: 12, name: 'Julia Taylor', position: 'Frontend Developer', department: 'Engineering', salary: 92000, joinDate: '2021-03-08', status: 'Active' },
-    { id: 13, name: 'Kevin Anderson', position: 'Business Analyst', department: 'Analytics', salary: 88000, joinDate: '2019-12-15', status: 'Active' },
-    { id: 14, name: 'Laura Thomas', position: 'UI Designer', department: 'Design', salary: 83000, joinDate: '2021-05-19', status: 'Active' },
-    { id: 15, name: 'Michael Jackson', position: 'System Administrator', department: 'IT', salary: 79000, joinDate: '2020-07-30', status: 'Active' },
-    { id: 16, name: 'Nina White', position: 'Customer Support', department: 'Support', salary: 60000, joinDate: '2022-03-11', status: 'Active' },
-    { id: 17, name: 'Oscar Harris', position: 'Senior Engineer', department: 'Engineering', salary: 120000, joinDate: '2018-04-20', status: 'Active' },
-    { id: 18, name: 'Paula Martin', position: 'Scrum Master', department: 'Engineering', salary: 105000, joinDate: '2020-08-15', status: 'Active' },
-    { id: 19, name: 'Quinn Lee', position: 'Security Analyst', department: 'Security', salary: 93000, joinDate: '2021-11-05', status: 'Active' },
-    { id: 20, name: 'Rachel Walker', position: 'Finance Manager', department: 'Finance', salary: 115000, joinDate: '2019-06-10', status: 'Active' },
-    { id: 21, name: 'Samuel Hall', position: 'Legal Counsel', department: 'Legal', salary: 125000, joinDate: '2019-01-15', status: 'Active' },
-    { id: 22, name: 'Tina Allen', position: 'Technical Writer', department: 'Documentation', salary: 72000, joinDate: '2021-09-20', status: 'Active' },
-    { id: 23, name: 'Uma Young', position: 'Cloud Architect', department: 'Engineering', salary: 135000, joinDate: '2018-11-12', status: 'Active' },
-    { id: 24, name: 'Victor King', position: 'Mobile Developer', department: 'Engineering', salary: 96000, joinDate: '2020-12-08', status: 'Active' },
-    { id: 25, name: 'Wendy Scott', position: 'Account Manager', department: 'Sales', salary: 85000, joinDate: '2021-04-22', status: 'Active' },
-  ]);
+  // Sample data: Employee records - Generate 100 employees
+  const [employees, setEmployees] = useState<Row[]>(generateEmployeeData(100));
 
   // Column definitions
   const columns: Column[] = [

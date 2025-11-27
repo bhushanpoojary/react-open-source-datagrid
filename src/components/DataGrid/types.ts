@@ -195,6 +195,7 @@ export type GridAction =
   | { type: 'PIN_COLUMN'; payload: { field: string; side: 'left' | 'right' } }
   | { type: 'UNPIN_COLUMN'; payload: string }
   | { type: 'TOGGLE_COLUMN_VISIBILITY'; payload: string }
+  | { type: 'SET_COLUMN_VISIBILITY'; payload: { field: string; visible: boolean } }
   | { type: 'RESET_COLUMN_LAYOUT' }
   | { type: 'LOAD_LAYOUT_PRESET'; payload: LayoutPreset['layout'] }
   | { type: 'APPLY_LAYOUT'; payload: Partial<LayoutPreset['layout']> }

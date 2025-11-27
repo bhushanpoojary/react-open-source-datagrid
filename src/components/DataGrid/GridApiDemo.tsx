@@ -16,10 +16,9 @@ export const GridApiDemo: React.FC = () => {
   };
 
   // onGridReady callback - called when grid API is initialized
-  const handleGridReady = (api: GridApi) => {
+  const handleGridReady = (_api: GridApi) => {
     setIsGridReady(true);
     addLog('✅ Grid API is ready! You can now call API methods.');
-    console.log('Grid API instance:', api);
   };
 
   // Sample data
@@ -32,16 +31,29 @@ export const GridApiDemo: React.FC = () => {
     { field: 'score', headerName: 'Score', width: 100, sortable: true, filterable: true },
   ]);
 
-  const [rows] = useState<Row[]>([
-    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', score: 95 },
-    { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User', status: 'Active', score: 87 },
-    { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'Manager', status: 'Inactive', score: 92 },
-    { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'User', status: 'Active', score: 88 },
-    { id: 5, name: 'Eve Wilson', email: 'eve@example.com', role: 'Admin', status: 'Active', score: 94 },
-    { id: 6, name: 'Frank Miller', email: 'frank@example.com', role: 'User', status: 'Pending', score: 78 },
-    { id: 7, name: 'Grace Lee', email: 'grace@example.com', role: 'Manager', status: 'Active', score: 91 },
-    { id: 8, name: 'Henry Ford', email: 'henry@example.com', role: 'User', status: 'Active', score: 85 },
-  ]);
+  const [rows] = useState<Row[]>(() => {
+    const roles = ['Admin', 'User', 'Manager'];
+    const statuses = ['Active', 'Inactive', 'Pending'];
+    const names = [
+      'Alice Johnson', 'Bob Smith', 'Charlie Brown', 'Diana Prince', 'Eve Wilson', 'Frank Miller', 'Grace Lee', 'Henry Ford',
+      'Ivy Green', 'Jack Black', 'Karen White', 'Leo King', 'Mona Lisa', 'Nina Brown', 'Oscar Wilde', 'Paul Allen',
+      'Quinn Fox', 'Rita Ora', 'Sam Hunt', 'Tina Fey', 'Uma Thurman', 'Victor Hugo', 'Wendy Wu', 'Xander Cage',
+      'Yara Shahidi', 'Zane Grey'
+    ];
+    const rows: Row[] = [];
+    for (let i = 1; i <= 100; i++) {
+      const name = names[i % names.length] + ' ' + i;
+      rows.push({
+        id: i,
+        name,
+        email: name.replace(/\s+/g, '').toLowerCase() + '@example.com',
+        role: roles[i % roles.length],
+        status: statuses[i % statuses.length],
+        score: Math.floor(Math.random() * 100),
+      });
+    }
+    return rows;
+  });
 
   // Data operations
   const handleAddRow = () => {
@@ -209,7 +221,6 @@ export const GridApiDemo: React.FC = () => {
 
     const selectedRows = api.getSelectedRows();
     addLog(`Selected ${selectedRows.length} row(s)`);
-    console.log('Selected rows:', selectedRows);
   };
 
   // Export operations
@@ -396,7 +407,7 @@ export const GridApiDemo: React.FC = () => {
         ref={gridRef}
         columns={columns}
         rows={rows}
-        pageSize={5}
+        pageSize={10}
         theme="quartz"
         densityMode="normal"
         showDensityToggle
@@ -419,9 +430,7 @@ const MyComponent = () => {
   const gridRef = useRef<GridApi>(null);
 
   const handleGridReady = (api: GridApi) => {
-    console.log('Grid is ready!', api);
-    
-    // Now you can safely call API methods
+    // Grid is ready - now you can safely call API methods
     api.sizeColumnsToFit();
     api.setFilterModel({ name: { value: 'John' } });
   };

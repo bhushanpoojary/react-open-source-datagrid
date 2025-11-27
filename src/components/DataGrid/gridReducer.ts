@@ -146,6 +146,22 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
       };
     }
 
+    case 'SELECT_ALL_ROWS': {
+      // This will be populated by the grid with all row IDs
+      // For now, return state as the API handles selection differently
+      return state;
+    }
+
+    case 'DESELECT_ALL_ROWS': {
+      return {
+        ...state,
+        selection: {
+          selectedRows: new Set(),
+          lastSelectedIndex: null,
+        },
+      };
+    }
+
     case 'CLEAR_SELECTION': {
       return {
         ...state,
@@ -342,6 +358,27 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
       };
     }
 
+    case 'SET_COLUMN_VISIBILITY': {
+      const { field, visible } = action.payload;
+      const hiddenSet = new Set(state.hiddenColumns);
+      
+      if (visible) {
+        // Show the column
+        hiddenSet.delete(field);
+      } else {
+        // Hide the column (but ensure at least one column remains visible)
+        const visibleColumns = state.columnOrder.filter(f => !hiddenSet.has(f));
+        if (visibleColumns.length > 1) {
+          hiddenSet.add(field);
+        }
+      }
+
+      return {
+        ...state,
+        hiddenColumns: Array.from(hiddenSet),
+      };
+    }
+
     case 'RESET_COLUMN_LAYOUT': {
       // Reset to original column order and show all columns
       const columnOrder = state.columns.map(col => col.field);
@@ -498,6 +535,12 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         pinnedRowsTop: state.pinnedRowsTop.filter(id => id !== rowId),
         pinnedRowsBottom: state.pinnedRowsBottom.filter(id => id !== rowId),
       };
+    }
+
+    case 'SET_ROW_DATA': {
+      // Update row data - typically called from applyTransaction
+      // Note: rows are managed externally, this just triggers a re-render
+      return { ...state };
     }
 
     default:

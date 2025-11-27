@@ -34,6 +34,7 @@ export class GridApiImpl implements GridApi {
   private destroyed = false;
   private containerRef: React.RefObject<HTMLDivElement | null>;
   private eventListeners: Map<string, Set<(event: unknown) => void>> = new Map();
+  private setInternalRows?: (rows: Row[]) => void;
 
   constructor(
     state: GridState,
@@ -41,7 +42,8 @@ export class GridApiImpl implements GridApi {
     columns: Column[],
     rows: Row[],
     containerRef: React.RefObject<HTMLDivElement | null>,
-    persistenceManager?: LayoutPersistenceManager | null
+    persistenceManager?: LayoutPersistenceManager | null,
+    setInternalRows?: (rows: Row[]) => void
   ) {
     this.state = state;
     this.dispatch = dispatch;
@@ -49,6 +51,7 @@ export class GridApiImpl implements GridApi {
     this.rows = rows;
     this.containerRef = containerRef;
     this.persistenceManager = persistenceManager || null;
+    this.setInternalRows = setInternalRows;
   }
 
   /**
@@ -71,6 +74,9 @@ export class GridApiImpl implements GridApi {
   setRowData(rows: Row[]): void {
     this.ensureNotDestroyed();
     this.rows = rows;
+    if (this.setInternalRows) {
+      this.setInternalRows(rows);
+    }
     this.dispatch({ type: 'SET_ROW_DATA', payload: rows });
     this.fireEvent('rowDataChanged', { api: this, rows });
   }
@@ -238,7 +244,7 @@ export class GridApiImpl implements GridApi {
     this.ensureNotDestroyed();
     const field = this.resolveColKey(key);
     if (field) {
-      this.dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field });
+      this.dispatch({ type: 'SET_COLUMN_VISIBILITY', payload: { field, visible } });
       this.fireEvent('columnVisible', { api: this, column: field, visible });
     }
   }
@@ -412,7 +418,7 @@ export class GridApiImpl implements GridApi {
 
   clearAllFilters(): void {
     this.ensureNotDestroyed();
-    this.dispatch({ type: 'CLEAR_ALL_FILTERS' });
+    this.dispatch({ type: 'CLEAR_FILTERS' });
     this.fireEvent('filterChanged', { api: this, filterModel: {} });
   }
 
@@ -464,7 +470,10 @@ export class GridApiImpl implements GridApi {
 
   selectAll(): void {
     this.ensureNotDestroyed();
-    this.dispatch({ type: 'SELECT_ALL_ROWS' });
+    // Select all rows by adding each row ID
+    this.rows.forEach(row => {
+      this.dispatch({ type: 'SELECT_ROW', payload: { rowId: row.id, ctrlKey: true } });
+    });
     this.fireEvent('selectionChanged', { api: this });
   }
 

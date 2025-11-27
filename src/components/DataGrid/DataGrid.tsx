@@ -76,6 +76,19 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     (args) => createInitialState(args.columns, args.pageSize)
   );
 
+  // Internal rows state for API transactions (overrides props.rows when set)
+  const [internalRows, setInternalRows] = useState<Row[] | null>(null);
+  const activeRows = internalRows !== null ? internalRows : rows;
+
+  // Reset internal rows when external rows prop changes
+  const rowsRef = useRef(rows);
+  useEffect(() => {
+    if (rows !== rowsRef.current) {
+      rowsRef.current = rows;
+      setInternalRows(null); // Reset to use prop rows
+    }
+  }, [rows]);
+
   // Container ref for Grid API
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -198,16 +211,17 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         state,
         dispatch,
         columns,
-        rows,
+        activeRows,
         containerRef,
-        persistenceManager
+        persistenceManager,
+        setInternalRows
       );
     } else {
       // Update API with latest state and data
       gridApiRef.current.updateState(state);
-      gridApiRef.current.updateData(columns, rows);
+      gridApiRef.current.updateData(columns, activeRows);
     }
-  }, [state, columns, rows, persistenceManager]);
+  }, [state, columns, activeRows, persistenceManager]);
 
   // Expose Grid API via ref
   useImperativeHandle(ref, () => {
@@ -216,20 +230,31 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         state,
         dispatch,
         columns,
-        rows,
+        activeRows,
         containerRef,
-        persistenceManager
+        persistenceManager,
+        setInternalRows
       );
     }
     return gridApiRef.current;
-  }, [state, columns, rows, persistenceManager]);
+  }, [state, columns, activeRows, persistenceManager]);
 
-  // Call onGridReady when API is initialized
+  // Call onGridReady when API is initialized (only once)
+  const onGridReadyCalledRef = useRef(false);
+  const onGridReadyCallbackRef = useRef(onGridReady);
+  
+  // Update callback ref when it changes
   useEffect(() => {
-    if (gridApiRef.current && onGridReady) {
-      onGridReady(gridApiRef.current);
-    }
+    onGridReadyCallbackRef.current = onGridReady;
   }, [onGridReady]);
+  
+  useEffect(() => {
+    if (gridApiRef.current && onGridReadyCallbackRef.current && !onGridReadyCalledRef.current) {
+      onGridReadyCalledRef.current = true;
+      onGridReadyCallbackRef.current(gridApiRef.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -355,10 +380,10 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   // Apply sorting
   const sortedRows = useMemo(() => {
     if (!state.sortConfig.field || !state.sortConfig.direction) {
-      return rows;
+      return activeRows;
     }
 
-    const sorted = [...rows].sort((a, b) => {
+    const sorted = [...activeRows].sort((a, b) => {
       const aValue = a[state.sortConfig.field];
       const bValue = b[state.sortConfig.field];
 
@@ -383,7 +408,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     }
 
     return sorted;
-  }, [rows, state.sortConfig]);
+  }, [activeRows, state.sortConfig]);
 
   // Apply filtering using the new filter utilities
   const filteredRows = useMemo(() => {
