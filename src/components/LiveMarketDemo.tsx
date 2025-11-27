@@ -40,8 +40,8 @@ export const LiveMarketDemo: React.FC = () => {
         flashDuration: 500,
         enableFlash: flashEnabled,
         batchInterval: 16,
-        maxUpdatesPerFrame: 1000,
-        cpuThreshold: 0.8,
+        maxUpdatesPerFrame: 2000,
+        cpuThreshold: 0.9, // Higher threshold to reduce throttling
         enableLiveSorting: false,
         enableRankingMovement: !freezeMovement,
       });
@@ -72,17 +72,23 @@ export const LiveMarketDemo: React.FC = () => {
   const updateCountRef = useRef(0);
   const totalUpdatesRef = useRef(0);
   const lastUpdateTimeRef = useRef(Date.now());
-  const [updatesPerSecond, setUpdatesPerSecond] = useState(0);
+  const updatesPerSecondRef = useRef(0);
 
-  // Update updates/sec counter periodically
+  // Update updates/sec counter periodically (without triggering re-render)
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsed = (now - lastUpdateTimeRef.current) / 1000;
       const rate = elapsed > 0 ? Math.round(updateCountRef.current / elapsed) : 0;
-      setUpdatesPerSecond(rate);
+      updatesPerSecondRef.current = rate;
       updateCountRef.current = 0;
       lastUpdateTimeRef.current = now;
+      
+      // Update the DOM directly without triggering React re-render
+      const badge = document.querySelector('.updates-per-sec-badge');
+      if (badge) {
+        badge.textContent = `${rate} updates/s`;
+      }
     }, 1000);
 
     return () => clearInterval(interval);
@@ -93,7 +99,7 @@ export const LiveMarketDemo: React.FC = () => {
     if (!engineRef.current) return;
 
     const { feed, createConnection } = createMockFeed({
-      updateFrequency: 20, // 20 updates/sec per symbol
+      updateFrequency: 25, // 25 updates/sec per symbol (50 symbols × 25 = 1250 updates/sec)
       priceVolatility: 0.003, // 0.3% volatility
       burstProbability: 0.15, // 15% burst chance
       burstSize: 8,
@@ -120,7 +126,7 @@ export const LiveMarketDemo: React.FC = () => {
           engineRef.current?.initialize(data.data);
           setRows([...data.data]); // Also set initial rows
         } else if (data.type === 'tick') {
-          // Count this update
+          // Count tick messages (not individual field updates)
           updateCountRef.current++;
           totalUpdatesRef.current++;
           
@@ -237,12 +243,12 @@ export const LiveMarketDemo: React.FC = () => {
     densityMode,
   }), [flashEnabled, freezeMovement, densityMode]);
 
-  // Metrics for display
+  // Metrics for display (using refs to avoid re-renders)
   const metrics = useMemo(() => ({
-    updatesPerSecond: updatesPerSecond,
+    updatesPerSecond: updatesPerSecondRef.current,
     totalUpdates: totalUpdatesRef.current,
     reconnectCount: 0,
-  }), [updatesPerSecond]);
+  }), []);
 
   const connectionState = 'connected' as const;
 
@@ -355,8 +361,8 @@ export const LiveMarketDemo: React.FC = () => {
           <span className={`status-badge ${connectionState}`}>
             {connectionState.toUpperCase()}
           </span>
-          <span className="metric-badge">
-            {metrics.updatesPerSecond} updates/s
+          <span className="metric-badge updates-per-sec-badge">
+            0 updates/s
           </span>
           <span className="metric-badge">
             {rows.length} symbols
