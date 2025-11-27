@@ -1,7 +1,7 @@
 {
   "name": "react-open-source-grid",
   "private": false,
-  "version": "1.5.1",
+  "version": "1.5.2",
   "type": "module",
   "description": "A high-performance React DataGrid component with advanced features like virtual scrolling, infinite scrolling, tree data, market data mode, and more",
   "main": "./dist/lib/index.cjs",
@@ -11,8 +11,11 @@
     ".": {
       "types": "./dist/lib/index.d.ts",
       "import": "./dist/lib/index.js",
-      "require": "./dist/lib/index.cjs"
-    }
+      "require": "./dist/lib/index.cjs",
+      "browser": "./dist/lib/index.js",
+      "default": "./dist/lib/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
