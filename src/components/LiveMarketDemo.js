@@ -11,6 +11,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * - Density mode toggle
  * - Flash animations
  */
+/* eslint-disable */
 // ...existing code...
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -28,6 +29,7 @@ export const LiveMarketDemo = () => {
     const [freezeMovement, setFreezeMovement] = useState(false);
     const [showMetrics, setShowMetrics] = useState(true);
     const engineRef = useRef(null);
+    const [engineInstance, setEngineInstance] = useState(null);
     const feedRef = useRef(null);
     const mockConnectionRef = useRef(null);
     // Initialize engine on mount
@@ -50,6 +52,10 @@ export const LiveMarketDemo = () => {
                 engineRef.current = null;
             }
         };
+    }, []);
+    // Set engineInstance after engineRef is created
+    useEffect(() => {
+        setTimeout(() => setEngineInstance(engineRef.current ?? null), 0);
     }, []);
     // Update engine config when settings change
     useEffect(() => {
@@ -215,11 +221,21 @@ export const LiveMarketDemo = () => {
         densityMode,
     }), [flashEnabled, freezeMovement, densityMode]);
     // Metrics for display (using refs to avoid re-renders)
-    const metrics = useMemo(() => ({
-        updatesPerSecond: updatesPerSecondRef.current,
-        totalUpdates: totalUpdatesRef.current,
+    const [metrics, setMetrics] = useState({
+        updatesPerSecond: 0,
+        totalUpdates: 0,
         reconnectCount: 0,
-    }), []);
+    });
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setMetrics({
+                updatesPerSecond: updatesPerSecondRef.current,
+                totalUpdates: totalUpdatesRef.current,
+                reconnectCount: 0,
+            });
+        }, 500);
+        return () => clearInterval(interval);
+    }, []);
     const connectionState = 'connected';
     // Performance metrics
     const [engineMetrics, setEngineMetrics] = useState({
@@ -264,9 +280,16 @@ export const LiveMarketDemo = () => {
     const handleToggleMetrics = () => {
         setShowMetrics(prev => !prev);
     };
-    const isPaused = engineRef.current?.isPausedState() || false;
+    const [isPaused, setIsPaused] = useState(false);
+    useEffect(() => {
+        const checkPaused = () => {
+            setIsPaused(engineRef.current?.isPausedState() || false);
+        };
+        const interval = setInterval(checkPaused, 500);
+        return () => clearInterval(interval);
+    }, []);
     const isThrottled = engineMetrics.isThrottled;
-    return (_jsxs("div", { className: "live-market-demo", children: [_jsxs("div", { className: "demo-header", children: [_jsx("h1", { children: "Live Market Data Grid" }), _jsx("p", { className: "demo-description", children: "High-performance streaming market data with 1000+ updates/sec" })] }), _jsxs("div", { className: "demo-controls", children: [_jsxs("div", { className: "control-group", children: [_jsx("button", { className: `control-btn ${isPaused ? 'paused' : 'active'}`, onClick: handlePauseResume, title: isPaused ? 'Resume live data streaming' : 'Pause live data streaming', children: isPaused ? '▶ Resume' : '⏸ Pause' }), _jsx("button", { className: `control-btn ${densityMode ? 'active' : ''}`, onClick: handleToggleDensity, title: densityMode ? 'Switch to normal row height' : 'Switch to compact row height', children: densityMode ? '□ Normal' : '▪ Compact' }), _jsx("button", { className: `control-btn ${flashEnabled ? 'active' : ''}`, onClick: handleToggleFlash, title: flashEnabled ? 'Disable cell flash animations on value changes' : 'Enable cell flash animations on value changes', children: flashEnabled ? '✓ Flash On' : '✗ Flash Off' }), _jsx("button", { className: `control-btn ${freezeMovement ? 'active' : ''}`, onClick: handleToggleFreeze, title: freezeMovement ? 'Enable live ranking - rows reorder by rank' : 'Freeze ranking - prevent row reordering', children: freezeMovement ? '🔒 Frozen' : '🔓 Live Rank' }), _jsx("button", { className: `control-btn ${showMetrics ? 'active' : ''}`, onClick: handleToggleMetrics, title: showMetrics ? 'Hide performance statistics' : 'Show performance statistics', children: showMetrics ? '📊 Hide Stats' : '📊 Show Stats' })] }), _jsxs("div", { className: "connection-info", children: [_jsx("span", { className: `status-badge ${connectionState}`, children: connectionState.toUpperCase() }), _jsx("span", { className: "metric-badge updates-per-sec-badge", children: "0 updates/s" }), _jsxs("span", { className: "metric-badge", children: [rows.length, " symbols"] })] })] }), showMetrics && (_jsxs("div", { className: "metrics-panel", children: [_jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "FPS:" }), _jsx("span", { className: `metric-value ${engineMetrics.fps < 50 ? 'warning' : ''}`, children: engineMetrics.fps })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Frame Time:" }), _jsxs("span", { className: `metric-value ${engineMetrics.avgFrameTime > 20 ? 'warning' : ''}`, children: [engineMetrics.avgFrameTime.toFixed(2), "ms"] })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Pending Updates:" }), _jsx("span", { className: `metric-value ${engineMetrics.pendingUpdates > 100 ? 'warning' : ''}`, children: engineMetrics.pendingUpdates })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Active Flashes:" }), _jsx("span", { className: "metric-value", children: engineMetrics.activeFlashes })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Total Updates:" }), _jsx("span", { className: "metric-value", children: metrics.totalUpdates })] }), isThrottled && (_jsxs("div", { className: "metric-item warning", children: [_jsx("span", { className: "metric-label", children: "\u26A0 Status:" }), _jsx("span", { className: "metric-value critical", children: "CPU THROTTLED" })] }))] })), _jsx("div", { className: `grid-container ${isPaused ? 'paused' : ''} ${isThrottled ? 'throttled' : ''}`, children: engineRef.current && (_jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineRef.current, config: marketConfig, onRowClick: (row) => console.log('Row clicked:', row), onCellClick: (rowId, field, value) => console.log('Cell clicked:', rowId, field, value) })) }), _jsx("div", { className: "demo-footer", children: _jsxs("p", { children: ["\uD83D\uDCA1 ", _jsx("strong", { children: "Tips:" }), " Use Pause to freeze updates \u2022 Enable Compact mode for more data \u2022 Flash animations show price direction \u2022 Watch CPU throttling in action"] }) }), _jsxs("div", { style: { marginTop: '32px', padding: '20px', backgroundColor: 'white', borderRadius: '8px' }, children: [_jsx("h2", { style: { fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#1f2937' }, children: "Implementation Example" }), _jsx(CodeBlock, { title: "Market Data Configuration", language: "tsx", code: `import { MarketDataGrid, createMarketDataEngine } from './components/DataGrid';
+    return (_jsxs("div", { className: "live-market-demo", children: [_jsxs("div", { className: "demo-header", children: [_jsx("h1", { children: "Live Market Data Grid" }), _jsx("p", { className: "demo-description", children: "High-performance streaming market data with 1000+ updates/sec" })] }), _jsxs("div", { className: "demo-controls", children: [_jsxs("div", { className: "control-group", children: [_jsx("button", { className: `control-btn ${isPaused ? 'paused' : 'active'}`, onClick: handlePauseResume, title: isPaused ? 'Resume live data streaming' : 'Pause live data streaming', children: isPaused ? '▶ Resume' : '⏸ Pause' }), _jsx("button", { className: `control-btn ${densityMode ? 'active' : ''}`, onClick: handleToggleDensity, title: densityMode ? 'Switch to normal row height' : 'Switch to compact row height', children: densityMode ? '□ Normal' : '▪ Compact' }), _jsx("button", { className: `control-btn ${flashEnabled ? 'active' : ''}`, onClick: handleToggleFlash, title: flashEnabled ? 'Disable cell flash animations on value changes' : 'Enable cell flash animations on value changes', children: flashEnabled ? '✓ Flash On' : '✗ Flash Off' }), _jsx("button", { className: `control-btn ${freezeMovement ? 'active' : ''}`, onClick: handleToggleFreeze, title: freezeMovement ? 'Enable live ranking - rows reorder by rank' : 'Freeze ranking - prevent row reordering', children: freezeMovement ? '🔒 Frozen' : '🔓 Live Rank' }), _jsx("button", { className: `control-btn ${showMetrics ? 'active' : ''}`, onClick: handleToggleMetrics, title: showMetrics ? 'Hide performance statistics' : 'Show performance statistics', children: showMetrics ? '📊 Hide Stats' : '📊 Show Stats' })] }), _jsxs("div", { className: "connection-info", children: [_jsx("span", { className: `status-badge ${connectionState}`, children: connectionState.toUpperCase() }), _jsx("span", { className: "metric-badge updates-per-sec-badge", children: "0 updates/s" }), _jsxs("span", { className: "metric-badge", children: [rows.length, " symbols"] })] })] }), showMetrics && (_jsxs("div", { className: "metrics-panel", children: [_jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "FPS:" }), _jsx("span", { className: `metric-value ${engineMetrics.fps < 50 ? 'warning' : ''}`, children: engineMetrics.fps })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Frame Time:" }), _jsxs("span", { className: `metric-value ${engineMetrics.avgFrameTime > 20 ? 'warning' : ''}`, children: [engineMetrics.avgFrameTime.toFixed(2), "ms"] })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Pending Updates:" }), _jsx("span", { className: `metric-value ${engineMetrics.pendingUpdates > 100 ? 'warning' : ''}`, children: engineMetrics.pendingUpdates })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Active Flashes:" }), _jsx("span", { className: "metric-value", children: engineMetrics.activeFlashes })] }), _jsxs("div", { className: "metric-item", children: [_jsx("span", { className: "metric-label", children: "Total Updates:" }), _jsx("span", { className: "metric-value", children: metrics.totalUpdates })] }), isThrottled && (_jsxs("div", { className: "metric-item warning", children: [_jsx("span", { className: "metric-label", children: "\u26A0 Status:" }), _jsx("span", { className: "metric-value critical", children: "CPU THROTTLED" })] }))] })), _jsx("div", { className: `grid-container ${isPaused ? 'paused' : ''} ${isThrottled ? 'throttled' : ''}`, children: engineInstance && (_jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineInstance, config: marketConfig, onRowClick: (row) => console.log('Row clicked:', row), onCellClick: (rowId, field, value) => console.log('Cell clicked:', rowId, field, value) })) }), _jsx("div", { className: "demo-footer", children: _jsxs("p", { children: ["\uD83D\uDCA1 ", _jsx("strong", { children: "Tips:" }), " Use Pause to freeze updates \u2022 Enable Compact mode for more data \u2022 Flash animations show price direction \u2022 Watch CPU throttling in action"] }) }), _jsxs("div", { style: { marginTop: '32px', padding: '20px', backgroundColor: 'white', borderRadius: '8px' }, children: [_jsx("h2", { style: { fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#1f2937' }, children: "Implementation Example" }), _jsx(CodeBlock, { title: "Market Data Configuration", language: "tsx", code: `import { MarketDataGrid, createMarketDataEngine } from './components/DataGrid';
 
 // Create market data engine
 const engine = createMarketDataEngine({

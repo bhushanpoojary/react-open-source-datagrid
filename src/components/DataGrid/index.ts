@@ -134,8 +134,8 @@ export {
 export { GridApiDemo } from './GridApiDemo';
 
 // Export Market Data Mode Components
-export { MarketDataGrid, withMarketData } from './MarketDataGrid';
-export type { MarketDataGridProps, WithMarketDataProps } from './MarketDataGrid';
+export { MarketDataGrid } from './MarketDataGrid';
+export type { MarketDataGridProps } from './MarketDataGrid';
 export { 
   MarketDataEngine, 
   createMarketDataEngine 

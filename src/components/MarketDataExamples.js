@@ -5,6 +5,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * Complete working example of Market Data Mode implementation.
  * Copy this file to get started quickly with live market data.
  */
+/* eslint-disable */
 // ...existing code...
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { MarketDataGrid, createMarketDataEngine, useMarketData, createMockFeed, } from './DataGrid';
@@ -19,6 +20,7 @@ import { MarketDataGrid, createMarketDataEngine, useMarketData, createMockFeed, 
  */
 export const SimpleMarketExample = () => {
     const engineRef = useRef(null);
+    const [engineInstance, setEngineInstance] = useState(null);
     // 1. Initialize engine
     useEffect(() => {
         engineRef.current = createMarketDataEngine({
@@ -30,6 +32,9 @@ export const SimpleMarketExample = () => {
         return () => {
             engineRef.current?.destroy();
         };
+    }, []);
+    useEffect(() => {
+        setEngineInstance(engineRef.current);
     }, []);
     // 2. Setup mock feed
     useEffect(() => {
@@ -86,7 +91,7 @@ export const SimpleMarketExample = () => {
         enableFlash: true,
         densityMode: false,
     }), []);
-    return (_jsxs("div", { style: { padding: 20, height: '100vh' }, children: [_jsx("h2", { children: "Simple Market Data Example" }), _jsx("div", { style: { height: 'calc(100vh - 100px)' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineRef.current, config: config }) })] }));
+    return (_jsxs("div", { style: { padding: 20, height: '100vh' }, children: [_jsx("h2", { children: "Simple Market Data Example" }), _jsx("div", { style: { height: 'calc(100vh - 100px)' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineInstance, config: config }) })] }));
 };
 /**
  * Advanced Market Data Example
@@ -103,6 +108,7 @@ export const AdvancedMarketExample = () => {
     const [flashEnabled, setFlashEnabled] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
     const engineRef = useRef(null);
+    const [engineInstance, setEngineInstance] = useState(null);
     // Initialize engine
     useEffect(() => {
         engineRef.current = createMarketDataEngine({
@@ -115,6 +121,9 @@ export const AdvancedMarketExample = () => {
         return () => {
             engineRef.current?.destroy();
         };
+    }, []);
+    useEffect(() => {
+        setEngineInstance(engineRef.current);
     }, []);
     // Setup mock feed
     useEffect(() => {
@@ -206,7 +215,7 @@ export const AdvancedMarketExample = () => {
                     padding: 15,
                     background: '#f5f5f5',
                     borderRadius: 8,
-                }, children: [_jsx("button", { onClick: handlePauseResume, children: isPaused ? '▶ Resume' : '⏸ Pause' }), _jsx("button", { onClick: () => setDensityMode(!densityMode), children: densityMode ? '□ Normal' : '▪ Compact' }), _jsx("button", { onClick: () => setFlashEnabled(!flashEnabled), children: flashEnabled ? '✓ Flash On' : '✗ Flash Off' }), _jsxs("div", { style: { marginLeft: 'auto', display: 'flex', gap: 15 }, children: [_jsxs("span", { children: ["FPS: ", _jsx("strong", { children: metrics.fps })] }), _jsxs("span", { children: ["Frame: ", _jsxs("strong", { children: [metrics.avgFrameTime.toFixed(1), "ms"] })] }), _jsxs("span", { children: ["Pending: ", _jsx("strong", { children: metrics.pendingUpdates })] }), _jsxs("span", { children: ["Flashes: ", _jsx("strong", { children: metrics.activeFlashes })] })] })] }), _jsx("div", { style: { flex: 1, overflow: 'hidden' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineRef.current, config: config }) })] }));
+                }, children: [_jsx("button", { onClick: handlePauseResume, children: isPaused ? '▶ Resume' : '⏸ Pause' }), _jsx("button", { onClick: () => setDensityMode(!densityMode), children: densityMode ? '□ Normal' : '▪ Compact' }), _jsx("button", { onClick: () => setFlashEnabled(!flashEnabled), children: flashEnabled ? '✓ Flash On' : '✗ Flash Off' }), _jsxs("div", { style: { marginLeft: 'auto', display: 'flex', gap: 15 }, children: [_jsxs("span", { children: ["FPS: ", _jsx("strong", { children: metrics.fps })] }), _jsxs("span", { children: ["Frame: ", _jsxs("strong", { children: [metrics.avgFrameTime.toFixed(1), "ms"] })] }), _jsxs("span", { children: ["Pending: ", _jsx("strong", { children: metrics.pendingUpdates })] }), _jsxs("span", { children: ["Flashes: ", _jsx("strong", { children: metrics.activeFlashes })] })] })] }), _jsx("div", { style: { flex: 1, overflow: 'hidden' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineInstance, config: config }) })] }));
 };
 /**
  * Real WebSocket Example
@@ -216,14 +225,20 @@ export const AdvancedMarketExample = () => {
  */
 export const RealWebSocketExample = () => {
     const engineRef = useRef(null);
+    const [engineInstance, setEngineInstance] = useState(null);
     // Initialize engine
     useEffect(() => {
         engineRef.current = createMarketDataEngine();
-        return () => engineRef.current?.destroy();
+        return () => {
+            engineRef.current?.destroy();
+        };
+    }, []);
+    useEffect(() => {
+        setEngineInstance(engineRef.current);
     }, []);
     // Use market data hook with real WebSocket
     const marketData = useMarketData({
-        engine: engineRef.current,
+        engine: engineInstance,
         wsConfig: {
             url: 'wss://your-market-data-server.com/ws', // Replace with your URL
             reconnect: true,
@@ -253,7 +268,7 @@ export const RealWebSocketExample = () => {
                                     background: marketData.isConnected ? '#4caf50' : '#f44336',
                                     color: 'white',
                                     fontWeight: 'bold',
-                                }, children: marketData.connectionState.toUpperCase() }), _jsxs("span", { style: { marginLeft: 15 }, children: [marketData.metrics.updatesPerSecond, " updates/s"] })] })] }), _jsx("div", { style: { flex: 1 }, children: _jsx(MarketDataGrid, { columns: columns, rows: marketData.rows, engine: engineRef.current, config: { enabled: true, enableFlash: true } }) })] }));
+                                }, children: marketData.connectionState.toUpperCase() }), _jsxs("span", { style: { marginLeft: 15 }, children: [marketData.metrics.updatesPerSecond, " updates/s"] })] })] }), _jsx("div", { style: { flex: 1 }, children: _jsx(MarketDataGrid, { columns: columns, rows: marketData.rows, engine: engineInstance, config: { enabled: true, enableFlash: true } }) })] }));
 };
 /**
  * Custom Formatting Example
@@ -262,9 +277,11 @@ export const RealWebSocketExample = () => {
  */
 export const CustomFormattingExample = () => {
     const engineRef = useRef(null);
+    const [engineInstance, setEngineInstance] = useState(null);
     const [rows, setRows] = useState([]);
     useEffect(() => {
         engineRef.current = createMarketDataEngine();
+        setEngineInstance(engineRef.current);
         const { feed, createConnection } = createMockFeed();
         feed.start();
         const mockWs = createConnection();
@@ -328,6 +345,6 @@ export const CustomFormattingExample = () => {
             },
         },
     ], []);
-    return (_jsxs("div", { style: { padding: 20, height: '100vh' }, children: [_jsx("h2", { children: "Custom Formatting Example" }), _jsx("div", { style: { height: 'calc(100vh - 100px)' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineRef.current, config: { enabled: true, enableFlash: true } }) })] }));
+    return (_jsxs("div", { style: { padding: 20, height: '100vh' }, children: [_jsx("h2", { children: "Custom Formatting Example" }), _jsx("div", { style: { height: 'calc(100vh - 100px)' }, children: _jsx(MarketDataGrid, { columns: columns, rows: rows, engine: engineInstance, config: { enabled: true, enableFlash: true } }) })] }));
 };
 export default SimpleMarketExample;

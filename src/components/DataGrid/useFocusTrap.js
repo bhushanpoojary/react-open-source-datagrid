@@ -1,25 +1,19 @@
-import { jsx as _jsx } from "react/jsx-runtime";
 /**
  * useFocusTrap Hook
  *
  * Traps focus within a container element (useful for modals, dialogs, and popups).
  * Ensures keyboard navigation stays within the trapped area for accessibility.
  */
-// ...existing code...
 import React, { useEffect, useRef } from 'react';
-/**
- * Hook to trap focus within a container element
- */
 export const useFocusTrap = (options = {}) => {
     const { enabled = true, initialFocus = 'first', returnFocus = true, escapeDeactivates = true, onEscape, } = options;
-    const containerRef = useRef(null);
+    const containerRef = React.useRef(null);
     const previouslyFocusedElement = useRef(null);
     useEffect(() => {
         if (!enabled || !containerRef.current)
             return;
-        // Save the currently focused element
         previouslyFocusedElement.current = document.activeElement;
-        // Get all focusable elements within the container
+        // ...existing code...
         const getFocusableElements = () => {
             if (!containerRef.current)
                 return [];
@@ -102,7 +96,4 @@ export const useFocusTrap = (options = {}) => {
     }, [enabled, initialFocus, returnFocus, escapeDeactivates, onEscape]);
     return containerRef;
 };
-export const FocusTrap = ({ children, className, style, ...options }) => {
-    const trapRef = useFocusTrap(options);
-    return (_jsx("div", { ref: trapRef, className: className, style: style, children: children }));
-};
+// If you need the FocusTrap component, import it from './FocusTrap'

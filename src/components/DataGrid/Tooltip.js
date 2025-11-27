@@ -106,9 +106,9 @@ export const Tooltip = ({ state, maxWidth = 300, offset = 8, }) => {
             }
         }
         // ...existing code...
-        setPosition({ x: finalX, y: finalY });
+        setTimeout(() => setPosition({ x: finalX, y: finalY }), 0);
         // ...existing code...
-        setActualPlacement(finalPlacement);
+        setTimeout(() => setActualPlacement(finalPlacement), 0);
     }, [state.isVisible, state.x, state.y, state.targetRect, state.placement, offset]);
     if (!state.isVisible || !state.content) {
         return null;

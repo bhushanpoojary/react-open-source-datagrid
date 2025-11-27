@@ -33,11 +33,27 @@ export function useMarketData(options) {
         lastUpdateTime: 0,
         updateCountInSecond: 0,
     });
+    const [metrics, setMetrics] = useState({
+        updatesPerSecond: 0,
+        totalUpdates: 0,
+        reconnectCount: 0,
+    });
     // Initialize lastUpdateTime after render
     useEffect(() => {
         if (metricsRef.current.lastUpdateTime === 0) {
             metricsRef.current.lastUpdateTime = Date.now();
         }
+    }, []);
+    // Update metrics state periodically
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setMetrics({
+                updatesPerSecond: metricsRef.current.updatesPerSecond,
+                totalUpdates: metricsRef.current.totalUpdates,
+                reconnectCount: reconnectCountRef.current,
+            });
+        }, 500);
+        return () => clearInterval(interval);
     }, []);
     /**
      * Update metrics
@@ -220,20 +236,24 @@ export function useMarketData(options) {
     useEffect(() => {
         if (initialData && initialData.length > 0) {
             engine.initialize(initialData);
-            setRows([...initialData]);
         }
-    }, [engine]); // Only run on mount
+    }, [engine, initialData]); // Only run on mount
+    useEffect(() => {
+        if (initialData && initialData.length > 0) {
+            setTimeout(() => setRows([...initialData]), 0);
+        }
+    }, [initialData]);
     /**
      * Auto-connect on mount
      */
     useEffect(() => {
         if (autoConnect && wsConfig) {
-            connect();
+            setTimeout(() => connect(), 0);
         }
         return () => {
             disconnect();
         };
-    }, []); // Only run on mount/unmount
+    }, [autoConnect, wsConfig, connect, disconnect]); // Only run on mount/unmount
     return {
         rows,
         connectionState,
@@ -243,10 +263,6 @@ export function useMarketData(options) {
         subscribe,
         unsubscribe,
         sendMessage,
-        metrics: {
-            updatesPerSecond: metricsRef.current.updatesPerSecond,
-            totalUpdates: metricsRef.current.totalUpdates,
-            reconnectCount: reconnectCountRef.current,
-        },
+        metrics,
     };
 }

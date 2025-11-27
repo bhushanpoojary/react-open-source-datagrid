@@ -14,6 +14,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  */
 import React, { useRef, useEffect, useMemo, useCallback } from 'react';
 import { MarketDataEngine } from './MarketDataEngine';
+import { getColumnClass, formatCellValue, formatPrice, formatChange, formatVolume } from './MarketDataGridUtils';
 import './MarketDataGrid.css';
 /**
  * MarketDataGrid Component
@@ -81,65 +82,6 @@ export const MarketDataGrid = ({ columns, rows, config, className = '', onCellCl
                         handleCellClick(row.id, col.field, value);
                     }, children: col.renderCell ? col.renderCell(row) : formatCellValue(value) }, col.field));
             }) }, row.id))) }));
-    // Get CSS class for column alignment
-    const getColumnClass = (field) => {
-        const numericFields = ['price', 'bid', 'ask', 'size', 'volume', 'change', 'changePercent', 'high', 'low', 'open'];
-        return numericFields.includes(field) ? 'numeric-cell' : '';
-    };
-    // Format cell value
-    const formatCellValue = (value) => {
-        if (value == null)
-            return '';
-        if (typeof value === 'number') {
-            return value.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
-        }
-        return String(value);
-    };
-    // Format price value
-    const formatPrice = (value) => {
-        if (value == null)
-            return '';
-        return value.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-    };
-    // Format change value
-    const formatChange = (value, isPercent) => {
-        if (value == null)
-            return _jsx("span", { children: "-" });
-        const formatted = isPercent
-            ? `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
-            : `${value >= 0 ? '+' : ''}${value.toFixed(2)}`;
-        const className = value >= 0 ? 'change-positive' : 'change-negative';
-        return _jsx("span", { className: className, children: formatted });
-    };
-    // Format volume value
-    const formatVolume = (value) => {
-        if (value == null)
-            return '';
-        if (value >= 1000000) {
-            return `${(value / 1000000).toFixed(2)}M`;
-        }
-        if (value >= 1000) {
-            return `${(value / 1000).toFixed(1)}K`;
-        }
-        return value.toLocaleString();
-    };
     const containerClassName = `market-data-grid ${config?.densityMode ? 'density-compact' : ''} ${className}`.trim();
     return (_jsxs("div", { ref: tableRef, className: containerClassName, "data-testid": "data-grid", children: [renderHeader(), renderBody()] }));
 };
-// ...existing code...
-export function withMarketData(Component) {
-    return (props) => {
-        const { marketDataConfig, engine, ...componentProps } = props;
-        if (!marketDataConfig?.enabled || !engine) {
-            return _jsx(Component, { ...componentProps });
-        }
-        // Wrap component with market data optimizations
-        return (_jsx("div", { className: "market-data-wrapper", children: _jsx(Component, { ...componentProps }) }));
-    };
-}

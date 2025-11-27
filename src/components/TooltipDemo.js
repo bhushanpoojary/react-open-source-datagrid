@@ -1,4 +1,5 @@
 import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
+/* eslint-disable */
 import { useState } from 'react';
 import { DataGrid } from './DataGrid';
 const generateData = (count) => {

@@ -5,13 +5,12 @@
  * Provides accessible feedback for grid actions like sorting, filtering, selection, and navigation.
  */
 import React from 'react';
-interface AnnouncementOptions {
-    priority?: 'polite' | 'assertive';
-    delay?: number;
-}
 export declare const useScreenReaderAnnouncements: () => {
     announcementRef: React.RefObject<string>;
-    announce: (message: string, options?: AnnouncementOptions) => void;
+    announce: (message: string, options?: {
+        priority?: "polite" | "assertive";
+        delay?: number;
+    }) => void;
     announceSorting: (columnName: string, direction: "asc" | "desc" | null) => void;
     announceSelection: (count: number) => void;
     announceFiltering: (columnName: string, hasFilter: boolean, resultCount?: number) => void;
@@ -22,11 +21,3 @@ export declare const useScreenReaderAnnouncements: () => {
     announceColumnVisibility: (columnName: string, isVisible: boolean) => void;
     announceLoading: (isLoading: boolean, message?: string) => void;
 };
-/**
- * Helper component to render the live region
- */
-export declare const ScreenReaderAnnouncer: React.FC<{
-    message: string;
-    priority?: 'polite' | 'assertive';
-}>;
-export {};

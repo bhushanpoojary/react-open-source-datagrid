@@ -1,16 +1,14 @@
-import { jsx as _jsx } from "react/jsx-runtime";
 /**
  * useScreenReaderAnnouncements Hook
  *
  * Manages live region announcements for screen readers.
  * Provides accessible feedback for grid actions like sorting, filtering, selection, and navigation.
  */
-// ...existing code...
 import React, { useRef, useCallback, useEffect } from 'react';
+// If you need the announcer component, import it from './ScreenReaderAnnouncer'
 export const useScreenReaderAnnouncements = () => {
-    const announcementRef = useRef('');
+    const announcementRef = React.useRef('');
     const timeoutRef = useRef(null);
-    // Clean up timeout on unmount
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -18,12 +16,8 @@ export const useScreenReaderAnnouncements = () => {
             }
         };
     }, []);
-    /**
-     * Announce a message to screen readers
-     */
     const announce = useCallback((message, options = {}) => {
         const { delay = 0 } = options;
-        // Clear any pending announcements
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
         }
@@ -140,17 +134,4 @@ export const useScreenReaderAnnouncements = () => {
         announceLoading,
     };
 };
-/**
- * Helper component to render the live region
- */
-export const ScreenReaderAnnouncer = ({ message, priority = 'polite' }) => {
-    return (_jsx("div", { role: priority === 'assertive' ? 'alert' : 'status', "aria-live": priority, "aria-atomic": "true", style: {
-            position: 'absolute',
-            left: '-10000px',
-            width: '1px',
-            height: '1px',
-            overflow: 'hidden',
-            clip: 'rect(0, 0, 0, 0)',
-            whiteSpace: 'nowrap',
-        }, children: message }));
-};
+// ...existing code...

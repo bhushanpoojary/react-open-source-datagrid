@@ -31,11 +31,3 @@ export interface MarketDataGridProps {
  * Uses direct DOM manipulation for cell updates to bypass React reconciliation.
  */
 export declare const MarketDataGrid: React.FC<MarketDataGridProps>;
-/**
- * Higher-order component to wrap standard DataGrid with market data capabilities
- */
-export interface WithMarketDataProps {
-    marketDataConfig?: MarketDataConfig;
-    engine?: MarketDataEngine;
-}
-export declare function withMarketData<P extends object>(Component: React.ComponentType<P>): React.FC<P & WithMarketDataProps>;

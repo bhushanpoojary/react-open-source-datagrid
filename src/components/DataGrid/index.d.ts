@@ -30,8 +30,8 @@ export { LayoutPersistenceManager, LocalStorageAdapter, ServerAdapter, UserProfi
 export { buildTreeFromFlat, flattenTree, toggleNodeExpansion, expandAllNodes, collapseAllNodes, getDescendantIds, getNodePath, getTreeDepth, countTreeNodes, filterTree, isTreeNode } from './treeDataUtils';
 export { StatusChip, ProgressBar, IconCell, ImageCell, ButtonCell, BadgeCell, PriorityIndicator, Rating, CurrencyCell, } from './CellRenderers';
 export { GridApiDemo } from './GridApiDemo';
-export { MarketDataGrid, withMarketData } from './MarketDataGrid';
-export type { MarketDataGridProps, WithMarketDataProps } from './MarketDataGrid';
+export { MarketDataGrid } from './MarketDataGrid';
+export type { MarketDataGridProps } from './MarketDataGrid';
 export { MarketDataEngine, createMarketDataEngine } from './MarketDataEngine';
 export type { CellUpdate as MarketCellUpdate, FlashAnimation as MarketFlashAnimation, MarketDataRow, MarketDataEngineConfig, RowUpdate } from './MarketDataEngine';
 export { useMarketData } from './useMarketData';

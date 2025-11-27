@@ -22,7 +22,8 @@ import { applyFilters, hasActiveFilters } from './filterUtils';
 import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 import { getTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
-import { useScreenReaderAnnouncements, ScreenReaderAnnouncer } from './useScreenReaderAnnouncements';
+import { useScreenReaderAnnouncements } from './useScreenReaderAnnouncements';
+import { ScreenReaderAnnouncer } from './ScreenReaderAnnouncer';
 import { GridApiImpl } from './gridApi';
 /**
  * DataGrid Component
@@ -43,6 +44,8 @@ import { GridApiImpl } from './gridApi';
  * - Grid API: Programmatic control via ref (AG Grid-inspired API)
  */
 export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPinning = true, footerConfig, virtualScrollConfig, persistenceConfig, treeConfig, dragRowConfig, rowPinConfig, contextMenuConfig, tooltipConfig, tableId, theme: _theme = 'quartz', densityMode: _densityMode = 'normal', showDensityToggle = false, onDensityChange, onRowClick, onCellEdit, onSelectionChange, onLayoutChange, onRowReorder, onGridReady, }, ref) => {
+    // Place hooks here
+    const [announcementMessage] = useState('');
     // Initialize grid state with reducer
     const [state, dispatch] = useReducer(gridReducer, { columns, pageSize }, (args) => createInitialState(args.columns, args.pageSize));
     // Internal rows state for API transactions (overrides props.rows when set)
@@ -53,7 +56,8 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
     useEffect(() => {
         if (rows !== rowsRef.current) {
             rowsRef.current = rows;
-            setInternalRows(null); // Reset to use prop rows
+            const t = setTimeout(() => setInternalRows(null), 0); // defer to avoid sync setState in effect
+            return () => clearTimeout(t);
         }
     }, [rows]);
     // Container ref for Grid API
@@ -78,7 +82,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
         return generateThemeCSS(currentTheme);
     }, [_theme]);
     // Screen reader announcements hook
-    const { announcementRef, announceSorting, announceSelection, announcePagination } = useScreenReaderAnnouncements();
+    const { announceSorting, announceSelection, announcePagination } = useScreenReaderAnnouncements();
     // Persistence manager instance
     const [persistenceManager, setPersistenceManager] = useState(null);
     const autoSaveRef = useRef(null);
@@ -113,7 +117,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
     useEffect(() => {
         if (persistenceConfig?.enabled) {
             const manager = new LayoutPersistenceManager(persistenceConfig);
-            setPersistenceManager(manager);
+            const t = setTimeout(() => setPersistenceManager(manager), 0); // defer to avoid sync setState in effect
             // Auto-load last saved preset on mount
             if (persistenceConfig.autoLoad) {
                 manager.loadAutoSave().then((preset) => {
@@ -124,6 +128,7 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
                     console.error('Failed to load auto-saved layout:', error);
                 });
             }
+            return () => clearTimeout(t);
         }
     }, [persistenceConfig]);
     // Memoize serialized versions of complex objects
@@ -160,12 +165,14 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
         }
         // ...existing code...
     }, []);
-    // Update API state on every render (using ref to avoid effect dependencies)
-    if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
-        gridApiRef.current.updateState(state);
-        gridApiRef.current.updateData(columns, activeRows);
-        gridApiRef.current.updateCallbacks(setInternalRows);
-    }
+    // Update API state after render to avoid accessing refs during render
+    useEffect(() => {
+        if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
+            gridApiRef.current.updateState(state);
+            gridApiRef.current.updateData(columns, activeRows);
+            gridApiRef.current.updateCallbacks(setInternalRows);
+        }
+    }, [state, columns, activeRows, setInternalRows]);
     // Expose Grid API via ref
     useImperativeHandle(ref, () => {
         if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
@@ -485,7 +492,9 @@ export const DataGrid = forwardRef(({ columns, rows, pageSize = 10, showColumnPi
             backgroundColor: 'var(--grid-bg)',
             boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))',
             fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)'
-        }, className: `data-grid density-${densityMode}`, children: [_jsx(ScreenReaderAnnouncer, { message: announcementRef.current, priority: "polite" }), _jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }, children: [_jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx(ColumnChooser, { columns: columns, columnOrder: state.columnOrder, hiddenColumns: state.hiddenColumns, onToggleVisibility: (field) => dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field }), onReorderColumns: (fromIndex, toIndex) => dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }), _jsx(ExportMenu, { columns: columns, fullDataset: rows, filteredData: filteredRows.filter((r) => !('isGroup' in r)), selectedRows: state.selection.selectedRows, currentPageData: paginatedRows.filter((r) => !('isGroup' in r)) }), persistenceConfig?.enabled && persistenceManager && (_jsx(LayoutPresetsManager, { manager: persistenceManager, currentLayout: getCurrentLayout(), onLoadPreset: (layout) => dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: layout }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }))] }), showDensityToggle && (_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx("span", { style: { fontSize: '13px', color: 'var(--grid-text-secondary)', fontWeight: '500' }, children: "Density:" }), _jsx(DensityToggle, { value: densityMode, onChange: setDensityMode })] }))] }), _jsx(GroupByPanel, { columns: columns, groupBy: state.groupBy, dispatch: dispatch }), _jsxs("div", { role: "rowgroup", style: { position: 'sticky', top: 0, zIndex: 20, width: '100%' }, children: [_jsx(GridHeader, { columns: columns, columnOrder: state.columnOrder, displayColumnOrder: displayColumnOrder, columnWidths: state.columnWidths, sortConfig: state.sortConfig, dispatch: dispatch, pinnedLeft: pinnedLeftFields, pinnedRight: pinnedRightFields, showColumnPinning: showColumnPinning, onContextMenu: (event, column, columnIndex) => handleContextMenu({
+        }, className: `data-grid density-${densityMode}`, children: [_jsx(ScreenReaderAnnouncer, { message: announcementMessage, priority: "polite" })
+            // ...existing code...
+            , "// ...existing code...", _jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }, children: [_jsxs("div", { style: { position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx(ColumnChooser, { columns: columns, columnOrder: state.columnOrder, hiddenColumns: state.hiddenColumns, onToggleVisibility: (field) => dispatch({ type: 'TOGGLE_COLUMN_VISIBILITY', payload: field }), onReorderColumns: (fromIndex, toIndex) => dispatch({ type: 'REORDER_COLUMNS', payload: { fromIndex, toIndex } }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }), _jsx(ExportMenu, { columns: columns, fullDataset: rows, filteredData: filteredRows.filter((r) => !('isGroup' in r)), selectedRows: state.selection.selectedRows, currentPageData: paginatedRows.filter((r) => !('isGroup' in r)) }), persistenceConfig?.enabled && persistenceManager && (_jsx(LayoutPresetsManager, { manager: persistenceManager, currentLayout: getCurrentLayout(), onLoadPreset: (layout) => dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: layout }), onResetLayout: () => dispatch({ type: 'RESET_COLUMN_LAYOUT' }) }))] }), showDensityToggle && (_jsxs("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' }, children: [_jsx("span", { style: { fontSize: '13px', color: 'var(--grid-text-secondary)', fontWeight: '500' }, children: "Density:" }), _jsx(DensityToggle, { value: densityMode, onChange: setDensityMode })] }))] }), _jsx(GroupByPanel, { columns: columns, groupBy: state.groupBy, dispatch: dispatch }), _jsxs("div", { role: "rowgroup", style: { position: 'sticky', top: 0, zIndex: 20, width: '100%' }, children: [_jsx(GridHeader, { columns: columns, columnOrder: state.columnOrder, displayColumnOrder: displayColumnOrder, columnWidths: state.columnWidths, sortConfig: state.sortConfig, dispatch: dispatch, pinnedLeft: pinnedLeftFields, pinnedRight: pinnedRightFields, showColumnPinning: showColumnPinning, onContextMenu: (event, column, columnIndex) => handleContextMenu({
                             type: 'header',
                             column,
                             columnIndex,

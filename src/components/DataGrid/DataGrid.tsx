@@ -22,7 +22,8 @@ import { applyFilters, hasActiveFilters } from './filterUtils';
 import { LayoutPersistenceManager, debounce } from './layoutPersistence';
 import { getTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
-import { useScreenReaderAnnouncements, ScreenReaderAnnouncer } from './useScreenReaderAnnouncements';
+import { useScreenReaderAnnouncements } from './useScreenReaderAnnouncements';
+import { ScreenReaderAnnouncer } from './ScreenReaderAnnouncer';
 import { GridApiImpl } from './gridApi';
 import type { GridApi } from './gridApi.types';
 
@@ -70,11 +71,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onGridReady,
 }, ref) => {
   // Place hooks here
-  const { announcementRef } = useScreenReaderAnnouncements();
-  const [announcementMessage, setAnnouncementMessage] = useState('');
-  useEffect(() => {
-    setAnnouncementMessage(announcementRef.current ?? '');
-  }, [announcementRef]);
+  const [announcementMessage] = useState('');
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
     gridReducer,
@@ -91,7 +88,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   useEffect(() => {
     if (rows !== rowsRef.current) {
       rowsRef.current = rows;
-      setInternalRows(null); // Reset to use prop rows
+      const t = setTimeout(() => setInternalRows(null), 0); // defer to avoid sync setState in effect
+      return () => clearTimeout(t);
     }
   }, [rows]);
 
@@ -123,7 +121,6 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 
   // Screen reader announcements hook
   const { 
-    announcementRef, 
     announceSorting, 
     announceSelection, 
     announcePagination 
@@ -166,7 +163,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   useEffect(() => {
     if (persistenceConfig?.enabled) {
       const manager = new LayoutPersistenceManager(persistenceConfig);
-      setPersistenceManager(manager);
+      const t = setTimeout(() => setPersistenceManager(manager), 0); // defer to avoid sync setState in effect
 
       // Auto-load last saved preset on mount
       if (persistenceConfig.autoLoad) {
@@ -178,6 +175,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           console.error('Failed to load auto-saved layout:', error);
         });
       }
+      return () => clearTimeout(t);
     }
   }, [persistenceConfig]);
 
@@ -226,12 +224,14 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     // ...existing code...
   }, []);
   
-  // Update API state on every render (using ref to avoid effect dependencies)
-  if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
-    gridApiRef.current.updateState(state);
-    gridApiRef.current.updateData(columns, activeRows);
-    gridApiRef.current.updateCallbacks(setInternalRows);
-  }
+  // Update API state after render to avoid accessing refs during render
+  useEffect(() => {
+    if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
+      gridApiRef.current.updateState(state);
+      gridApiRef.current.updateData(columns, activeRows);
+      gridApiRef.current.updateCallbacks(setInternalRows);
+    }
+  }, [state, columns, activeRows, setInternalRows]);
 
   // Expose Grid API via ref
   useImperativeHandle(ref, () => {

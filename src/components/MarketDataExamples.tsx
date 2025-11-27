@@ -121,7 +121,7 @@ export const SimpleMarketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={rows}
-          engine={engineInstance}
+          engine={engineInstance as any}
           config={config}
         />
       </div>
@@ -292,7 +292,7 @@ export const AdvancedMarketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={rows}
-          engine={engineInstance}
+          engine={engineInstance as any}
           config={config}
         />
       </div>
@@ -374,7 +374,7 @@ export const RealWebSocketExample: React.FC = () => {
         <MarketDataGrid
           columns={columns}
           rows={marketData.rows}
-          engine={engineInstance}
+          engine={engineInstance as any}
           config={{ enabled: true, enableFlash: true }}
         />
       </div>

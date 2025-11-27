@@ -10,7 +10,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * - Local block caching
  * - Virtual scrolling
  */
-import React, { useReducer, useMemo, useEffect, useCallback, useState } from 'react';
+import React, { useReducer, useMemo, useEffect, useCallback, useState, useLayoutEffect } from 'react';
 import { ServerSideDataSource } from './ServerSideDataSource';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
@@ -36,7 +36,7 @@ export const InfiniteScrollDataGrid = ({ columns, dataSource, pageSize = 100, sh
         return generateThemeCSS(currentTheme);
     }, [_theme]);
     // Initialize data source
-    useEffect(() => {
+    useLayoutEffect(() => {
         let ds;
         if (dataSource instanceof ServerSideDataSource) {
             ds = dataSource;
@@ -44,13 +44,12 @@ export const InfiniteScrollDataGrid = ({ columns, dataSource, pageSize = 100, sh
         else {
             ds = new ServerSideDataSource(dataSource);
         }
-        setDataSourceInstance(ds);
         // Subscribe to data changes
         const unsubscribe = ds.subscribe(() => {
             setTotalRows(ds.getTotalRows());
         });
-        // Initial load
-        setTotalRows(ds.getTotalRows());
+        // Set instance in a separate effect
+        setTimeout(() => setDataSourceInstance(ds), 0);
         return () => {
             unsubscribe();
             if (!(dataSource instanceof ServerSideDataSource)) {
@@ -58,6 +57,12 @@ export const InfiniteScrollDataGrid = ({ columns, dataSource, pageSize = 100, sh
             }
         };
     }, [dataSource]);
+    // Initial load for totalRows after instance creation
+    useEffect(() => {
+        if (dataSourceInstance) {
+            setTimeout(() => setTotalRows(dataSourceInstance.getTotalRows()), 0);
+        }
+    }, [dataSourceInstance]);
     // Update data source when sort changes
     useEffect(() => {
         if (dataSourceInstance && state.sortConfig.field) {
