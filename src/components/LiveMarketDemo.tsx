@@ -68,6 +68,26 @@ export const LiveMarketDemo: React.FC = () => {
   // State for rows
   const [rows, setRows] = useState<any[]>([]);
 
+  // State for tracking updates
+  const updateCountRef = useRef(0);
+  const totalUpdatesRef = useRef(0);
+  const lastUpdateTimeRef = useRef(Date.now());
+  const [updatesPerSecond, setUpdatesPerSecond] = useState(0);
+
+  // Update updates/sec counter periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const elapsed = (now - lastUpdateTimeRef.current) / 1000;
+      const rate = elapsed > 0 ? Math.round(updateCountRef.current / elapsed) : 0;
+      setUpdatesPerSecond(rate);
+      updateCountRef.current = 0;
+      lastUpdateTimeRef.current = now;
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Create mock feed, connection, and set up data flow
   useEffect(() => {
     if (!engineRef.current) return;
@@ -100,6 +120,10 @@ export const LiveMarketDemo: React.FC = () => {
           engineRef.current?.initialize(data.data);
           setRows([...data.data]); // Also set initial rows
         } else if (data.type === 'tick') {
+          // Count this update
+          updateCountRef.current++;
+          totalUpdatesRef.current++;
+          
           engineRef.current?.processUpdate({
             rowId: data.symbol,
             updates: data.updates,
@@ -213,12 +237,12 @@ export const LiveMarketDemo: React.FC = () => {
     densityMode,
   }), [flashEnabled, freezeMovement, densityMode]);
 
-  // Mock metrics since we're not using the hook
+  // Metrics for display
   const metrics = useMemo(() => ({
-    updatesPerSecond: 0,
-    totalUpdates: 0,
+    updatesPerSecond: updatesPerSecond,
+    totalUpdates: totalUpdatesRef.current,
     reconnectCount: 0,
-  }), []);
+  }), [updatesPerSecond]);
 
   const connectionState = 'connected' as const;
 

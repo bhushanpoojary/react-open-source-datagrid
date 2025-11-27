@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { ThemedDataGrid } from './DataGrid';
 import type { Column, Row, RowPinConfig, VirtualScrollConfig } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
@@ -112,11 +112,13 @@ export const RowPinningDemo: React.FC = () => {
   );
 
   // Row pinning configuration
+  const handlePinChange = useCallback((pinnedTop: (string | number)[], pinnedBottom: (string | number)[]) => {
+    console.log('Pinned rows changed:', { pinnedTop, pinnedBottom });
+  }, []);
+
   const rowPinConfig: RowPinConfig = {
     enabled: true,
-    onPinChange: (pinnedTop: (string | number)[], pinnedBottom: (string | number)[]) => {
-      console.log('Pinned rows changed:', { pinnedTop, pinnedBottom });
-    },
+    onPinChange: handlePinChange,
   };
 
   // Virtual scroll configuration

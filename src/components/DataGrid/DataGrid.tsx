@@ -362,11 +362,13 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selection.selectedRows]);
 
-  // Notify parent of pinned row changes
+  // Notify parent of pinned row changes (skip initial mount)
+  const pinnedRowsMountedRef = useRef(false);
   useEffect(() => {
-    if (rowPinConfig?.onPinChange) {
+    if (pinnedRowsMountedRef.current && rowPinConfig?.onPinChange) {
       rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
     }
+    pinnedRowsMountedRef.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
 

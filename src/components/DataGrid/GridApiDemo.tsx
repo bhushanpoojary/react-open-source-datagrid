@@ -240,8 +240,14 @@ export const GridApiDemo: React.FC = () => {
     const api = gridRef.current;
     if (!api) return;
 
+    const selectedCount = api.getSelectedRowCount();
+    if (selectedCount === 0) {
+      addLog('⚠️ No rows selected! Please select rows first.');
+      return;
+    }
+
     api.copySelectedRowsToClipboard();
-    addLog('Copied selected rows to clipboard');
+    addLog(`✓ Copied ${selectedCount} selected row(s) to clipboard`);
   };
 
   // Navigation operations
