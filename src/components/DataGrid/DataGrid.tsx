@@ -204,9 +204,9 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     state.groupBy,
   ]);
 
-  // Initialize and expose Grid API via ref
+  // Initialize Grid API once (or recreate if destroyed by StrictMode)
   useEffect(() => {
-    if (!gridApiRef.current) {
+    if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
       gridApiRef.current = new GridApiImpl(
         state,
         dispatch,
@@ -216,16 +216,20 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         persistenceManager,
         setInternalRows
       );
-    } else {
-      // Update API with latest state and data
-      gridApiRef.current.updateState(state);
-      gridApiRef.current.updateData(columns, activeRows);
     }
-  }, [state, columns, activeRows, persistenceManager]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  // Update API state on every render (using ref to avoid effect dependencies)
+  if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
+    gridApiRef.current.updateState(state);
+    gridApiRef.current.updateData(columns, activeRows);
+    gridApiRef.current.updateCallbacks(setInternalRows);
+  }
 
   // Expose Grid API via ref
   useImperativeHandle(ref, () => {
-    if (!gridApiRef.current) {
+    if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
       gridApiRef.current = new GridApiImpl(
         state,
         dispatch,

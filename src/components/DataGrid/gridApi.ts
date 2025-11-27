@@ -69,6 +69,13 @@ export class GridApiImpl implements GridApi {
     this.rows = rows;
   }
 
+  /**
+   * Update callback references
+   */
+  updateCallbacks(setInternalRows?: (rows: Row[]) => void): void {
+    this.setInternalRows = setInternalRows;
+  }
+
   // ==================== DATA / MODEL ====================
 
   setRowData(rows: Row[]): void {
