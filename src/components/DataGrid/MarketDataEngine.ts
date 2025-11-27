@@ -74,7 +74,7 @@ export class MarketDataEngine {
     this.config = {
       flashDuration: config.flashDuration ?? 500,
       batchInterval: config.batchInterval ?? 16,
-      enableFlash: config.enableFlash ?? true,
+      enableFlash: config.enableFlash ?? false,
       maxUpdatesPerFrame: config.maxUpdatesPerFrame ?? 1000,
       cpuThreshold: config.cpuThreshold ?? 0.8,
       enableLiveSorting: config.enableLiveSorting ?? false,
@@ -435,6 +435,14 @@ export class MarketDataEngine {
    * Destroy engine and clean up
    */
   public destroy(): void {
+    // Remove all flash classes from DOM before clearing
+    this.flashAnimations.forEach((_, cellKey) => {
+      const [rowId, field] = cellKey.split('-');
+      const cellElement = this.getCellElement(rowId, field);
+      if (cellElement) {
+        cellElement.classList.remove('cell-flash-up', 'cell-flash-down');
+      }
+    });
     this.clear();
     this.updateCallbacks.clear();
     this.cellUpdateCallbacks.clear();

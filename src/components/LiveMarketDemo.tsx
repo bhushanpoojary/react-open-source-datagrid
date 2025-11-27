@@ -13,6 +13,7 @@
 
 /* eslint-disable react-hooks/refs */
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MarketDataGrid } from './DataGrid/MarketDataGrid';
 import { MarketDataEngine, createMarketDataEngine } from './DataGrid/MarketDataEngine';
 import { createMockFeed } from './DataGrid/WebSocketMockFeed';
@@ -26,7 +27,7 @@ import './LiveMarketDemo.css';
  */
 export const LiveMarketDemo: React.FC = () => {
   const [densityMode, setDensityMode] = useState(false);
-  const [flashEnabled, setFlashEnabled] = useState(true);
+  const [flashEnabled, setFlashEnabled] = useState(false);
   const [freezeMovement, setFreezeMovement] = useState(false);
   const [showMetrics, setShowMetrics] = useState(true);
   const engineRef = useRef<MarketDataEngine | null>(null);
@@ -71,11 +72,12 @@ export const LiveMarketDemo: React.FC = () => {
   // State for tracking updates
   const updateCountRef = useRef(0);
   const totalUpdatesRef = useRef(0);
-  const lastUpdateTimeRef = useRef(Date.now());
+  const lastUpdateTimeRef = useRef(0);
   const updatesPerSecondRef = useRef(0);
 
   // Update updates/sec counter periodically (without triggering re-render)
   useEffect(() => {
+    lastUpdateTimeRef.current = Date.now();
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsed = (now - lastUpdateTimeRef.current) / 1000;
@@ -83,54 +85,42 @@ export const LiveMarketDemo: React.FC = () => {
       updatesPerSecondRef.current = rate;
       updateCountRef.current = 0;
       lastUpdateTimeRef.current = now;
-      
       // Update the DOM directly without triggering React re-render
       const badge = document.querySelector('.updates-per-sec-badge');
       if (badge) {
         badge.textContent = `${rate} updates/s`;
       }
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // Create mock feed, connection, and set up data flow
+  // Cancel market data updates when route changes away from this page
+  const location = useLocation();
   useEffect(() => {
     if (!engineRef.current) return;
 
     const { feed, createConnection } = createMockFeed({
-      symbols: undefined, // Use default 50 symbols
-      updateFrequency: 30, // 30 updates/sec per symbol - push harder to test limits
-      priceVolatility: 0.003, // 0.3% volatility
-      burstProbability: 0.05, // 5% burst chance - minimal bursts
-      burstSize: 3, // Very small burst size
+      symbols: undefined,
+      updateFrequency: 30,
+      priceVolatility: 0.003,
+      burstProbability: 0.05,
+      burstSize: 3,
     });
-
     feedRef.current = feed;
-
-    // Create mock WebSocket-like connection
     const mockConnection = createConnection();
     mockConnectionRef.current = mockConnection;
-
-    // Subscribe to engine updates
     const unsubscribe = engineRef.current.onUpdate((updatedRows: any) => {
       setRows([...updatedRows]);
     });
-
-    // Set up message handler BEFORE connection opens
     mockConnection.onmessage = (event: { data: string }) => {
       try {
         const data = JSON.parse(event.data);
-        
         if (data.type === 'snapshot') {
-          console.log('Received snapshot with', data.data?.length, 'rows');
           engineRef.current?.initialize(data.data);
-          setRows([...data.data]); // Also set initial rows
+          setRows([...data.data]);
         } else if (data.type === 'tick') {
-          // Count tick messages (not individual field updates)
           updateCountRef.current++;
           totalUpdatesRef.current++;
-          
           engineRef.current?.processUpdate({
             rowId: data.symbol,
             updates: data.updates,
@@ -141,18 +131,10 @@ export const LiveMarketDemo: React.FC = () => {
         console.error('Error processing message:', error);
       }
     };
+    mockConnection.onopen = () => {};
+    mockConnection.onerror = () => {};
 
-    // Set up connection handlers
-    mockConnection.onopen = () => {
-      console.log('WebSocket connection opened');
-    };
-
-    mockConnection.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
-    // The mock WebSocket will automatically connect and send snapshot
-
+    // Cleanup when route changes away from /demo/market-data
     return () => {
       unsubscribe();
       feed.stop();
@@ -160,7 +142,7 @@ export const LiveMarketDemo: React.FC = () => {
         mockConnection.close();
       }
     };
-  }, []); // Run once after engine is initialized
+  }, [location.pathname]);
 
   // Define columns for market data
   const columns: Column[] = useMemo(() => [
