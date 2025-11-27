@@ -805,7 +805,7 @@ export class GridApiImpl implements GridApi {
 
   paginationGoToPage(page: number): void {
     this.ensureNotDestroyed();
-    this.dispatch({ type: 'SET_CURRENT_PAGE', payload: page });
+    this.dispatch({ type: 'SET_PAGE', payload: page });
     this.fireEvent('paginationChanged', { api: this, currentPage: page });
   }
 

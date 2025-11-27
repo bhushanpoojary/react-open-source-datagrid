@@ -229,7 +229,6 @@ export type GridAction =
   | { type: 'REDRAW_ROWS'; payload?: unknown }
   | { type: 'SHOW_OVERLAY'; payload: 'loading' | 'noRows' }
   | { type: 'HIDE_OVERLAY' }
-  | { type: 'SET_CURRENT_PAGE'; payload: number }
   | { type: 'SET_GROUP_BY'; payload: string[] }
   | { type: 'RECALCULATE_LAYOUT' }
   | { type: 'RESET_COLUMN_STATE' };
