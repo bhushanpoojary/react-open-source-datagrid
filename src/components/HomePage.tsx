@@ -6,6 +6,60 @@ export function HomePage() {
       maxWidth: '1200px',
       margin: '0 auto',
     }}>
+      {/* Report Issue Banner */}
+      <div style={{ 
+        backgroundColor: '#eff6ff',
+        border: '1px solid #bfdbfe',
+        borderRadius: '12px',
+        padding: '16px 20px',
+        marginBottom: '32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '16px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '24px' }}>💡</span>
+          <div>
+            <div style={{ fontSize: '15px', fontWeight: '600', color: '#1e40af', marginBottom: '2px' }}>
+              Found a bug or have a feature request?
+            </div>
+            <div style={{ fontSize: '13px', color: '#3b82f6' }}>
+              Help us improve by reporting issues or suggesting new features
+            </div>
+          </div>
+        </div>
+        <a
+          href="https://github.com/bhushanpoojary/react-open-source-datagrid/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            backgroundColor: '#2563eb',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            fontSize: '14px',
+            fontWeight: '600',
+            whiteSpace: 'nowrap',
+            transition: 'all 0.15s',
+            boxShadow: '0 2px 4px rgba(37, 99, 235, 0.2)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#1d4ed8';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 4px 8px rgba(37, 99, 235, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#2563eb';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 4px rgba(37, 99, 235, 0.2)';
+          }}
+        >
+          🐛 Report Issue
+        </a>
+      </div>
+
       {/* Hero Section */}
       <div style={{ marginBottom: '48px' }}>
         <h1 style={{ 

@@ -523,6 +523,32 @@ function App() {
           backgroundColor: '#0f172a'
         }}>
           <a 
+            href="https://github.com/bhushanpoojary/react-open-source-datagrid/issues" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: 'rgba(255, 255, 255, 0.8)', 
+              textDecoration: 'none',
+              fontSize: '13px',
+              transition: 'color 0.15s',
+              marginBottom: '12px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#60a5fa';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
+            }}
+          >
+            <svg style={{ width: '18px', height: '18px' }} fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <span>Report Issue / Feature</span>
+          </a>
+          <a 
             href="https://github.com/bhushanpoojary/react-open-source-datagrid" 
             target="_blank" 
             rel="noopener noreferrer" 
