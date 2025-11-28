@@ -196,8 +196,10 @@ export const InfiniteScrollDemo: React.FC = () => {
         
         <CodeBlock
           title="Creating Server-Side Data Source"
-          language="typescript"
-          code={`// 1. Create a server-side data source
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `// 1. Create a server-side data source
 import { ServerSideDataSource } from 'react-open-source-grid';
 
 const dataSource = new ServerSideDataSource({
@@ -247,7 +249,65 @@ import { createMockServerDataSource } from 'react-open-source-grid';
 const mockDataSource = createMockServerDataSource(
   100_000_000, // 100M rows
   300          // 300ms delay
-);`}
+);`,
+              language: 'typescript',
+            },
+            {
+              label: 'JavaScript',
+              code: `// 1. Create a server-side data source
+import { ServerSideDataSource } from 'react-open-source-grid';
+
+const dataSource = new ServerSideDataSource({
+  blockSize: 100,              // Rows per block
+  maxConcurrentRequests: 2,    // Max parallel requests
+  cacheBlockCount: 20,         // Max blocks to cache
+  cacheTimeout: 5 * 60 * 1000, // 5 minutes
+  
+  // Implement your data fetching logic
+  getRows: async (request) => {
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        startRow: request.startRow,
+        endRow: request.endRow,
+        sortModel: request.sortModel,
+        filterModel: request.filterModel,
+      }),
+    });
+    
+    const data = await response.json();
+    
+    return {
+      rows: data.rows,
+      totalRows: data.totalRows,
+      lastRow: data.lastRow, // Optional: for infinite scrolling
+    };
+  },
+});
+
+// 2. Use the InfiniteScrollDataGrid component
+<InfiniteScrollDataGrid
+  columns={columns}
+  dataSource={dataSource}
+  pageSize={100}
+  virtualScrollConfig={{
+    enabled: true,
+    rowHeight: 35,
+    containerHeight: 600,
+  }}
+/>
+
+// 3. Or create a mock data source for testing
+import { createMockServerDataSource } from 'react-open-source-grid';
+
+const mockDataSource = createMockServerDataSource(
+  100_000_000, // 100M rows
+  300          // 300ms delay
+);`,
+              language: 'javascript',
+            },
+          ]}
         />
       </div>
 

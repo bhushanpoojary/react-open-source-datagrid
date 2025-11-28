@@ -262,8 +262,10 @@ export const RowDraggingDemo: React.FC = () => {
         </h2>
         <CodeBlock
           title="Row Dragging Configuration"
-          language="tsx"
-          code={`import { DataGrid } from 'react-open-source-grid';
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
 
 const [tasks, setTasks] = useState<Row[]>(initialTasks);
 
@@ -285,7 +287,37 @@ const [tasks, setTasks] = useState<Row[]>(initialTasks);
     }
   }}
   tableId="task-list"
-/>`}
+/>`,
+              language: 'tsx',
+            },
+            {
+              label: 'JavaScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
+
+const [tasks, setTasks] = useState(initialTasks);
+
+<DataGrid
+  columns={columns}
+  rows={tasks}
+  rowDragging={{
+    enabled: true,
+    handleField: 'drag-handle',
+    onRowReorder: (reorderedRows) => {
+      setTasks(reorderedRows);
+      console.log('Tasks reordered:', reorderedRows);
+    },
+    // Optional: Enable drag between tables
+    onRowDragEnd: (draggedRow, sourceTable, targetTable) => {
+      if (sourceTable !== targetTable) {
+        console.log('Row moved between tables');
+      }
+    }
+  }}
+  tableId="task-list"
+/>`,
+              language: 'jsx',
+            },
+          ]}
         />
       </section>
     </div>

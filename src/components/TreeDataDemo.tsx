@@ -393,8 +393,10 @@ export const TreeDataDemo: React.FC = () => {
         </h3>
         <CodeBlock
           title="Tree Data Configuration"
-          language="tsx"
-          code={`import { DataGrid } from 'react-open-source-grid';
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
 
 const data = [
   { id: 1, name: 'CEO', department: 'Executive', parentId: null },
@@ -415,7 +417,36 @@ const treeConfig = {
   columns={columns}
   rows={data}
   treeConfig={treeConfig}
-/>`}
+/>`,
+              language: 'tsx',
+            },
+            {
+              label: 'JavaScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
+
+const data = [
+  { id: 1, name: 'CEO', department: 'Executive', parentId: null },
+  { id: 2, name: 'CTO', department: 'Technology', parentId: 1 },
+  { id: 3, name: 'CFO', department: 'Finance', parentId: 1 },
+  { id: 4, name: 'Engineer', department: 'Technology', parentId: 2 },
+  // ... more rows
+];
+
+const treeConfig = {
+  enabled: true,
+  idField: 'id',
+  parentIdField: 'parentId',
+  indentSize: 24,
+};
+
+<DataGrid
+  columns={columns}
+  rows={data}
+  treeConfig={treeConfig}
+/>`,
+              language: 'jsx',
+            },
+          ]}
         />
       </div>
     </div>

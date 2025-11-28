@@ -471,8 +471,10 @@ export const CellRenderersDemo: React.FC = () => {
           </h3>
           <CodeBlock
             title="Using Cell Renderer Components"
-            language="tsx"
-            code={`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 
 const columns = [
   {
@@ -498,7 +500,41 @@ const columns = [
   }
 ];
 
-<DataGrid columns={columns} rows={data} />`}
+<DataGrid columns={columns} rows={data} />`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
+
+const columns = [
+  {
+    field: 'status',
+    headerName: 'Status',
+    renderCell: (row) => <StatusChip status={row.status} />
+  },
+  {
+    field: 'progress',
+    headerName: 'Progress',
+    renderCell: (row) => <ProgressBar value={row.progress} />
+  },
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    renderCell: (row) => (
+      <ButtonCell 
+        label="View" 
+        onClick={() => handleView(row)} 
+        variant="primary"
+      />
+    )
+  }
+];
+
+<DataGrid columns={columns} rows={data} />`,
+                language: 'jsx',
+              },
+            ]}
           />
         </div>
       </div>

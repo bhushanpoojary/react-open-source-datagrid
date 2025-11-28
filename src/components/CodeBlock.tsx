@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-interface CodeBlockProps {
+interface CodeExample {
+  label: string;
   code: string;
+  language?: string;
+}
+
+interface CodeBlockProps {
+  code?: string;
+  examples?: CodeExample[];
   language?: string;
   title?: string;
   showLineNumbers?: boolean;
@@ -12,16 +19,22 @@ interface CodeBlockProps {
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({
   code,
+  examples,
   language = 'tsx',
   title,
   showLineNumbers = true,
   maxHeight = '500px',
 }) => {
+  const [activeTab, setActiveTab] = useState(0);
   const [copied, setCopied] = useState(false);
+
+  // Determine current code and language
+  const currentCode = examples ? examples[activeTab]?.code : code || '';
+  const currentLanguage = examples ? examples[activeTab]?.language || language : language;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(currentCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -46,21 +59,21 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 16px',
-            backgroundColor: '#1e293b',
-            borderBottom: '1px solid #374151',
+          padding: examples ? '12px 16px 0' : '12px 16px',
+          backgroundColor: '#1e293b',
+          borderBottom: examples ? 'none' : '1px solid #374151',
+        }}
+      >
+        <span
+          style={{
+            color: '#e2e8f0',
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: 'monospace',
           }}
         >
-          <span
-            style={{
-              color: '#e2e8f0',
-              fontSize: '14px',
-              fontWeight: 600,
-              fontFamily: 'monospace',
-            }}
-          >
-            {title || `${language.toUpperCase()} Code`}
-          </span>
+          {title || `${currentLanguage.toUpperCase()} Code`}
+        </span>
           <button
             onClick={handleCopy}
             style={{
@@ -134,6 +147,52 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           </button>
         </div>
 
+      {/* Tabs for multiple examples */}
+      {examples && examples.length > 1 && (
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+            padding: '0 16px',
+            backgroundColor: '#1e293b',
+            borderBottom: '1px solid #374151',
+          }}
+        >
+          {examples.map((example, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveTab(index)}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: activeTab === index ? '#3b82f6' : 'transparent',
+                color: activeTab === index ? 'white' : '#94a3b8',
+                border: 'none',
+                borderRadius: '4px 4px 0 0',
+                fontSize: '13px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                outline: 'none',
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== index) {
+                  e.currentTarget.style.backgroundColor = '#334155';
+                  e.currentTarget.style.color = '#e2e8f0';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== index) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = '#94a3b8';
+                }
+              }}
+            >
+              {example.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Code content */}
       <div
         style={{
@@ -143,7 +202,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         }}
       >
         <SyntaxHighlighter
-          language={language}
+          language={currentLanguage}
           style={vscDarkPlus}
           showLineNumbers={showLineNumbers}
           customStyle={{
@@ -159,7 +218,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
             },
           }}
         >
-          {code}
+          {currentCode}
         </SyntaxHighlighter>
       </div>
     </div>

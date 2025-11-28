@@ -149,6 +149,57 @@ const dataSource = new ServerSideDataSource({
 
 </details>
 
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+import { InfiniteScrollDataGrid, ServerSideDataSource } from 'react-open-source-grid';
+
+// Create a data source
+const dataSource = new ServerSideDataSource({
+  blockSize: 100,              // Rows per block
+  maxConcurrentRequests: 2,    // Max parallel requests
+  cacheBlockCount: 20,         // Cache up to 20 blocks
+  cacheTimeout: 5 * 60 * 1000, // 5 minutes
+  
+  // Implement server communication
+  getRows: async (request) => {
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        startRow: request.startRow,
+        endRow: request.endRow,
+        sortModel: request.sortModel,
+        filterModel: request.filterModel,
+      }),
+    });
+    
+    const data = await response.json();
+    
+    return {
+      rows: data.rows,
+      totalRows: data.totalRows,
+      lastRow: data.lastRow, // Optional: undefined means more data available
+    };
+  },
+});
+
+// Use the component
+<InfiniteScrollDataGrid
+  columns={columns}
+  dataSource={dataSource}
+  pageSize={100}
+  virtualScrollConfig={{
+    enabled: true,
+    rowHeight: 35,
+    containerHeight: 600,
+  }}
+/>
+```
+
+</details>
+
 ### Server API Requirements
 
 Your server endpoint should accept requests in this format:

@@ -172,8 +172,10 @@ export const FilteredSearchDemo: React.FC = () => {
           </h2>
           <CodeBlock
             title="Using FilteredSearchBar"
-            language="tsx"
-            code={`import { FilteredSearchBar } from 'react-open-source-grid';
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `import { FilteredSearchBar } from 'react-open-source-grid';
 import type { SearchToken, FilterOption } from 'react-open-source-grid';
 
 function EmployeeSearch() {
@@ -232,20 +234,73 @@ function EmployeeSearch() {
       <DataGrid columns={columns} rows={filteredData} />
     </>
   );
-}
+}`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `import { FilteredSearchBar } from 'react-open-source-grid';
 
-// Token structure returned by onSearch:
-// [
-//   {
-//     id: 'department-1234567890',
-//     field: 'department',
-//     label: 'Department',
-//     value: 'Engineering',
-//     operator: 'contains',
-//     color: '#3b82f6'
-//   },
-//   // ... more tokens
-// ]`}
+function EmployeeSearch() {
+  const [searchTokens, setSearchTokens] = useState([]);
+
+  // Define available filters
+  const filterOptions = [
+    {
+      field: 'department',
+      label: 'Department',
+      type: 'select',
+      options: ['Engineering', 'Sales', 'Marketing', 'HR'],
+      color: '#3b82f6', // Blue tokens
+    },
+    {
+      field: 'status',
+      label: 'Status',
+      type: 'select',
+      options: ['Active', 'Inactive', 'On Leave'],
+      color: '#10b981', // Green tokens
+    },
+    {
+      field: 'name',
+      label: 'Name',
+      type: 'text',
+      placeholder: 'Enter name...',
+      color: '#ec4899', // Pink tokens
+    },
+  ];
+
+  // Handle search changes
+  const handleSearch = (tokens) => {
+    setSearchTokens(tokens);
+    
+    // Filter your data
+    const filtered = employees.filter(row => {
+      return tokens.every(token => {
+        const cellValue = String(row[token.field]).toLowerCase();
+        const searchValue = String(token.value).toLowerCase();
+        return cellValue.includes(searchValue);
+      });
+    });
+    
+    setFilteredData(filtered);
+  };
+
+  return (
+    <>
+      <FilteredSearchBar
+        filters={filterOptions}
+        onSearch={handleSearch}
+        placeholder="Search employees..."
+        maxTokens={10}
+      />
+      
+      <DataGrid columns={columns} rows={filteredData} />
+    </>
+  );
+}`,
+                language: 'jsx',
+              },
+            ]}
           />
         </div>
 

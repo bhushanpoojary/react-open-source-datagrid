@@ -316,8 +316,10 @@ export const ThemesDemo: React.FC = () => {
           </h2>
           <CodeBlock
             title="Using Custom Themes"
-            language="tsx"
-            code={`import { DataGrid, ThemeSelector } from 'react-open-source-grid';
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `import { DataGrid, ThemeSelector } from 'react-open-source-grid';
 import type { ThemeName } from 'react-open-source-grid';
 
 function App() {
@@ -344,7 +346,41 @@ function App() {
 // Switch themes dynamically
 <DataGrid theme="nord" columns={columns} rows={data} />
 <DataGrid theme="dracula" columns={columns} rows={data} />
-<DataGrid theme="monokai" columns={columns} rows={data} />`}
+<DataGrid theme="monokai" columns={columns} rows={data} />`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `import { DataGrid, ThemeSelector } from 'react-open-source-grid';
+
+function App() {
+  const [theme, setTheme] = useState('quartz');
+  
+  return (
+    <>
+      <ThemeSelector currentTheme={theme} onThemeChange={setTheme} />
+      
+      <DataGrid
+        columns={columns}
+        rows={data}
+        theme={theme} // Themes applied directly!
+      />
+    </>
+  );
+}
+
+// Available themes:
+// 'quartz', 'alpine', 'material', 'dark', 
+// 'nord', 'dracula', 'solarized-light', 
+// 'solarized-dark', 'monokai', 'one-dark'
+
+// Switch themes dynamically
+<DataGrid theme="nord" columns={columns} rows={data} />
+<DataGrid theme="dracula" columns={columns} rows={data} />
+<DataGrid theme="monokai" columns={columns} rows={data} />`,
+                language: 'jsx',
+              },
+            ]}
           />
         </div>
       </div>

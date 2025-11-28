@@ -337,8 +337,10 @@ export const VirtualScrollDemo: React.FC = () => {
           </h2>
           <CodeBlock
             title="Virtual Scrolling Configuration"
-            language="tsx"
-            code={`import { DataGrid } from 'react-open-source-grid';
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `import { DataGrid } from 'react-open-source-grid';
 
 const virtualScrollConfig = {
   enabled: true,
@@ -357,7 +359,34 @@ const virtualScrollConfig = {
   onCellEdit={(rowIndex, field, value) => {
     console.log('Cell edited:', { rowIndex, field, value });
   }}
-/>`}
+/>`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `import { DataGrid } from 'react-open-source-grid';
+
+const virtualScrollConfig = {
+  enabled: true,
+  rowHeight: 35, // Fixed row height for best performance
+  containerHeight: 600,
+  overscanCount: 5, // Extra rows to render above/below viewport
+  enableColumnVirtualization: true,
+  columnOverscan: 3, // Extra columns to render
+};
+
+<DataGrid
+  columns={columns}
+  rows={largeDataset}
+  pageSize={50000}
+  virtualScrollConfig={virtualScrollConfig}
+  onCellEdit={(rowIndex, field, value) => {
+    console.log('Cell edited:', { rowIndex, field, value });
+  }}
+/>`,
+                language: 'jsx',
+              },
+            ]}
           />
         </div>
       </div>

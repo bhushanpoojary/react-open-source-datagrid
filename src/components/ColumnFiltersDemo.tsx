@@ -338,8 +338,10 @@ export const ColumnFiltersDemo: React.FC = () => {
         </h2>
         <CodeBlock
           title="Column Filter Configuration"
-          language="tsx"
-          code={`import { DataGrid } from 'react-open-source-grid';
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
 
 const columns = [
   {
@@ -381,7 +383,57 @@ const columns = [
   rows={data}
   pageSize={10}
   theme="quartz"
-/>`}
+/>`,
+              language: 'tsx',
+            },
+            {
+              label: 'JavaScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
+
+const columns = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: 180,
+    sortable: true,
+    filterable: true,
+    filterType: 'text', // Text filter with contains/equals/startsWith/endsWith
+  },
+  {
+    field: 'age',
+    headerName: 'Age',
+    width: 100,
+    sortable: true,
+    filterable: true,
+    filterType: 'number', // Number filter with equals/greaterThan/lessThan/between
+  },
+  {
+    field: 'department',
+    headerName: 'Department',
+    width: 150,
+    sortable: true,
+    filterable: true,
+    filterType: 'set', // Set filter with checkbox selection
+  },
+  {
+    field: 'joinDate',
+    headerName: 'Join Date',
+    width: 130,
+    sortable: true,
+    filterable: true,
+    filterType: 'date', // Date filter with before/after/between
+  },
+];
+
+<DataGrid
+  columns={columns}
+  rows={data}
+  pageSize={10}
+  theme="quartz"
+/>`,
+              language: 'jsx',
+            },
+          ]}
         />
       </div>
     </div>

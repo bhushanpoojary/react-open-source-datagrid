@@ -279,8 +279,10 @@ export const RowPinningDemo: React.FC = () => {
 
           <CodeBlock
             title="Basic Row Pinning Configuration"
-            language="tsx"
-            code={`import { DataGrid } from 'react-open-source-grid';
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `import { DataGrid } from 'react-open-source-grid';
 import type { RowPinConfig } from 'react-open-source-grid';
 
 const rowPinConfig: RowPinConfig = {
@@ -297,13 +299,39 @@ const rowPinConfig: RowPinConfig = {
   contextMenuConfig={{
     enabled: true, // Enable context menu for pinning
   }}
-/>`}
+/>`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `import { DataGrid } from 'react-open-source-grid';
+
+const rowPinConfig = {
+  enabled: true,
+  onPinChange: (pinnedTop, pinnedBottom) => {
+    console.log('Pinned rows:', { pinnedTop, pinnedBottom });
+  },
+};
+
+<DataGrid
+  columns={columns}
+  rows={rows}
+  rowPinConfig={rowPinConfig}
+  contextMenuConfig={{
+    enabled: true, // Enable context menu for pinning
+  }}
+/>`,
+                language: 'jsx',
+              },
+            ]}
           />
 
           <CodeBlock
             title="Row Pinning with Virtual Scrolling"
-            language="tsx"
-            code={`const rowPinConfig: RowPinConfig = {
+            examples={[
+              {
+                label: 'TypeScript',
+                code: `const rowPinConfig: RowPinConfig = {
   enabled: true,
   maxPinnedTop: 5,    // Limit to 5 rows pinned at top
   maxPinnedBottom: 3, // Limit to 3 rows pinned at bottom
@@ -320,7 +348,32 @@ const virtualScrollConfig: VirtualScrollConfig = {
   rows={largeDataset}
   rowPinConfig={rowPinConfig}
   virtualScrollConfig={virtualScrollConfig}
-/>`}
+/>`,
+                language: 'tsx',
+              },
+              {
+                label: 'JavaScript',
+                code: `const rowPinConfig = {
+  enabled: true,
+  maxPinnedTop: 5,    // Limit to 5 rows pinned at top
+  maxPinnedBottom: 3, // Limit to 3 rows pinned at bottom
+};
+
+const virtualScrollConfig = {
+  enabled: true,
+  rowHeight: 35,
+  containerHeight: 600,
+};
+
+<DataGrid
+  columns={columns}
+  rows={largeDataset}
+  rowPinConfig={rowPinConfig}
+  virtualScrollConfig={virtualScrollConfig}
+/>`,
+                language: 'jsx',
+              },
+            ]}
           />
 
           <CodeBlock

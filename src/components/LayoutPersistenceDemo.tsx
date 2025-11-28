@@ -340,8 +340,10 @@ export const LayoutPersistenceDemo: React.FC = () => {
         
         <CodeBlock
           title="Basic Configuration - LocalStorage"
-          language="tsx"
-          code={`import { DataGrid } from 'react-open-source-grid';
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}
@@ -354,7 +356,28 @@ export const LayoutPersistenceDemo: React.FC = () => {
     autoSaveDelay: 1000,
     autoLoad: true,
   }}
-/>`}
+/>`,
+              language: 'tsx',
+            },
+            {
+              label: 'JavaScript',
+              code: `import { DataGrid } from 'react-open-source-grid';
+
+<DataGrid
+  columns={columns}
+  rows={data}
+  persistenceConfig={{
+    enabled: true,
+    storageKey: 'my-grid-layout',
+    strategy: 'localStorage',
+    autoSave: true,
+    autoSaveDelay: 1000,
+    autoLoad: true,
+  }}
+/>`,
+              language: 'jsx',
+            },
+          ]}
         />
 
         <CodeBlock

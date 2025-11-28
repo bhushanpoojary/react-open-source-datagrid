@@ -441,8 +441,10 @@ export const LiveMarketDemo: React.FC = () => {
         </h2>
         <CodeBlock
           title="Market Data Configuration"
-          language="tsx"
-          code={`import { MarketDataGrid, createMarketDataEngine } from 'react-open-source-grid';
+          examples={[
+            {
+              label: 'TypeScript',
+              code: `import { MarketDataGrid, createMarketDataEngine } from 'react-open-source-grid';
 
 // Create market data engine
 const engine = createMarketDataEngine({
@@ -478,7 +480,51 @@ feed.subscribe((updates) => {
   onCellClick={(rowId, field, value) => {
     console.log('Cell clicked:', { rowId, field, value });
   }}
-/>`}
+/>`,
+              language: 'tsx',
+            },
+            {
+              label: 'JavaScript',
+              code: `import { MarketDataGrid, createMarketDataEngine } from 'react-open-source-grid';
+
+// Create market data engine
+const engine = createMarketDataEngine({
+  updateThrottleMs: 16, // 60 FPS
+  flashDuration: 500,
+  maxUpdatesPerCycle: 1000,
+});
+
+// Configure market data
+const config = {
+  flashEnabled: true,
+  densityMode: false,
+  freezeMovement: false,
+  bidAskColors: {
+    bid: '#10b981',
+    ask: '#ef4444',
+  },
+};
+
+// Connect to WebSocket feed
+const feed = createMockFeed();
+feed.subscribe((updates) => {
+  updates.forEach(update => {
+    engine.queueUpdate(update.rowId, update.field, update.value);
+  });
+});
+
+<MarketDataGrid
+  columns={columns}
+  rows={rows}
+  engine={engine}
+  config={config}
+  onCellClick={(rowId, field, value) => {
+    console.log('Cell clicked:', { rowId, field, value });
+  }}
+/>`,
+              language: 'jsx',
+            },
+          ]}
         />
       </div>
     </div>
