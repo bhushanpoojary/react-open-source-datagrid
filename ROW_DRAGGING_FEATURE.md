@@ -19,6 +19,9 @@ The Row Dragging feature enables users to interactively reorder rows within a Da
 
 ### Simple Row Reordering
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 import { useState } from 'react';
@@ -43,6 +46,38 @@ function MyComponent() {
   );
 }
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [rows, setRows] = useState([
+    { id: 1, name: 'Task A', priority: 'High' },
+    { id: 2, name: 'Task B', priority: 'Medium' },
+    { id: 3, name: 'Task C', priority: 'Low' },
+  ]);
+
+  return (
+    <DataGrid
+      columns={columns}
+      rows={rows}
+      dragRowConfig={{
+        enabled: true,
+        showDragHandle: true,
+      }}
+      onRowReorder={(reorderedRows) => setRows(reorderedRows)}
+    />
+  );
+}
+```
+
+</details>
 
 ## Configuration
 

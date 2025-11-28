@@ -51,6 +51,9 @@ Faceted search is a filtering UI pattern that displays available filter options 
 
 ### Basic Implementation
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```typescript
 import { FacetedSearch, DataGrid } from 'react-open-source-grid';
 import { useState, useMemo } from 'react';
@@ -106,6 +109,69 @@ function ProductCatalog() {
   );
 }
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+import { FacetedSearch, DataGrid } from 'react-open-source-grid';
+import { useState, useMemo } from 'react';
+
+function ProductCatalog() {
+  const [data] = useState(products);
+  const [filterConfig, setFilterConfig] = useState({});
+
+  // Define facets
+  const facetConfigs = [
+    { field: 'brand', label: 'Brand', sortBy: 'alpha', maxItems: 8 },
+    { field: 'category', label: 'Category', sortBy: 'count', maxItems: 6 },
+    { field: 'price_range', label: 'Price Range', sortBy: 'value' },
+  ];
+
+  // Handle filter changes
+  const handleFilterChange = (field, values) => {
+    setFilterConfig(prev => ({
+      ...prev,
+      [field]: values ? { type: 'set', values } : null,
+    }));
+  };
+
+  // Apply filters
+  const filteredData = useMemo(() => {
+    return data.filter(row => {
+      return Object.entries(filterConfig).every(([field, filter]) => {
+        if (!filter || !filter.values || filter.values.length === 0) {
+          return true;
+        }
+        return filter.values.includes(row[field]);
+      });
+    });
+  }, [data, filterConfig]);
+
+  return (
+    <div className="flex">
+      <FacetedSearch
+        columns={columns}
+        rows={data}
+        facetConfigs={facetConfigs}
+        filterConfig={filterConfig}
+        onFilterChange={handleFilterChange}
+        onClearAll={() => setFilterConfig({})}
+        className="w-80"
+      />
+      <DataGrid
+        columns={columns}
+        rows={filteredData}
+        pageSize={20}
+      />
+    </div>
+  );
+}
+```
+
+</details>
 
 ## 📋 API Reference
 

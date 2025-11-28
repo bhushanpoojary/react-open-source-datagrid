@@ -14,6 +14,9 @@ Row-level and cell-level tooltips with smart placement, delays, and support for 
 
 ## Basic Usage
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid, type TooltipConfig } from 'react-open-source-grid';
 
@@ -45,6 +48,45 @@ const tooltipConfig: TooltipConfig = {
   tooltipConfig={tooltipConfig}
 />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const tooltipConfig = {
+  enabled: true,
+  showDelay: 500,          // ms before showing tooltip
+  hideDelay: 200,          // ms before hiding tooltip
+  placement: 'auto',       // 'auto' | 'top' | 'bottom' | 'left' | 'right'
+  maxWidth: 300,           // max tooltip width in pixels
+  offset: 8,               // offset from target element in pixels
+  
+  // Cell-level tooltip callback
+  getCellTooltip: (row, column, value) => {
+    if (column.field === 'price') {
+      return `Current price: $${row.price}`;
+    }
+    return null; // No tooltip
+  },
+  
+  // Row-level tooltip callback
+  getRowTooltip: (row) => {
+    return `Row ID: ${row.id}`;
+  }
+};
+
+<DataGrid
+  columns={columns}
+  rows={data}
+  tooltipConfig={tooltipConfig}
+/>
+```
+
+</details>
 
 ## String Tooltips
 

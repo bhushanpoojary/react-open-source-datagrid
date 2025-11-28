@@ -25,6 +25,9 @@ The DataGrid now includes a comprehensive right-click context menu system that p
 
 ## Basic Usage
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```typescript
 import { DataGrid } from 'react-open-source-grid';
 import type { Column, Row, ContextMenuConfig } from 'react-open-source-grid';
@@ -47,6 +50,35 @@ const rows: Row[] = [
   contextMenuConfig={{ enabled: true }}
 />
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+import { DataGrid } from 'react-open-source-grid';
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 80 },
+  { field: 'name', headerName: 'Name', width: 150 },
+  { field: 'email', headerName: 'Email', width: 200 },
+];
+
+const rows = [
+  { id: 1, name: 'Alice', email: 'alice@company.com' },
+  { id: 2, name: 'Bob', email: 'bob@company.com' },
+];
+
+// Basic context menu (all features enabled)
+<DataGrid
+  columns={columns}
+  rows={rows}
+  contextMenuConfig={{ enabled: true }}
+/>
+```
+
+</details>
 
 ## Configuration
 

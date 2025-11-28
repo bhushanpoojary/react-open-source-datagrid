@@ -60,6 +60,9 @@ npm run dev
 
 ### Basic Example
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 import type { Column, Row } from 'react-open-source-grid';
@@ -94,6 +97,47 @@ function App() {
   );
 }
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Name', width: 180, editable: true },
+  { field: 'email', headerName: 'Email', width: 200, editable: true },
+  { field: 'role', headerName: 'Role', width: 150 },
+];
+
+const rows = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
+  // ... more rows
+];
+
+function App() {
+  return (
+    <DataGrid
+      columns={columns}
+      rows={rows}
+      pageSize={10}
+      onRowClick={(row) => console.log('Row clicked:', row)}
+      onCellEdit={(rowIndex, field, value) => {
+        console.log(`Cell edited: Row ${rowIndex}, Field ${field}, Value ${value}`);
+      }}
+      onSelectionChange={(selectedIds) => {
+        console.log('Selected:', selectedIds);
+      }}
+    />
+  );
+}
+```
+
+</details>
 
 ## 🔧 API Reference
 

@@ -46,8 +46,11 @@ Examples:
 
 ## 🛠️ Using Export Functions Directly
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
-import { handleExport, exportToCSV, exportToXLSX } from '@/components/DataGrid';
+import { handleExport, exportToCSV, exportToXLSX } from 'react-open-source-grid';
 
 // Method 1: Use handleExport (automatic)
 handleExport(data, columns, {
@@ -64,6 +67,32 @@ exportToXLSX(data, columns, {
 
 exportToCSV(data, columns, 'report.csv');
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { handleExport, exportToCSV, exportToXLSX } from 'react-open-source-grid';
+
+// Method 1: Use handleExport (automatic)
+handleExport(data, columns, {
+  format: 'xlsx',
+  scope: 'filtered',
+  styling: 'professional'
+});
+
+// Method 2: Use specific export function
+exportToXLSX(data, columns, {
+  filename: 'custom_report.xlsx',
+  styling: 'professional'
+});
+
+exportToCSV(data, columns, 'report.csv');
+```
+
+</details>
 
 ## 🔧 API Reference
 

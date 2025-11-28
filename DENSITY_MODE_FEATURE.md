@@ -36,6 +36,9 @@ The Density Mode system provides four display modes (Ultra Compact, Compact, Nor
 
 ### Basic Usage with Built-in Toggle
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 
@@ -52,7 +55,33 @@ function MyComponent() {
 }
 ```
 
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+function MyComponent() {
+  return (
+    <DataGrid
+      columns={columns}
+      rows={data}
+      showDensityToggle={true}  // Show density toggle in toolbar
+      densityMode="normal"      // Initial density mode
+      onDensityChange={(mode) => console.log('Density changed to:', mode)}
+    />
+  );
+}
+```
+
+</details>
+
 ### Using the Hook
+
+<details open>
+<summary><b>TypeScript</b></summary>
 
 ```tsx
 import { DataGrid, useDensityMode } from 'react-open-source-grid';
@@ -70,6 +99,30 @@ function MyComponent() {
   );
 }
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid, useDensityMode } from 'react-open-source-grid';
+
+function MyComponent() {
+  const { densityMode, setDensityMode, densityStyles } = useDensityMode({
+    initialMode: 'normal',
+    persist: true,
+  });
+
+  return (
+    <div style={densityStyles}>
+      <DataGrid columns={columns} rows={data} />
+    </div>
+  );
+}
+```
+
+</details>
 
 ### Standalone Toggle Component
 

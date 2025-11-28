@@ -65,6 +65,9 @@ The advanced filter is automatically available on all filterable columns. Users 
 
 ### Programmatic Usage
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```typescript
 import { DataGrid, AdvancedFilterValue } from 'react-open-source-grid';
 
@@ -86,6 +89,35 @@ dispatch({
   } 
 });
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+import { DataGrid } from 'react-open-source-grid';
+
+// Define advanced filter
+const advancedFilter = {
+  operator: 'AND', // or 'OR'
+  conditions: [
+    { type: 'greaterThan', value: 50000 },
+    { type: 'lessThan', value: 100000 }
+  ]
+};
+
+// Apply to a column
+dispatch({ 
+  type: 'SET_FILTER', 
+  payload: { 
+    field: 'salary', 
+    value: advancedFilter 
+  } 
+});
+```
+
+</details>
 
 ### Type Definitions
 

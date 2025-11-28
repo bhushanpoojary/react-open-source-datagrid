@@ -25,6 +25,9 @@ npm run dev
 
 ### Use in Your Project
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 import type { Column, Row } from 'react-open-source-grid';
@@ -45,6 +48,33 @@ const rows: Row[] = [
 // Render
 <DataGrid columns={columns} rows={rows} />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+// Define columns
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Name', width: 180, editable: true },
+  { field: 'email', headerName: 'Email', width: 200, editable: true },
+];
+
+// Define data
+const rows = [
+  { id: 1, name: 'John Doe', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+];
+
+// Render
+<DataGrid columns={columns} rows={rows} />
+```
+
+</details>
 
 ## 📁 File Structure
 

@@ -40,6 +40,9 @@ Open http://localhost:5173 to see the demo.
 
 ## Usage
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 import type { Column, Row } from 'react-open-source-grid';
@@ -62,6 +65,35 @@ const rows: Row[] = [
   }}
 />
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Name', width: 180, editable: true },
+];
+
+const rows = [
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Smith' },
+];
+
+<DataGrid 
+  columns={columns} 
+  rows={rows}
+  onCellEdit={(rowIndex, field, value) => {
+    console.log('Edited:', rowIndex, field, value);
+  }}
+/>
+```
+
+</details>
 
 ## Documentation
 

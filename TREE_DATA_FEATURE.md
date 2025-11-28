@@ -19,6 +19,9 @@ The Tree Data feature allows you to display hierarchical data structures in the 
 
 ### Basic Tree Data Example
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid, TreeConfig } from 'react-open-source-grid';
 
@@ -52,6 +55,47 @@ function App() {
   );
 }
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+// Your flat data with parent-child relationships
+const employees = [
+  { id: 1, name: 'Sarah Johnson', position: 'CEO', parentId: null },
+  { id: 2, name: 'Michael Chen', position: 'CTO', parentId: 1 },
+  { id: 3, name: 'Emily Davis', position: 'CFO', parentId: 1 },
+  { id: 4, name: 'Robert Wilson', position: 'VP Engineering', parentId: 2 },
+  { id: 5, name: 'David Brown', position: 'Engineering Manager', parentId: 4 },
+];
+
+const columns = [
+  { field: 'name', headerName: 'Name', width: 200 },
+  { field: 'position', headerName: 'Position', width: 180 },
+];
+
+const treeConfig = {
+  enabled: true,
+  idField: 'id',
+  parentIdField: 'parentId',
+};
+
+function App() {
+  return (
+    <DataGrid
+      columns={columns}
+      rows={employees}
+      treeConfig={treeConfig}
+    />
+  );
+}
+```
+
+</details>
 
 ## Configuration
 

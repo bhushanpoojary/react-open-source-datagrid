@@ -69,7 +69,26 @@
 
 ## 🔧 Usage
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
+import { DataGrid } from 'react-open-source-grid';
+
+// Accessibility features are built-in
+<DataGrid
+  columns={columns}
+  rows={rows}
+  pageSize={10}
+/>
+```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
 import { DataGrid } from 'react-open-source-grid';
 
 // Accessibility features are built-in

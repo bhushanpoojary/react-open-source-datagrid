@@ -33,6 +33,9 @@ You can also implement custom storage adapters for other persistence mechanisms.
 
 ### Enable Persistence with LocalStorage
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid, PersistenceConfig } from 'react-open-source-grid';
 
@@ -51,6 +54,32 @@ const persistenceConfig: PersistenceConfig = {
   persistenceConfig={persistenceConfig}
 />
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const persistenceConfig = {
+  enabled: true,
+  storageKey: 'my-grid-layout',
+  strategy: 'localStorage',
+  autoSave: true,
+  autoSaveDelay: 1000,
+  autoLoad: true,
+};
+
+<DataGrid
+  columns={columns}
+  rows={rows}
+  persistenceConfig={persistenceConfig}
+/>
+```
+
+</details>
 
 ### Manual Save/Load
 

@@ -2,6 +2,9 @@
 
 ## Basic Setup
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 
@@ -22,6 +25,34 @@ const treeConfig = {
   treeConfig={treeConfig}
 />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const data = [
+  { id: 1, name: 'Parent', parentId: null },
+  { id: 2, name: 'Child', parentId: 1 },
+];
+
+const treeConfig = {
+  enabled: true,
+  idField: 'id',
+  parentIdField: 'parentId',
+};
+
+<DataGrid
+  columns={columns}
+  rows={data}
+  treeConfig={treeConfig}
+/>
+```
+
+</details>
 
 ## TreeConfig Options
 

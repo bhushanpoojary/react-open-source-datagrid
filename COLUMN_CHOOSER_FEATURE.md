@@ -35,6 +35,9 @@ The Column Chooser feature allows users to control column visibility and reorder
 ### Basic Implementation
 The ColumnChooser is automatically integrated into the DataGrid toolbar:
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 import { DataGrid } from 'react-open-source-grid';
 
@@ -45,8 +48,28 @@ import { DataGrid } from 'react-open-source-grid';
 />
 ```
 
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+<DataGrid
+  columns={columns}
+  rows={rows}
+  pageSize={20}
+/>
+```
+
+</details>
+
 ### Programmatic Access
 You can also use the ColumnChooser component standalone:
+
+<details open>
+<summary><b>TypeScript</b></summary>
 
 ```tsx
 import { ColumnChooser } from 'react-open-source-grid';
@@ -60,6 +83,26 @@ import { ColumnChooser } from 'react-open-source-grid';
   onResetLayout={() => console.log('Reset layout')}
 />
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+import { ColumnChooser } from 'react-open-source-grid';
+
+<ColumnChooser
+  columns={columns}
+  columnOrder={columnOrder}
+  hiddenColumns={hiddenColumns}
+  onToggleVisibility={(field) => console.log('Toggle', field)}
+  onReorderColumns={(from, to) => console.log('Reorder', from, to)}
+  onResetLayout={() => console.log('Reset layout')}
+/>
+```
+
+</details>
 
 ## User Interface
 

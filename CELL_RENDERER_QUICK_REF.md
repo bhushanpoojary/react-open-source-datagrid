@@ -2,6 +2,9 @@
 
 ## Quick Start
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```typescript
 import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 
@@ -15,6 +18,27 @@ const columns: Column[] = [
 
 <DataGrid columns={columns} rows={data} />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
+
+const columns = [
+  {
+    field: 'status',
+    headerName: 'Status',
+    renderCell: (row) => <StatusChip status={row.status} />
+  }
+];
+
+<DataGrid columns={columns} rows={data} />
+```
+
+</details>
 
 ## Available Components
 

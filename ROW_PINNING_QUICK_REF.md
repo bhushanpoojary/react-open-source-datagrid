@@ -6,6 +6,9 @@ Row pinning allows you to keep important rows visible at the top or bottom of th
 
 ## Basic Usage
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid} from 'react-open-source-grid';
 import type { RowPinConfig } from 'react-open-source-grid';
@@ -24,6 +27,31 @@ const rowPinConfig: RowPinConfig = {
   contextMenuConfig={{ enabled: true }}
 />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const rowPinConfig = {
+  enabled: true,
+  onPinChange: (pinnedTop, pinnedBottom) => {
+    console.log('Pinned rows:', { pinnedTop, pinnedBottom });
+  },
+};
+
+<DataGrid
+  columns={columns}
+  rows={rows}
+  rowPinConfig={rowPinConfig}
+  contextMenuConfig={{ enabled: true }}
+/>
+```
+
+</details>
 
 ## Configuration Options
 

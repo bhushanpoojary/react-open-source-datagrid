@@ -38,6 +38,9 @@ The Cell Renderer Framework allows you to render **custom React components** ins
 
 ## 🚀 Getting Started
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ### Step 1: Import Components
 ```typescript
 import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
@@ -58,6 +61,34 @@ const columns: Column[] = [
 ```typescript
 <DataGrid columns={columns} rows={data} />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+### Step 1: Import Components
+```jsx
+import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
+```
+
+### Step 2: Add to Column Definition
+```jsx
+const columns = [
+  {
+    field: 'status',
+    headerName: 'Status',
+    renderCell: (row) => <StatusChip status={row.status} />
+  }
+];
+```
+
+### Step 3: Use DataGrid
+```jsx
+<DataGrid columns={columns} rows={data} />
+```
+
+</details>
 
 ## 💡 Common Patterns
 

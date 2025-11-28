@@ -4,6 +4,9 @@
 
 Enable virtual scrolling for large datasets:
 
+<details open>
+<summary><strong>TypeScript</strong></summary>
+
 ```tsx
 import { DataGrid, VirtualScrollConfig } from 'react-open-source-grid';
 
@@ -19,6 +22,29 @@ const virtualConfig: VirtualScrollConfig = {
   virtualScrollConfig={virtualConfig}
 />
 ```
+
+</details>
+
+<details>
+<summary><strong>JavaScript</strong></summary>
+
+```jsx
+import { DataGrid } from 'react-open-source-grid';
+
+const virtualConfig = {
+  enabled: true,
+  rowHeight: 35,
+  containerHeight: 600,
+};
+
+<DataGrid
+  columns={columns}
+  rows={largeDataset}
+  virtualScrollConfig={virtualConfig}
+/>
+```
+
+</details>
 
 ## Configuration Options
 

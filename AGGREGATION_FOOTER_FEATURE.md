@@ -25,6 +25,9 @@ The DataGrid now supports powerful aggregation capabilities with footer rows tha
 
 Add a global footer row to display aggregations across all data:
 
+<details open>
+<summary><b>TypeScript</b></summary>
+
 ```tsx
 <DataGrid
   columns={columns}
@@ -39,6 +42,28 @@ Add a global footer row to display aggregations across all data:
   }}
 />
 ```
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```jsx
+<DataGrid
+  columns={columns}
+  rows={data}
+  footerConfig={{
+    show: true,
+    aggregates: [
+      { field: 'salary', function: 'total' },
+      { field: 'salary', function: 'avg' },
+      { field: 'id', function: 'count' },
+    ],
+  }}
+/>
+```
+
+</details>
 
 ### Custom Labels
 
