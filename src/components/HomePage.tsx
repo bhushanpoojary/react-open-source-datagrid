@@ -1,3 +1,4 @@
+// Updated: 2025-11-28 02:00
 export function HomePage() {
   return (
     <div style={{ 
@@ -58,7 +59,6 @@ export function HomePage() {
             fontSize: '14px'
           }}>
             <code style={{ flex: 1 }}>npm install react-open-source-grid</code>
-            <code style={{ flex: 1 }}>import 'react-open-source-grid/dist/lib/index.css';</code>
             <button
               onClick={() => {
                 navigator.clipboard.writeText('npm install react-open-source-grid');
@@ -83,8 +83,44 @@ export function HomePage() {
               Copy
             </button>
           </div>
+          <div style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            backgroundColor: '#0f172a',
+            padding: '16px',
+            borderRadius: '8px',
+            fontFamily: 'monospace',
+            fontSize: '14px',
+            marginTop: '8px'
+          }}>
+            <code style={{ flex: 1 }}>import 'react-open-source-grid/dist/lib/index.css';</code>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText("import 'react-open-source-grid/dist/lib/index.css';");
+              }}
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              Copy
+            </button>
+          </div>
         </div>
-
+                
         {/* Quick Stats */}
         <div style={{ 
           display: 'grid', 

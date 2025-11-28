@@ -1,6 +1,6 @@
 ﻿/* eslint-disable */
 import React, { useState } from 'react';
-import 'react-open-source-grid/dist/lib/index.css';
+import '../index.css';
 import { DataGrid, StatusChip, CurrencyCell } from './DataGrid';
 import type { Column, Row } from './DataGrid';
 import { CodeBlock } from './CodeBlock';
@@ -213,13 +213,6 @@ export const DemoGridPage: React.FC = () => {
             <p style={{ marginTop: '12px', color: '#374151', fontSize: '13px' }}>
               Note: import the library stylesheet into your app so the demo styles match the package:
             </p>
-            <CodeBlock
-              code={"import 'react-open-source-grid/dist/lib/index.css';"}
-              language="tsx"
-              title="Import Styles"
-              showLineNumbers={false}
-              maxHeight="80px"
-            />
           </div>
         </div>
 

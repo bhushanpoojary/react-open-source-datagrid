@@ -12,7 +12,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": false,
+    "noEmit": true,
     "declaration": true,
     "declarationDir": "./dist/assets",
     "jsx": "react-jsx",
