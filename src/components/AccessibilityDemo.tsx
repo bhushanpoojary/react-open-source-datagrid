@@ -245,7 +245,7 @@ export const AccessibilityDemo: React.FC = () => {
         <CodeBlock
           title="Basic Accessible Grid"
           language="tsx"
-          code={`import { DataGrid} from './DataGrid';
+          code={`import { DataGrid } from 'react-open-source-grid';
 
 function AccessibleGrid() {
   return (

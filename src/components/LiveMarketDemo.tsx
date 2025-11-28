@@ -442,7 +442,7 @@ export const LiveMarketDemo: React.FC = () => {
         <CodeBlock
           title="Market Data Configuration"
           language="tsx"
-          code={`import { MarketDataGrid, createMarketDataEngine } from './components/DataGrid';
+          code={`import { MarketDataGrid, createMarketDataEngine } from 'react-open-source-grid';
 
 // Create market data engine
 const engine = createMarketDataEngine({

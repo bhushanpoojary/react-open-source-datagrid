@@ -468,8 +468,7 @@ export const FacetedSearchDemo: React.FC = () => {
         <CodeBlock
           title="Basic Setup"
           language="typescript"
-          code={`import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { DataGrid} from './components/DataGrid';
+          code={`import { FacetedSearch, DataGrid } from 'react-open-source-grid';
 
 const columns = [
   { field: 'name', headerName: 'Product', width: 200 },

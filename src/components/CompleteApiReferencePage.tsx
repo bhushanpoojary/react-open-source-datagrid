@@ -132,7 +132,7 @@ const OverviewSection: React.FC = () => (
         Quick Start
       </h3>
       <CodeBlock code={`import React, { useRef } from 'react';
-import { DataGrid, GridApi } from './components/DataGrid';
+import { DataGrid, GridApi } from 'react-open-source-grid';
 
 function MyComponent() {
   const gridRef = useRef<GridApi>(null);

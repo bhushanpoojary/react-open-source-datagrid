@@ -472,7 +472,7 @@ export const CellRenderersDemo: React.FC = () => {
           <CodeBlock
             title="Using Cell Renderer Components"
             language="tsx"
-            code={`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
+            code={`import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 
 const columns = [
   {

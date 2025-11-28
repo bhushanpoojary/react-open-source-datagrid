@@ -150,7 +150,7 @@ export const DensityModeDemo: React.FC = () => {
     },
   ];
 
-  const basicUsageCode = `import { DataGrid } from './DataGrid';
+  const basicUsageCode = `import { DataGrid } from 'react-open-source-grid';
 
 function MyComponent() {
   return (
@@ -163,7 +163,7 @@ function MyComponent() {
   );
 }`;
 
-  const withHookCode = `import { DataGrid, useDensityMode } from './DataGrid';
+  const withHookCode = `import { DataGrid, useDensityMode } from 'react-open-source-grid';
 
 function MyComponent() {
   const { densityMode, setDensityMode, densityStyles } = useDensityMode({
@@ -179,7 +179,7 @@ function MyComponent() {
   );
 }`;
 
-  const standaloneToggleCode = `import { DensityToggle } from './DataGrid';
+  const standaloneToggleCode = `import { DensityToggle } from 'react-open-source-grid';
 
 function MyToolbar() {
   const [density, setDensity] = useState<DensityMode>('normal');

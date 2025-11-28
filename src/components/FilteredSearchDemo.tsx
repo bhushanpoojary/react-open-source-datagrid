@@ -173,8 +173,8 @@ export const FilteredSearchDemo: React.FC = () => {
           <CodeBlock
             title="Using FilteredSearchBar"
             language="tsx"
-            code={`import { FilteredSearchBar } from './components/DataGrid/FilteredSearchBar';
-import type { SearchToken, FilterOption } from './components/DataGrid/FilteredSearchBar';
+            code={`import { FilteredSearchBar } from 'react-open-source-grid';
+import type { SearchToken, FilterOption } from 'react-open-source-grid';
 
 function EmployeeSearch() {
   const [searchTokens, setSearchTokens] = useState<SearchToken[]>([]);

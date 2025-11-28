@@ -339,7 +339,7 @@ export const ColumnFiltersDemo: React.FC = () => {
         <CodeBlock
           title="Column Filter Configuration"
           language="tsx"
-          code={`import { DataGrid} from './components/DataGrid';
+          code={`import { DataGrid } from 'react-open-source-grid';
 
 const columns = [
   {

@@ -394,7 +394,7 @@ export const TreeDataDemo: React.FC = () => {
         <CodeBlock
           title="Tree Data Configuration"
           language="tsx"
-          code={`import { DataGrid} from './components/DataGrid';
+          code={`import { DataGrid } from 'react-open-source-grid';
 
 const data = [
   { id: 1, name: 'CEO', department: 'Executive', parentId: null },

@@ -198,7 +198,7 @@ export const InfiniteScrollDemo: React.FC = () => {
           title="Creating Server-Side Data Source"
           language="typescript"
           code={`// 1. Create a server-side data source
-import { ServerSideDataSource } from './DataGrid/ServerSideDataSource';
+import { ServerSideDataSource } from 'react-open-source-grid';
 
 const dataSource = new ServerSideDataSource({
   blockSize: 100,              // Rows per block
@@ -242,7 +242,7 @@ const dataSource = new ServerSideDataSource({
 />
 
 // 3. Or create a mock data source for testing
-import { createMockServerDataSource } from './DataGrid/ServerSideDataSource';
+import { createMockServerDataSource } from 'react-open-source-grid';
 
 const mockDataSource = createMockServerDataSource(
   100_000_000, // 100M rows

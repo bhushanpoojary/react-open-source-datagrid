@@ -280,8 +280,8 @@ export const RowPinningDemo: React.FC = () => {
           <CodeBlock
             title="Basic Row Pinning Configuration"
             language="tsx"
-            code={`import { DataGrid} from './components/DataGrid';
-import type { RowPinConfig } from './components/DataGrid';
+            code={`import { DataGrid } from 'react-open-source-grid';
+import type { RowPinConfig } from 'react-open-source-grid';
 
 const rowPinConfig: RowPinConfig = {
   enabled: true,

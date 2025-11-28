@@ -82,8 +82,8 @@ export const ContextMenuDemo: React.FC = () => {
     customItems: showCustomItems ? customMenuItems : [],
   }), [enableContextMenu, showCopy, showExport, showColumnOptions, showFilterByValue, showCustomItems, customMenuItems]);
 
-  const exampleCode = `import { DataGrid} from './DataGrid';
-import type { Column, Row, ContextMenuConfig } from './DataGrid';
+  const exampleCode = `import { DataGrid } from 'react-open-source-grid';
+import type { Column, Row, ContextMenuConfig } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { field: 'id', headerName: 'ID', width: 80 },

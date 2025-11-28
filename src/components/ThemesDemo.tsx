@@ -317,8 +317,8 @@ export const ThemesDemo: React.FC = () => {
           <CodeBlock
             title="Using Custom Themes"
             language="tsx"
-            code={`import { DataGrid, ThemeSelector } from './components/DataGrid';
-import type { ThemeName } from './components/DataGrid/themes';
+            code={`import { DataGrid, ThemeSelector } from 'react-open-source-grid';
+import type { ThemeName } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState<ThemeName>('quartz');
