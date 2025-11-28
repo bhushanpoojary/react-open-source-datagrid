@@ -3,7 +3,7 @@
 ## Quick Start
 
 ```typescript
-import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
+import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 
 const columns: Column[] = [
   {

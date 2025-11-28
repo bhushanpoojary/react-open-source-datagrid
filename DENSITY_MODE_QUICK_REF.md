@@ -44,7 +44,7 @@ import {
   getDensityConfig,
   generateDensityCSS
 } from './DataGrid';
-import type { DensityMode } from './DataGrid';
+import type { DensityMode } from 'react-open-source-grid';
 ```
 
 ## 🎨 CSS Variables Set

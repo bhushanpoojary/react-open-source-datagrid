@@ -175,7 +175,7 @@ dispatch({ type: 'CLEAR_FILTERS' });
 ### Checking Filter State
 
 ```typescript
-import { hasActiveFilters, getActiveFilterCount } from './filterUtils';
+import { hasActiveFilters, getActiveFilterCount } from 'react-open-source-grid';
 
 // Check if any filters are active
 const hasFilters = hasActiveFilters(state.filterConfig);

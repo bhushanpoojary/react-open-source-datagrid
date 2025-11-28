@@ -52,8 +52,7 @@ Faceted search is a filtering UI pattern that displays available filter options 
 ### Basic Implementation
 
 ```typescript
-import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { DataGrid} from 'react-open-source-grid';
+import { FacetedSearch, DataGrid } from 'react-open-source-grid';
 import { useState, useMemo } from 'react';
 
 function ProductCatalog() {

@@ -70,7 +70,7 @@
 ## 🔧 Usage
 
 ```tsx
-import { DataGrid} from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 // Accessibility features are built-in
 <DataGrid

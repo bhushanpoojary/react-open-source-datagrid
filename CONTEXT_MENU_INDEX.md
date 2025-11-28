@@ -89,7 +89,7 @@ Technical details including:
 ### 1. Basic Setup (30 seconds)
 
 ```typescript
-import { DataGrid} from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}

@@ -161,7 +161,7 @@ onExternalDrop: (data: any, targetIndex: number) => void
 ## Utility Functions
 
 ```typescript
-import { reorderRows } from './dragRowUtils';
+import { reorderRows } from 'react-open-source-grid';
 
 // Manually reorder an array
 const newRows = reorderRows(rows, sourceIndex, targetIndex);

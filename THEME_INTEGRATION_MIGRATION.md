@@ -64,7 +64,7 @@ function App() {
 
 ```tsx
 import { DataGrid, ThemeSelector } from 'react-open-source-grid';
-import { getTheme, generateThemeCSS } from './components/DataGrid/themes';
+import { getTheme, generateThemeCSS } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState('quartz');

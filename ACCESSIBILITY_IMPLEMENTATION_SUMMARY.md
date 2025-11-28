@@ -164,7 +164,7 @@ DataGrid (role="grid")
 
 ### Basic Implementation
 ```tsx
-import { DataGrid} from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 // Accessibility is automatic - no configuration needed
 <DataGrid
@@ -176,7 +176,7 @@ import { DataGrid} from './DataGrid';
 
 ### Custom Announcements
 ```tsx
-import { useScreenReaderAnnouncements } from './DataGrid';
+import { useScreenReaderAnnouncements } from 'react-open-source-grid';
 
 const { announce } = useScreenReaderAnnouncements();
 announce('Custom action completed');
@@ -184,7 +184,7 @@ announce('Custom action completed');
 
 ### Focus Trap
 ```tsx
-import { useFocusTrap } from './DataGrid';
+import { useFocusTrap } from 'react-open-source-grid';
 
 const trapRef = useFocusTrap({
   enabled: true,

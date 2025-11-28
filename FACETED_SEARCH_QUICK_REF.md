@@ -3,7 +3,7 @@
 ## 🚀 Quick Start
 
 ```typescript
-import { FacetedSearch } from './components/DataGrid/FacetedSearch';
+import { FacetedSearch } from 'react-open-source-grid';
 
 const facetConfigs = [
   { field: 'brand', label: 'Brand', sortBy: 'alpha', maxItems: 8 },
@@ -220,8 +220,7 @@ const clearFilter = (field: string) => {
 
 ```typescript
 import { useState, useMemo } from 'react';
-import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import { DataGrid} from 'react-open-source-grid';
+import { FacetedSearch, DataGrid } from 'react-open-source-grid';
 
 function ProductCatalog() {
   const [products] = useState(loadProducts());

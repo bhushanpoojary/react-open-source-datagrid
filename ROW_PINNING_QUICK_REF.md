@@ -51,7 +51,7 @@ interface RowPinConfig {
 
 ```tsx
 import { useReducer } from 'react';
-import { gridReducer, createInitialState } from './components/DataGrid/gridReducer';
+import { gridReducer, createInitialState } from 'react-open-source-grid';
 
 const [state, dispatch] = useReducer(gridReducer, initialState);
 

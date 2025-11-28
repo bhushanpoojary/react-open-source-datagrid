@@ -126,7 +126,7 @@ Plain text in grey box, no colors, no interaction
 **AFTER:**
 ```tsx
 // With full TypeScript syntax highlighting
-import { ServerSideDataSource } from './DataGrid/ServerSideDataSource';
+import { ServerSideDataSource } from 'react-open-source-grid';
 
 const dataSource = new ServerSideDataSource({
   blockSize: 100,              // Blue: keywords

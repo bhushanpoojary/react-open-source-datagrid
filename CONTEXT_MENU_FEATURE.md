@@ -26,8 +26,8 @@ The DataGrid now includes a comprehensive right-click context menu system that p
 ## Basic Usage
 
 ```typescript
-import { DataGrid} from './DataGrid';
-import type { Column, Row, ContextMenuConfig } from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
+import type { Column, Row, ContextMenuConfig } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { field: 'id', headerName: 'ID', width: 80 },
@@ -465,7 +465,6 @@ interface ContextMenuEvent {
 See the `ContextMenuDemo` component for a full interactive demonstration of all context menu features.
 
 ```typescript
-import { ContextMenuDemo } from './components/ContextMenuDemo';
-
-<ContextMenuDemo />
+// See the full demo in the examples section
+// Context menu functionality is built into DataGrid via contextMenuConfig prop
 ```

@@ -111,7 +111,8 @@ All feature demo pages have been enhanced with CodeBlock components:
 To add a code example to any component:
 
 ```tsx
-import { CodeBlock } from './CodeBlock';
+// Use your preferred syntax highlighting library
+// For example: react-syntax-highlighter, prism-react-renderer, etc.
 
 // In your component JSX:
 <CodeBlock

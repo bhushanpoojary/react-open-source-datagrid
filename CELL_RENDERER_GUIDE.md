@@ -40,7 +40,7 @@ The Cell Renderer Framework allows you to render **custom React components** ins
 
 ### Step 1: Import Components
 ```typescript
-import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
+import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 ```
 
 ### Step 2: Add to Column Definition

@@ -3,7 +3,8 @@
 ## Import
 
 ```tsx
-import { CodeBlock } from './components/CodeBlock';
+// CodeBlock is an internal demo component for syntax highlighting
+// Use your preferred syntax highlighting library (e.g., react-syntax-highlighter, prism-react-renderer)
 ```
 
 ## Basic Usage

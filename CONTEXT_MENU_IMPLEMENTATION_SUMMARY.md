@@ -121,7 +121,7 @@ Successfully implemented a comprehensive right-click context menu system for the
 ## Usage Example
 
 ```typescript
-import { DataGrid, ContextMenuConfig, ContextMenuItem } from './DataGrid';
+import { DataGrid, ContextMenuConfig, ContextMenuItem } from 'react-open-source-grid';
 
 // Basic usage
 <DataGrid

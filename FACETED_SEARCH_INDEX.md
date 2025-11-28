@@ -197,7 +197,7 @@ npm run dev
 ### Minimal Example
 
 ```typescript
-import { FacetedSearch } from './components/DataGrid/FacetedSearch';
+import { FacetedSearch } from 'react-open-source-grid';
 
 const facetConfigs = [
   { field: 'brand', label: 'Brand', sortBy: 'alpha' },

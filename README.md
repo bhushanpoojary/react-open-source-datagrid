@@ -270,7 +270,7 @@ Choose from **10 beautiful pre-built themes** to match your application's design
 
 ```tsx
 import { DataGrid, ThemeSelector } from 'react-open-source-grid';
-import type { ThemeName } from './components/DataGrid/themes';
+import type { ThemeName } from 'react-open-source-grid';
 
 function App() {
   const [theme, setTheme] = useState<ThemeName>('quartz');

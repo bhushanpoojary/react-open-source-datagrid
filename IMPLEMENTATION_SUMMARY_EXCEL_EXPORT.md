@@ -99,8 +99,8 @@ Implement comprehensive Excel export functionality for the DataGrid with support
 ### 1. **DataGrid.tsx**
 **Changes**:
 ```tsx
-// Added import
-import { ExportMenu } from './ExportMenu';
+// Export functionality is built into DataGrid
+// Use the grid API or create your own export button
 
 // Added to toolbar (line ~247)
 <ExportMenu

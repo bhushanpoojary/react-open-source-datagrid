@@ -96,7 +96,7 @@ The Density Mode feature has been successfully implemented with three display mo
 
 ### Option 1: Built-in Toggle (Easiest)
 ```tsx
-import { DataGrid } from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid 
   columns={columns} 
@@ -107,7 +107,7 @@ import { DataGrid } from './DataGrid';
 
 ### Option 2: With Hook (More Control)
 ```tsx
-import { DataGrid, useDensityMode } from './DataGrid';
+import { DataGrid, useDensityMode } from 'react-open-source-grid';
 
 function MyComponent() {
   const { densityMode, setDensityMode, densityStyles } = useDensityMode({
@@ -125,7 +125,7 @@ function MyComponent() {
 
 ### Option 3: Standalone Toggle
 ```tsx
-import { DensityToggle } from './DataGrid';
+import { DensityToggle } from 'react-open-source-grid';
 
 <DensityToggle 
   value={densityMode} 

@@ -101,8 +101,8 @@ A comprehensive theming system for the DataGrid component that allows you to swi
 Simply pass the `theme` prop to the DataGrid component:
 
 ```tsx
-import { DataGrid } from './DataGrid';
-import type { ThemeName } from './DataGrid/themes';
+import { DataGrid } from 'react-open-source-grid';
+import type { ThemeName } from 'react-open-source-grid';
 
 function MyComponent() {
   const [theme, setTheme] = useState<ThemeName>('quartz');
@@ -120,8 +120,8 @@ function MyComponent() {
 ### With Theme Selector
 
 ```tsx
-import { DataGrid, ThemeSelector } from './DataGrid';
-import type { ThemeName } from './DataGrid/themes';
+import { DataGrid, ThemeSelector } from 'react-open-source-grid';
+import type { ThemeName } from 'react-open-source-grid';
 
 function MyComponent() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>('quartz');
@@ -146,8 +146,8 @@ function MyComponent() {
 ### Switching Themes Dynamically
 
 ```tsx
-import { DataGrid } from './DataGrid';
-import type { ThemeName } from './DataGrid/themes';
+import { DataGrid } from 'react-open-source-grid';
+import type { ThemeName } from 'react-open-source-grid';
 
 function MyComponent() {
   const [theme, setTheme] = useState<ThemeName>('dark');
@@ -246,7 +246,7 @@ The theme system generates CSS variables that can be used throughout your applic
 You can create your own custom theme by following the `GridTheme` interface:
 
 ```typescript
-import type { GridTheme } from './DataGrid/themes';
+import type { GridTheme } from 'react-open-source-grid';
 
 const myCustomTheme: GridTheme = {
   name: 'custom',
@@ -289,7 +289,7 @@ const themeStyles = generateThemeCSS(myCustomTheme);
 Get a theme object by its name.
 
 ```typescript
-import { getTheme } from './DataGrid/themes';
+import { getTheme } from 'react-open-source-grid';
 
 const quartzTheme = getTheme('quartz');
 ```
@@ -298,7 +298,7 @@ const quartzTheme = getTheme('quartz');
 Get all available theme names.
 
 ```typescript
-import { getThemeNames } from './DataGrid/themes';
+import { getThemeNames } from 'react-open-source-grid';
 
 const names = getThemeNames(); // ['quartz', 'alpine', 'material', 'dark', 'nord', 'dracula', 'solarized-light', 'solarized-dark', 'monokai', 'one-dark']
 ```
@@ -307,7 +307,7 @@ const names = getThemeNames(); // ['quartz', 'alpine', 'material', 'dark', 'nord
 Generate CSS variables from a theme object.
 
 ```typescript
-import { generateThemeCSS } from './DataGrid/themes';
+import { generateThemeCSS } from 'react-open-source-grid';
 
 const cssVars = generateThemeCSS(quartzTheme);
 // Returns: { '--grid-bg': '#ffffff', ... }

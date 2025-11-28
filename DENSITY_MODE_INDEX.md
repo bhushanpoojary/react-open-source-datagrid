@@ -25,7 +25,7 @@
 
 ### 1. Built-in Toggle (Recommended)
 ```tsx
-import { DataGrid } from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid 
   columns={columns} 
@@ -36,7 +36,7 @@ import { DataGrid } from './DataGrid';
 
 ### 2. With Hook
 ```tsx
-import { DataGrid, useDensityMode } from './DataGrid';
+import { DataGrid, useDensityMode } from 'react-open-source-grid';
 
 function MyComponent() {
   const { densityMode, setDensityMode, densityStyles } = useDensityMode();
@@ -51,7 +51,7 @@ function MyComponent() {
 
 ### 3. Standalone Toggle
 ```tsx
-import { DensityToggle } from './DataGrid';
+import { DensityToggle } from 'react-open-source-grid';
 
 <DensityToggle value={densityMode} onChange={setDensityMode} />
 ```

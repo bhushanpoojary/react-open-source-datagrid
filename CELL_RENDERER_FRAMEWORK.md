@@ -19,7 +19,7 @@ The Cell Renderer Framework enables custom rendering of cell content in the Data
 Add a `renderCell` function to your column definition:
 
 ```typescript
-import { DataGrid, StatusChip } from './DataGrid';
+import { DataGrid, StatusChip } from 'react-open-source-grid';
 
 const columns: Column[] = [
   {

@@ -3,7 +3,7 @@
 ## Basic Setup
 
 ```tsx
-import { DataGrid } from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 <DataGrid
   columns={columns}
@@ -60,7 +60,7 @@ footerConfig={{
 ## TypeScript Types
 
 ```tsx
-import type { FooterConfig, AggregateConfig } from './DataGrid';
+import type { FooterConfig, AggregateConfig } from 'react-open-source-grid';
 
 const footerConfig: FooterConfig = {
   show: boolean,

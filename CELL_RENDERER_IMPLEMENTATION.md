@@ -97,7 +97,7 @@ Implemented a comprehensive Cell Renderer Framework that enables custom React co
 ## Usage Example
 
 ```typescript
-import { DataGrid, StatusChip, ProgressBar, ButtonCell } from './DataGrid';
+import { DataGrid, StatusChip, ProgressBar, ButtonCell } from 'react-open-source-grid';
 
 const columns: Column[] = [
   {

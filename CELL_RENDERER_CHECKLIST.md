@@ -82,7 +82,7 @@
 ## ✅ Export & Module System
 
 - [x] All cell renderers exported from `index.ts`
-- [x] Clean import path: `import { StatusChip, ... } from './DataGrid'`
+- [x] Clean import path: `import { StatusChip, ... } from 'react-open-source-grid'`
 - [x] Type exports for Column interface with renderCell
 
 ## ✅ Demo & Examples

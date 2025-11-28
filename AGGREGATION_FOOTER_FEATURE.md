@@ -144,7 +144,7 @@ type AggregateFunction = 'count' | 'sum' | 'total' | 'avg' | 'min' | 'max';
 ## Complete Example
 
 ```tsx
-import { DataGrid, type Column, type Row } from './DataGrid';
+import { DataGrid, type Column, type Row } from 'react-open-source-grid';
 
 const columns: Column[] = [
   { field: 'id', headerName: 'ID', width: 70 },

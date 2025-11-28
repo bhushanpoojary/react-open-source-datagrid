@@ -141,7 +141,7 @@ All focusable elements have clear, visible focus indicators:
 Modal dialogs and popups include focus traps to keep keyboard navigation contained:
 
 ```tsx
-import { useFocusTrap } from './DataGrid';
+import { useFocusTrap } from 'react-open-source-grid';
 
 function MyModal() {
   const trapRef = useFocusTrap({
@@ -167,7 +167,7 @@ The grid uses roving tabindex pattern:
 ### Basic Implementation
 
 ```tsx
-import { DataGrid} from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 function MyApp() {
   return (
@@ -330,7 +330,7 @@ test('keyboard navigation works', async () => {
 ### Custom Announcements
 
 ```tsx
-import { useScreenReaderAnnouncements } from './DataGrid';
+import { useScreenReaderAnnouncements } from 'react-open-source-grid';
 
 function MyGrid() {
   const { announce } = useScreenReaderAnnouncements();

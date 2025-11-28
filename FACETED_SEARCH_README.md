@@ -129,8 +129,8 @@ The **Faceted Search** feature has been successfully implemented as a separate, 
 Already integrated! Just import and use:
 
 ```typescript
-import { FacetedSearch } from './components/DataGrid/FacetedSearch';
-import type { FacetConfig } from './DataGrid/FacetedSearch';
+import { FacetedSearch } from 'react-open-source-grid';
+import type { FacetConfig } from 'react-open-source-grid';
 ```
 
 ### Basic Usage

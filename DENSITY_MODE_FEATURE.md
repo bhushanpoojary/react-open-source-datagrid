@@ -37,7 +37,7 @@ The Density Mode system provides four display modes (Ultra Compact, Compact, Nor
 ### Basic Usage with Built-in Toggle
 
 ```tsx
-import { DataGrid } from './DataGrid';
+import { DataGrid } from 'react-open-source-grid';
 
 function MyComponent() {
   return (
@@ -55,7 +55,7 @@ function MyComponent() {
 ### Using the Hook
 
 ```tsx
-import { DataGrid, useDensityMode } from './DataGrid';
+import { DataGrid, useDensityMode } from 'react-open-source-grid';
 
 function MyComponent() {
   const { densityMode, setDensityMode, densityStyles } = useDensityMode({
@@ -74,8 +74,8 @@ function MyComponent() {
 ### Standalone Toggle Component
 
 ```tsx
-import { DensityToggle } from './DataGrid';
-import type { DensityMode } from './DataGrid';
+import { DensityToggle } from 'react-open-source-grid';
+import type { DensityMode } from 'react-open-source-grid';
 
 function MyToolbar() {
   const [density, setDensity] = useState<DensityMode>('normal');
@@ -190,7 +190,7 @@ Each density mode sets the following CSS variables:
 Get the configuration for a specific density mode.
 
 ```typescript
-import { getDensityConfig } from './DataGrid';
+import { getDensityConfig } from 'react-open-source-grid';
 
 const config = getDensityConfig('compact');
 // Returns: { mode: 'compact', rowHeight: '32px', ... }
@@ -201,7 +201,7 @@ const config = getDensityConfig('compact');
 Get all available density modes.
 
 ```typescript
-import { getDensityModes } from './DataGrid';
+import { getDensityModes } from 'react-open-source-grid';
 
 const modes = getDensityModes();
 // Returns: ['compact', 'normal', 'comfortable']
@@ -212,7 +212,7 @@ const modes = getDensityModes();
 Get display label for a density mode.
 
 ```typescript
-import { getDensityLabel } from './DataGrid';
+import { getDensityLabel } from 'react-open-source-grid';
 
 const label = getDensityLabel('compact');
 // Returns: 'Compact'
@@ -223,7 +223,7 @@ const label = getDensityLabel('compact');
 Generate CSS variables for a density mode.
 
 ```typescript
-import { generateDensityCSS } from './DataGrid';
+import { generateDensityCSS } from 'react-open-source-grid';
 
 const styles = generateDensityCSS('normal');
 // Returns: { '--grid-row-height': '44px', ... }
@@ -234,7 +234,7 @@ const styles = generateDensityCSS('normal');
 Manually save or load density preference.
 
 ```typescript
-import { saveDensityMode, loadDensityMode } from './DataGrid';
+import { saveDensityMode, loadDensityMode } from 'react-open-source-grid';
 
 // Save preference
 saveDensityMode('compact', 'my-custom-key');
