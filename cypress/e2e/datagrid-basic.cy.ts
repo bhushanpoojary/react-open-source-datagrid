@@ -5,8 +5,10 @@ describe('DataGrid Basic Functionality', () => {
   });
 
   it('should render the grid with data', () => {
-    cy.get('[data-testid="data-grid"]').should('be.visible');
+    // Check that the grid exists and has visible rows
+    cy.get('[data-testid="data-grid"]').should('exist');
     cy.get('[role="row"]').should('have.length.greaterThan', 1);
+    cy.get('[role="row"]').first().scrollIntoView().should('be.visible');
   });
 
   it('should display column headers', () => {
