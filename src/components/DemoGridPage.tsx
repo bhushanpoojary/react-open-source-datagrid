@@ -217,7 +217,7 @@ export const DemoGridPage: React.FC = () => {
         </div>
 
         {/* DataGrid Container */}
-        <div style={{ marginBottom: '24px', flex: '1 1 auto', minHeight: '500px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+        <div style={{ marginBottom: '24px', flex: '1 1 auto', minHeight: '500px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb' }}>
           <div style={{ height: '100%', overflow: 'auto' }}>
             <DataGrid
               columns={columns}
