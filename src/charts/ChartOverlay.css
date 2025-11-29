@@ -1,0 +1,81 @@
+/**
+ * ChartOverlay styles
+ */
+
+.chart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.chart-overlay__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: all;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.chart-overlay__container {
+  position: absolute;
+  pointer-events: all;
+  animation: slideIn 0.3s ease-out;
+  transition: box-shadow 0.2s;
+}
+
+.chart-overlay__container--draggable {
+  cursor: move;
+}
+
+.chart-overlay__container--dragging {
+  cursor: grabbing;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  transition: none;
+}
+
+.chart-overlay__container--draggable .quick-chart__header {
+  cursor: move;
+}
+
+.chart-overlay__container--dragging .quick-chart__header {
+  cursor: grabbing;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-overlay__container {
+    width: calc(100% - 20px) !important;
+    height: 400px !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+}

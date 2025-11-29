@@ -8,3 +8,6 @@ export * from './components/DataGrid/index';
 // Re-export advanced cell editors for external usage
 export * from './editors';
 
+// Re-export integrated charts functionality
+export * from './charts';
+

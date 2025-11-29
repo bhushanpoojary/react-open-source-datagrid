@@ -24,9 +24,10 @@ import { CompleteApiReferencePage } from './components/CompleteApiReferencePage'
 import { GridApiDemoPage } from './components/GridApiDemoPage';
 import { PivotDemo } from './components/PivotDemo';
 import { AdvancedEditorsDemo } from './components/AdvancedEditorsDemo';
+import { ChartsDemo } from './components/ChartsDemo';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts';
 
 interface MenuItem {
   id: DemoType;
@@ -68,6 +69,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/api/demo': 'api-demo',
   '/demo/pivot-table': 'pivot',
   '/demo/advanced-editors': 'advanced-editors',
+  '/demo/charts': 'charts',
 };
 
 function App() {
@@ -193,6 +195,13 @@ function App() {
           icon: '✏️',
           description: '5 enterprise cell editors (Select, Date, Numeric, Multi-Select, Markdown)',
           path: '/demo/advanced-editors',
+        },
+        {
+          id: 'charts',
+          label: 'Integrated Charts',
+          icon: '📊',
+          description: 'Quick charts from grid selections',
+          path: '/demo/charts',
         },
       ],
     },
@@ -619,6 +628,7 @@ function App() {
           <Route path="/demo/feature-gallery" element={<FeatureGallery />} />
           <Route path="/demo/benchmark" element={<BenchmarkDemo />} />
           <Route path="/demo/advanced-editors" element={<AdvancedEditorsDemo />} />
+          <Route path="/demo/charts" element={<ChartsDemo />} />
           <Route path="/api/reference" element={<CompleteApiReferencePage />} />
           <Route path="/api/demo" element={<GridApiDemoPage />} />
         </Routes>
