@@ -97,23 +97,23 @@ const rows = [
 
 ## Documentation
 
-- **Full Documentation**: See [DATAGRID_README.md](./DATAGRID_README.md)
-- **Quick Start Guide**: See [QUICKSTART.md](./QUICKSTART.md)
+- **Full Documentation**: See [DATAGRID_README.md](./docs/DATAGRID_README.md)
+- **Quick Start Guide**: See [QUICKSTART.md](./docs/QUICKSTART.md)
 - **Architecture Guide**: See [src/components/DataGrid/ARCHITECTURE.md.ts](./src/components/DataGrid/ARCHITECTURE.md.ts)
-- **Aggregation Footer Feature**: See [AGGREGATION_FOOTER_FEATURE.md](./AGGREGATION_FOOTER_FEATURE.md)
-- **Footer Quick Reference**: See [FOOTER_QUICK_REFERENCE.md](./FOOTER_QUICK_REFERENCE.md)
-- **Cell Renderer Framework**: See [CELL_RENDERER_FRAMEWORK.md](./CELL_RENDERER_FRAMEWORK.md)
-- **Cell Renderer Quick Reference**: See [CELL_RENDERER_QUICK_REF.md](./CELL_RENDERER_QUICK_REF.md)
-- **Layout Persistence**: See [LAYOUT_PERSISTENCE_INDEX.md](./LAYOUT_PERSISTENCE_INDEX.md)
-- **Layout Persistence Feature Guide**: See [LAYOUT_PERSISTENCE_FEATURE.md](./LAYOUT_PERSISTENCE_FEATURE.md)
-- **Layout Persistence Quick Reference**: See [LAYOUT_PERSISTENCE_QUICK_REF.md](./LAYOUT_PERSISTENCE_QUICK_REF.md)
-- **Context Menu**: See [CONTEXT_MENU_FEATURE.md](./CONTEXT_MENU_FEATURE.md)
-- **Context Menu Quick Reference**: See [CONTEXT_MENU_QUICK_REF.md](./CONTEXT_MENU_QUICK_REF.md)
-- **Density Modes**: See [DENSITY_MODE_INDEX.md](./DENSITY_MODE_INDEX.md)
-- **Density Mode Quick Reference**: See [DENSITY_MODE_QUICK_REF.md](./DENSITY_MODE_QUICK_REF.md)
-- **Theme System**: See [THEME_SYSTEM.md](./THEME_SYSTEM.md) 🆕
-- **Themes Overview**: See [THEMES_OVERVIEW.md](./THEMES_OVERVIEW.md) 🆕
-- **Theme Integration**: See [THEME_INTEGRATION_MIGRATION.md](./THEME_INTEGRATION_MIGRATION.md) - Migration guide
+- **Aggregation Footer Feature**: See [AGGREGATION_FOOTER_FEATURE.md](./docs/AGGREGATION_FOOTER_FEATURE.md)
+- **Footer Quick Reference**: See [FOOTER_QUICK_REFERENCE.md](./docs/FOOTER_QUICK_REFERENCE.md)
+- **Cell Renderer Framework**: See [CELL_RENDERER_FRAMEWORK.md](./docs/CELL_RENDERER_FRAMEWORK.md)
+- **Cell Renderer Quick Reference**: See [CELL_RENDERER_QUICK_REF.md](./docs/CELL_RENDERER_QUICK_REF.md)
+- **Layout Persistence**: See [LAYOUT_PERSISTENCE_INDEX.md](./docs/LAYOUT_PERSISTENCE_INDEX.md)
+- **Layout Persistence Feature Guide**: See [LAYOUT_PERSISTENCE_FEATURE.md](./docs/LAYOUT_PERSISTENCE_FEATURE.md)
+- **Layout Persistence Quick Reference**: See [LAYOUT_PERSISTENCE_QUICK_REF.md](./docs/LAYOUT_PERSISTENCE_QUICK_REF.md)
+- **Context Menu**: See [CONTEXT_MENU_FEATURE.md](./docs/CONTEXT_MENU_FEATURE.md)
+- **Context Menu Quick Reference**: See [CONTEXT_MENU_QUICK_REF.md](./docs/CONTEXT_MENU_QUICK_REF.md)
+- **Density Modes**: See [DENSITY_MODE_INDEX.md](./docs/DENSITY_MODE_INDEX.md)
+- **Density Mode Quick Reference**: See [DENSITY_MODE_QUICK_REF.md](./docs/DENSITY_MODE_QUICK_REF.md)
+- **Theme System**: See [THEME_SYSTEM.md](./docs/THEME_SYSTEM.md) 🆕
+- **Themes Overview**: See [THEMES_OVERVIEW.md](./docs/THEMES_OVERVIEW.md) 🆕
+- **Theme Integration**: See [THEME_INTEGRATION_MIGRATION.md](./docs/THEME_INTEGRATION_MIGRATION.md) - Migration guide
 
 ## Technology Stack
 
@@ -226,8 +226,8 @@ const virtualConfig: VirtualScrollConfig = {
 - Smooth 60 FPS scrolling
 
 **See also:**
-- [VIRTUAL_SCROLLING.md](./VIRTUAL_SCROLLING.md) - Complete documentation
-- [VIRTUAL_SCROLLING_QUICK_REF.md](./VIRTUAL_SCROLLING_QUICK_REF.md) - Quick reference guide
+- [VIRTUAL_SCROLLING.md](./docs/VIRTUAL_SCROLLING.md) - Complete documentation
+- [VIRTUAL_SCROLLING_QUICK_REF.md](./docs/VIRTUAL_SCROLLING_QUICK_REF.md) - Quick reference guide
 
 ## Infinite Scrolling with Server-Side DataSource
 
@@ -292,9 +292,9 @@ Response:
 ```
 
 **See also:**
-- [INFINITE_SCROLLING_INDEX.md](./INFINITE_SCROLLING_INDEX.md) - Documentation index
-- [INFINITE_SCROLLING_FEATURE.md](./INFINITE_SCROLLING_FEATURE.md) - Complete guide
-- [INFINITE_SCROLLING_QUICK_REF.md](./INFINITE_SCROLLING_QUICK_REF.md) - Quick reference
+- [INFINITE_SCROLLING_INDEX.md](./docs/INFINITE_SCROLLING_INDEX.md) - Documentation index
+- [INFINITE_SCROLLING_FEATURE.md](./docs/INFINITE_SCROLLING_FEATURE.md) - Complete guide
+- [INFINITE_SCROLLING_QUICK_REF.md](./docs/INFINITE_SCROLLING_QUICK_REF.md) - Quick reference
 
 ## Themes
 
@@ -344,5 +344,140 @@ function App() {
 - Easy theme customization
 
 **See also:**
-- [THEME_SYSTEM.md](./THEME_SYSTEM.md) - Complete theme documentation
-- [THEMES_OVERVIEW.md](./THEMES_OVERVIEW.md) - Visual comparison of all themes
+- [THEME_SYSTEM.md](./docs/THEME_SYSTEM.md) - Complete theme documentation
+- [THEMES_OVERVIEW.md](./docs/THEMES_OVERVIEW.md) - Visual comparison of all themes
+
+## Contributing
+
+We welcome contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
+
+### Getting Started
+
+1. **Fork the repository**
+   ```bash
+   # Click the "Fork" button on GitHub, then clone your fork
+   git clone https://github.com/YOUR_USERNAME/react-open-source-datagrid.git
+   cd react-open-source-datagrid
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   Visit http://localhost:5173 to see the demo
+
+### Development Workflow
+
+1. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   # or
+   git checkout -b fix/your-bug-fix
+   ```
+
+2. **Make your changes**
+   - Write clean, readable code following the existing patterns
+   - Use TypeScript for type safety
+   - Follow the component structure in `src/components/DataGrid/`
+   - Add proper JSDoc comments for public APIs
+
+3. **Test your changes**
+   ```bash
+   # Run linter
+   npm run lint
+   
+   # Run type checking
+   npm run build
+   
+   # Test in the browser
+   npm run dev
+   ```
+
+4. **Commit your changes**
+   ```bash
+   git add .
+   git commit -m "feat: add awesome feature"
+   # or
+   git commit -m "fix: resolve issue with column sorting"
+   ```
+   
+   Use conventional commit messages:
+   - `feat:` - New feature
+   - `fix:` - Bug fix
+   - `docs:` - Documentation changes
+   - `style:` - Code style/formatting
+   - `refactor:` - Code refactoring
+   - `test:` - Adding tests
+   - `chore:` - Maintenance tasks
+
+5. **Push to your fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+6. **Create a Pull Request**
+   - Go to the original repository on GitHub
+   - Click "New Pull Request"
+   - Select your fork and branch
+   - Provide a clear description of your changes
+   - Reference any related issues
+
+### Project Structure
+
+```
+react-open-source-datagrid/
+├── src/
+│   ├── components/
+│   │   └── DataGrid/          # Main grid component
+│   │       ├── DataGrid.tsx   # Core grid logic
+│   │       ├── types.ts       # TypeScript interfaces
+│   │       ├── hooks/         # Custom React hooks
+│   │       └── utils/         # Utility functions
+│   ├── charts/                # Integrated charts feature
+│   ├── demos/                 # Demo pages
+│   └── index.ts              # Public API exports
+├── docs/                      # Documentation files
+├── tests/                     # Test files
+└── package.json
+```
+
+### Code Guidelines
+
+- **TypeScript**: Use strict typing, avoid `any` when possible
+- **React**: Use functional components and hooks
+- **Styling**: Use Tailwind CSS utility classes
+- **Performance**: Consider virtual scrolling for large datasets
+- **Accessibility**: Follow WCAG 2.1 AA guidelines
+- **Documentation**: Update relevant docs in the `docs/` folder
+
+### Adding New Features
+
+1. Check existing issues or create a new one to discuss the feature
+2. Review the [documentation](./docs/) for similar features
+3. Implement your feature with proper TypeScript types
+4. Add demo examples if applicable
+5. Update documentation in the `docs/` folder
+6. Test thoroughly with different datasets and configurations
+
+### Reporting Issues
+
+When reporting bugs, please include:
+- Clear description of the issue
+- Steps to reproduce
+- Expected vs actual behavior
+- Browser and OS information
+- Code samples or screenshots if relevant
+
+### Questions?
+
+- Check the [documentation](./docs/) folder
+- Open a GitHub Discussion for questions
+- Review existing issues and PRs
+
+Thank you for contributing! 🎉
+
