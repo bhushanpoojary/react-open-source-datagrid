@@ -17,6 +17,10 @@ export interface Column {
   pinnable?: boolean;
   filterType?: FilterType; // Specify filter type for the column
   renderCell?: (row: Row) => React.ReactNode; // Custom cell renderer
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  editor?: (props: any) => React.ReactElement; // Custom cell editor component
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  editorParams?: any; // Additional parameters for custom editor
 }
 
 export interface Row {

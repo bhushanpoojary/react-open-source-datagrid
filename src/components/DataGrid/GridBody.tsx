@@ -521,33 +521,46 @@ export const GridBody: React.FC<GridBodyProps> = ({
               tabIndex={isCellFocused ? 0 : -1}
             >
               {isEditing ? (
-                <input
-                  ref={editInputRef}
-                  type="text"
-                  style={{ 
-                    width: '100%', 
-                    padding: '6px 8px', 
-                    border: '1.5px solid var(--grid-primary)', 
-                    borderRadius: 'var(--grid-border-radius, 3px)', 
-                    outline: 'none',
-                    fontSize: 'var(--grid-font-size, 13px)',
-                    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)',
-                    backgroundColor: 'var(--grid-bg)',
-                    color: 'var(--grid-text)',
-                  }}
-                  value={editState.value ?? ''}
-                  onChange={(e) => handleEditChange(e.target.value)}
-                  onBlur={handleEditComplete}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleEditComplete();
-                    } else if (e.key === 'Escape') {
-                      e.preventDefault();
-                      dispatch({ type: 'END_EDIT' });
-                    }
-                  }}
-                />
+                column.editor ? (
+                  column.editor({
+                    value: editState.value,
+                    row: row,
+                    column: column,
+                    onChange: handleEditChange,
+                    onCommit: handleEditComplete,
+                    onCancel: () => dispatch({ type: 'END_EDIT' }),
+                    autoFocus: true,
+                    ...column.editorParams,
+                  })
+                ) : (
+                  <input
+                    ref={editInputRef}
+                    type="text"
+                    style={{ 
+                      width: '100%', 
+                      padding: '6px 8px', 
+                      border: '1.5px solid var(--grid-primary)', 
+                      borderRadius: 'var(--grid-border-radius, 3px)', 
+                      outline: 'none',
+                      fontSize: 'var(--grid-font-size, 13px)',
+                      boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)',
+                      backgroundColor: 'var(--grid-bg)',
+                      color: 'var(--grid-text)',
+                    }}
+                    value={editState.value ?? ''}
+                    onChange={(e) => handleEditChange(e.target.value)}
+                    onBlur={handleEditComplete}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleEditComplete();
+                      } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        dispatch({ type: 'END_EDIT' });
+                      }
+                    }}
+                  />
+                )
               ) : (
                 <div style={{ 
                   overflow: 'hidden', 
