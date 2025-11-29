@@ -5,7 +5,7 @@ describe('Tree Data', () => {
   });
 
   it('should render tree data demo', () => {
-    cy.contains('Tree Data').should('be.visible');
+    cy.contains('h1', 'Tree Data').should('be.visible');
     cy.get('[data-testid="data-grid"]').should('be.visible');
   });
 
