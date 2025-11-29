@@ -156,12 +156,54 @@ export const ChartsDemo: React.FC = () => {
     setShowChart(false);
   }, []);
 
+  // Handle chart creation from context menu
+  const handleCreateChartFromContext = useCallback((
+    chartType: ChartType,
+    selectedRows: Set<string | number>
+  ) => {
+    if (selectedRows.size === 0) return;
+
+    // Find indices of selected rows
+    const indices = Array.from(selectedRows)
+      .map(id => salesData.findIndex(row => row.id === id))
+      .filter(i => i >= 0);
+    
+    if (indices.length === 0) return;
+
+    const minRow = Math.min(...indices);
+    const maxRow = Math.max(...indices);
+    
+    // Create range from selected rows
+    const range: GridCellRange = {
+      start: { rowIndex: minRow, colIndex: 1 },
+      end: { rowIndex: maxRow, colIndex: columns.length - 1 },
+    };
+
+    try {
+      const config = buildChartConfigFromRange({
+        range,
+        rows: salesData,
+        columns,
+        chartType,
+        useFirstColumnAsCategory: true,
+        title: `Sales ${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart`,
+        theme: 'light',
+      });
+
+      setChartConfig(config);
+      setShowChart(true);
+    } catch (error) {
+      console.error('Failed to create chart:', error);
+      alert(error instanceof Error ? error.message : 'Failed to create chart');
+    }
+  }, [salesData, columns]);
+
   return (
     <div className="charts-demo">
       <div className="charts-demo__header">
         <h1 className="charts-demo__title">Integrated Charts</h1>
         <p className="charts-demo__description">
-          Select a range of cells in the grid and click "Create Chart" to visualize the data.
+          Select rows in the grid and create charts via toolbar buttons or right-click context menu.
           You can switch between different chart types and export as PNG.
         </p>
       </div>
@@ -170,7 +212,8 @@ export const ChartsDemo: React.FC = () => {
         <h2>How to Use:</h2>
         <ol>
           <li>Select one or more rows in the grid below (click to select, Ctrl+click for multiple)</li>
-          <li>Click one of the "Create Chart" buttons to visualize the selected data</li>
+          <li><strong>Option 1:</strong> Click one of the toolbar "Create Chart" buttons</li>
+          <li><strong>Option 2:</strong> Right-click on a selected row and choose "Create Chart" from the menu</li>
           <li>Use the chart controls to switch chart types, toggle theme, or export as PNG</li>
           <li>Click anywhere outside the chart or press ESC to close it</li>
         </ol>
@@ -223,6 +266,13 @@ export const ChartsDemo: React.FC = () => {
           rows={salesData}
           pageSize={12}
           onSelectionChange={handleSelectionChange}
+          contextMenuConfig={{
+            enabled: true,
+            showCopy: true,
+            showExport: true,
+            showChartOptions: true,
+            onCreateChart: handleCreateChartFromContext,
+          }}
         />
       </div>
 

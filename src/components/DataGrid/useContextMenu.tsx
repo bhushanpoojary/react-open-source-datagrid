@@ -59,16 +59,20 @@ export const useContextMenu = ({
     showExport: config?.showExport !== false,
     showColumnOptions: config?.showColumnOptions !== false,
     showFilterByValue: config?.showFilterByValue !== false,
+    showChartOptions: config?.showChartOptions !== false,
     customItems: config?.customItems || [],
     onBeforeShow: config?.onBeforeShow,
+    onCreateChart: config?.onCreateChart,
   }), [
     config?.enabled,
     config?.showCopy,
     config?.showExport,
     config?.showColumnOptions,
     config?.showFilterByValue,
+    config?.showChartOptions,
     config?.customItems,
     config?.onBeforeShow,
+    config?.onCreateChart,
   ]);
 
   // Build menu items for cell context menu
@@ -167,6 +171,61 @@ export const useContextMenu = ({
           onSetFilter(column.field, createFilterByValue(cellValue));
         },
         disabled: cellValue == null,
+      });
+    }
+
+    // Chart creation options (if selection exists and configured)
+    if (menuConfig.showChartOptions !== false && hasSelection) {
+      if (items.length > 0) {
+        items.push({ type: 'separator' } as ContextMenuItem);
+      }
+
+      items.push({
+        id: 'create-chart',
+        label: 'Create Chart',
+        icon: '📊',
+        submenu: [
+          {
+            id: 'chart-line',
+            label: 'Line Chart',
+            icon: '📈',
+            onClick: () => {
+              if (menuConfig.onCreateChart) {
+                menuConfig.onCreateChart('line', selectedRows, row, column);
+              }
+            },
+          },
+          {
+            id: 'chart-bar',
+            label: 'Bar Chart',
+            icon: '📊',
+            onClick: () => {
+              if (menuConfig.onCreateChart) {
+                menuConfig.onCreateChart('bar', selectedRows, row, column);
+              }
+            },
+          },
+          {
+            id: 'chart-area',
+            label: 'Area Chart',
+            icon: '📉',
+            onClick: () => {
+              if (menuConfig.onCreateChart) {
+                menuConfig.onCreateChart('area', selectedRows, row, column);
+              }
+            },
+          },
+          {
+            id: 'chart-pie',
+            label: 'Pie Chart',
+            icon: '🥧',
+            onClick: () => {
+              if (menuConfig.onCreateChart) {
+                menuConfig.onCreateChart('pie', selectedRows, row, column);
+              }
+            },
+          },
+        ],
       });
     }
 

@@ -22,6 +22,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { toPng } from 'html-to-image';
+import { DEFAULT_COLORS } from './rangeToChart';
 import type { ChartConfig, ChartType } from './types';
 import './QuickChart.css';
 
@@ -222,12 +223,7 @@ export const QuickChart: React.FC<QuickChartProps> = ({
                 {pieData.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={
-                      config.series[0]?.color ||
-                      ['#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#a28fd0'][
-                        index % 5
-                      ]
-                    }
+                    fill={DEFAULT_COLORS[index % DEFAULT_COLORS.length]}
                   />
                 ))}
               </Pie>

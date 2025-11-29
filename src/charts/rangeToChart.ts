@@ -52,16 +52,22 @@ function generateChartId(): string {
 
 /**
  * Get default colors for chart series
+ * Using a vibrant, distinct color palette that works well for all chart types
+ * Colors are chosen for maximum visual distinction, especially in pie charts
  */
-const DEFAULT_COLORS = [
-  '#8884d8', // blue
-  '#82ca9d', // green
-  '#ffc658', // yellow
-  '#ff7c7c', // red
-  '#a28fd0', // purple
-  '#ff9f40', // orange
-  '#4bc0c0', // teal
-  '#ff6384', // pink
+export const DEFAULT_COLORS = [
+  '#2563eb', // vibrant blue
+  '#10b981', // emerald green
+  '#f59e0b', // amber/orange
+  '#ef4444', // bright red
+  '#8b5cf6', // purple
+  '#ec4899', // pink
+  '#06b6d4', // cyan
+  '#f97316', // orange
+  '#14b8a6', // teal
+  '#a855f7', // violet
+  '#84cc16', // lime
+  '#f43f5e', // rose
 ];
 
 /**

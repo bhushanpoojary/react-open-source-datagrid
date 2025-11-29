@@ -392,8 +392,10 @@ export interface ContextMenuConfig {
   showExport?: boolean; // Show export options (default: true)
   showColumnOptions?: boolean; // Show pin/hide/resize options (default: true)
   showFilterByValue?: boolean; // Show filter by value option (default: true)
+  showChartOptions?: boolean; // Show chart creation options (default: true)
   customItems?: ContextMenuItem[]; // Additional custom menu items
   onBeforeShow?: (event: ContextMenuEvent) => ContextMenuItem[] | null; // Customize menu before showing
+  onCreateChart?: (chartType: 'line' | 'bar' | 'area' | 'pie', selectedRows: Set<string | number>, row?: Row, column?: Column) => void; // Callback for chart creation
 }
 
 export interface ContextMenuEvent {

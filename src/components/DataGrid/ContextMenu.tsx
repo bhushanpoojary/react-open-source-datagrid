@@ -15,6 +15,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   onClose,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
+  const [openSubmenu, setOpenSubmenu] = React.useState<string | null>(null);
 
   // Handle clicks outside the menu to close it
   useEffect(() => {
@@ -89,7 +90,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   }, [x, y]);
 
   const handleItemClick = useCallback((item: ContextMenuItem) => {
-    if (item.disabled || item.type === 'separator') {
+    if (item.disabled) {
+      return;
+    }
+
+    // If item has submenu, toggle it
+    if (item.submenu) {
+      setOpenSubmenu(openSubmenu === item.id ? null : item.id || null);
       return;
     }
 
@@ -97,11 +104,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       item.onClick();
     }
 
-    // Close menu after action (unless it has submenu)
-    if (!item.submenu) {
-      onClose();
-    }
-  }, [onClose]);
+    // Close menu after action
+    onClose();
+  }, [onClose, openSubmenu]);
 
   const renderMenuItem = (item: ContextMenuItem, index: number) => {
     if (item.type === 'separator') {
@@ -115,21 +120,27 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     }
 
     return (
-      <div
-        key={item.id || index}
-        className={`context-menu-item ${item.disabled ? 'disabled' : ''} ${item.danger ? 'danger' : ''}`}
-        onClick={() => handleItemClick(item)}
-        role="menuitem"
-        aria-disabled={item.disabled}
-        tabIndex={item.disabled ? -1 : 0}
-      >
-        {item.icon && <span className="context-menu-icon">{item.icon}</span>}
-        <span className="context-menu-label">{item.label}</span>
-        {item.shortcut && (
-          <span className="context-menu-shortcut">{item.shortcut}</span>
-        )}
-        {item.submenu && (
-          <span className="context-menu-arrow">▶</span>
+      <div key={item.id || index} className="context-menu-item-wrapper">
+        <div
+          className={`context-menu-item ${item.disabled ? 'disabled' : ''} ${item.danger ? 'danger' : ''} ${item.submenu ? 'has-submenu' : ''}`}
+          onClick={() => handleItemClick(item)}
+          role="menuitem"
+          aria-disabled={item.disabled}
+          tabIndex={item.disabled ? -1 : 0}
+        >
+          {item.icon && <span className="context-menu-icon">{item.icon}</span>}
+          <span className="context-menu-label">{item.label}</span>
+          {item.shortcut && (
+            <span className="context-menu-shortcut">{item.shortcut}</span>
+          )}
+          {item.submenu && (
+            <span className="context-menu-arrow">▶</span>
+          )}
+        </div>
+        {item.submenu && openSubmenu === item.id && (
+          <div className="context-menu-submenu">
+            {item.submenu.map((subItem, subIndex) => renderMenuItem(subItem, subIndex))}
+          </div>
         )}
       </div>
     );
