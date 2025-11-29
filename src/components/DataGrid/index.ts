@@ -166,3 +166,19 @@ export type {
   MockWebSocket 
 } from './WebSocketMockFeed';
 export type { MarketDataConfig } from './types';
+
+// Export Pivot Table Components and Utilities
+export { PivotToolbar } from './PivotToolbar';
+export type { PivotToolbarProps } from './PivotToolbar';
+export {
+  buildPivot,
+  exportPivotToCSV,
+  downloadCSV
+} from './pivotEngine';
+export type {
+  PivotConfig,
+  PivotResult,
+  PivotColumn,
+  AggregatorType
+} from './pivotEngine';
+

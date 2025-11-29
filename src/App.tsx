@@ -22,9 +22,10 @@ import { BenchmarkDemo } from './components/BenchmarkDemo'
 import { FeatureGallery } from './components/FeatureGallery'
 import { CompleteApiReferencePage } from './components/CompleteApiReferencePage';
 import { GridApiDemoPage } from './components/GridApiDemoPage';
+import { PivotDemo } from './components/PivotDemo';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot';
 
 interface MenuItem {
   id: DemoType;
@@ -64,6 +65,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/demo/feature-gallery': 'gallery',
   '/api/reference': 'api-reference',
   '/api/demo': 'api-demo',
+  '/demo/pivot-table': 'pivot',
 };
 
 function App() {
@@ -127,6 +129,13 @@ function App() {
       label: 'Data Features',
       icon: '🌲',
       items: [
+        {
+          id: 'pivot',
+          label: 'Pivot Table',
+          icon: '📊',
+          description: 'Dynamic pivot tables with aggregation',
+          path: '/demo/pivot-table',
+        },
         {
           id: 'tree',
           label: 'Tree Data',
@@ -585,6 +594,7 @@ function App() {
           <Route path="/demo/infinite-scroll" element={<InfiniteScrollDemo />} />
           <Route path="/demo/market-data" element={<LiveMarketDemo />} />
           <Route path="/demo/accessibility" element={<AccessibilityDemo />} />
+          <Route path="/demo/pivot-table" element={<PivotDemo />} />
           <Route path="/demo/tree-data" element={<TreeDataDemo />} />
           <Route path="/demo/row-dragging" element={<RowDraggingDemo />} />
           <Route path="/demo/row-pinning" element={<RowPinningDemo />} />

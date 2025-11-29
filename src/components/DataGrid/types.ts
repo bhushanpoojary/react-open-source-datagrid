@@ -3,6 +3,7 @@ import React from 'react';
 import type { ThemeName } from './themes';
 import type { DensityMode } from './densityModes';
 import type { GridApi } from './gridApi.types';
+import type { PivotConfig } from './pivotEngine';
 
 export type FilterType = 'text' | 'number' | 'date' | 'set' | 'multi';
 
@@ -464,6 +465,7 @@ export interface DataGridProps {
   marketDataConfig?: MarketDataConfig; // Configuration for market data mode
   contextMenuConfig?: ContextMenuConfig; // Configuration for context menu
   tooltipConfig?: TooltipConfig; // Configuration for tooltips
+  pivotConfig?: PivotConfig | null; // Configuration for pivot table mode
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   densityMode?: DensityMode; // Density mode: compact, normal, or comfortable

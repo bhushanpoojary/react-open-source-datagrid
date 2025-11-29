@@ -1,5 +1,5 @@
 import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import type { DataGridProps, Row, GroupedRow, LayoutPreset, TreeNode } from './types';
+import type { DataGridProps, Row, Column, GroupedRow, LayoutPreset, TreeNode } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
@@ -26,6 +26,8 @@ import { useScreenReaderAnnouncements } from './useScreenReaderAnnouncements';
 import { ScreenReaderAnnouncer } from './ScreenReaderAnnouncer';
 import { GridApiImpl } from './gridApi';
 import type { GridApi } from './gridApi.types';
+import { buildPivot } from './pivotEngine';
+import type { PivotResult, PivotColumn } from './pivotEngine';
 
 /**
  * DataGrid Component
@@ -58,6 +60,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   rowPinConfig,
   contextMenuConfig,
   tooltipConfig,
+  pivotConfig,
   tableId,
   theme: _theme = 'quartz',
   densityMode: _densityMode = 'normal',
@@ -82,6 +85,57 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   // Internal rows state for API transactions (overrides props.rows when set)
   const [internalRows, setInternalRows] = useState<Row[] | null>(null);
   const activeRows = internalRows !== null ? internalRows : rows;
+
+  // Apply pivot transformation if pivot mode is enabled (must be early in the pipeline)
+  const { pivotedData, effectiveColumns } = useMemo<{
+    pivotedData: Row[];
+    effectiveColumns: (Column | PivotColumn)[];
+  }>(() => {
+    if (!pivotConfig) {
+      return { pivotedData: activeRows, effectiveColumns: columns };
+    }
+
+    const pivotResult: PivotResult = buildPivot(activeRows, pivotConfig);
+    console.log('Pivot Result:', {
+      columnsCount: pivotResult.columns.length,
+      columns: pivotResult.columns.map(c => c.field),
+      rowsCount: pivotResult.rows.length,
+      sampleRow: pivotResult.rows[0]
+    });
+    
+    // Convert PivotColumns to regular Columns format for grid
+    const pivotColumns: Column[] = pivotResult.columns.map((col: PivotColumn) => ({
+      field: col.field,
+      headerName: col.headerName,
+      width: col.width || 120,
+      sortable: col.sortable !== false,
+      filterable: col.filterable !== false,
+      editable: false,
+      renderCell: col.isTotalColumn || col.isPivotColumn ? (row: Row) => {
+        const value = row[col.field];
+        if (typeof value === 'number') {
+          return <span style={{ 
+            fontWeight: col.isTotalColumn ? '700' : '600',
+            color: col.isTotalColumn ? '#0f766e' : '#475569'
+          }}>{value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>;
+        }
+        return value;
+      } : undefined,
+    }));
+
+    // Combine pivot rows with totals row if present
+    const allRows = pivotResult.totalsRow 
+      ? [...pivotResult.rows, pivotResult.totalsRow]
+      : pivotResult.rows;
+
+    // Ensure rows have 'id' field for grid compatibility
+    const rowsWithId = allRows.map((row, index) => ({
+      ...row,
+      id: row.__id || row.id || `pivot-row-${index}`
+    }));
+
+    return { pivotedData: rowsWithId, effectiveColumns: pivotColumns };
+  }, [activeRows, columns, pivotConfig]);
 
   // Reset internal rows when external rows prop changes
   const rowsRef = useRef(rows);
@@ -214,8 +268,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       gridApiRef.current = new GridApiImpl(
         state,
         dispatch,
-        columns,
-        activeRows,
+        effectiveColumns as Column[],
+        pivotedData,
         containerRef,
         persistenceManager,
         setInternalRows
@@ -228,10 +282,10 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   useEffect(() => {
     if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
       gridApiRef.current.updateState(state);
-      gridApiRef.current.updateData(columns, activeRows);
+      gridApiRef.current.updateData(effectiveColumns as Column[], pivotedData);
       gridApiRef.current.updateCallbacks(setInternalRows);
     }
-  }, [state, columns, activeRows, setInternalRows]);
+  }, [state, effectiveColumns, pivotedData, setInternalRows]);
 
   // Expose Grid API via ref
   useImperativeHandle(ref, () => {
@@ -239,15 +293,15 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       gridApiRef.current = new GridApiImpl(
         state,
         dispatch,
-        columns,
-        activeRows,
+        effectiveColumns as Column[],
+        pivotedData,
         containerRef,
         persistenceManager,
         setInternalRows
       );
     }
     return gridApiRef.current;
-  }, [state, columns, activeRows, persistenceManager]);
+  }, [state, effectiveColumns, pivotedData, persistenceManager]);
 
   // Call onGridReady when API is initialized (only once)
   const onGridReadyCalledRef = useRef(false);
@@ -353,11 +407,14 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     ...middleColumns,
     ...pinnedRightFields,
   ];
+  
+  console.log('Display column order:', displayColumnOrder, 'from state.columnOrder:', state.columnOrder);
 
-  // Update columns when props change
+  // Update columns when props change or pivot mode changes
   useEffect(() => {
-    dispatch({ type: 'RESET_COLUMNS', payload: columns });
-  }, [columns]);
+    console.log('Dispatching RESET_COLUMNS with', effectiveColumns.length, 'columns:', effectiveColumns.map(c => c.field));
+    dispatch({ type: 'RESET_COLUMNS', payload: effectiveColumns });
+  }, [effectiveColumns]);
 
   // Notify parent of selection changes and announce to screen readers
   useEffect(() => {
@@ -381,21 +438,21 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   // Announce sorting changes to screen readers
   useEffect(() => {
     if (state.sortConfig.field) {
-      const column = columns.find(c => c.field === state.sortConfig.field);
+      const column = effectiveColumns.find(c => c.field === state.sortConfig.field);
       if (column) {
         announceSorting(column.headerName, state.sortConfig.direction);
       }
     }
     
-  }, [state.sortConfig.field, state.sortConfig.direction]);
+  }, [state.sortConfig.field, state.sortConfig.direction, effectiveColumns]);
 
   // Apply sorting
   const sortedRows = useMemo(() => {
     if (!state.sortConfig.field || !state.sortConfig.direction) {
-      return activeRows;
+      return pivotedData;
     }
 
-    const sorted = [...activeRows].sort((a, b) => {
+    const sorted = [...pivotedData].sort((a, b) => {
       const aValue = a[state.sortConfig.field];
       const bValue = b[state.sortConfig.field];
 
@@ -420,7 +477,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     }
 
     return sorted;
-  }, [activeRows, state.sortConfig]);
+  }, [pivotedData, state.sortConfig]);
 
   // Apply filtering using the new filter utilities
   const filteredRows = useMemo(() => {
@@ -623,7 +680,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
           <ColumnChooser
-            columns={columns}
+            columns={effectiveColumns}
             columnOrder={state.columnOrder}
             hiddenColumns={state.hiddenColumns}
             onToggleVisibility={(field: string) =>
@@ -637,7 +694,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 
           {/* Export Menu */}
           <ExportMenu
-            columns={columns}
+            columns={effectiveColumns}
             fullDataset={rows}
             filteredData={filteredRows.filter((r): r is Row => !('isGroup' in r))}
             selectedRows={state.selection.selectedRows}
@@ -668,7 +725,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 
       {/* Group By Panel */}
       <GroupByPanel
-        columns={columns}
+        columns={effectiveColumns}
         groupBy={state.groupBy}
         dispatch={dispatch}
       />
@@ -676,7 +733,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       {/* Sticky Header */}
       <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
         <GridHeader
-          columns={columns}
+          columns={effectiveColumns}
           columnOrder={state.columnOrder}
           displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
@@ -697,7 +754,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         
         {/* Floating Filter Row */}
         <ColumnFilters
-          columns={columns}
+          columns={effectiveColumns}
           displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
           filterConfig={state.filterConfig}
@@ -710,7 +767,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 
       {/* Grid Body */}
       <GridBody
-        columns={columns}
+        columns={effectiveColumns}
         rows={virtualScrollConfig?.enabled ? unpinnedRows : paginatedRows}
         pinnedRowsTop={pinnedRowsTopData}
         pinnedRowsBottom={pinnedRowsBottomData}
@@ -752,7 +809,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       {/* Global Footer */}
       {footerConfig?.show && footerConfig.aggregates && (
         <GridFooter
-          columns={columns}
+          columns={effectiveColumns}
           displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
           aggregates={globalAggregates}
