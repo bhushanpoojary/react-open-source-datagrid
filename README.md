@@ -481,3 +481,9 @@ When reporting bugs, please include:
 
 Thank you for contributing! 🎉
 
+---
+
+## Related Projects
+
+- **[React Pivot Table](https://bhushanpoojary.github.io/react-pivot/)** - A lightweight, customizable pivot table component for React with drag-and-drop field configuration, multiple aggregation types, and beautiful theming.
+

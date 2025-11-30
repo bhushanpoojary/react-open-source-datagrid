@@ -417,6 +417,39 @@ export function HomePage() {
             View on GitHub →
           </a>
         </p>
+        
+        {/* Related Projects */}
+        <div style={{ 
+          marginTop: '24px',
+          paddingTop: '24px',
+          borderTop: '1px solid #e2e8f0'
+        }}>
+          <p style={{ 
+            fontSize: '12px', 
+            fontWeight: '600', 
+            color: '#64748b',
+            marginBottom: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em'
+          }}>
+            Related Projects
+          </p>
+          <a 
+            href="https://bhushanpoojary.github.io/react-pivot/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ 
+              color: '#2563eb',
+              textDecoration: 'none',
+              fontWeight: '500',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            📊 React Pivot Table →
+          </a>
+        </div>
       </div>
     </div>
   );
