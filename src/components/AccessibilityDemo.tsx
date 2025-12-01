@@ -46,9 +46,32 @@ export const AccessibilityDemo: React.FC = () => {
     <div style={{ padding: '32px', maxWidth: '1400px', margin: '0 auto', backgroundColor: '#f9fafb' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '12px', color: '#111827' }}>
+        <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '16px', color: '#111827' }}>
           DataGrid Accessibility (A11y)
         </h1>
+        
+        {/* Compliance Badge */}
+        <div style={{ 
+          display: 'inline-flex', 
+          alignItems: 'center', 
+          gap: '12px',
+          padding: '12px 20px',
+          backgroundColor: '#dcfce7',
+          border: '2px solid #16a34a',
+          borderRadius: '8px',
+          marginBottom: '16px'
+        }}>
+          <span style={{ fontSize: '24px' }}>✓</span>
+          <div>
+            <div style={{ fontSize: '16px', fontWeight: '700', color: '#15803d', marginBottom: '2px' }}>
+              WCAG 2.1 Level AA Compliant
+            </div>
+            <div style={{ fontSize: '14px', color: '#166534' }}>
+              Section 508 Ready • Enterprise Accessible
+            </div>
+          </div>
+        </div>
+        
         <p style={{ fontSize: '18px', color: '#6b7280', lineHeight: '1.6' }}>
           Comprehensive keyboard navigation, ARIA support, and screen reader compatibility demonstration.
         </p>
@@ -100,6 +123,19 @@ export const AccessibilityDemo: React.FC = () => {
             'Focus position',
           ]}
         />
+        <FeatureCard
+          icon="🎨"
+          title="Visual Accessibility"
+          items={[
+            'Windows High Contrast Mode',
+            'Multiple accessible themes',
+            'Outline-based focus indicators',
+            '4.5:1 text contrast ratio',
+            '3:1 UI component contrast',
+            'Density modes for size control',
+            'Text resize up to 200%',
+          ]}
+        />
       </div>
 
       {/* Interactive Demo */}
@@ -140,7 +176,7 @@ export const AccessibilityDemo: React.FC = () => {
         />
       </div>
 
-      {/* Event Log */}
+      {/* Screen Reader Announcement Log */}
       <div style={{ 
         backgroundColor: 'white', 
         borderRadius: '8px', 
@@ -156,9 +192,14 @@ export const AccessibilityDemo: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#111827' }}>
-            Event Log
-          </h2>
+          <div>
+            <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0, color: '#111827' }}>
+              Screen Reader Announcement Log
+            </h2>
+            <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0 0' }}>
+              Live ARIA region updates (what screen readers "hear")
+            </p>
+          </div>
           <button
             onClick={() => setEventLog([])}
             style={{
@@ -228,7 +269,7 @@ export const AccessibilityDemo: React.FC = () => {
             shortcuts={[
               { keys: 'Space', description: 'Toggle row selection' },
               { keys: 'Enter', description: 'Start editing cell' },
-              { keys: 'Escape', description: 'Cancel editing' },
+              { keys: 'Escape', description: 'Exit cell edit / Exit grid focus' },
               { keys: 'Ctrl + Click', description: 'Multi-select rows' },
               { keys: 'Shift + Click', description: 'Range select rows' },
             ]}
@@ -264,9 +305,13 @@ function AccessibleGrid() {
         />
 
         <CodeBlock
-          title="ARIA Attributes in Grid"
+          title="ARIA Attributes in Grid (Automatic Rendering)"
           language="tsx"
-          code={`// Container
+          code={`// ⚠️ Internal Rendering Logic (Automatic)
+// You don't need to write this manually!
+// React DataGrid automatically generates the following ARIA tree:
+
+// Container
 <div role="grid" aria-label="Data Grid" aria-rowcount={100} aria-colcount={7}>
   
   // Header
@@ -341,6 +386,78 @@ announcePagination(currentPage, totalPages, rowCount);
         />
       </div>
 
+      {/* VPAT Section */}
+      <div style={{ 
+        marginTop: '48px',
+        marginBottom: '32px',
+        padding: '32px', 
+        backgroundColor: '#fefce8', 
+        border: '2px solid #facc15',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
+          <div style={{ fontSize: '48px' }}>📄</div>
+          <div style={{ flex: 1 }}>
+            <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px', color: '#854d0e' }}>
+              Enterprise-Ready Documentation
+            </h3>
+            <p style={{ fontSize: '16px', color: '#713f12', lineHeight: '1.6', marginBottom: '20px' }}>
+              Need to prove compliance to procurement teams? We provide a complete <strong>VPAT 2.4 
+              (Voluntary Product Accessibility Template)</strong> document that details our conformance 
+              to WCAG 2.1 Level AA and Section 508 standards.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <a
+                href="/docs/ACCESSIBILITY_VPAT.md"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  backgroundColor: '#854d0e',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '6px',
+                  fontWeight: '600',
+                  fontSize: '15px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#713f12'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#854d0e'}
+              >
+                📥 Download VPAT 2.4
+              </a>
+              <a
+                href="https://github.com/bhushanpoojary/react-open-source-datagrid/tree/main/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  backgroundColor: 'white',
+                  color: '#854d0e',
+                  textDecoration: 'none',
+                  border: '2px solid #854d0e',
+                  borderRadius: '6px',
+                  fontWeight: '600',
+                  fontSize: '15px'
+                }}
+              >
+                📚 View All Accessibility Docs
+              </a>
+            </div>
+            <p style={{ fontSize: '13px', color: '#92400e', marginTop: '16px', fontStyle: 'italic' }}>
+              ✓ WCAG 2.1 Level AA checklist &nbsp;•&nbsp; ✓ Section 508 compliance matrix &nbsp;•&nbsp; 
+              ✓ Assistive technology test results
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Testing Tips */}
       <div style={{ 
         marginTop: '48px', 
@@ -355,6 +472,7 @@ announcePagination(currentPage, totalPages, rowCount);
         <ul style={{ margin: 0, paddingLeft: '24px', color: '#1e3a8a', lineHeight: '1.8' }}>
           <li><strong>Keyboard Only:</strong> Try navigating without using a mouse</li>
           <li><strong>Screen Readers:</strong> Test with NVDA (Windows), JAWS (Windows), or VoiceOver (Mac)</li>
+          <li><strong>Windows High Contrast Mode:</strong> Test with Windows High Contrast themes (focus indicators use outline, not box-shadow)</li>
           <li><strong>Browser DevTools:</strong> Check the Accessibility tree in Chrome/Firefox DevTools</li>
           <li><strong>WAVE Tool:</strong> Use the WAVE browser extension to audit accessibility</li>
           <li><strong>axe DevTools:</strong> Install axe DevTools extension for detailed ARIA validation</li>
