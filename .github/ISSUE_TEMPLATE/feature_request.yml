@@ -1,0 +1,62 @@
+name: 💡 Feature Request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is.
+      placeholder: I'm always frustrated when I try to...
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: I would like the grid to...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: I also considered...
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature is this?
+      options:
+        - New Component/Feature
+        - Enhancement to Existing Feature
+        - Performance Improvement
+        - Developer Experience (DX)
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact
+      description: Who would benefit from this feature?
+      options:
+        - label: All users
+        - label: Power users
+        - label: Developers integrating the library
+        - label: Accessibility users
+        - label: Enterprise users
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or examples about the feature request here.
+      placeholder: Links to similar features in other libraries, mockups, code examples, etc.

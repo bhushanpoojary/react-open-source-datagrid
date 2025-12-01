@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/bhushanpoojary/react-open-source-datagrid/tree/main/docs
+    about: Check our comprehensive documentation before opening an issue
+  - name: 💬 Discussions
+    url: https://github.com/bhushanpoojary/react-open-source-datagrid/discussions
+    about: Ask questions and discuss ideas with the community
