@@ -26,6 +26,20 @@ A fully-featured, reusable DataGrid component built with React, TypeScript, and 
 - ✅ **Density Modes** (Ultra Compact/Compact/Normal/Comfortable spacing with segmented control and persistent preferences)
 - ✅ **10 Beautiful Themes** (Quartz, Alpine, Material, Dark Mode, Nord, Dracula, Solarized Light/Dark, Monokai, One Dark) 🆕
 
+## 🆚 Feature Comparison
+
+Why pay for enterprise features when you can get them open source?
+
+| Feature | AG Grid Community | AG Grid Enterprise ($$) | **React Open Source Grid** |
+| :--- | :---: | :---: | :---: |
+| **License** | MIT | Commercial | **MIT (Free)** |
+| **Virtual Scrolling** | ✅ | ✅ | **✅** |
+| **Tree Data / Grouping** | ❌ | ✅ | **✅** |
+| **Server-Side Infinite Scroll** | ❌ | ✅ | **✅** |
+| **Excel Export** | ❌ | ✅ | **✅** |
+| **Context Menus** | ❌ | ✅ | **✅** |
+| **Advanced Filtering** | Basic | ✅ | **✅** |
+
 ## Quick Start
 
 ```bash

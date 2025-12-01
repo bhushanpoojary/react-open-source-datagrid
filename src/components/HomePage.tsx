@@ -185,7 +185,7 @@ export function HomePage() {
           {[
             { icon: '⚡', label: 'Virtual Scrolling', value: '100M+ rows' },
             { icon: '📈', label: 'Live Updates', value: '1000+/sec' },
-            { icon: '🎨', label: 'Themes', value: '4 built-in' },
+            { icon: '🎨', label: 'Themes', value: '10 built-in' },
             { icon: '🚀', label: 'Performance', value: 'Optimized' },
           ].map((stat) => (
             <div
@@ -206,6 +206,182 @@ export function HomePage() {
               <div style={{ fontSize: '14px', color: '#64748b' }}>{stat.label}</div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Feature Comparison Table */}
+      <div style={{ marginBottom: '64px' }}>
+        <h2 style={{ 
+          fontSize: '32px', 
+          fontWeight: 'bold', 
+          marginBottom: '12px',
+          color: '#1e293b',
+          textAlign: 'center'
+        }}>
+          🆚 Why React DataGrid?
+        </h2>
+        <p style={{ 
+          fontSize: '18px', 
+          color: '#64748b',
+          marginBottom: '32px',
+          textAlign: 'center'
+        }}>
+          Why pay for enterprise features when you can get them open source?
+        </p>
+        
+        <div style={{ 
+          overflowX: 'auto',
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
+        }}>
+          <table style={{ 
+            width: '100%',
+            borderCollapse: 'collapse',
+            fontSize: '15px'
+          }}>
+            <thead>
+              <tr style={{ 
+                backgroundColor: '#f8fafc',
+                borderBottom: '2px solid #e2e8f0'
+              }}>
+                <th style={{ 
+                  padding: '16px 24px',
+                  textAlign: 'left',
+                  fontWeight: '600',
+                  color: '#1e293b'
+                }}>
+                  Feature
+                </th>
+                <th style={{ 
+                  padding: '16px 24px',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  color: '#1e293b'
+                }}>
+                  AG Grid Community
+                </th>
+                <th style={{ 
+                  padding: '16px 24px',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  color: '#1e293b'
+                }}>
+                  AG Grid Enterprise ($$)
+                </th>
+                <th style={{ 
+                  padding: '16px 24px',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  color: '#1e293b',
+                  backgroundColor: '#dbeafe'
+                }}>
+                  React Open Source Grid
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  License
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', color: '#64748b' }}>
+                  MIT
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', color: '#64748b' }}>
+                  Commercial
+                </td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontWeight: '700',
+                  color: '#15803d'
+                }}>
+                  MIT (Free)
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Virtual Scrolling
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Tree Data / Grouping
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px', color: '#dc2626' }}>❌</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Server-Side Infinite Scroll
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px', color: '#dc2626' }}>❌</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Excel Export
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px', color: '#dc2626' }}>❌</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Context Menus
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px', color: '#dc2626' }}>❌</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '16px 24px', fontWeight: '600', color: '#1e293b' }}>
+                  Advanced Filtering
+                </td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', color: '#64748b' }}>Basic</td>
+                <td style={{ padding: '16px 24px', textAlign: 'center', fontSize: '20px' }}>✅</td>
+                <td style={{ 
+                  padding: '16px 24px', 
+                  textAlign: 'center', 
+                  backgroundColor: '#f0fdf4',
+                  fontSize: '20px'
+                }}>✅</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
