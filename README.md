@@ -111,6 +111,12 @@ const rows = [
 
 ## Documentation
 
+### 📋 Enterprise & Compliance
+- **[VPAT 2.4 Accessibility Report](./docs/VPAT-2.4-ReactDataGrid.pdf)** - WCAG 2.1 AA & Section 508 compliance documentation
+- **[Accessibility Guide](./docs/ACCESSIBILITY_GUIDE.md)** - Full accessibility implementation details
+- **[VPAT Distribution Guide](./docs/VPAT_DISTRIBUTION_GUIDE.md)** - How to package and present compliance docs
+
+### 📚 Core Documentation
 - **Full Documentation**: See [DATAGRID_README.md](./docs/DATAGRID_README.md)
 - **Quick Start Guide**: See [QUICKSTART.md](./docs/QUICKSTART.md)
 - **Architecture Guide**: See [src/components/DataGrid/ARCHITECTURE.md.ts](./src/components/DataGrid/ARCHITECTURE.md.ts)

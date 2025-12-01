@@ -2,8 +2,8 @@
 
 ## Product Information
 
-**Product Name:** React Open Source DataGrid  
-**Product Version:** 1.7.x  
+**Product Name:** React Open Source DataGrid (react-open-source-grid)  
+**Product Version:** 1.7.10  
 **Report Date:** December 1, 2025  
 **Product Description:** A modern, accessible, enterprise-grade data grid component for React applications  
 **Contact Information:** https://github.com/bhushanpoojary/react-open-source-datagrid  
@@ -190,7 +190,7 @@ The DataGrid implements additional accessibility enhancements beyond minimum com
 
 ## Known Issues and Limitations
 
-As of version 1.7.x, there are no known accessibility issues that would prevent conformance with WCAG 2.1 Level AA or Section 508 standards.
+As of version 1.7.10, there are no known accessibility issues that would prevent conformance with WCAG 2.1 Level AA or Section 508 standards.
 
 ### Planned Enhancements
 

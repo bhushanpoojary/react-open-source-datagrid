@@ -409,7 +409,8 @@ announcePagination(currentPage, totalPages, rowCount);
             </p>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
-                href="/docs/ACCESSIBILITY_VPAT.md"
+                href="/docs/VPAT-2.4-ReactDataGrid.pdf"
+                download="VPAT-2.4-ReactDataGrid-v1.7.10.pdf"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -427,7 +428,7 @@ announcePagination(currentPage, totalPages, rowCount);
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#713f12'}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#854d0e'}
               >
-                📥 Download VPAT 2.4
+                📥 Download VPAT 2.4 (PDF)
               </a>
               <a
                 href="https://github.com/bhushanpoojary/react-open-source-datagrid/tree/main/docs"
