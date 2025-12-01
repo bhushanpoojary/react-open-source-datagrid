@@ -409,8 +409,8 @@ announcePagination(currentPage, totalPages, rowCount);
             </p>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
-                href="/docs/VPAT-2.4-ReactDataGrid.pdf"
-                download="VPAT-2.4-ReactDataGrid-v1.7.10.pdf"
+                href="/docs/ACCESSIBILITY_VPAT.pdf"
+                download="ACCESSIBILITY_VPAT.pdf"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Navigation and Basic Functionality', () => {
   test('should load home page', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'React DataGrid' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'React DataGrid', exact: true })).toBeVisible();
   });
 
   test('should navigate to different demos', async ({ page }) => {
