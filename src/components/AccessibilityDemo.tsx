@@ -409,7 +409,7 @@ announcePagination(currentPage, totalPages, rowCount);
             </p>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
-                href="/docs/ACCESSIBILITY_VPAT.pdf"
+                href="/ACCESSIBILITY_VPAT.pdf"
                 download="ACCESSIBILITY_VPAT.pdf"
                 style={{
                   display: 'inline-flex',
