@@ -66,6 +66,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   theme: _theme = 'quartz',
   densityMode: _densityMode = 'normal',
   showDensityToggle = false,
+  hideToolbar = false,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -688,6 +689,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         
       
       {/* Toolbar */}
+      {!hideToolbar && (
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
@@ -734,13 +736,16 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           </div>
         )}
       </div>
+      )}
 
       {/* Group By Panel */}
+      {!hideToolbar && (
       <GroupByPanel
         columns={effectiveColumns}
         groupBy={state.groupBy}
         dispatch={dispatch}
       />
+      )}
 
       {/* Sticky Header */}
       <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
@@ -767,6 +772,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         />
         
         {/* Floating Filter Row */}
+        {!hideToolbar && (
         <ColumnFilters
           columns={effectiveColumns}
           displayColumnOrder={displayColumnOrder}
@@ -779,6 +785,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           masterDetailConfig={masterDetailConfig}
           dragRowConfig={dragRowConfig}
         />
+        )}
       </div>
 
       {/* Grid Body */}

@@ -241,18 +241,12 @@ export const MasterDetailDemo: React.FC = () => {
                 }}>
                   Customer Reviews ({product.reviews.length})
                 </h3>
-                <div className="nested-grid-simple">
-                  <style>{`
-                    .nested-grid-simple .data-grid > div:first-child {
-                      display: none !important;
-                    }
-                  `}</style>
-                  <DataGrid
-                    columns={reviewColumns}
-                    rows={product.reviews}
-                    pageSize={10}
-                  />
-                </div>
+                <DataGrid
+                  columns={reviewColumns}
+                  rows={product.reviews}
+                  pageSize={10}
+                  hideToolbar={true}
+                />
               </div>
             );
           },
@@ -273,7 +267,7 @@ export const MasterDetailDemo: React.FC = () => {
         <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>Features Demonstrated:</h3>
         <ul style={{ marginLeft: '20px', color: '#4b5563', lineHeight: '1.8' }}>
           <li>Master/detail rows with expand/collapse functionality</li>
-          <li>Nested DataGrid inside detail rows</li>
+          <li>Nested DataGrid inside detail rows with <code style={{ backgroundColor: '#e5e7eb', padding: '2px 6px', borderRadius: '3px', fontFamily: 'monospace', fontSize: '13px' }}>hideToolbar</code> prop</li>
           <li>Custom isRowMaster function to determine expandable rows</li>
           <li>Default expanded rows on initial load</li>
           <li>onDetailRowToggled callback for tracking expand/collapse events</li>
@@ -348,18 +342,12 @@ function ProductsGrid() {
           return (
             <div style={{ padding: '12px' }}>
               <h3>Customer Reviews ({product.reviews?.length || 0})</h3>
-              <div className="nested-grid-simple">
-                <style>{\`
-                  .nested-grid-simple .data-grid > div:first-child {
-                    display: none !important;
-                  }
-                \`}</style>
-                <DataGrid
-                  columns={reviewColumns}
-                  rows={product.reviews || []}
-                  pageSize={10}
-                />
-              </div>
+              <DataGrid
+                columns={reviewColumns}
+                rows={product.reviews || []}
+                pageSize={10}
+                hideToolbar={true}
+              />
             </div>
           );
         },
@@ -423,6 +411,7 @@ function ProductsGrid() {
                 columns={reviewColumns}
                 rows={masterRow.reviews || []}
                 pageSize={10}
+                hideToolbar={true}
               />
             </div>
           );
