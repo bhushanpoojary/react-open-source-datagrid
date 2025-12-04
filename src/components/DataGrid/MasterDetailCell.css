@@ -1,0 +1,122 @@
+/* Master/Detail cell styles */
+.master-detail-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.master-detail-cell-empty {
+  width: 100%;
+  height: 100%;
+}
+
+.master-detail-toggle {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  transition: all 0.15s ease;
+  border-radius: 4px;
+}
+
+.master-detail-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.master-detail-toggle:focus {
+  outline: 2px solid var(--primary-color, #0066cc);
+  outline-offset: 2px;
+}
+
+.master-detail-toggle:active {
+  transform: scale(0.95);
+}
+
+.master-detail-icon {
+  font-size: 12px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  user-select: none;
+}
+
+.master-detail-icon.expanded {
+  transform: rotate(0deg);
+}
+
+.master-detail-icon.collapsed {
+  transform: rotate(0deg);
+}
+
+/* Detail row styles */
+.detail-row {
+  background-color: var(--detail-row-bg, #f8f9fa);
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.detail-row.expanding {
+  animation: expandDetail 0.3s ease forwards;
+}
+
+.detail-row.collapsing {
+  animation: collapseDetail 0.3s ease forwards;
+}
+
+@keyframes expandDetail {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 2000px;
+    opacity: 1;
+  }
+}
+
+@keyframes collapseDetail {
+  from {
+    max-height: 2000px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+.detail-row-content {
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.detail-row-wrapper {
+  display: table-row;
+}
+
+.detail-row-cell {
+  display: table-cell;
+  padding: 0;
+  vertical-align: top;
+}
+
+/* Dark theme support */
+[data-theme='dark'] .master-detail-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .detail-row {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

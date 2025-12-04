@@ -173,6 +173,7 @@ export interface GridState {
   dragState: DragState; // Track drag-and-drop state
   pinnedRowsTop: (string | number)[]; // Array of row IDs pinned to top
   pinnedRowsBottom: (string | number)[]; // Array of row IDs pinned to bottom
+  detailRowState: DetailRowState; // Track expanded master rows
 }
 
 // Action types for reducer
@@ -214,6 +215,10 @@ export type GridAction =
   | { type: 'PIN_ROW_TOP'; payload: string | number }
   | { type: 'PIN_ROW_BOTTOM'; payload: string | number }
   | { type: 'UNPIN_ROW'; payload: string | number }
+  | { type: 'TOGGLE_MASTER_ROW'; payload: string | number }
+  | { type: 'EXPAND_MASTER_ROW'; payload: string | number }
+  | { type: 'COLLAPSE_MASTER_ROW'; payload: string | number }
+  | { type: 'SET_EXPANDED_MASTER_ROWS'; payload: ExpandedMasterRows }
   // Grid API actions
   | { type: 'SET_ROW_DATA'; payload: Row[] }
   | { type: 'SET_COLUMN_DEFS'; payload: Column[] }
@@ -456,6 +461,25 @@ export interface TooltipState {
   targetRect: DOMRect | null;
 }
 
+// Master/Detail types
+export interface MasterDetailConfig {
+  enabled: boolean; // Enable/disable master-detail mode
+  isRowMaster?: (row: Row) => boolean; // Callback to determine if row is a master row
+  renderDetailRow: (params: { masterRow: Row; rowIndex: number }) => React.ReactNode; // Render function for detail row content
+  detailRowHeight?: number; // Fixed height for detail rows (default: 200)
+  detailRowAutoHeight?: boolean; // If true, detail row height adapts to content
+  defaultExpandedMasterRowKeys?: (string | number)[]; // Row IDs to expand by default
+  onDetailRowToggled?: (params: { masterRow: Row; rowIndex: number; isOpen: boolean }) => void; // Callback when detail row is toggled
+}
+
+export interface ExpandedMasterRows {
+  [rowKey: string]: boolean;
+}
+
+export interface DetailRowState {
+  expandedMasterRows: ExpandedMasterRows; // Track which master rows are expanded
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -472,6 +496,7 @@ export interface DataGridProps {
   contextMenuConfig?: ContextMenuConfig; // Configuration for context menu
   tooltipConfig?: TooltipConfig; // Configuration for tooltips
   pivotConfig?: PivotConfig | null; // Configuration for pivot table mode
+  masterDetailConfig?: MasterDetailConfig; // Configuration for master/detail rows
   tableId?: string; // Unique ID for multi-table drag-and-drop
   theme?: ThemeName; // Theme to apply to the grid
   densityMode?: DensityMode; // Density mode: compact, normal, or comfortable

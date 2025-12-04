@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { Column, GridAction, SortConfig } from './types';
+import type { Column, GridAction, SortConfig, MasterDetailConfig, DragRowConfig } from './types';
 
 interface GridHeaderProps {
   columns: Column[];
@@ -11,6 +11,8 @@ interface GridHeaderProps {
   pinnedLeft: string[];
   pinnedRight: string[];
   showColumnPinning: boolean;
+  masterDetailConfig?: MasterDetailConfig;
+  dragRowConfig?: DragRowConfig;
   onContextMenu?: (event: React.MouseEvent, column: Column, columnIndex: number) => void;
 }
 
@@ -24,6 +26,8 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   pinnedLeft,
   pinnedRight,
   showColumnPinning,
+  masterDetailConfig,
+  dragRowConfig,
   onContextMenu,
 }) => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -170,6 +174,44 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
     <div ref={headerRef} style={{ borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', width: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
       {/* Column Headers Row */}
       <div role="row" style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
+        {/* Master/Detail Header Cell */}
+        {masterDetailConfig?.enabled && (
+          <div
+            role="columnheader"
+            style={{
+              width: '48px',
+              flexShrink: 0,
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+              backgroundColor: 'var(--grid-header-bg)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div style={{
+              padding: 'var(--grid-header-padding, 10px 12px)',
+              fontWeight: 'var(--grid-header-font-weight, 600)',
+              fontSize: 'var(--grid-font-size, 13px)',
+              color: 'var(--grid-header-text)',
+            }}>
+              {/* Empty header for detail toggle column */}
+            </div>
+          </div>
+        )}
+
+        {/* Drag Handle Header Cell */}
+        {dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false && dragRowConfig.dragHandlePosition === 'left' && (
+          <div
+            role="columnheader"
+            style={{
+              width: '32px',
+              flexShrink: 0,
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+              backgroundColor: 'var(--grid-header-bg)',
+            }}
+          />
+        )}
+
         {displayColumnOrder.map((field, colIndex) => {
           const column = columnMap.get(field);
           if (!column) return null;

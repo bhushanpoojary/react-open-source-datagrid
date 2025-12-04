@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { Column, FilterConfig, FilterValue, GridAction, Row, AdvancedFilterValue } from './types';
+import type { Column, FilterConfig, FilterValue, GridAction, Row, AdvancedFilterValue, MasterDetailConfig, DragRowConfig } from './types';
 import { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 
 interface ColumnFiltersProps {
@@ -11,6 +11,8 @@ interface ColumnFiltersProps {
   pinnedLeft: string[];
   pinnedRight: string[];
   rows: Row[];
+  masterDetailConfig?: MasterDetailConfig;
+  dragRowConfig?: DragRowConfig;
 }
 
 interface FilterMenuProps {
@@ -559,6 +561,8 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
   pinnedLeft,
   pinnedRight,
   rows,
+  masterDetailConfig,
+  dragRowConfig,
 }) => {
   const [openFilterMenu, setOpenFilterMenu] = useState<string | null>(null);
   const [filterAnchors, setFilterAnchors] = useState<{ [key: string]: HTMLElement | null }>({});
@@ -731,6 +735,30 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
   return (
     <>
       <div style={{ display: 'flex', minWidth: '100%', borderBottom: '1px solid var(--grid-border)', backgroundColor: 'var(--grid-header-bg)' }}>
+        {/* Master/Detail Filter Cell */}
+        {masterDetailConfig?.enabled && (
+          <div
+            style={{
+              width: '48px',
+              flexShrink: 0,
+              borderRight: '1px solid var(--grid-border)',
+              minHeight: '38px',
+            }}
+          />
+        )}
+
+        {/* Drag Handle Filter Cell */}
+        {dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false && dragRowConfig.dragHandlePosition === 'left' && (
+          <div
+            style={{
+              width: '32px',
+              flexShrink: 0,
+              borderRight: '1px solid var(--grid-border)',
+              minHeight: '38px',
+            }}
+          />
+        )}
+
         {displayColumnOrder.map((field) => {
           const column = columnMap.get(field);
           if (!column || column.filterable === false) {

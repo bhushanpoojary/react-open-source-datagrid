@@ -84,7 +84,9 @@ export type {
   ContextMenuEvent,
   TooltipConfig,
   TooltipContent,
-  TooltipPlacement
+  TooltipPlacement,
+  MasterDetailConfig,
+  ExpandedMasterRows
 } from './types';
 export type { 
   ServerSideDataSourceConfig, 

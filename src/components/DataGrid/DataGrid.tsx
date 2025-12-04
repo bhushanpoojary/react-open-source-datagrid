@@ -1,5 +1,5 @@
 import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import type { DataGridProps, Row, Column, GroupedRow, LayoutPreset, TreeNode } from './types';
+import type { DataGridProps, Row, Column, GroupedRow, LayoutPreset, TreeNode, ExpandedMasterRows } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
@@ -61,6 +61,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   contextMenuConfig,
   tooltipConfig,
   pivotConfig,
+  masterDetailConfig,
   tableId,
   theme: _theme = 'quartz',
   densityMode: _densityMode = 'normal',
@@ -166,6 +167,17 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       setDensityMode(_densityMode);
     }
   }, [_densityMode, densityMode, setDensityMode]);
+
+  // Initialize default expanded master rows
+  useEffect(() => {
+    if (masterDetailConfig?.enabled && masterDetailConfig.defaultExpandedMasterRowKeys) {
+      const expandedRows: ExpandedMasterRows = {};
+      masterDetailConfig.defaultExpandedMasterRowKeys.forEach((key) => {
+        expandedRows[String(key)] = true;
+      });
+      dispatch({ type: 'SET_EXPANDED_MASTER_ROWS', payload: expandedRows });
+    }
+  }, [masterDetailConfig?.enabled, masterDetailConfig?.defaultExpandedMasterRowKeys]);
 
   // Theme styles - generate CSS variables from theme
   const themeStyles = useMemo(() => {
@@ -742,6 +754,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           showColumnPinning={showColumnPinning}
+          masterDetailConfig={masterDetailConfig}
+          dragRowConfig={dragRowConfig}
           onContextMenu={(event, column, columnIndex) =>
             handleContextMenu({
               type: 'header',
@@ -762,6 +776,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           rows={filteredRows}
+          masterDetailConfig={masterDetailConfig}
+          dragRowConfig={dragRowConfig}
         />
       </div>
 
@@ -788,6 +804,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         virtualScrollConfig={virtualScrollConfig}
         treeConfig={treeConfig}
         dragRowConfig={dragRowConfig}
+        masterDetailConfig={masterDetailConfig}
+        expandedMasterRows={state.detailRowState.expandedMasterRows}
         tableId={tableId}
         onRowReorder={onRowReorder}
         currentPage={state.currentPage}

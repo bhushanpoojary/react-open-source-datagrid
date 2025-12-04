@@ -1,11 +1,13 @@
 import React, { useRef, useEffect } from 'react';
-import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig, DragRowConfig } from './types';
+import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig, DragRowConfig, MasterDetailConfig, ExpandedMasterRows } from './types';
 import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
 import { isTreeNode } from './treeDataUtils';
 import { TreeRow } from './TreeRow';
 import { VirtualScroller } from './VirtualScroller';
 import { DraggableRow } from './DraggableRow';
+import { MasterDetailCell } from './MasterDetailCell';
+import { DetailRow } from './DetailRow';
 
 interface GridBodyProps {
   columns: Column[];
@@ -29,6 +31,8 @@ interface GridBodyProps {
   virtualScrollConfig?: VirtualScrollConfig;
   treeConfig?: TreeConfig;
   dragRowConfig?: DragRowConfig;
+  masterDetailConfig?: MasterDetailConfig;
+  expandedMasterRows?: ExpandedMasterRows;
   tableId?: string;
   onRowReorder?: (rows: Row[]) => void;
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
@@ -64,6 +68,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
   virtualScrollConfig,
   treeConfig,
   dragRowConfig,
+  masterDetailConfig,
+  expandedMasterRows = {},
   tableId,
   onRowReorder,
   onScroll,
@@ -450,6 +456,37 @@ export const GridBody: React.FC<GridBodyProps> = ({
         onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
         onClick={(e) => !isLoadingRow && handleRowClick(row, rowIndex, e)}
       >
+        {/* Master/Detail Toggle Cell */}
+        {masterDetailConfig?.enabled && (
+          <div
+            style={{
+              width: '48px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+            }}
+          >
+            <MasterDetailCell
+              row={row}
+              isExpanded={expandedMasterRows[String(row.id)] || false}
+              isMasterRow={masterDetailConfig.isRowMaster ? masterDetailConfig.isRowMaster(row) : true}
+              onToggle={() => {
+                dispatch({ type: 'TOGGLE_MASTER_ROW', payload: row.id });
+                if (masterDetailConfig.onDetailRowToggled) {
+                  const isCurrentlyExpanded = expandedMasterRows[String(row.id)] || false;
+                  masterDetailConfig.onDetailRowToggled({
+                    masterRow: row,
+                    rowIndex,
+                    isOpen: !isCurrentlyExpanded,
+                  });
+                }
+              }}
+            />
+          </div>
+        )}
+
         {/* Drag Handle - Left */}
         {showDragHandle && handlePosition === 'left' && (
           <div
@@ -795,11 +832,61 @@ export const GridBody: React.FC<GridBodyProps> = ({
     );
   }
 
+  // Helper function to render master rows with detail rows
+  const renderRowsWithDetails = () => {
+    const elements: React.ReactElement[] = [];
+    
+    rows.forEach((row, rowIndex) => {
+      const rowId = isGroupedRow(row) ? row.groupKey : row.id;
+      
+      // Render master row
+      elements.push(
+        <React.Fragment key={`row-${rowId}`}>
+          {renderRowContent(row, rowIndex + pinnedRowsTop.length)}
+        </React.Fragment>
+      );
+
+      // Check if this is a master row and if it's expanded
+      if (
+        masterDetailConfig?.enabled &&
+        !isGroupedRow(row) &&
+        !isTreeNode(row)
+      ) {
+        const isMasterRow = masterDetailConfig.isRowMaster
+          ? masterDetailConfig.isRowMaster(row as Row)
+          : true;
+        const isExpanded = expandedMasterRows[String(row.id)] || false;
+
+        if (isMasterRow && isExpanded) {
+          // Calculate total column count including special columns
+          let columnCount = displayColumnOrder.length;
+          if (masterDetailConfig?.enabled) columnCount += 1; // Master/detail toggle column
+          if (dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false) columnCount += 1; // Drag handle column
+          
+          // Render detail row
+          elements.push(
+            <DetailRow
+              key={`detail-${row.id}`}
+              masterRow={row as Row}
+              rowIndex={rowIndex}
+              renderDetailRow={masterDetailConfig.renderDetailRow}
+              columnCount={columnCount}
+              detailRowHeight={masterDetailConfig.detailRowHeight}
+              detailRowAutoHeight={masterDetailConfig.detailRowAutoHeight}
+            />
+          );
+        }
+      }
+    });
+
+    return elements;
+  };
+
   // Non-virtual scrolling mode (original implementation)
   return (
     <div ref={bodyRef} role="rowgroup" style={{ overflow: 'auto', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg)', width: '100%' }}>
       {renderPinnedTopRows()}
-      {rows.map((row, rowIndex) => renderRowContent(row, rowIndex + pinnedRowsTop.length))}
+      {masterDetailConfig?.enabled ? renderRowsWithDetails() : rows.map((row, rowIndex) => renderRowContent(row, rowIndex + pinnedRowsTop.length))}
       {renderPinnedBottomRows()}
     </div>
   );

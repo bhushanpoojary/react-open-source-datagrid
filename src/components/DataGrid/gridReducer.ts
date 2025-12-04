@@ -46,6 +46,9 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     },
     pinnedRowsTop: [],
     pinnedRowsBottom: [],
+    detailRowState: {
+      expandedMasterRows: {},
+    },
   };
 };
 
@@ -534,6 +537,59 @@ export const gridReducer = (state: GridState, action: GridAction): GridState => 
         ...state,
         pinnedRowsTop: state.pinnedRowsTop.filter(id => id !== rowId),
         pinnedRowsBottom: state.pinnedRowsBottom.filter(id => id !== rowId),
+      };
+    }
+
+    case 'TOGGLE_MASTER_ROW': {
+      const rowId = action.payload;
+      const currentExpanded = state.detailRowState.expandedMasterRows[String(rowId)] || false;
+      return {
+        ...state,
+        detailRowState: {
+          ...state.detailRowState,
+          expandedMasterRows: {
+            ...state.detailRowState.expandedMasterRows,
+            [String(rowId)]: !currentExpanded,
+          },
+        },
+      };
+    }
+
+    case 'EXPAND_MASTER_ROW': {
+      const rowId = action.payload;
+      return {
+        ...state,
+        detailRowState: {
+          ...state.detailRowState,
+          expandedMasterRows: {
+            ...state.detailRowState.expandedMasterRows,
+            [String(rowId)]: true,
+          },
+        },
+      };
+    }
+
+    case 'COLLAPSE_MASTER_ROW': {
+      const rowId = action.payload;
+      return {
+        ...state,
+        detailRowState: {
+          ...state.detailRowState,
+          expandedMasterRows: {
+            ...state.detailRowState.expandedMasterRows,
+            [String(rowId)]: false,
+          },
+        },
+      };
+    }
+
+    case 'SET_EXPANDED_MASTER_ROWS': {
+      return {
+        ...state,
+        detailRowState: {
+          ...state.detailRowState,
+          expandedMasterRows: action.payload,
+        },
       };
     }
 
