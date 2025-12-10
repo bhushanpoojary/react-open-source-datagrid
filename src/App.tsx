@@ -26,9 +26,10 @@ import { PivotDemo } from './components/PivotDemo';
 import { AdvancedEditorsDemo } from './components/AdvancedEditorsDemo';
 import { ChartsDemo } from './components/ChartsDemo';
 import { MasterDetailDemo } from './components/MasterDetailDemo';
+import GroupByDemo from './components/GroupByDemo';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail' | 'groupby';
 
 interface MenuItem {
   id: DemoType;
@@ -72,6 +73,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/demo/advanced-editors': 'advanced-editors',
   '/demo/charts': 'charts',
   '/demo/master-detail': 'master-detail',
+  '/demo/group-by': 'groupby',
 };
 
 function App() {
@@ -141,6 +143,13 @@ function App() {
           icon: '📊',
           description: 'Dynamic pivot tables with aggregation',
           path: '/demo/pivot-table',
+        },
+        {
+          id: 'groupby',
+          label: 'Group By',
+          icon: '🗂️',
+          description: 'Drag & drop columns to group rows hierarchically',
+          path: '/demo/group-by',
         },
         {
           id: 'tree',
@@ -622,6 +631,7 @@ function App() {
           <Route path="/demo/market-data" element={<LiveMarketDemo />} />
           <Route path="/demo/accessibility" element={<AccessibilityDemo />} />
           <Route path="/demo/pivot-table" element={<PivotDemo />} />
+          <Route path="/demo/group-by" element={<GroupByDemo />} />
           <Route path="/demo/tree-data" element={<TreeDataDemo />} />
           <Route path="/demo/row-dragging" element={<RowDraggingDemo />} />
           <Route path="/demo/row-pinning" element={<RowPinningDemo />} />
