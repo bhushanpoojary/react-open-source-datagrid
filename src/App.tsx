@@ -28,9 +28,10 @@ import { ChartsDemo } from './components/ChartsDemo';
 import { MasterDetailDemo } from './components/MasterDetailDemo';
 import GroupByDemo from './components/GroupByDemo';
 import { HorizontalScrollBugDemo } from './components/HorizontalScrollBugDemo';
+import ServerSideFeaturesDemo from './components/ServerSideFeaturesDemo';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail' | 'groupby' | 'horizontal-scroll-bug';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail' | 'groupby' | 'horizontal-scroll-bug' | 'server-side';
 
 interface MenuItem {
   id: DemoType;
@@ -76,6 +77,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/demo/master-detail': 'master-detail',
   '/demo/group-by': 'groupby',
   '/demo/horizontal-scroll-bug': 'horizontal-scroll-bug',
+  '/demo/server-side': 'server-side',
 };
 
 function App() {
@@ -132,6 +134,13 @@ function App() {
           icon: '📈',
           description: 'Live streaming with 1000+ updates/sec',
           path: '/demo/market-data',
+        },
+        {
+          id: 'server-side',
+          label: 'Server-Side Features',
+          icon: '🖥️',
+          description: 'Server-side sort, filter & pagination',
+          path: '/demo/server-side',
         },
       ],
     },
@@ -661,6 +670,7 @@ function App() {
           <Route path="/api/reference" element={<CompleteApiReferencePage />} />
           <Route path="/api/demo" element={<GridApiDemoPage />} />
           <Route path="/demo/horizontal-scroll-bug" element={<HorizontalScrollBugDemo />} />
+          <Route path="/demo/server-side" element={<ServerSideFeaturesDemo />} />
         </Routes>
       </main>
     </div>
