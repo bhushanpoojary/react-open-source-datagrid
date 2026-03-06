@@ -680,7 +680,10 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         overflow: 'hidden', 
         backgroundColor: 'var(--grid-bg)', 
         boxShadow: 'var(--grid-shadow-light, 0 1px 3px 0 rgba(0, 0, 0, 0.08))', 
-        fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)' 
+        fontFamily: 'var(--grid-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
       className={`data-grid density-${densityMode}`}
     >
@@ -690,7 +693,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       
       {/* Toolbar */}
       {!hideToolbar && (
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30 }}>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'var(--grid-bg-alt)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', zIndex: 30, flexShrink: 0 }}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Column Chooser */}
           <ColumnChooser
@@ -748,7 +751,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       )}
 
       {/* Horizontal scroll wrapper — keeps header, body & footer in a single scroll context */}
-      <div style={{ overflowX: 'auto', overflowY: 'hidden', width: '100%' }}>
+      <div style={{ overflowX: 'auto', overflowY: 'auto', width: '100%', flex: 1, minHeight: 0 }}>
         {/* Sticky Header */}
         <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: 'fit-content', minWidth: '100%' }}>
           <GridHeader

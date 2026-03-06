@@ -87,6 +87,7 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
         transitionDuration: '200ms',
         backgroundColor: isDragOver ? 'var(--grid-active)' : 'var(--grid-bg-alt)',
         borderBottomColor: isDragOver ? 'var(--grid-primary)' : 'var(--grid-border)',
+        flexShrink: 0,
       }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
