@@ -747,102 +747,105 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       />
       )}
 
-      {/* Sticky Header */}
-      <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: '100%' }}>
-        <GridHeader
+      {/* Horizontal scroll wrapper — keeps header, body & footer in a single scroll context */}
+      <div style={{ overflowX: 'auto', overflowY: 'hidden', width: '100%' }}>
+        {/* Sticky Header */}
+        <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: 'fit-content', minWidth: '100%' }}>
+          <GridHeader
+            columns={effectiveColumns}
+            columnOrder={state.columnOrder}
+            displayColumnOrder={displayColumnOrder}
+            columnWidths={state.columnWidths}
+            sortConfig={state.sortConfig}
+            dispatch={dispatch}
+            pinnedLeft={pinnedLeftFields}
+            pinnedRight={pinnedRightFields}
+            showColumnPinning={showColumnPinning}
+            masterDetailConfig={masterDetailConfig}
+            dragRowConfig={dragRowConfig}
+            onContextMenu={(event, column, columnIndex) =>
+              handleContextMenu({
+                type: 'header',
+                column,
+                columnIndex,
+                event,
+              })
+            }
+          />
+          
+          {/* Floating Filter Row */}
+          {!hideToolbar && (
+          <ColumnFilters
+            columns={effectiveColumns}
+            displayColumnOrder={displayColumnOrder}
+            columnWidths={state.columnWidths}
+            filterConfig={state.filterConfig}
+            dispatch={dispatch}
+            pinnedLeft={pinnedLeftFields}
+            pinnedRight={pinnedRightFields}
+            rows={filteredRows}
+            masterDetailConfig={masterDetailConfig}
+            dragRowConfig={dragRowConfig}
+          />
+          )}
+        </div>
+
+        {/* Grid Body */}
+        <GridBody
           columns={effectiveColumns}
+          rows={virtualScrollConfig?.enabled ? unpinnedRows : paginatedRows}
+          pinnedRowsTop={pinnedRowsTopData}
+          pinnedRowsBottom={pinnedRowsBottomData}
           columnOrder={state.columnOrder}
           displayColumnOrder={displayColumnOrder}
           columnWidths={state.columnWidths}
-          sortConfig={state.sortConfig}
+          selectedRows={state.selection.selectedRows}
+          editState={state.editState}
+          focusState={state.focusState}
           dispatch={dispatch}
+          onRowClick={onRowClick}
+          onCellEdit={handleCellEdit}
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
-          showColumnPinning={showColumnPinning}
-          masterDetailConfig={masterDetailConfig}
+          showGroupFooters={footerConfig?.showGroupFooters}
+          groupAggregates={groupAggregates}
+          aggregateConfigs={footerConfig?.aggregates}
+          virtualScrollConfig={virtualScrollConfig}
+          treeConfig={treeConfig}
           dragRowConfig={dragRowConfig}
-          onContextMenu={(event, column, columnIndex) =>
+          masterDetailConfig={masterDetailConfig}
+          expandedMasterRows={state.detailRowState.expandedMasterRows}
+          tableId={tableId}
+          onRowReorder={onRowReorder}
+          currentPage={state.currentPage}
+          pageSize={state.pageSize}
+          totalRows={unpinnedRows.length}
+          onContextMenu={(event, row, column, rowIndex, columnIndex) =>
             handleContextMenu({
-              type: 'header',
+              type: 'cell',
+              row,
               column,
+              rowIndex,
               columnIndex,
               event,
             })
           }
+          {...tooltipHandlers}
         />
-        
-        {/* Floating Filter Row */}
-        {!hideToolbar && (
-        <ColumnFilters
-          columns={effectiveColumns}
-          displayColumnOrder={displayColumnOrder}
-          columnWidths={state.columnWidths}
-          filterConfig={state.filterConfig}
-          dispatch={dispatch}
-          pinnedLeft={pinnedLeftFields}
-          pinnedRight={pinnedRightFields}
-          rows={filteredRows}
-          masterDetailConfig={masterDetailConfig}
-          dragRowConfig={dragRowConfig}
-        />
+
+        {/* Global Footer */}
+        {footerConfig?.show && footerConfig.aggregates && (
+          <GridFooter
+            columns={effectiveColumns}
+            displayColumnOrder={displayColumnOrder}
+            columnWidths={state.columnWidths}
+            aggregates={globalAggregates}
+            aggregateConfigs={footerConfig.aggregates}
+            pinnedLeft={pinnedLeftFields}
+            pinnedRight={pinnedRightFields}
+          />
         )}
       </div>
-
-      {/* Grid Body */}
-      <GridBody
-        columns={effectiveColumns}
-        rows={virtualScrollConfig?.enabled ? unpinnedRows : paginatedRows}
-        pinnedRowsTop={pinnedRowsTopData}
-        pinnedRowsBottom={pinnedRowsBottomData}
-        columnOrder={state.columnOrder}
-        displayColumnOrder={displayColumnOrder}
-        columnWidths={state.columnWidths}
-        selectedRows={state.selection.selectedRows}
-        editState={state.editState}
-        focusState={state.focusState}
-        dispatch={dispatch}
-        onRowClick={onRowClick}
-        onCellEdit={handleCellEdit}
-        pinnedLeft={pinnedLeftFields}
-        pinnedRight={pinnedRightFields}
-        showGroupFooters={footerConfig?.showGroupFooters}
-        groupAggregates={groupAggregates}
-        aggregateConfigs={footerConfig?.aggregates}
-        virtualScrollConfig={virtualScrollConfig}
-        treeConfig={treeConfig}
-        dragRowConfig={dragRowConfig}
-        masterDetailConfig={masterDetailConfig}
-        expandedMasterRows={state.detailRowState.expandedMasterRows}
-        tableId={tableId}
-        onRowReorder={onRowReorder}
-        currentPage={state.currentPage}
-        pageSize={state.pageSize}
-        totalRows={unpinnedRows.length}
-        onContextMenu={(event, row, column, rowIndex, columnIndex) =>
-          handleContextMenu({
-            type: 'cell',
-            row,
-            column,
-            rowIndex,
-            columnIndex,
-            event,
-          })
-        }
-        {...tooltipHandlers}
-      />
-
-      {/* Global Footer */}
-      {footerConfig?.show && footerConfig.aggregates && (
-        <GridFooter
-          columns={effectiveColumns}
-          displayColumnOrder={displayColumnOrder}
-          columnWidths={state.columnWidths}
-          aggregates={globalAggregates}
-          aggregateConfigs={footerConfig.aggregates}
-          pinnedLeft={pinnedLeftFields}
-          pinnedRight={pinnedRightFields}
-        />
-      )}
 
       {/* Pagination - Hide when virtual scrolling is enabled */}
       {!virtualScrollConfig?.enabled && (

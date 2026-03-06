@@ -27,9 +27,10 @@ import { AdvancedEditorsDemo } from './components/AdvancedEditorsDemo';
 import { ChartsDemo } from './components/ChartsDemo';
 import { MasterDetailDemo } from './components/MasterDetailDemo';
 import GroupByDemo from './components/GroupByDemo';
+import { HorizontalScrollBugDemo } from './components/HorizontalScrollBugDemo';
 import './App.css'
 
-type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail' | 'groupby';
+type DemoType = 'home' | 'standard' | 'virtual' | 'renderers' | 'filters' | 'faceted' | 'filtered-search' | 'persistence' | 'infinite' | 'themes' | 'density' | 'tree' | 'drag' | 'rowpin' | 'market' | 'accessibility' | 'contextmenu' | 'tooltip' | 'benchmark' | 'gallery' | 'api-reference' | 'api-demo' | 'pivot' | 'advanced-editors' | 'charts' | 'master-detail' | 'groupby' | 'horizontal-scroll-bug';
 
 interface MenuItem {
   id: DemoType;
@@ -74,6 +75,7 @@ const pathToDemoMap: Record<string, DemoType> = {
   '/demo/charts': 'charts',
   '/demo/master-detail': 'master-detail',
   '/demo/group-by': 'groupby',
+  '/demo/horizontal-scroll-bug': 'horizontal-scroll-bug',
 };
 
 function App() {
@@ -314,6 +316,13 @@ function App() {
           icon: '🚀',
           description: 'Test performance with massive datasets',
           path: '/demo/benchmark',
+        },
+        {
+          id: 'horizontal-scroll-bug',
+          label: 'Bug #1: Scroll Sync',
+          icon: '🐛',
+          description: 'Header misalignment on horizontal scroll',
+          path: '/demo/horizontal-scroll-bug',
         },
       ],
     },
@@ -651,6 +660,7 @@ function App() {
           <Route path="/demo/master-detail" element={<MasterDetailDemo />} />
           <Route path="/api/reference" element={<CompleteApiReferencePage />} />
           <Route path="/api/demo" element={<GridApiDemoPage />} />
+          <Route path="/demo/horizontal-scroll-bug" element={<HorizontalScrollBugDemo />} />
         </Routes>
       </main>
     </div>

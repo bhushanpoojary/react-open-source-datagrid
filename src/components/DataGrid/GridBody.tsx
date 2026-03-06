@@ -717,7 +717,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const enableColumnVirtualization = virtualScrollConfig.enableColumnVirtualization ?? true;
 
     return (
-      <div ref={bodyRef} role="rowgroup" style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'var(--grid-bg)' }}>
+      <div ref={bodyRef} role="rowgroup" style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', minWidth: '100%', width: 'fit-content', backgroundColor: 'var(--grid-bg)' }}>
         {renderPinnedTopRows()}
         <VirtualScroller<Row | GroupedRow>
           items={rows}
@@ -884,7 +884,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
 
   // Non-virtual scrolling mode (original implementation)
   return (
-    <div ref={bodyRef} role="rowgroup" style={{ overflow: 'auto', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg)', width: '100%' }}>
+    <div ref={bodyRef} role="rowgroup" style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: '500px', position: 'relative', backgroundColor: 'var(--grid-bg)', minWidth: '100%', width: 'fit-content' }}>
       {renderPinnedTopRows()}
       {masterDetailConfig?.enabled ? renderRowsWithDetails() : rows.map((row, rowIndex) => renderRowContent(row, rowIndex + pinnedRowsTop.length))}
       {renderPinnedBottomRows()}
