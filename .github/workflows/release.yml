@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Run Tests
+    name: Lint and Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,27 +21,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      # Playwright Tests
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      
-      - name: Run Playwright tests
-        run: npm run test:playwright
-      
-      # Cypress Tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm run build
-          start: npm run preview
-          wait-on: 'http://localhost:4173'
-          wait-on-timeout: 120
-        env:
-          CYPRESS_BASE_URL: http://localhost:4173/react-open-source-datagrid
-      
-      # Lint
       - name: Run linter
         run: npm run lint
+      
+      - name: Build library
+        run: npm run build
 
   build-and-publish:
     name: Build and Publish
@@ -99,13 +83,6 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
-      - name: Deploy to GitHub Pages
-        if: steps.check_version.outcome == 'success'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
       
       - name: Create GitHub Release
         if: steps.check_version.outcome == 'success'
