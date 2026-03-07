@@ -222,7 +222,7 @@ export class WebSocketMockFeed {
     // Start update intervals for each symbol
     this.config.symbols.forEach(symbol => {
       const interval = 1000 / this.config.updateFrequency;
-      const intervalId = setInterval(() => {
+      const intervalId = window.setInterval(() => {
         this.updateSymbol(symbol);
       }, interval);
       

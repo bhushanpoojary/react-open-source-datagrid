@@ -73,7 +73,7 @@ export const useTooltip = ({ config = {} }: UseTooltipProps = {}) => {
       ? { content }
       : content;
 
-    showTimeoutRef.current = setTimeout(() => {
+    showTimeoutRef.current = window.setTimeout(() => {
       if (isHoveringRef.current) {
         setTooltipState({
           isVisible: true,
@@ -93,7 +93,7 @@ export const useTooltip = ({ config = {} }: UseTooltipProps = {}) => {
     isHoveringRef.current = false;
 
     if (hideDelay > 0) {
-      hideTimeoutRef.current = setTimeout(() => {
+      hideTimeoutRef.current = window.setTimeout(() => {
         setTooltipState((prev) => ({
           ...prev,
           isVisible: false,

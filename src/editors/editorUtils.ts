@@ -236,7 +236,7 @@ export function debounce<T extends (...args: any[]) => any>(
     if (timeout) {
       clearTimeout(timeout);
     }
-    timeout = setTimeout(later, wait);
+    timeout = window.setTimeout(later, wait);
   };
 }
 

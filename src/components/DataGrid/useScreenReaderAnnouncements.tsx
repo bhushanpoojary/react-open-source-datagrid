@@ -26,7 +26,7 @@ export const useScreenReaderAnnouncements = () => {
       clearTimeout(timeoutRef.current);
     }
     if (delay > 0) {
-      timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = window.setTimeout(() => {
         announcementRef.current = message;
       }, delay);
     } else {

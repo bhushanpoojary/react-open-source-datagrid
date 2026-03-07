@@ -5,7 +5,6 @@
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022", "DOM"],
-    "types": ["vite/client"],
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "declaration": true,

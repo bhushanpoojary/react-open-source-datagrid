@@ -226,7 +226,7 @@ export function useMarketData(options: UseMarketDataOptions): UseMarketDataRetur
           console.log(`Reconnecting in ${delay}ms... (attempt ${reconnectCountRef.current + 1})`);
           setConnectionState('reconnecting');
           
-          reconnectTimeoutRef.current = setTimeout(() => {
+          reconnectTimeoutRef.current = window.setTimeout(() => {
             reconnectCountRef.current++;
             reconnectDelayRef.current *= 2; // Exponential backoff
             // Reconnect will be triggered by the useEffect that watches connectionState
