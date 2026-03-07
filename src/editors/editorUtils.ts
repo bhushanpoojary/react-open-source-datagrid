@@ -178,22 +178,23 @@ export function usePopupPosition(
     }
 
     // Calculate position based on placement
+    // Use viewport-relative coordinates (no scroll offsets) since dropdowns use position:fixed
     switch (actualPlacement) {
       case 'bottom':
-        top = anchorRect.bottom + window.scrollY;
-        left = anchorRect.left + window.scrollX;
+        top = anchorRect.bottom;
+        left = anchorRect.left;
         break;
       case 'top':
-        top = anchorRect.top + window.scrollY - popupRect.height;
-        left = anchorRect.left + window.scrollX;
+        top = anchorRect.top - popupRect.height;
+        left = anchorRect.left;
         break;
       case 'right':
-        top = anchorRect.top + window.scrollY;
-        left = anchorRect.right + window.scrollX;
+        top = anchorRect.top;
+        left = anchorRect.right;
         break;
       case 'left':
-        top = anchorRect.top + window.scrollY;
-        left = anchorRect.left + window.scrollX - popupRect.width;
+        top = anchorRect.top;
+        left = anchorRect.left - popupRect.width;
         break;
     }
 
@@ -205,11 +206,11 @@ export function usePopupPosition(
     if (left < margin) {
       left = margin;
     }
-    if (top + popupRect.height > viewportHeight + window.scrollY) {
-      top = viewportHeight + window.scrollY - popupRect.height - margin;
+    if (top + popupRect.height > viewportHeight) {
+      top = viewportHeight - popupRect.height - margin;
     }
-    if (top < window.scrollY + margin) {
-      top = window.scrollY + margin;
+    if (top < margin) {
+      top = margin;
     }
 
     popup.style.top = `${top}px`;

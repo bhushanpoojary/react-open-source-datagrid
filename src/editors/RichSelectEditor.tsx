@@ -1,6 +1,7 @@
 // RichSelectEditor - Searchable dropdown editor for selecting a single option
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import type { DataGridEditorProps, EditorOption } from './editorTypes';
 import {
   useEditorKeyboardNavigation,
@@ -248,7 +249,7 @@ export function RichSelectEditor<TValue = any, TRow = any>(
         </div>
       </div>
 
-      {isOpen && (
+      {isOpen && ReactDOM.createPortal(
         <div
           ref={dropdownRef}
           id="richselect-dropdown"
@@ -278,7 +279,8 @@ export function RichSelectEditor<TValue = any, TRow = any>(
               </div>
             ))
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

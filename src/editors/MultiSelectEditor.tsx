@@ -1,6 +1,7 @@
 // MultiSelectEditor - Multiple selection editor with tags/chips
 
 import React, { useState, useRef, useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import type { DataGridEditorProps, EditorOption } from './editorTypes';
 import {
   useEditorKeyboardNavigation,
@@ -262,7 +263,7 @@ export function MultiSelectEditor<TValue = any, TRow = any>(
         </span>
       </div>
 
-      {isOpen && (
+      {isOpen && ReactDOM.createPortal(
         <div
           ref={dropdownRef}
           id="multiselect-dropdown"
@@ -309,7 +310,8 @@ export function MultiSelectEditor<TValue = any, TRow = any>(
               );
             })
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

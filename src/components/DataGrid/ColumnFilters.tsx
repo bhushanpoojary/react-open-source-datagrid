@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import type { Column, FilterConfig, FilterValue, GridAction, Row, AdvancedFilterValue, MasterDetailConfig, DragRowConfig } from './types';
 import { AdvancedFilterBuilder } from './AdvancedFilterBuilder';
 
@@ -68,7 +69,7 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         borderRadius: 'var(--grid-border-radius, 8px)',
         border: 'var(--grid-border-width, 1px) solid var(--grid-border)',
         padding: '16px',
-        zIndex: 1000,
+        zIndex: 10000,
       }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -200,7 +201,7 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
         borderRadius: 'var(--grid-border-radius, 8px)',
         border: '1px solid var(--grid-border)',
         padding: '16px',
-        zIndex: 1000,
+        zIndex: 10000,
       }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -324,7 +325,7 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
         borderRadius: 'var(--grid-border-radius, 8px)',
         border: '1px solid var(--grid-border)',
         padding: '16px',
-        zIndex: 1000,
+        zIndex: 10000,
       }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -459,7 +460,7 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
         borderRadius: 'var(--grid-border-radius, 8px)',
         border: '1px solid var(--grid-border)',
         padding: '16px',
-        zIndex: 1000,
+        zIndex: 10000,
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -845,8 +846,8 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
                   </svg>
                 </div>
               </div>
-              {openFilterMenu === field && renderFilterMenu(column)}
-              {advancedFilterField === field && renderAdvancedFilterMenu(column)}
+              {openFilterMenu === field && ReactDOM.createPortal(renderFilterMenu(column), document.body)}
+              {advancedFilterField === field && ReactDOM.createPortal(renderAdvancedFilterMenu(column), document.body)}
             </div>
           );
         })}

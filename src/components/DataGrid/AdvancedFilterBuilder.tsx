@@ -362,7 +362,7 @@ export const AdvancedFilterBuilder: React.FC<AdvancedFilterBuilderProps> = ({
         borderRadius: 'var(--grid-border-radius, 8px)',
         border: '1px solid var(--grid-border)',
         padding: '16px',
-        zIndex: 1001,
+        zIndex: 10001,
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',

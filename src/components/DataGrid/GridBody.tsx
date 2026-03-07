@@ -431,6 +431,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     // Regular row rendering
     const isSelected = selectedRows.has(row.id);
     const isFocused = focusState?.rowIndex === rowIndex;
+    const isRowEditing = editState.rowId === row.id;
     const isLoadingRow = (row as any)._loading === true;
     const isDragEnabled = dragRowConfig?.enabled && !isLoadingRow;
     const showDragHandle = isDragEnabled && dragRowConfig.showDragHandle !== false;
@@ -451,6 +452,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
           backgroundColor: isLoadingRow ? 'var(--grid-bg-alt)' : isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
           cursor: isLoadingRow ? 'wait' : isDragEnabled ? 'grab' : 'pointer',
           transition: 'background-color 0.15s ease',
+          ...(isRowEditing ? { position: 'relative' as const, zIndex: 100 } : {}),
         }}
         onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
         onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
@@ -549,6 +551,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 outline: isCellFocused ? '2px solid var(--grid-primary)' : 'none',
                 outlineOffset: '-2px',
                 color: 'var(--grid-text)',
+                ...(isEditing ? { position: 'relative' as const, zIndex: 1000 } : {}),
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onContextMenu={(e) => onContextMenu?.(e, row, column, rowIndex, columnIndex)}

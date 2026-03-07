@@ -1,6 +1,7 @@
 // DateEditor - Date and time picker editor with calendar popup
 
 import React, { useState, useRef, useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import type { DataGridEditorProps } from './editorTypes';
 import {
   useEditorKeyboardNavigation,
@@ -186,7 +187,7 @@ export function DateEditor<TRow = any>(
         </span>
       </div>
 
-      {isOpen && (
+      {isOpen && ReactDOM.createPortal(
         <div ref={calendarRef} className="editor-dropdown editor-calendar">
           <div className="editor-calendar-header">
             <button
@@ -256,7 +257,8 @@ export function DateEditor<TRow = any>(
               />
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
