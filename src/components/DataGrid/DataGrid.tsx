@@ -68,6 +68,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   showDensityToggle = false,
   hideToolbar = false,
   hideFilters = false,
+  showFilterCount = true,
   className,
   texts,
   onDensityChange,
@@ -792,6 +793,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
             rows={filteredRows}
             masterDetailConfig={masterDetailConfig}
             dragRowConfig={dragRowConfig}
+            showFilterCount={showFilterCount}
           />
           )}
         </div>

@@ -522,6 +522,7 @@ export interface DataGridProps {
   showDensityToggle?: boolean; // Show density mode toggle control (default: false)
   hideToolbar?: boolean; // Hide the toolbar (columns, export, group by) - useful for nested grids
   hideFilters?: boolean; // Hide the column filter row independently of the toolbar
+  showFilterCount?: boolean; // Show/hide the selected values count on the Apply button in set/multi-select filters (default: true)
   className?: string; // Additional CSS class name(s) applied to the root container element
   onDensityChange?: (mode: DensityMode) => void; // Callback when density changes
   onRowClick?: (row: Row) => void;

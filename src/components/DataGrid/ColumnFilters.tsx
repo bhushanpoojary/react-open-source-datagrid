@@ -14,6 +14,7 @@ interface ColumnFiltersProps {
   rows: Row[];
   masterDetailConfig?: MasterDetailConfig;
   dragRowConfig?: DragRowConfig;
+  showFilterCount?: boolean;
 }
 
 interface FilterMenuProps {
@@ -25,6 +26,7 @@ interface FilterMenuProps {
   anchorEl: HTMLElement | null;
   showAdvancedButton?: boolean;
   onSwitchToAdvanced?: () => void;
+  showFilterCount?: boolean;
 }
 
 // Helper function to check if filter is advanced
@@ -402,7 +404,7 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
 };
 
 // Set Filter Component (Unique dropdown values)
-const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced }) => {
+const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showAdvancedButton: _showAdvancedButton, onSwitchToAdvanced: _onSwitchToAdvanced, showFilterCount = true }) => {
   const uniqueValues = Array.from(new Set(rows.map(row => row[column.field]).filter(v => v != null)));
   const simpleFilter = !isAdvancedFilter(filterValue) ? filterValue : null;
   const [selectedValues, setSelectedValues] = useState<Set<any>>(
@@ -539,7 +541,7 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
         >
-          Apply ({selectedValues.size})
+          Apply{showFilterCount ? ` (${selectedValues.size})` : ''}
         </button>
       </div>
     </div>
@@ -547,9 +549,9 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
 };
 
 // Multi-Select Filter Component
-const MultiSelectFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl }) => {
+const MultiSelectFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApplyFilter, onClose, rows, anchorEl, showFilterCount }) => {
   // Similar to SetFilter but with different UI/UX
-  return <SetFilterMenu column={column} filterValue={filterValue} onApplyFilter={onApplyFilter} onClose={onClose} rows={rows} anchorEl={anchorEl} />;
+  return <SetFilterMenu column={column} filterValue={filterValue} onApplyFilter={onApplyFilter} onClose={onClose} rows={rows} anchorEl={anchorEl} showFilterCount={showFilterCount} />;
 };
 
 // Floating Filter Row Component
@@ -564,6 +566,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
   rows,
   masterDetailConfig,
   dragRowConfig,
+  showFilterCount = true,
 }) => {
   const [openFilterMenu, setOpenFilterMenu] = useState<string | null>(null);
   const [filterAnchors, setFilterAnchors] = useState<{ [key: string]: HTMLElement | null }>({});
@@ -677,6 +680,7 @@ export const ColumnFilters: React.FC<ColumnFiltersProps> = ({
       anchorEl,
       showAdvancedButton: true,
       onSwitchToAdvanced: () => handleSwitchToAdvanced(column.field),
+      showFilterCount,
     };
 
     switch (filterType) {

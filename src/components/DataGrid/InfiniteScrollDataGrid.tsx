@@ -30,6 +30,7 @@ export interface InfiniteScrollDataGridProps {
   showColumnPinning?: boolean;
   virtualScrollConfig?: VirtualScrollConfig;
   theme?: ThemeName;
+  showFilterCount?: boolean;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: unknown) => void;
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
@@ -47,6 +48,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   showColumnPinning = true,
   virtualScrollConfig,
   theme: _theme = 'quartz',
+  showFilterCount = true,
   onRowClick,
   onCellEdit,
   onSelectionChange,
@@ -336,6 +338,7 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           rows={visibleRows}
+          showFilterCount={showFilterCount}
         />
       </div>
 
