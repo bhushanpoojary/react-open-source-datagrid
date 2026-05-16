@@ -501,7 +501,9 @@ export interface DataGridProps {
   theme?: ThemeName; // Theme to apply to the grid
   densityMode?: DensityMode; // Density mode: compact, normal, or comfortable
   showDensityToggle?: boolean; // Show density mode toggle control (default: false)
-  hideToolbar?: boolean; // Hide the toolbar (columns, export, filters, group by) - useful for nested grids
+  hideToolbar?: boolean; // Hide the toolbar (columns, export, group by) - useful for nested grids
+  hideFilters?: boolean; // Hide the column filter row independently of the toolbar
+  className?: string; // Additional CSS class name(s) applied to the root container element
   onDensityChange?: (mode: DensityMode) => void; // Callback when density changes
   onRowClick?: (row: Row) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

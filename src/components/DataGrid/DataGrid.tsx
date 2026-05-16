@@ -67,6 +67,8 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   densityMode: _densityMode = 'normal',
   showDensityToggle = false,
   hideToolbar = false,
+  hideFilters = false,
+  className,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -685,7 +687,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         display: 'flex',
         flexDirection: 'column',
       }}
-      className={`data-grid density-${densityMode}`}
+      className={`data-grid density-${densityMode}${className ? ` ${className}` : ''}`}
     >
       {/* Screen Reader Announcements - Live Region */}
       <ScreenReaderAnnouncer message={announcementMessage} priority="polite" />
@@ -777,7 +779,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           />
           
           {/* Floating Filter Row */}
-          {!hideToolbar && (
+          {!hideFilters && (
           <ColumnFilters
             columns={effectiveColumns}
             displayColumnOrder={displayColumnOrder}
