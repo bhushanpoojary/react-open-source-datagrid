@@ -61,6 +61,9 @@ button {
   --grid-text-muted: #9ca3af;
   --grid-header-text: #374151;
   --grid-primary: #3b82f6;
+  --grid-primary-hover: #2563eb;
+  --grid-primary-bg: #eff6ff;
+  --grid-primary-hover-bg: #dbeafe;
   --grid-selected: rgba(59, 130, 246, 0.08);
   --grid-hover: #f9fafb;
   --grid-active: #eff6ff;
