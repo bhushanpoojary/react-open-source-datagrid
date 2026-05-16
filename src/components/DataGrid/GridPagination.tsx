@@ -1,11 +1,12 @@
 import React from 'react';
-import type { GridAction } from './types';
+import type { GridAction, PaginationTexts } from './types';
 
 interface GridPaginationProps {
   currentPage: number;
   pageSize: number;
   totalRows: number;
   dispatch: React.Dispatch<GridAction>;
+  paginationTexts?: PaginationTexts;
 }
 
 export const GridPagination: React.FC<GridPaginationProps> = ({
@@ -13,6 +14,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
   pageSize,
   totalRows,
   dispatch,
+  paginationTexts,
 }) => {
   const totalPages = Math.ceil(totalRows / pageSize);
   const startRow = currentPage * pageSize + 1;
@@ -68,7 +70,7 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-footer-bg)', borderTop: 'var(--grid-border-width, 1px) solid var(--grid-border)', flexShrink: 0 }}>
       {/* Left side: Page size selector */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text)', fontWeight: '500' }}>Rows per page:</span>
+        <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text)', fontWeight: '500' }}>{paginationTexts?.rowsPerPage ?? 'Rows per page:'}</span>
         <select
           style={{ 
             paddingLeft: '8px', 
@@ -103,7 +105,9 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
       {/* Center: Row count info */}
       <div style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary)', fontWeight: '500' }}>
         {totalRows === 0 ? (
-          'No rows'
+          paginationTexts?.noRows ?? 'No rows'
+        ) : paginationTexts?.rowRange ? (
+          paginationTexts.rowRange(startRow, endRow, totalRows)
         ) : (
           <>
             {startRow}-{endRow} of {totalRows}

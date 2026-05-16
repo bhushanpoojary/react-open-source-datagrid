@@ -1,5 +1,6 @@
 // Export all DataGrid components and types
 export { DataGrid } from './DataGrid'; // DataGrid is now the main export
+export type { GridTexts, PaginationTexts } from './types';
 export { VirtualScroller } from './VirtualScroller';
 
 // Export Grid API types and implementation

@@ -480,6 +480,25 @@ export interface DetailRowState {
   expandedMasterRows: ExpandedMasterRows; // Track which master rows are expanded
 }
 
+/** Customizable text overrides for the pagination bar. */
+export interface PaginationTexts {
+  /** Label before the page-size selector. Default: "Rows per page:" */
+  rowsPerPage?: string;
+  /** Text shown when there are no rows. Default: "No rows" */
+  noRows?: string;
+  /**
+   * Formats the row-range indicator.
+   * Default renders: `{startRow}-{endRow} of {totalRows}`
+   * Example: `(s, e, t) => \`Showing ${s} to ${e} of ${t} entries\``
+   */
+  rowRange?: (startRow: number, endRow: number, totalRows: number) => string;
+}
+
+/** Top-level container for all UI text overrides. Extend this interface for future areas. */
+export interface GridTexts {
+  pagination?: PaginationTexts;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -512,4 +531,5 @@ export interface DataGridProps {
   onLayoutChange?: (layout: LayoutPreset['layout']) => void;
   onRowReorder?: (rows: Row[]) => void;
   onGridReady?: (api: GridApi) => void; // Called when grid API is ready
+  texts?: GridTexts; // Custom text overrides for UI labels
 }

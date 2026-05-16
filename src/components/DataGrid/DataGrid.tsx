@@ -69,6 +69,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   hideToolbar = false,
   hideFilters = false,
   className,
+  texts,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -859,6 +860,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           pageSize={state.pageSize}
           totalRows={unpinnedRows.length}
           dispatch={dispatch}
+          paginationTexts={texts?.pagination}
         />
       )}
 
