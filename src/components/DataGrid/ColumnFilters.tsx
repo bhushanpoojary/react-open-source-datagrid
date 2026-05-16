@@ -143,15 +143,15 @@ const TextFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
           style={{
             padding: '6px 12px',
             fontSize: 'var(--grid-font-size, 14px)',
-            color: 'var(--grid-text-inverse)',
-            backgroundColor: 'var(--grid-primary)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #3b82f6)',
             border: 'none',
             borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)'}
         >
           Apply
         </button>
@@ -267,15 +267,15 @@ const NumberFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilte
           style={{
             padding: '6px 12px',
             fontSize: 'var(--grid-font-size, 14px)',
-            color: 'var(--grid-text-inverse)',
-            backgroundColor: 'var(--grid-primary)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #3b82f6)',
             border: 'none',
             borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)'}
         >
           Apply
         </button>
@@ -386,15 +386,15 @@ const DateFilterMenu: React.FC<FilterMenuProps> = ({ filterValue, onApplyFilter,
           style={{
             padding: '6px 12px',
             fontSize: 'var(--grid-font-size, 14px)',
-            color: 'var(--grid-text-inverse)',
-            backgroundColor: 'var(--grid-primary)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #3b82f6)',
             border: 'none',
             borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)'}
         >
           Apply
         </button>
@@ -538,8 +538,8 @@ const SetFilterMenu: React.FC<FilterMenuProps> = ({ column, filterValue, onApply
             cursor: 'pointer',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)'}
         >
           Apply{showFilterCount ? ` (${selectedValues.size})` : ''}
         </button>

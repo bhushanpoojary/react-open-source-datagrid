@@ -599,16 +599,16 @@ export const AdvancedFilterBuilder: React.FC<AdvancedFilterBuilderProps> = ({
             padding: '8px 12px',
             fontSize: 'var(--grid-font-size-sm, 12px)',
             fontWeight: 500,
-            color: 'var(--grid-text-inverse)',
-            backgroundColor: 'var(--grid-primary)',
+            color: 'var(--grid-text-inverse, #ffffff)',
+            backgroundColor: 'var(--grid-primary, #3b82f6)',
             border: 'none',
             borderRadius: 'var(--grid-border-radius, 6px)',
             cursor: 'pointer',
             transition: 'all 0.15s',
           }}
           onClick={handleApply}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)'}
         >
           Apply
         </button>

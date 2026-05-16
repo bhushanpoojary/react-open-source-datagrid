@@ -129,11 +129,11 @@ export const GroupByPanel: React.FC<GroupByPanelProps> = ({
                     transitionDuration: '200ms',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover)';
+                    e.currentTarget.style.backgroundColor = 'var(--grid-primary-hover, #2563eb)';
                     e.currentTarget.style.boxShadow = 'var(--grid-shadow-medium, 0 4px 8px rgba(0, 102, 204, 0.2))';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--grid-primary)';
+                    e.currentTarget.style.backgroundColor = 'var(--grid-primary, #3b82f6)';
                     e.currentTarget.style.boxShadow = 'var(--grid-shadow-light, 0 2px 4px rgba(0, 102, 204, 0.15))';
                   }}
                 >
