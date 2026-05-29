@@ -532,5 +532,23 @@ export interface DataGridProps {
   onLayoutChange?: (layout: LayoutPreset['layout']) => void;
   onRowReorder?: (rows: Row[]) => void;
   onGridReady?: (api: GridApi) => void; // Called when grid API is ready
+  /**
+   * Called when sort changes (user clicks a column header to sort).
+   * Useful for server-side sorting where the parent component fetches sorted data.
+   * Fires only in response to user actions, not on the initial render.
+   */
+  onSortChange?: (field: string, direction: 'asc' | 'desc' | null) => void;
+  /**
+   * Called when column filters change.
+   * Useful for server-side filtering where the parent component fetches filtered data.
+   * Fires only in response to user actions, not on the initial render.
+   */
+  onFilterChange?: (filters: FilterConfig) => void;
+  /**
+   * Called when the current page changes (pagination).
+   * Useful for server-side pagination where the parent component fetches the page of data.
+   * Fires only in response to user actions, not on the initial render.
+   */
+  onPageChange?: (page: number) => void;
   texts?: GridTexts; // Custom text overrides for UI labels
 }

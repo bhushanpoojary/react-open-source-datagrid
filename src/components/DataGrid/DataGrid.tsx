@@ -78,6 +78,9 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onLayoutChange,
   onRowReorder,
   onGridReady,
+  onSortChange,
+  onFilterChange,
+  onPageChange,
 }, ref) => {
   // Place hooks here
   const [announcementMessage] = useState('');
@@ -441,6 +444,45 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     announceSelection(state.selection.selectedRows.size);
     
   }, [state.selection.selectedRows]);
+
+  // Notify parent of sort changes (server-side sorting hook). Skip initial mount.
+  const sortChangeMountedRef = useRef(false);
+  useEffect(() => {
+    if (!sortChangeMountedRef.current) {
+      sortChangeMountedRef.current = true;
+      return;
+    }
+    if (onSortChange) {
+      onSortChange(state.sortConfig.field, state.sortConfig.direction);
+    }
+    
+  }, [sortConfigStr]);
+
+  // Notify parent of filter changes (server-side filtering hook). Skip initial mount.
+  const filterChangeMountedRef = useRef(false);
+  useEffect(() => {
+    if (!filterChangeMountedRef.current) {
+      filterChangeMountedRef.current = true;
+      return;
+    }
+    if (onFilterChange) {
+      onFilterChange(state.filterConfig);
+    }
+    
+  }, [filterConfigStr]);
+
+  // Notify parent of page changes (server-side pagination hook). Skip initial mount.
+  const pageChangeMountedRef = useRef(false);
+  useEffect(() => {
+    if (!pageChangeMountedRef.current) {
+      pageChangeMountedRef.current = true;
+      return;
+    }
+    if (onPageChange) {
+      onPageChange(state.currentPage);
+    }
+    
+  }, [state.currentPage]);
 
   // Notify parent of pinned row changes (skip initial mount)
   const pinnedRowsMountedRef = useRef(false);
