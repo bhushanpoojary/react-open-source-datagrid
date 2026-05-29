@@ -499,6 +499,44 @@ export interface GridTexts {
   pagination?: PaginationTexts;
 }
 
+/**
+ * Configuration for pagination behavior.
+ *
+ * Supports both client-side (default) and server-side pagination.
+ *
+ * Server-side mode is enabled by providing `totalRows`. In that mode the grid
+ * assumes the `rows` prop already contains the current page of data and will
+ * NOT slice it. Combine with `currentPage` (controlled) and `onPageChanged` /
+ * `onPageSizeChanged` to drive fetches from the parent component.
+ */
+export interface PaginationConfig {
+  /**
+   * Total number of rows across all pages. When provided, the grid switches to
+   * server-side pagination mode and uses this value (rather than the length of
+   * `rows`) to compute the total page count.
+   */
+  totalRows?: number;
+  /**
+   * Controlled current page index (0-based). When provided, the grid uses this
+   * value instead of its internal page state and parents are expected to update
+   * it in response to `onPageChanged`.
+   */
+  currentPage?: number;
+  /**
+   * Options shown in the "Rows per page" selector. Defaults to `[10, 20, 50]`.
+   */
+  pageSizeOptions?: number[];
+  /** Hide the "Rows per page" selector entirely. */
+  hidePageSizeSelector?: boolean;
+  /** Render the "Rows per page" selector as disabled. */
+  disablePageSizeSelector?: boolean;
+  /**
+   * Called when the user picks a new page size from the selector.
+   * Fires in addition to `onPageChanged` (which also reports page-size changes).
+   */
+  onPageSizeChanged?: (pageSize: number) => void;
+}
+
 // Props for the main DataGrid component
 export interface DataGridProps {
   columns: Column[];
@@ -551,5 +589,7 @@ export interface DataGridProps {
    * Fires only in response to user actions, not on the initial render.
    */
   onPageChanged?: (page: number, pageSize: number) => void;
+  /** Pagination configuration (server-side mode, customization, callbacks). */
+  paginationConfig?: PaginationConfig;
   texts?: GridTexts; // Custom text overrides for UI labels
 }

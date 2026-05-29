@@ -81,6 +81,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onSortChange,
   onFilterChange,
   onPageChanged,
+  paginationConfig,
 }, ref) => {
   // Place hooks here
   const [announcementMessage] = useState('');
@@ -628,12 +629,31 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     };
   }, [flattenedRows, state.pinnedRowsTop, state.pinnedRowsBottom]);
 
-  // Apply pagination to unpinned rows only
+  // Apply pagination to unpinned rows only.
+  // In server-side pagination mode (paginationConfig.totalRows provided) the
+  // parent supplies the already-paged data, so we render rows as-is without
+  // slicing.
+  const isServerSidePagination = paginationConfig?.totalRows !== undefined;
+
+  // Sync controlled currentPage from paginationConfig into internal state.
+  useEffect(() => {
+    if (
+      paginationConfig?.currentPage !== undefined &&
+      paginationConfig.currentPage !== state.currentPage
+    ) {
+      dispatch({ type: 'SET_PAGE', payload: paginationConfig.currentPage });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationConfig?.currentPage]);
+
   const paginatedRows = useMemo(() => {
+    if (isServerSidePagination) {
+      return unpinnedRows;
+    }
     const startIndex = state.currentPage * state.pageSize;
     const endIndex = startIndex + state.pageSize;
     return unpinnedRows.slice(startIndex, endIndex);
-  }, [unpinnedRows, state.currentPage, state.pageSize]);
+  }, [unpinnedRows, state.currentPage, state.pageSize, isServerSidePagination]);
 
   // Compute global footer aggregations
   const globalAggregates = useMemo(() => {
@@ -869,7 +889,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           onRowReorder={onRowReorder}
           currentPage={state.currentPage}
           pageSize={state.pageSize}
-          totalRows={unpinnedRows.length}
+          totalRows={paginationConfig?.totalRows ?? unpinnedRows.length}
           onContextMenu={(event, row, column, rowIndex, columnIndex) =>
             handleContextMenu({
               type: 'cell',
@@ -902,9 +922,13 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         <GridPagination
           currentPage={state.currentPage}
           pageSize={state.pageSize}
-          totalRows={unpinnedRows.length}
+          totalRows={paginationConfig?.totalRows ?? unpinnedRows.length}
           dispatch={dispatch}
           paginationTexts={texts?.pagination}
+          pageSizeOptions={paginationConfig?.pageSizeOptions}
+          hidePageSizeSelector={paginationConfig?.hidePageSizeSelector}
+          disablePageSizeSelector={paginationConfig?.disablePageSizeSelector}
+          onPageSizeChanged={paginationConfig?.onPageSizeChanged}
         />
       )}
 

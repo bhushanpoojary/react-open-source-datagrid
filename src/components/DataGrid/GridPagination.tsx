@@ -1,12 +1,18 @@
 import React from 'react';
 import type { GridAction, PaginationTexts } from './types';
 
+const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 50];
+
 interface GridPaginationProps {
   currentPage: number;
   pageSize: number;
   totalRows: number;
   dispatch: React.Dispatch<GridAction>;
   paginationTexts?: PaginationTexts;
+  pageSizeOptions?: number[];
+  hidePageSizeSelector?: boolean;
+  disablePageSizeSelector?: boolean;
+  onPageSizeChanged?: (pageSize: number) => void;
 }
 
 export const GridPagination: React.FC<GridPaginationProps> = ({
@@ -15,10 +21,25 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
   totalRows,
   dispatch,
   paginationTexts,
+  pageSizeOptions,
+  hidePageSizeSelector = false,
+  disablePageSizeSelector = false,
+  onPageSizeChanged,
 }) => {
-  const totalPages = Math.ceil(totalRows / pageSize);
-  const startRow = currentPage * pageSize + 1;
+  const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+  const startRow = totalRows === 0 ? 0 : currentPage * pageSize + 1;
   const endRow = Math.min((currentPage + 1) * pageSize, totalRows);
+
+  // Ensure the current pageSize is selectable even if not in the provided options.
+  const resolvedOptions = React.useMemo(() => {
+    const base = pageSizeOptions && pageSizeOptions.length > 0
+      ? [...pageSizeOptions]
+      : [...DEFAULT_PAGE_SIZE_OPTIONS];
+    if (!base.includes(pageSize)) {
+      base.push(pageSize);
+    }
+    return base.sort((a, b) => a - b);
+  }, [pageSizeOptions, pageSize]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -28,6 +49,9 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
 
   const handlePageSizeChange = (newPageSize: number) => {
     dispatch({ type: 'SET_PAGE_SIZE', payload: newPageSize });
+    if (onPageSizeChanged) {
+      onPageSizeChanged(newPageSize);
+    }
   };
 
   // Generate page numbers to display
@@ -69,38 +93,44 @@ export const GridPagination: React.FC<GridPaginationProps> = ({
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', backgroundColor: 'var(--grid-footer-bg)', borderTop: 'var(--grid-border-width, 1px) solid var(--grid-border)', flexShrink: 0 }}>
       {/* Left side: Page size selector */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text)', fontWeight: '500' }}>{paginationTexts?.rowsPerPage ?? 'Rows per page:'}</span>
-        <select
-          style={{ 
-            paddingLeft: '8px', 
-            paddingRight: '8px', 
-            paddingTop: '6px', 
-            paddingBottom: '6px', 
-            fontSize: 'var(--grid-font-size, 13px)', 
-            border: 'var(--grid-border-width, 1px) solid var(--grid-border)', 
-            borderRadius: 'var(--grid-border-radius, 3px)',
-            backgroundColor: 'var(--grid-bg)',
-            color: 'var(--grid-text)', 
-            outline: 'none',
-            cursor: 'pointer',
-          }}
-          value={pageSize}
-          onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-          onFocus={(e) => {
-            e.target.style.borderColor = 'var(--grid-primary)';
-            e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
-          }}
-          onBlur={(e) => {
-            e.target.style.borderColor = 'var(--grid-border)';
-            e.target.style.boxShadow = 'none';
-          }}
-        >
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-        </select>
-      </div>
+      {hidePageSizeSelector ? (
+        <div />
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text)', fontWeight: '500' }}>{paginationTexts?.rowsPerPage ?? 'Rows per page:'}</span>
+          <select
+            style={{
+              paddingLeft: '8px',
+              paddingRight: '8px',
+              paddingTop: '6px',
+              paddingBottom: '6px',
+              fontSize: 'var(--grid-font-size, 13px)',
+              border: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+              borderRadius: 'var(--grid-border-radius, 3px)',
+              backgroundColor: 'var(--grid-bg)',
+              color: 'var(--grid-text)',
+              outline: 'none',
+              cursor: disablePageSizeSelector ? 'not-allowed' : 'pointer',
+              opacity: disablePageSizeSelector ? 0.5 : 1,
+            }}
+            value={pageSize}
+            disabled={disablePageSizeSelector}
+            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'var(--grid-primary)';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--grid-border)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
+            {resolvedOptions.map((opt) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Center: Row count info */}
       <div style={{ fontSize: 'var(--grid-font-size, 13px)', color: 'var(--grid-text-secondary)', fontWeight: '500' }}>
