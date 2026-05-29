@@ -546,9 +546,10 @@ export interface DataGridProps {
   onFilterChange?: (filters: FilterConfig) => void;
   /**
    * Called when the current page changes (pagination).
+   * Receives the new page index (0-based) and the current page size.
    * Useful for server-side pagination where the parent component fetches the page of data.
    * Fires only in response to user actions, not on the initial render.
    */
-  onPageChange?: (page: number) => void;
+  onPageChanged?: (page: number, pageSize: number) => void;
   texts?: GridTexts; // Custom text overrides for UI labels
 }

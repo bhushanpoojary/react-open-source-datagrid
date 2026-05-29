@@ -80,7 +80,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   onGridReady,
   onSortChange,
   onFilterChange,
-  onPageChange,
+  onPageChanged,
 }, ref) => {
   // Place hooks here
   const [announcementMessage] = useState('');
@@ -478,11 +478,11 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       pageChangeMountedRef.current = true;
       return;
     }
-    if (onPageChange) {
-      onPageChange(state.currentPage);
+    if (onPageChanged) {
+      onPageChanged(state.currentPage, state.pageSize);
     }
     
-  }, [state.currentPage]);
+  }, [state.currentPage, state.pageSize]);
 
   // Notify parent of pinned row changes (skip initial mount)
   const pinnedRowsMountedRef = useRef(false);
