@@ -1,7 +1,7 @@
 {
   "name": "react-open-source-grid",
   "private": false,
-  "version": "1.7.34",
+  "version": "1.7.35",
   "type": "module",
   "description": "A high-performance React DataGrid component with advanced features like virtual scrolling, infinite scrolling, tree data, market data mode, integrated charts with context menu, and more",
   "main": "./dist/lib/index.cjs",
@@ -48,6 +48,9 @@
     "build:lib": "tsup src/index.ts --format cjs,esm --out-dir dist/lib --clean && tsc -p tsconfig.build.json",
     "build": "npm run build:lib",
     "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "postbuild": "node ./scripts/generate-types-entry.cjs",
     "prepare": "npm run build:lib && node ./scripts/generate-types-entry.cjs && husky install"
   },
@@ -65,6 +68,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^2.1.9",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
@@ -73,7 +77,8 @@
     "lint-staged": "^16.2.7",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.4"
+    "typescript-eslint": "^8.46.4",
+    "vitest": "^2.1.9"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

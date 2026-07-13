@@ -12,6 +12,8 @@ export const DragHandle: React.FC<DragHandleProps> = ({
   return (
     <div
       className="drag-handle"
+      role="img"
+      aria-label="Drag to reorder row"
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -45,6 +47,7 @@ export const DragHandle: React.FC<DragHandleProps> = ({
         viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
         style={{
           pointerEvents: 'none',
         }}

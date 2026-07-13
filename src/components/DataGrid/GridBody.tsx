@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo, useCallback } from 'react';
 import type { Column, Row, GridAction, EditState, FocusState, GroupedRow, AggregateConfig, VirtualScrollConfig, TreeNode, TreeConfig, DragRowConfig, MasterDetailConfig, ExpandedMasterRows } from './types';
 import { GroupRow, GroupFooterRow } from './GroupRow';
 import { isGroupedRow } from './groupingUtils';
@@ -87,26 +87,35 @@ export const GridBody: React.FC<GridBodyProps> = ({
   const focusedCellRef = useRef<HTMLDivElement>(null);
 
   // Create a map for quick column lookup
-  const columnMap = new Map(columns.map(col => [col.field, col]));
+  const columnMap = useMemo(
+    () => new Map(columns.map(col => [col.field, col])),
+    [columns]
+  );
 
-  const pinnedLeftSet = new Set(pinnedLeft);
-  const pinnedRightSet = new Set(pinnedRight);
+  const pinnedLeftSet = useMemo(() => new Set(pinnedLeft), [pinnedLeft]);
+  const pinnedRightSet = useMemo(() => new Set(pinnedRight), [pinnedRight]);
 
-  const leftOffsets: { [field: string]: number } = {};
-  let leftAccumulator = 0;
-  pinnedLeft.forEach((field) => {
-    leftOffsets[field] = leftAccumulator;
-    leftAccumulator += columnWidths[field] || 150;
-  });
+  const leftOffsets = useMemo(() => {
+    const offsets: { [field: string]: number } = {};
+    let leftAccumulator = 0;
+    pinnedLeft.forEach((field) => {
+      offsets[field] = leftAccumulator;
+      leftAccumulator += columnWidths[field] || 150;
+    });
+    return offsets;
+  }, [pinnedLeft, columnWidths]);
 
-  const rightOffsets: { [field: string]: number } = {};
-  let rightAccumulator = 0;
-  [...pinnedRight].reverse().forEach((field) => {
-    rightOffsets[field] = rightAccumulator;
-    rightAccumulator += columnWidths[field] || 150;
-  });
+  const rightOffsets = useMemo(() => {
+    const offsets: { [field: string]: number } = {};
+    let rightAccumulator = 0;
+    [...pinnedRight].reverse().forEach((field) => {
+      offsets[field] = rightAccumulator;
+      rightAccumulator += columnWidths[field] || 150;
+    });
+    return offsets;
+  }, [pinnedRight, columnWidths]);
 
-  const getPinnedCellStyle = (field: string): React.CSSProperties => {
+  const getPinnedCellStyle = useCallback((field: string): React.CSSProperties => {
     const width = `${columnWidths[field] || 150}px`;
     const style: React.CSSProperties = { width };
 
@@ -123,7 +132,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
     }
 
     return style;
-  };
+  }, [columnWidths, pinnedLeftSet, pinnedRightSet, leftOffsets, rightOffsets]);
 
   // Focus edit input when editing starts
   useEffect(() => {

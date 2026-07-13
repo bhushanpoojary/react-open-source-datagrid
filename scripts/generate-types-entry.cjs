@@ -23,8 +23,11 @@ if (jsBundle) {
   console.warn('No hashed index-*.js bundle found in', outDir);
 }
 
-// Copy any .d.ts files from src into dist/assets so they are packaged with the tarball.
-const srcDir = path.resolve(__dirname, '..', 'src');
+// Copy the generated .d.ts files from dist/lib into dist/assets so they are packaged
+// with the tarball. Declarations are emitted by `tsc -p tsconfig.build.json` into
+// dist/lib during `build:lib`, so we copy from there rather than from src/ (which
+// must stay free of generated declaration files).
+const libDir = path.resolve(__dirname, '..', 'dist', 'lib');
 const targetComponentsDir = path.join(outDir, 'components');
 
 function copyDtsFiles(srcRoot, destRoot) {
@@ -43,4 +46,4 @@ function copyDtsFiles(srcRoot, destRoot) {
   }
 }
 
-copyDtsFiles(path.join(srcDir, 'components'), targetComponentsDir);
+copyDtsFiles(path.join(libDir, 'components'), targetComponentsDir);

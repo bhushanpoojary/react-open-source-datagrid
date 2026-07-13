@@ -1,5 +1,5 @@
-import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import type { DataGridProps, Row, Column, GroupedRow, LayoutPreset, TreeNode, ExpandedMasterRows } from './types';
+import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef } from 'react';
+import type { DataGridProps, Row, Column, GroupedRow, TreeNode, ExpandedMasterRows } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
@@ -19,12 +19,14 @@ import { useDensityMode } from './useDensityMode';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
-import { LayoutPersistenceManager, debounce } from './layoutPersistence';
+import { sortRows, separatePinnedRows } from './gridDataUtils';
+import { useGridPersistence } from './useGridPersistence';
+import { useGridApiBinding } from './useGridApiBinding';
+import { useServerSideCallbacks } from './useServerSideCallbacks';
+import { useGridAnnouncements } from './useGridAnnouncements';
 import { getTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
-import { useScreenReaderAnnouncements } from './useScreenReaderAnnouncements';
 import { ScreenReaderAnnouncer } from './ScreenReaderAnnouncer';
-import { GridApiImpl } from './gridApi';
 import type { GridApi } from './gridApi.types';
 import { buildPivot } from './pivotEngine';
 import type { PivotResult, PivotColumn } from './pivotEngine';
@@ -106,13 +108,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     }
 
     const pivotResult: PivotResult = buildPivot(activeRows, pivotConfig);
-    console.log('Pivot Result:', {
-      columnsCount: pivotResult.columns.length,
-      columns: pivotResult.columns.map(c => c.field),
-      rowsCount: pivotResult.rows.length,
-      sampleRow: pivotResult.rows[0]
-    });
-    
+
     // Convert PivotColumns to regular Columns format for grid
     const pivotColumns: Column[] = pivotResult.columns.map((col: PivotColumn) => ({
       field: col.field,
@@ -158,10 +154,6 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   }, [rows]);
 
   // Container ref for Grid API
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Grid API instance ref
-  const gridApiRef = useRef<GridApiImpl | null>(null);
 
   // Density mode hook
   const { densityMode, setDensityMode, densityStyles } = useDensityMode({
@@ -194,17 +186,17 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     return generateThemeCSS(currentTheme);
   }, [_theme]);
 
-  // Screen reader announcements hook
-  const { 
-    announceSorting, 
-    announceSelection, 
-    announcePagination 
-  } = useScreenReaderAnnouncements();
+  // Persistence: manager, auto-load, auto-save, and layout-change notification.
+  const { persistenceManager, getCurrentLayout } = useGridPersistence({
+    state,
+    dispatch,
+    persistenceConfig,
+    onLayoutChange,
+  });
 
-  // Persistence manager instance
-  const [persistenceManager, setPersistenceManager] = useState<LayoutPersistenceManager | null>(null);
-  const autoSaveRef = useRef<(() => void) | null>(null);
-  const previousLayoutRef = useRef<string | null>(null);
+  // Serialized configs used by column sort/filter sync effects below.
+  const sortConfigStr = useMemo(() => JSON.stringify(state.sortConfig), [state.sortConfig]);
+  const filterConfigStr = useMemo(() => JSON.stringify(state.filterConfig), [state.filterConfig]);
 
   // Tooltip hook
   const { tooltipState, tooltipHandlers } = useTooltip({ config: tooltipConfig });
@@ -234,185 +226,17 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     pinnedRowsBottom: state.pinnedRowsBottom,
   });
 
-  // Initialize persistence manager
-  useEffect(() => {
-    if (persistenceConfig?.enabled) {
-      const manager = new LayoutPersistenceManager(persistenceConfig);
-      const t = setTimeout(() => setPersistenceManager(manager), 0); // defer to avoid sync setState in effect
-
-      // Auto-load last saved preset on mount
-      if (persistenceConfig.autoLoad) {
-        manager.loadAutoSave().then((preset) => {
-          if (preset) {
-            dispatch({ type: 'LOAD_LAYOUT_PRESET', payload: preset.layout });
-          }
-        }).catch((error) => {
-          console.error('Failed to load auto-saved layout:', error);
-        });
-      }
-      return () => clearTimeout(t);
-    }
-  }, [persistenceConfig]);
-
-  // Memoize serialized versions of complex objects
-  const sortConfigStr = useMemo(() => JSON.stringify(state.sortConfig), [state.sortConfig]);
-  const filterConfigStr = useMemo(() => JSON.stringify(state.filterConfig), [state.filterConfig]);
-
-  // Get current layout state - using a stable reference
-  const getCurrentLayout = useCallback((): LayoutPreset['layout'] => {
-    return {
-      columnOrder: state.columnOrder,
-      columnWidths: state.columnWidths,
-      pinnedColumnsLeft: state.pinnedColumnsLeft,
-      pinnedColumnsRight: state.pinnedColumnsRight,
-      hiddenColumns: state.hiddenColumns,
-      sortConfig: state.sortConfig,
-      filterConfig: state.filterConfig,
-      pageSize: state.pageSize,
-      groupBy: state.groupBy,
-    };
-  }, [
-    state.columnOrder,
-    state.columnWidths,
-    state.pinnedColumnsLeft,
-    state.pinnedColumnsRight,
-    state.hiddenColumns,
-    state.sortConfig,
-    state.filterConfig,
-    state.pageSize,
-    state.groupBy,
-  ]);
-
-  // Initialize Grid API once (or recreate if destroyed by StrictMode)
-  useEffect(() => {
-    if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
-      gridApiRef.current = new GridApiImpl(
-        state,
-        dispatch,
-        effectiveColumns as Column[],
-        pivotedData,
-        containerRef,
-        persistenceManager,
-        setInternalRows
-      );
-    }
-    
-  }, []);
-  
-  // Update API state after render to avoid accessing refs during render
-  useEffect(() => {
-    if (gridApiRef.current && !gridApiRef.current.isDestroyed()) {
-      gridApiRef.current.updateState(state);
-      gridApiRef.current.updateData(effectiveColumns as Column[], pivotedData);
-      gridApiRef.current.updateCallbacks(setInternalRows);
-    }
-  }, [state, effectiveColumns, pivotedData, setInternalRows]);
-
-  // Expose Grid API via ref
-  useImperativeHandle(ref, () => {
-    if (!gridApiRef.current || gridApiRef.current.isDestroyed()) {
-      gridApiRef.current = new GridApiImpl(
-        state,
-        dispatch,
-        effectiveColumns as Column[],
-        pivotedData,
-        containerRef,
-        persistenceManager,
-        setInternalRows
-      );
-    }
-    return gridApiRef.current;
-  }, [state, effectiveColumns, pivotedData, persistenceManager]);
-
-  // Call onGridReady when API is initialized (only once)
-  const onGridReadyCalledRef = useRef(false);
-  const onGridReadyCallbackRef = useRef(onGridReady);
-  
-  // Update callback ref when it changes
-  useEffect(() => {
-    onGridReadyCallbackRef.current = onGridReady;
-  }, [onGridReady]);
-  
-  useEffect(() => {
-    if (gridApiRef.current && onGridReadyCallbackRef.current && !onGridReadyCalledRef.current) {
-      onGridReadyCalledRef.current = true;
-      onGridReadyCallbackRef.current(gridApiRef.current);
-    }
-    
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (gridApiRef.current) {
-        gridApiRef.current.destroy();
-      }
-    };
-  }, []);
-
-  // Auto-save functionality
-  useEffect(() => {
-    if (!persistenceConfig?.enabled || !persistenceConfig.autoSave || !persistenceManager) {
-      return;
-    }
-
-    // Create debounced auto-save function
-    const delay = persistenceConfig.autoSaveDelay || 1000;
-    const debouncedAutoSave = debounce(() => {
-      const layout = getCurrentLayout();
-      persistenceManager.autoSave(layout).catch((error) => {
-        console.error('Failed to auto-save layout:', error);
-      });
-    }, delay);
-
-    autoSaveRef.current = debouncedAutoSave;
-
-    // Trigger auto-save on layout changes
-    debouncedAutoSave();
-
-    return () => {
-      autoSaveRef.current = null;
-    };
-    
-  }, [
-    persistenceConfig,
+  // Grid API binding: create/sync GridApiImpl, expose via ref, onGridReady, cleanup.
+  const { containerRef } = useGridApiBinding({
+    ref,
+    state,
+    dispatch,
+    effectiveColumns: effectiveColumns as Column[],
+    pivotedData,
     persistenceManager,
-    state.columnOrder,
-    state.columnWidths,
-    state.pinnedColumnsLeft,
-    state.pinnedColumnsRight,
-    state.hiddenColumns,
-    sortConfigStr,
-    filterConfigStr,
-    state.pageSize,
-    state.groupBy,
-  ]);
-
-  // Notify parent of layout changes
-  useEffect(() => {
-    if (onLayoutChange) {
-      const layout = getCurrentLayout();
-      const layoutStr = JSON.stringify(layout);
-      
-      // Only trigger if layout actually changed
-      if (previousLayoutRef.current !== layoutStr) {
-        previousLayoutRef.current = layoutStr;
-        onLayoutChange(layout);
-      }
-    }
-    
-  }, [
-    onLayoutChange,
-    state.columnOrder,
-    state.columnWidths,
-    state.pinnedColumnsLeft,
-    state.pinnedColumnsRight,
-    state.hiddenColumns,
-    sortConfigStr,
-    filterConfigStr,
-    state.pageSize,
-    state.groupBy,
-  ]);
+    setInternalRows,
+    onGridReady,
+  });
 
   // Filter out hidden columns and arrange pinned columns
   const hiddenSet = new Set(state.hiddenColumns);
@@ -428,116 +252,28 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     ...middleColumns,
     ...pinnedRightFields,
   ];
-  
-  console.log('Display column order:', displayColumnOrder, 'from state.columnOrder:', state.columnOrder);
 
   // Update columns when props change or pivot mode changes
   useEffect(() => {
-    console.log('Dispatching RESET_COLUMNS with', effectiveColumns.length, 'columns:', effectiveColumns.map(c => c.field));
     dispatch({ type: 'RESET_COLUMNS', payload: effectiveColumns });
   }, [effectiveColumns]);
 
-  // Notify parent of selection changes and announce to screen readers
-  useEffect(() => {
-    if (onSelectionChange) {
-      onSelectionChange(Array.from(state.selection.selectedRows));
-    }
-    announceSelection(state.selection.selectedRows.size);
-    
-  }, [state.selection.selectedRows]);
-
-  // Notify parent of sort changes (server-side sorting hook). Skip initial mount.
-  const sortChangeMountedRef = useRef(false);
-  useEffect(() => {
-    if (!sortChangeMountedRef.current) {
-      sortChangeMountedRef.current = true;
-      return;
-    }
-    if (onSortChange) {
-      onSortChange(state.sortConfig.field, state.sortConfig.direction);
-    }
-    
-  }, [sortConfigStr]);
-
-  // Notify parent of filter changes (server-side filtering hook). Skip initial mount.
-  const filterChangeMountedRef = useRef(false);
-  useEffect(() => {
-    if (!filterChangeMountedRef.current) {
-      filterChangeMountedRef.current = true;
-      return;
-    }
-    if (onFilterChange) {
-      onFilterChange(state.filterConfig);
-    }
-    
-  }, [filterConfigStr]);
-
-  // Notify parent of page changes (server-side pagination hook). Skip initial mount.
-  const pageChangeMountedRef = useRef(false);
-  useEffect(() => {
-    if (!pageChangeMountedRef.current) {
-      pageChangeMountedRef.current = true;
-      return;
-    }
-    if (onPageChanged) {
-      onPageChanged(state.currentPage, state.pageSize);
-    }
-    
-  }, [state.currentPage, state.pageSize]);
-
-  // Notify parent of pinned row changes (skip initial mount)
-  const pinnedRowsMountedRef = useRef(false);
-  useEffect(() => {
-    if (pinnedRowsMountedRef.current && rowPinConfig?.onPinChange) {
-      rowPinConfig.onPinChange(state.pinnedRowsTop, state.pinnedRowsBottom);
-    }
-    pinnedRowsMountedRef.current = true;
-    
-  }, [state.pinnedRowsTop, state.pinnedRowsBottom]);
-
-  // Announce sorting changes to screen readers
-  useEffect(() => {
-    if (state.sortConfig.field) {
-      const column = effectiveColumns.find(c => c.field === state.sortConfig.field);
-      if (column) {
-        announceSorting(column.headerName, state.sortConfig.direction);
-      }
-    }
-    
-  }, [state.sortConfig.field, state.sortConfig.direction, effectiveColumns]);
+  // Server-side data callbacks: notify parent of sort/filter/page/pin changes.
+  useServerSideCallbacks({
+    state,
+    sortConfigStr,
+    filterConfigStr,
+    onSortChange,
+    onFilterChange,
+    onPageChanged,
+    rowPinConfig,
+  });
 
   // Apply sorting
-  const sortedRows = useMemo(() => {
-    if (!state.sortConfig.field || !state.sortConfig.direction) {
-      return pivotedData;
-    }
-
-    const sorted = [...pivotedData].sort((a, b) => {
-      const aValue = a[state.sortConfig.field];
-      const bValue = b[state.sortConfig.field];
-
-      // Handle null/undefined values
-      if (aValue == null && bValue == null) return 0;
-      if (aValue == null) return 1;
-      if (bValue == null) return -1;
-
-      // Compare values
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return aValue.localeCompare(bValue);
-      }
-
-      if (aValue < bValue) return -1;
-      if (aValue > bValue) return 1;
-      return 0;
-    });
-
-    // Reverse if descending
-    if (state.sortConfig.direction === 'desc') {
-      sorted.reverse();
-    }
-
-    return sorted;
-  }, [pivotedData, state.sortConfig]);
+  const sortedRows = useMemo(
+    () => sortRows(pivotedData, state.sortConfig),
+    [pivotedData, state.sortConfig]
+  );
 
   // Apply filtering using the new filter utilities
   const filteredRows = useMemo(() => {
@@ -578,56 +314,19 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     return flattenGroupedRows(groupedRows as (Row | GroupedRow)[]);
   }, [groupedRows, state.groupBy]);
 
-  // Announce pagination changes to screen readers
-  useEffect(() => {
-    const totalPages = Math.ceil(flattenedRows.length / state.pageSize);
-    const rowCount = Math.min(state.pageSize, flattenedRows.length - state.currentPage * state.pageSize);
-    if (rowCount > 0) {
-      announcePagination(state.currentPage, totalPages, rowCount);
-    }
-    
-  }, [state.currentPage, state.pageSize]);
+  // Screen reader announcements + parent selection notification.
+  useGridAnnouncements({
+    state,
+    effectiveColumns,
+    flattenedRows,
+    onSelectionChange,
+  });
 
   // Separate pinned and unpinned rows
-  const { pinnedRowsTopData, pinnedRowsBottomData, unpinnedRows } = useMemo(() => {
-    const pinnedTopSet = new Set(state.pinnedRowsTop);
-    const pinnedBottomSet = new Set(state.pinnedRowsBottom);
-    
-    const pinnedTop: (Row | GroupedRow)[] = [];
-    const pinnedBottom: (Row | GroupedRow)[] = [];
-    const unpinned: (Row | GroupedRow)[] = [];
-    
-    // Separate rows based on pinning status
-    flattenedRows.forEach(row => {
-      const rowId = 'id' in row ? row.id : ('groupKey' in row ? row.groupKey : null);
-      if (rowId !== null) {
-        if (pinnedTopSet.has(rowId)) {
-          pinnedTop.push(row);
-        } else if (pinnedBottomSet.has(rowId)) {
-          pinnedBottom.push(row);
-        } else {
-          unpinned.push(row);
-        }
-      } else {
-        unpinned.push(row);
-      }
-    });
-    
-    // Maintain order of pinned rows as stored in state
-    const orderedPinnedTop = state.pinnedRowsTop
-      .map(id => pinnedTop.find(row => ('id' in row ? row.id : ('groupKey' in row ? row.groupKey : null)) === id))
-      .filter((row): row is Row | GroupedRow => row !== undefined);
-    
-    const orderedPinnedBottom = state.pinnedRowsBottom
-      .map(id => pinnedBottom.find(row => ('id' in row ? row.id : ('groupKey' in row ? row.groupKey : null)) === id))
-      .filter((row): row is Row | GroupedRow => row !== undefined);
-    
-    return {
-      pinnedRowsTopData: orderedPinnedTop,
-      pinnedRowsBottomData: orderedPinnedBottom,
-      unpinnedRows: unpinned,
-    };
-  }, [flattenedRows, state.pinnedRowsTop, state.pinnedRowsBottom]);
+  const { pinnedRowsTopData, pinnedRowsBottomData, unpinnedRows } = useMemo(
+    () => separatePinnedRows(flattenedRows, state.pinnedRowsTop, state.pinnedRowsBottom),
+    [flattenedRows, state.pinnedRowsTop, state.pinnedRowsBottom]
+  );
 
   // Apply pagination to unpinned rows only.
   // In server-side pagination mode (paginationConfig.totalRows provided) the

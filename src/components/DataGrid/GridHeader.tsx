@@ -178,6 +178,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
         {masterDetailConfig?.enabled && (
           <div
             role="columnheader"
+            aria-label="Row details toggle"
             style={{
               width: '48px',
               flexShrink: 0,
@@ -203,6 +204,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
         {dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false && dragRowConfig.dragHandlePosition === 'left' && (
           <div
             role="columnheader"
+            aria-label="Row reorder handle"
             style={{
               width: '32px',
               flexShrink: 0,
