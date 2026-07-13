@@ -1,33 +1,33 @@
-/* Reset and base styles */
-* {
-  margin: 0;
-  padding: 0;
+/*
+ * Library base styles.
+ *
+ * IMPORTANT: These styles are scoped to the grid root (`.data-grid`) so that
+ * importing the library never overrides a consuming website's global
+ * `html`/`body`/element styles (font-family, font-size, line-height, color,
+ * background-color, etc.). Only styles required for the grid itself live here,
+ * and they are applied at the data grid level rather than on `html` or `body`.
+ */
+
+/* Box-sizing reset scoped to the grid so its internal layout math stays
+   predictable without affecting the host page. */
+.data-grid,
+.data-grid *,
+.data-grid *::before,
+.data-grid *::after {
   box-sizing: border-box;
 }
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333333;
-  background-color: #fafafa;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-input, button, textarea, select {
+/* Form controls inside the grid inherit the grid's typography. */
+.data-grid input,
+.data-grid button,
+.data-grid textarea,
+.data-grid select {
   font-family: inherit;
   font-size: inherit;
 }
 
-button {
+/* Button reset scoped to the grid. */
+.data-grid button {
   cursor: pointer;
   border: none;
   background: none;
@@ -76,22 +76,22 @@ button {
   --grid-text-inverse: #ffffff;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
+/* Scrollbar styling (scoped to the grid so it does not restyle the host page) */
+.data-grid ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+.data-grid ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb {
+.data-grid ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.data-grid ::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
 }
 
