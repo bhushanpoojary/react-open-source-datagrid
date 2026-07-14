@@ -1,4 +1,4 @@
-import type { Row, GroupedRow, SortConfig } from './types';
+import type { Row, GroupedRow, SortConfig, Column } from './types';
 
 /**
  * Pure data-pipeline helpers used by the DataGrid.
@@ -6,6 +6,26 @@ import type { Row, GroupedRow, SortConfig } from './types';
  * These functions are intentionally free of React so they can be unit-tested in
  * isolation and reused by the DataGrid's memoized pipeline stages.
  */
+
+/**
+ * Resolve the raw value of a cell for a column.
+ *
+ * Uses the column's `valueGetter` when provided (computed columns); otherwise
+ * reads `row[column.field]`.
+ */
+export const resolveCellValue = (column: Column, row: Row): unknown =>
+  column.valueGetter ? column.valueGetter(row) : row[column.field];
+
+/**
+ * Resolve the display value of a cell for a column.
+ *
+ * Applies `valueFormatter` (when provided) to the resolved raw value. Returns
+ * the raw value unchanged when no formatter is set.
+ */
+export const resolveDisplayValue = (column: Column, row: Row): unknown => {
+  const value = resolveCellValue(column, row);
+  return column.valueFormatter ? column.valueFormatter(value, row) : value;
+};
 
 /**
  * Sort rows by the given sort config.

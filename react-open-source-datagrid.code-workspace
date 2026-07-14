@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../react-open-source-datagrid-view"
+		},
+		{
+			"path": "../react-open-source-datagrid-mcp"
 		}
 	],
 	"settings": {}

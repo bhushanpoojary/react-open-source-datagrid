@@ -14,6 +14,10 @@ export interface Column {
   filterType?: FilterType; // Specify filter type for the column
   renderCell?: (row: Row) => React.ReactNode; // Custom cell renderer
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  valueGetter?: (row: Row) => any; // Derive the cell value from the row (computed columns). Takes precedence over `field` for display.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  valueFormatter?: (value: any, row: Row) => string; // Format the resolved value into a display string. Applied after `valueGetter`.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   editor?: (props: any) => React.ReactElement; // Custom cell editor component
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   editorParams?: any; // Additional parameters for custom editor

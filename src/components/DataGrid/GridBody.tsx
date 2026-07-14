@@ -8,6 +8,7 @@ import { VirtualScroller } from './VirtualScroller';
 import { DraggableRow } from './DraggableRow';
 import { MasterDetailCell } from './MasterDetailCell';
 import { DetailRow } from './DetailRow';
+import { resolveDisplayValue } from './gridDataUtils';
 
 interface GridBodyProps {
   columns: Column[];
@@ -628,7 +629,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                       animation: 'pulse 1.5s ease-in-out infinite'
                     }}></span>
                   ) : (
-                    column.renderCell ? column.renderCell(row) : (cellValue ?? '')
+                    column.renderCell ? column.renderCell(row) : (resolveDisplayValue(column, row) as React.ReactNode ?? '')
                   )}
                 </div>
               )}
@@ -830,7 +831,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                           }}
                         />
                       ) : (
-                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{cellValue ?? ''}</span>
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{column.renderCell ? column.renderCell(row) : (resolveDisplayValue(column, row) as React.ReactNode ?? '')}</span>
                       )}
                     </div>
                   );
