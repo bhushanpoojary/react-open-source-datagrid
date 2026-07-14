@@ -19,7 +19,7 @@ import { useDensityMode } from './useDensityMode';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
-import { sortRows, separatePinnedRows } from './gridDataUtils';
+import { sortRows, separatePinnedRows, clampColumnWidth } from './gridDataUtils';
 import { useGridPersistence } from './useGridPersistence';
 import { useGridApiBinding } from './useGridApiBinding';
 import { useServerSideCallbacks } from './useServerSideCallbacks';
@@ -50,7 +50,7 @@ import type { PivotResult, PivotColumn } from './pivotEngine';
  * - Grid API: Programmatic control via ref (AG Grid-inspired API)
  */
 export const DataGrid = forwardRef<GridApi, DataGridProps>(({
-  columns,
+  columns: columnDefs,
   rows,
   pageSize = 10,
   showColumnPinning = true,
@@ -73,6 +73,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   showFilterCount = true,
   className,
   texts,
+  defaultColDef,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -87,6 +88,17 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 }, ref) => {
   // Place hooks here
   const [announcementMessage] = useState('');
+
+  // Merge grid-level `defaultColDef` into every column. Per-column properties
+  // take precedence over the defaults (shallow merge).
+  const columns = useMemo(
+    () =>
+      defaultColDef
+        ? columnDefs.map((col) => ({ ...defaultColDef, ...col }))
+        : columnDefs,
+    [columnDefs, defaultColDef]
+  );
+
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
     gridReducer,
@@ -257,6 +269,77 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   useEffect(() => {
     dispatch({ type: 'RESET_COLUMNS', payload: effectiveColumns });
   }, [effectiveColumns]);
+
+  // Flex column sizing: distribute the space left after fixed-width columns across
+  // any columns that declare a `flex` factor, proportionally and clamped to min/max.
+  // Recomputes on container resize and whenever the relevant layout inputs change.
+  const columnByField = useMemo(
+    () => new Map((effectiveColumns as Column[]).map((c) => [c.field, c])),
+    [effectiveColumns]
+  );
+  const flexSignature = (effectiveColumns as Column[])
+    .map((c) => `${c.field}:${c.flex ?? ''}:${c.minWidth ?? ''}:${c.maxWidth ?? ''}`)
+    .join('|');
+  const displayOrderKey = displayColumnOrder.join(',');
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const flexFields = displayColumnOrder.filter((f) => {
+      const c = columnByField.get(f);
+      return !!c && typeof c.flex === 'number' && c.flex > 0;
+    });
+    if (flexFields.length === 0) return;
+
+    const applyFlex = () => {
+      const available = el.clientWidth;
+      if (available <= 0) return;
+
+      // Fixed non-column UI widths that also consume horizontal space.
+      let uiExtra = 0;
+      if (masterDetailConfig?.enabled) uiExtra += 48; // master/detail toggle cell
+      if (dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false) uiExtra += 32; // drag handle
+
+      const flexSet = new Set(flexFields);
+      const fixedWidth = displayColumnOrder
+        .filter((f) => !flexSet.has(f))
+        .reduce((sum, f) => {
+          const c = columnByField.get(f);
+          return sum + (state.columnWidths[f] || c?.width || 150);
+        }, 0);
+
+      const totalFlex = flexFields.reduce(
+        (s, f) => s + (columnByField.get(f)?.flex ?? 0),
+        0
+      );
+      const remaining = available - uiExtra - fixedWidth - 2; // small buffer to avoid overflow
+      if (remaining <= 0 || totalFlex <= 0) return;
+
+      flexFields.forEach((f) => {
+        const col = columnByField.get(f);
+        if (!col) return;
+        const share = Math.floor(remaining * ((col.flex ?? 0) / totalFlex));
+        const next = clampColumnWidth(col, share);
+        if (state.columnWidths[f] !== next) {
+          dispatch({ type: 'RESIZE_COLUMN', payload: { field: f, width: next } });
+        }
+      });
+    };
+
+    applyFlex();
+
+    const observer = new ResizeObserver(applyFlex);
+    observer.observe(el);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    displayOrderKey,
+    flexSignature,
+    state.columnWidths,
+    masterDetailConfig?.enabled,
+    dragRowConfig?.enabled,
+    dragRowConfig?.showDragHandle,
+  ]);
 
   // Server-side data callbacks: notify parent of sort/filter/page/pin changes.
   useServerSideCallbacks({

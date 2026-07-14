@@ -8,7 +8,7 @@ import { VirtualScroller } from './VirtualScroller';
 import { DraggableRow } from './DraggableRow';
 import { MasterDetailCell } from './MasterDetailCell';
 import { DetailRow } from './DetailRow';
-import { resolveDisplayValue } from './gridDataUtils';
+import { resolveDisplayValue, resolveCellValue, resolveCellStyle, resolveCellClass } from './gridDataUtils';
 
 interface GridBodyProps {
   columns: Column[];
@@ -544,6 +544,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
             focusState?.rowIndex === rowIndex &&
             focusState?.columnIndex === columnIndex;
           const cellStyle = getPinnedCellStyle(field);
+          const cellRawValue = isLoadingRow ? '' : resolveCellValue(column, row);
+          const userCellStyle = isLoadingRow ? undefined : resolveCellStyle(column, row, cellRawValue);
+          const userCellClass = isLoadingRow ? undefined : resolveCellClass(column, row, cellRawValue);
 
           return (
             <div
@@ -552,6 +555,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
               role="gridcell"
               aria-colindex={columnIndex + 1}
               aria-readonly={column.editable === false}
+              className={userCellClass}
               style={{
                 ...cellStyle,
                 padding: 'var(--grid-cell-padding, 10px 12px)',
@@ -562,6 +566,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 outlineOffset: '-2px',
                 color: 'var(--grid-text)',
                 ...(isEditing ? { position: 'relative' as const, zIndex: 1000 } : {}),
+                ...(userCellStyle ?? {}),
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
               onContextMenu={(e) => onContextMenu?.(e, row, column, rowIndex, columnIndex)}
@@ -785,6 +790,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
                   const isCellFocused =
                     focusState?.rowIndex === index &&
                     focusState?.columnIndex === displayColumnOrder.indexOf(field);
+                  const userCellStyle = resolveCellStyle(column, row, cellValue);
+                  const userCellClass = resolveCellClass(column, row, cellValue);
 
                   return (
                     <div
@@ -793,6 +800,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                       role="gridcell"
                       aria-colindex={displayColumnOrder.indexOf(field) + 1}
                       aria-readonly={column.editable === false}
+                      className={userCellClass}
                       style={{
                         width: `${colInfo.width}px`,
                         paddingLeft: '12px',
@@ -804,6 +812,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         flexShrink: 0,
                         outline: isCellFocused ? '2px solid var(--grid-primary)' : 'none',
                         color: 'var(--grid-text)',
+                        ...(userCellStyle ?? {}),
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
                       onContextMenu={(e) => onContextMenu?.(e, row, column, index, columnIndex)}

@@ -1,4 +1,5 @@
 import type { Row, GroupedRow, SortConfig, Column } from './types';
+import type { CSSProperties } from 'react';
 
 /**
  * Pure data-pipeline helpers used by the DataGrid.
@@ -26,6 +27,81 @@ export const resolveDisplayValue = (column: Column, row: Row): unknown => {
   const value = resolveCellValue(column, row);
   return column.valueFormatter ? column.valueFormatter(value, row) : value;
 };
+
+/** Default minimum column width (px) used when a column has no explicit `minWidth`. */
+export const DEFAULT_MIN_COLUMN_WIDTH = 50;
+
+/**
+ * Clamp a width to a column's `minWidth`/`maxWidth` bounds.
+ *
+ * Falls back to {@link DEFAULT_MIN_COLUMN_WIDTH} when no `minWidth` is set. When
+ * `maxWidth` is present it takes precedence over the minimum (so a `maxWidth`
+ * smaller than the floor still wins).
+ */
+export const clampColumnWidth = (column: Column | undefined, width: number): number => {
+  const min = column?.minWidth ?? DEFAULT_MIN_COLUMN_WIDTH;
+  let next = Math.max(min, width);
+  if (column?.maxWidth != null) {
+    next = Math.min(column.maxWidth, next);
+  }
+  return next;
+};
+
+/**
+ * Resolve a column's initial width, applying its `minWidth`/`maxWidth` bounds.
+ * Uses `column.width` when set, otherwise a 150px default.
+ */
+export const resolveInitialColumnWidth = (column: Column): number =>
+  clampColumnWidth(column, column.width ?? 150);
+
+/**
+ * Resolve the inline style to apply to a cell from a column's `cellStyle`
+ * (static object or per-row function). Returns `undefined` when not set.
+ */
+export const resolveCellStyle = (
+  column: Column,
+  row: Row,
+  value: unknown
+): CSSProperties | undefined => {
+  const cellStyle = column.cellStyle;
+  if (!cellStyle) return undefined;
+  return typeof cellStyle === 'function' ? cellStyle(row, value) : cellStyle;
+};
+
+/**
+ * Resolve the CSS class string to apply to a cell, combining `cellClass`
+ * (static/array/function) with any matching `cellClassRules`. Returns
+ * `undefined` when no classes apply.
+ */
+export const resolveCellClass = (
+  column: Column,
+  row: Row,
+  value: unknown
+): string | undefined => {
+  const classes: string[] = [];
+
+  const cellClass = column.cellClass;
+  if (cellClass) {
+    const resolved = typeof cellClass === 'function' ? cellClass(row, value) : cellClass;
+    if (Array.isArray(resolved)) {
+      classes.push(...resolved.filter(Boolean));
+    } else if (resolved) {
+      classes.push(resolved);
+    }
+  }
+
+  const rules = column.cellClassRules;
+  if (rules) {
+    for (const className of Object.keys(rules)) {
+      if (rules[className](row, value)) {
+        classes.push(className);
+      }
+    }
+  }
+
+  return classes.length > 0 ? classes.join(' ') : undefined;
+};
+
 
 /**
  * Sort rows by the given sort config.

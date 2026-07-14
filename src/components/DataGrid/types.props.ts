@@ -83,6 +83,11 @@ export interface DataGridProps {
   columns: Column[];
   rows: Row[];
   pageSize?: number;
+  /**
+   * Default column definition merged into every column. Properties set on an
+   * individual column take precedence over the defaults (shallow merge).
+   */
+  defaultColDef?: Partial<Column>;
   showColumnPinning?: boolean;
   footerConfig?: FooterConfig;
   virtualScrollConfig?: VirtualScrollConfig;

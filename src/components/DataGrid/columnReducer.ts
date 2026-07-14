@@ -1,4 +1,5 @@
 import type { GridState, GridAction } from './types';
+import { clampColumnWidth, resolveInitialColumnWidth } from './gridDataUtils';
 
 /**
  * Handles column layout actions: reordering, resizing, pinning, visibility, and
@@ -20,11 +21,12 @@ export const columnReducer = (state: GridState, action: GridAction): GridState =
 
     case 'RESIZE_COLUMN': {
       const { field, width } = action.payload;
+      const column = state.columns.find((col) => col.field === field);
       return {
         ...state,
         columnWidths: {
           ...state.columnWidths,
-          [field]: width,
+          [field]: clampColumnWidth(column, width),
         },
       };
     }
@@ -35,7 +37,7 @@ export const columnReducer = (state: GridState, action: GridAction): GridState =
       const columnOrder: string[] = [];
 
       columns.forEach((col) => {
-        columnWidths[col.field] = col.width || 150;
+        columnWidths[col.field] = resolveInitialColumnWidth(col);
         columnOrder.push(col.field);
       });
 
@@ -135,7 +137,7 @@ export const columnReducer = (state: GridState, action: GridAction): GridState =
       const columnWidths: { [field: string]: number } = {};
 
       state.columns.forEach((col) => {
-        columnWidths[col.field] = col.width || 150;
+        columnWidths[col.field] = resolveInitialColumnWidth(col);
       });
 
       return {
