@@ -232,6 +232,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
               aria-colindex={colIndex + 1}
               aria-sort={sortDirection === 'asc' ? 'ascending' : sortDirection === 'desc' ? 'descending' : 'none'}
               aria-label={`${column.headerName} column${sortDirection ? `, sorted ${sortDirection === 'asc' ? 'ascending' : 'descending'}` : ''}`}
+              title={column.headerTooltip}
               style={{
                 ...headerStyle,
                 position: 'relative',

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { TreeNode, Column, GridAction, TreeConfig } from './types';
+import { resolveEditable } from './gridDataUtils';
 
 interface TreeRowProps {
   node: TreeNode;
@@ -107,7 +108,7 @@ export const TreeRow: React.FC<TreeRowProps> = ({
 
   const handleCellDoubleClick = (field: string) => {
     const column = columnMap.get(field);
-    if (column?.editable) {
+    if (column && resolveEditable(column, node)) {
       dispatch({
         type: 'START_EDIT',
         payload: { rowId: node.id, field, value: node[field] },

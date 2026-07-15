@@ -19,7 +19,7 @@ import { useDensityMode } from './useDensityMode';
 import { groupRows, flattenGroupedRows } from './groupingUtils';
 import { computeAggregations, computeGroupAggregations } from './aggregationUtils';
 import { applyFilters, hasActiveFilters } from './filterUtils';
-import { sortRows, separatePinnedRows, clampColumnWidth } from './gridDataUtils';
+import { sortRows, separatePinnedRows, clampColumnWidth, resolveCellValue } from './gridDataUtils';
 import { useGridPersistence } from './useGridPersistence';
 import { useGridApiBinding } from './useGridApiBinding';
 import { useServerSideCallbacks } from './useServerSideCallbacks';
@@ -74,6 +74,15 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   className,
   texts,
   defaultColDef,
+  singleClickEdit = false,
+  quickFilterText,
+  rowStyle,
+  rowClass,
+  rowClassRules,
+  getRowHeight,
+  loading = false,
+  loadingOverlay,
+  noRowsOverlay,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -360,11 +369,22 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
 
   // Apply filtering using the new filter utilities
   const filteredRows = useMemo(() => {
-    if (!hasActiveFilters(state.filterConfig)) {
-      return sortedRows;
+    let result = hasActiveFilters(state.filterConfig)
+      ? applyFilters(sortedRows, state.filterConfig)
+      : sortedRows;
+
+    // Global quick filter: keep rows where any column's value contains the text.
+    const query = quickFilterText?.trim().toLowerCase();
+    if (query) {
+      result = result.filter((row) =>
+        columns.some((col) => {
+          const value = resolveCellValue(col, row);
+          return value != null && String(value).toLowerCase().includes(query);
+        })
+      );
     }
-    return applyFilters(sortedRows, state.filterConfig);
-  }, [sortedRows, state.filterConfig]);
+    return result;
+  }, [sortedRows, state.filterConfig, quickFilterText, columns]);
 
   // Apply tree structure if tree mode is enabled
   const treeRows = useMemo(() => {
@@ -599,7 +619,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       )}
 
       {/* Horizontal scroll wrapper — keeps header, body & footer in a single scroll context */}
-      <div style={{ overflowX: 'auto', overflowY: 'auto', width: '100%', flex: 1, minHeight: 0 }}>
+      <div style={{ overflowX: 'auto', overflowY: 'auto', width: '100%', flex: 1, minHeight: 0, position: 'relative' }}>
         {/* Sticky Header */}
         <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: 'fit-content', minWidth: '100%' }}>
           <GridHeader
@@ -657,6 +677,11 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           dispatch={dispatch}
           onRowClick={onRowClick}
           onCellEdit={handleCellEdit}
+          singleClickEdit={singleClickEdit}
+          rowStyle={rowStyle}
+          rowClass={rowClass}
+          rowClassRules={rowClassRules}
+          getRowHeight={getRowHeight}
           pinnedLeft={pinnedLeftFields}
           pinnedRight={pinnedRightFields}
           showGroupFooters={footerConfig?.showGroupFooters}
@@ -697,6 +722,31 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
             pinnedRight={pinnedRightFields}
           />
         )}
+
+        {/* Loading / No-rows overlay (below the sticky header, which keeps its z-index) */}
+        {(loading || (paginatedRows.length === 0 && !virtualScrollConfig?.enabled)) && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 10,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'var(--grid-bg)',
+              opacity: loading ? 0.85 : 1,
+              pointerEvents: loading ? 'auto' : 'none',
+              color: 'var(--grid-text-secondary, #6b7280)',
+              fontSize: 'var(--grid-font-size, 14px)',
+            }}
+          >
+            {loading
+              ? (loadingOverlay ?? 'Loading…')
+              : (noRowsOverlay ?? 'No rows to show')}
+          </div>
+        )}
       </div>
 
       {/* Pagination - Hide when virtual scrolling is enabled */}
@@ -725,11 +775,11 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       )}
 
       {/* Tooltip */}
-      {tooltipConfig?.enabled && (
+      {(tooltipConfig?.enabled || columns.some((c) => c.tooltipField || c.tooltipValueGetter)) && (
         <Tooltip 
           state={tooltipState}
-          maxWidth={tooltipConfig.maxWidth}
-          offset={tooltipConfig.offset}
+          maxWidth={tooltipConfig?.maxWidth}
+          offset={tooltipConfig?.offset}
         />
       )}
     </div>

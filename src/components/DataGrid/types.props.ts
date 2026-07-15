@@ -1,4 +1,5 @@
 // Top-level props and text-override types for the DataGrid component.
+import type React from 'react';
 import type { ThemeName } from './themes';
 import type { DensityMode } from './densityModes';
 import type { GridApi } from './gridApi.types';
@@ -108,6 +109,16 @@ export interface DataGridProps {
   hideFilters?: boolean; // Hide the column filter row independently of the toolbar
   showFilterCount?: boolean; // Show/hide the selected values count on the Apply button in set/multi-select filters (default: true)
   className?: string; // Additional CSS class name(s) applied to the root container element
+  singleClickEdit?: boolean; // Start editing on a single click (grid-wide). Columns can override via `Column.singleClickEdit`.
+  quickFilterText?: string; // Global quick-filter text. Rows are kept when any column's value contains this text (case-insensitive).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rowStyle?: React.CSSProperties | ((row: Row, rowIndex: number) => React.CSSProperties | undefined); // Inline style applied to each data row.
+  rowClass?: string | string[] | ((row: Row, rowIndex: number) => string | string[] | undefined); // CSS class(es) applied to each data row.
+  rowClassRules?: { [className: string]: (row: Row, rowIndex: number) => boolean }; // Conditional row CSS classes keyed by class name.
+  getRowHeight?: (row: Row, rowIndex: number) => number | undefined | null; // Per-row height in px (non-virtualized rows).
+  loading?: boolean; // Show the loading overlay over the grid body.
+  loadingOverlay?: React.ReactNode; // Custom loading overlay content (default: "Loading…").
+  noRowsOverlay?: React.ReactNode; // Custom overlay content shown when there are no rows (default: "No rows to show").
   onDensityChange?: (mode: DensityMode) => void; // Callback when density changes
   onRowClick?: (row: Row) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

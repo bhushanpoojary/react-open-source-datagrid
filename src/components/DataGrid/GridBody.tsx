@@ -8,7 +8,8 @@ import { VirtualScroller } from './VirtualScroller';
 import { DraggableRow } from './DraggableRow';
 import { MasterDetailCell } from './MasterDetailCell';
 import { DetailRow } from './DetailRow';
-import { resolveDisplayValue, resolveCellValue, resolveCellStyle, resolveCellClass } from './gridDataUtils';
+import { resolveDisplayValue, resolveCellValue, resolveCellStyle, resolveCellClass, resolveEditable, resolveRowStyle, resolveRowClass } from './gridDataUtils';
+import type { RowStyle, RowClass, RowClassRules } from './gridDataUtils';
 
 interface GridBodyProps {
   columns: Column[];
@@ -45,6 +46,11 @@ interface GridBodyProps {
   onCellMouseLeave?: () => void;
   onRowMouseEnter?: (event: React.MouseEvent, row: Row, rowIndex: number) => void;
   onRowMouseLeave?: () => void;
+  singleClickEdit?: boolean;
+  rowStyle?: RowStyle;
+  rowClass?: RowClass;
+  rowClassRules?: RowClassRules;
+  getRowHeight?: (row: Row, rowIndex: number) => number | undefined | null;
 }
 
 export const GridBody: React.FC<GridBodyProps> = ({
@@ -82,6 +88,11 @@ export const GridBody: React.FC<GridBodyProps> = ({
   onCellMouseLeave,
   onRowMouseEnter,
   onRowMouseLeave,
+  singleClickEdit = false,
+  rowStyle,
+  rowClass,
+  rowClassRules,
+  getRowHeight,
 }) => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -192,7 +203,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   // Handle cell double-click to start editing
   const handleCellDoubleClick = (row: Row, field: string, value: any) => {
     const column = columnMap.get(field);
-    if (!column || column.editable === false) return;
+    if (!column || resolveEditable(column, row) === false) return;
 
     dispatch({
       type: 'START_EDIT',
@@ -447,6 +458,10 @@ export const GridBody: React.FC<GridBodyProps> = ({
     const showDragHandle = isDragEnabled && dragRowConfig.showDragHandle !== false;
     const handlePosition = dragRowConfig?.dragHandlePosition || 'left';
 
+    const userRowStyle = resolveRowStyle(row as Row, rowIndex, rowStyle);
+    const userRowClass = resolveRowClass(row as Row, rowIndex, rowClass, rowClassRules);
+    const userRowHeight = getRowHeight?.(row as Row, rowIndex) ?? undefined;
+
     const rowContent = (
       <div
         key={row.id}
@@ -454,6 +469,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
         aria-rowindex={rowIndex + 2}
         aria-selected={isSelected}
         data-row-index={rowIndex}
+        className={userRowClass}
         style={{
           ...style,
           display: 'flex',
@@ -462,7 +478,9 @@ export const GridBody: React.FC<GridBodyProps> = ({
           backgroundColor: isLoadingRow ? 'var(--grid-bg-alt)' : isSelected ? 'var(--grid-selected)' : isFocused ? 'var(--grid-active)' : 'var(--grid-bg)',
           cursor: isLoadingRow ? 'wait' : isDragEnabled ? 'grab' : 'pointer',
           transition: 'background-color 0.15s ease',
+          ...(userRowHeight != null ? { height: `${userRowHeight}px` } : {}),
           ...(isRowEditing ? { position: 'relative' as const, zIndex: 100 } : {}),
+          ...(userRowStyle ?? {}),
         }}
         onMouseEnter={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-hover)')}
         onMouseLeave={(e) => !isSelected && !isLoadingRow && (e.currentTarget.style.backgroundColor = 'var(--grid-bg)')}
@@ -554,7 +572,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
               ref={isCellFocused ? focusedCellRef : null}
               role="gridcell"
               aria-colindex={columnIndex + 1}
-              aria-readonly={column.editable === false}
+              aria-readonly={resolveEditable(column, row) === false}
               className={userCellClass}
               style={{
                 ...cellStyle,
@@ -569,6 +587,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                 ...(userCellStyle ?? {}),
               }}
               onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+              onClick={() => { if (column.singleClickEdit ?? singleClickEdit) handleCellDoubleClick(row, field, cellValue); }}
               onContextMenu={(e) => onContextMenu?.(e, row, column, rowIndex, columnIndex)}
               onMouseEnter={(e) => onCellMouseEnter?.(e, row, column, cellValue)}
               onMouseLeave={() => onCellMouseLeave?.()}
@@ -799,7 +818,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                       ref={isCellFocused ? focusedCellRef : null}
                       role="gridcell"
                       aria-colindex={displayColumnOrder.indexOf(field) + 1}
-                      aria-readonly={column.editable === false}
+                      aria-readonly={resolveEditable(column, row) === false}
                       className={userCellClass}
                       style={{
                         width: `${colInfo.width}px`,
@@ -815,6 +834,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
                         ...(userCellStyle ?? {}),
                       }}
                       onDoubleClick={() => handleCellDoubleClick(row, field, cellValue)}
+                      onClick={() => { if (column.singleClickEdit ?? singleClickEdit) handleCellDoubleClick(row, field, cellValue); }}
                       onContextMenu={(e) => onContextMenu?.(e, row, column, index, columnIndex)}
                       onMouseEnter={(e) => onCellMouseEnter?.(e, row, column, cellValue)}
                       onMouseLeave={() => onCellMouseLeave?.()}

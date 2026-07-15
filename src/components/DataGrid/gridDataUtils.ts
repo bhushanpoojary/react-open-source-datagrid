@@ -55,6 +55,59 @@ export const resolveInitialColumnWidth = (column: Column): number =>
   clampColumnWidth(column, column.width ?? 150);
 
 /**
+ * Resolve a column's `editable` value for a specific row. Returns the boolean
+ * when static, the callback result when `editable` is a function, or `undefined`
+ * when unset (callers apply their own default).
+ */
+export const resolveEditable = (column: Column, row: Row): boolean | undefined =>
+  typeof column.editable === 'function' ? column.editable(row) : column.editable;
+
+// ---- Row-level styling (grid-level rowClass / rowStyle / rowClassRules) ----
+
+export type RowClass =
+  | string
+  | string[]
+  | ((row: Row, rowIndex: number) => string | string[] | undefined);
+export type RowStyle =
+  | CSSProperties
+  | ((row: Row, rowIndex: number) => CSSProperties | undefined);
+export type RowClassRules = { [className: string]: (row: Row, rowIndex: number) => boolean };
+
+/** Resolve the inline style for a row from `rowStyle` (static or per-row). */
+export const resolveRowStyle = (
+  row: Row,
+  rowIndex: number,
+  rowStyle?: RowStyle
+): CSSProperties | undefined => {
+  if (!rowStyle) return undefined;
+  return typeof rowStyle === 'function' ? rowStyle(row, rowIndex) : rowStyle;
+};
+
+/** Resolve the CSS class string for a row from `rowClass` + `rowClassRules`. */
+export const resolveRowClass = (
+  row: Row,
+  rowIndex: number,
+  rowClass?: RowClass,
+  rowClassRules?: RowClassRules
+): string | undefined => {
+  const classes: string[] = [];
+
+  if (rowClass) {
+    const resolved = typeof rowClass === 'function' ? rowClass(row, rowIndex) : rowClass;
+    if (Array.isArray(resolved)) classes.push(...resolved.filter(Boolean));
+    else if (resolved) classes.push(resolved);
+  }
+
+  if (rowClassRules) {
+    for (const className of Object.keys(rowClassRules)) {
+      if (rowClassRules[className](row, rowIndex)) classes.push(className);
+    }
+  }
+
+  return classes.length > 0 ? classes.join(' ') : undefined;
+};
+
+/**
  * Resolve the inline style to apply to a cell from a column's `cellStyle`
  * (static object or per-row function). Returns `undefined` when not set.
  */

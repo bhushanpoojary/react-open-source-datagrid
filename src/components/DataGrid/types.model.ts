@@ -10,7 +10,8 @@ export interface Column {
   minWidth?: number; // Minimum width in px. Clamps the initial width and drag-resizing (default floor: 50px).
   maxWidth?: number; // Maximum width in px. Clamps the initial width and drag-resizing.
   flex?: number; // Flex-grow factor. Flex columns share the space left after fixed-width columns, in proportion to their flex value (respecting min/max). When set, `width` acts only as a fallback.
-  editable?: boolean;
+  editable?: boolean | ((row: Row) => boolean); // Whether cells are editable. Boolean, or a per-row callback.
+  singleClickEdit?: boolean; // Start editing on a single click (per-column). Overrides the grid-level default.
   sortable?: boolean;
   sort?: 'asc' | 'desc' | null; // Initial sort direction applied on first render.
   sortIndex?: number; // When multiple columns declare `sort`, the one with the lowest sortIndex is applied (grid uses single-column sort).
@@ -25,6 +26,10 @@ export interface Column {
   cellClass?: string | string[] | ((row: Row, value: any) => string | string[] | undefined); // CSS class(es) for cells, static or per-row.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cellClassRules?: { [className: string]: (row: Row, value: any) => boolean }; // Conditional CSS classes keyed by class name.
+  tooltipField?: string; // Field whose value is shown as the cell's tooltip.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tooltipValueGetter?: (row: Row, value: any) => string | null; // Dynamic cell tooltip text (takes precedence over tooltipField).
+  headerTooltip?: string; // Native tooltip shown when hovering the column header.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   valueGetter?: (row: Row) => any; // Derive the cell value from the row (computed columns). Takes precedence over `field` for display.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

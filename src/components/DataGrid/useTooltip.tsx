@@ -114,11 +114,22 @@ export const useTooltip = ({ config = {} }: UseTooltipProps = {}) => {
     column: Column,
     value: any
   ) => {
-    if (!enabled || !showCellTooltips || !getCellTooltip) {
+    if (!enabled) {
       return;
     }
 
-    const content = getCellTooltip(row, column, value);
+    // Per-column tooltips take precedence, and work even without a grid-level
+    // getCellTooltip / showCellTooltips.
+    let content: TooltipContent | string | null = null;
+    if (typeof column.tooltipValueGetter === 'function') {
+      content = column.tooltipValueGetter(row, value);
+    } else if (column.tooltipField) {
+      const fieldValue = row[column.tooltipField];
+      content = fieldValue == null ? null : String(fieldValue);
+    } else if (showCellTooltips && getCellTooltip) {
+      content = getCellTooltip(row, column, value);
+    }
+
     if (content) {
       showTooltip(event, content);
     }
