@@ -40,6 +40,36 @@ export interface Column {
   editorParams?: any; // Additional parameters for custom editor
 }
 
+/**
+ * Column group — creates a multi-level header by grouping one or more leaf
+ * columns under a shared header. Supports one level of nesting (a group cannot
+ * contain another group in the v1 implementation).
+ */
+export interface ColumnGroup {
+  /** Unique identifier. Auto-generated from `headerName` when omitted. */
+  groupId?: string;
+  /** Text shown in the spanning group header cell. */
+  headerName: string;
+  /** Leaf columns that belong to this group. */
+  children: Column[];
+  /** CSS class applied to the group header cell. */
+  headerClass?: string;
+}
+
+/** A column definition entry — either a leaf Column or a ColumnGroup. */
+export type ColumnOrGroup = Column | ColumnGroup;
+
+/** Returns true when `col` is a ColumnGroup (has `children`). */
+export const isColumnGroup = (col: ColumnOrGroup): col is ColumnGroup =>
+  Array.isArray((col as ColumnGroup).children);
+
+/**
+ * Flatten a mixed `(Column | ColumnGroup)[]` into a plain `Column[]` by
+ * expanding groups into their children. Preserves insertion order.
+ */
+export const flattenColumns = (columns: ColumnOrGroup[]): Column[] =>
+  columns.flatMap((c) => (isColumnGroup(c) ? c.children : [c]));
+
 export interface Row {
   id: string | number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

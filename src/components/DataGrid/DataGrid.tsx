@@ -1,6 +1,7 @@
 import React, { useReducer, useMemo, useEffect, useCallback, useRef, useState, forwardRef } from 'react';
-import type { DataGridProps, Row, Column, GroupedRow, TreeNode, ExpandedMasterRows } from './types';
+import type { DataGridProps, Row, Column, GroupedRow, TreeNode, ExpandedMasterRows, ColumnOrGroup } from './types';
 import { gridReducer, createInitialState } from './gridReducer';
+import { flattenColumns, isColumnGroup } from './types.model';
 import { GridHeader } from './GridHeader';
 import { GridBody } from './GridBody';
 import { GridPagination } from './GridPagination';
@@ -50,7 +51,7 @@ import type { PivotResult, PivotColumn } from './pivotEngine';
  * - Grid API: Programmatic control via ref (AG Grid-inspired API)
  */
 export const DataGrid = forwardRef<GridApi, DataGridProps>(({
-  columns: columnDefs,
+  columns: columnDefsRaw,
   rows,
   pageSize = 10,
   showColumnPinning = true,
@@ -83,6 +84,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   loading = false,
   loadingOverlay,
   noRowsOverlay,
+  undoRedoCellEditing = false,
   onDensityChange,
   onRowClick,
   onCellEdit,
@@ -98,15 +100,27 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   // Place hooks here
   const [announcementMessage] = useState('');
 
-  // Merge grid-level `defaultColDef` into every column. Per-column properties
-  // take precedence over the defaults (shallow merge).
-  const columns = useMemo(
+  // Separate column groups from leaf columns. Groups are used only by GridHeader
+  // to render the spanning top row; everything else uses the flat leaf columns.
+  const columnGroups = useMemo<ColumnOrGroup[]>(() => columnDefsRaw, [columnDefsRaw]);
+
+  // Flatten groups → leaf columns (what all existing state/body logic consumes).
+  const flatColumnDefs = useMemo<Column[]>(
+    () => flattenColumns(columnDefsRaw),
+    [columnDefsRaw]
+  );
+
+  // Merge grid-level `defaultColDef` into every leaf column.
+  const columnDefs = useMemo(
     () =>
       defaultColDef
-        ? columnDefs.map((col) => ({ ...defaultColDef, ...col }))
-        : columnDefs,
-    [columnDefs, defaultColDef]
+        ? flatColumnDefs.map((col) => ({ ...defaultColDef, ...col }))
+        : flatColumnDefs,
+    [flatColumnDefs, defaultColDef]
   );
+
+  // Alias so existing references to `columns` throughout this file still work.
+  const columns = columnDefs;
 
   // Initialize grid state with reducer
   const [state, dispatch] = useReducer(
@@ -520,6 +534,14 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   // Handle cell edit with callback
   const handleCellEdit = useCallback(
     (rowIndex: number, field: string, value: unknown) => {
+      if (undoRedoCellEditing) {
+        // Record the old value for undo before updating.
+        const actualRow = paginatedRows[rowIndex];
+        if (actualRow && 'id' in actualRow) {
+          const oldValue = actualRow[field];
+          dispatch({ type: 'RECORD_EDIT', payload: { rowId: actualRow.id, field, oldValue, newValue: value } });
+        }
+      }
       if (onCellEdit) {
         // Find the actual row index in the original data
         const actualRow = paginatedRows[rowIndex];
@@ -529,7 +551,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         }
       }
     },
-    [onCellEdit, paginatedRows, rows]
+    [onCellEdit, paginatedRows, rows, undoRedoCellEditing]
   );
 
   return (
@@ -554,6 +576,11 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         flexDirection: 'column',
       }}
       className={`data-grid density-${densityMode}${className ? ` ${className}` : ''}`}
+      onKeyDown={undoRedoCellEditing ? (e: React.KeyboardEvent) => {
+        const ctrl = e.ctrlKey || e.metaKey;
+        if (ctrl && e.key === 'z') { e.preventDefault(); dispatch({ type: 'UNDO_EDIT' }); }
+        if (ctrl && (e.key === 'y' || (e.shiftKey && e.key === 'z'))) { e.preventDefault(); dispatch({ type: 'REDO_EDIT' }); }
+      } : undefined}
     >
       {/* Screen Reader Announcements - Live Region */}
       <ScreenReaderAnnouncer message={announcementMessage} priority="polite" />
@@ -624,6 +651,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: 'fit-content', minWidth: '100%' }}>
           <GridHeader
             columns={effectiveColumns}
+            columnGroups={columnGroups.some(isColumnGroup) ? columnGroups : undefined}
             columnOrder={state.columnOrder}
             displayColumnOrder={displayColumnOrder}
             columnWidths={state.columnWidths}

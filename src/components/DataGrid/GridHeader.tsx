@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { Column, GridAction, SortConfig, MasterDetailConfig, DragRowConfig } from './types';
+import type { Column, ColumnOrGroup, GridAction, SortConfig, MasterDetailConfig, DragRowConfig } from './types';
+import { isColumnGroup } from './types.model';
 
 interface GridHeaderProps {
   columns: Column[];
+  /** When provided, renders a spanning group row above the column-header row. */
+  columnGroups?: ColumnOrGroup[];
   columnOrder: string[];
   displayColumnOrder: string[];
   columnWidths: { [field: string]: number };
@@ -18,6 +21,7 @@ interface GridHeaderProps {
 
 export const GridHeader: React.FC<GridHeaderProps> = ({
   columns,
+  columnGroups,
   columnOrder,
   displayColumnOrder,
   columnWidths,
@@ -172,6 +176,71 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
   return (
     <div ref={headerRef} style={{ borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)', width: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
+      {/* Group Header Row — rendered only when column groups are present */}
+      {columnGroups && columnGroups.some(isColumnGroup) && (
+        <div
+          role="row"
+          aria-label="Column groups"
+          style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)', borderBottom: 'var(--grid-border-width, 1px) solid var(--grid-border)' }}
+        >
+          {/* Spacer for master/detail toggle */}
+          {masterDetailConfig?.enabled && <div style={{ width: '48px', flexShrink: 0, borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)' }} />}
+          {/* Spacer for left drag handle */}
+          {dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false && dragRowConfig.dragHandlePosition !== 'right' && (
+            <div style={{ width: '32px', flexShrink: 0, borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)' }} />
+          )}
+          {columnGroups.map((item, gi) => {
+            if (isColumnGroup(item)) {
+              const groupFields = item.children.map((c) => c.field).filter((f) => displayColumnOrder.includes(f));
+              if (groupFields.length === 0) return null;
+              const totalWidth = groupFields.reduce((sum, f) => sum + (columnWidths[f] || 150), 0);
+              return (
+                <div
+                  key={item.groupId ?? `group-${gi}`}
+                  role="columnheader"
+                  aria-label={item.headerName}
+                  className={item.headerClass}
+                  style={{
+                    width: `${totalWidth}px`,
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0 12px',
+                    fontSize: 'var(--grid-font-size, 13px)',
+                    fontWeight: 700,
+                    color: 'var(--grid-header-text)',
+                    borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+                    backgroundColor: 'var(--grid-header-bg)',
+                    letterSpacing: '0.01em',
+                    textAlign: 'center',
+                  }}
+                >
+                  {item.headerName}
+                </div>
+              );
+            }
+            // Ungrouped leaf column — render an empty cell of its width.
+            const f = (item as Column).field;
+            if (!displayColumnOrder.includes(f)) return null;
+            return (
+              <div
+                key={f}
+                style={{
+                  width: `${columnWidths[f] || 150}px`,
+                  flexShrink: 0,
+                  borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
+                  backgroundColor: 'var(--grid-header-bg)',
+                }}
+              />
+            );
+          })}
+          {/* Spacer for right drag handle */}
+          {dragRowConfig?.enabled && dragRowConfig.showDragHandle !== false && dragRowConfig.dragHandlePosition === 'right' && (
+            <div style={{ width: '32px', flexShrink: 0, borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)' }} />
+          )}
+        </div>
+      )}
       {/* Column Headers Row */}
       <div role="row" style={{ display: 'flex', minWidth: '100%', backgroundColor: 'var(--grid-header-bg)' }}>
         {/* Master/Detail Header Cell */}

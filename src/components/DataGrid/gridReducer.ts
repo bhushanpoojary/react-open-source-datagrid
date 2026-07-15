@@ -75,6 +75,8 @@ export const createInitialState = (columns: Column[], pageSize: number = 10): Gr
     detailRowState: {
       expandedMasterRows: {},
     },
+    editHistory: [],
+    editFuture: [],
   };
 };
 

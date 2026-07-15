@@ -38,6 +38,8 @@ export interface GridState {
   pinnedRowsTop: (string | number)[]; // Array of row IDs pinned to top
   pinnedRowsBottom: (string | number)[]; // Array of row IDs pinned to bottom
   detailRowState: DetailRowState; // Track expanded master rows
+  editHistory: Array<{ rowId: string | number; field: string; oldValue: unknown; newValue: unknown }>; // Undo/redo stack
+  editFuture:  Array<{ rowId: string | number; field: string; oldValue: unknown; newValue: unknown }>; // Redo stack
 }
 
 // Action types for reducer
@@ -106,4 +108,7 @@ export type GridAction =
   | { type: 'HIDE_OVERLAY' }
   | { type: 'SET_GROUP_BY'; payload: string[] }
   | { type: 'RECALCULATE_LAYOUT' }
-  | { type: 'RESET_COLUMN_STATE' };
+  | { type: 'RESET_COLUMN_STATE' }
+  | { type: 'RECORD_EDIT'; payload: { rowId: string | number; field: string; oldValue: unknown; newValue: unknown } }
+  | { type: 'UNDO_EDIT' }
+  | { type: 'REDO_EDIT' };

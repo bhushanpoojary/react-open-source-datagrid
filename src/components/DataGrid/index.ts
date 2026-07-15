@@ -57,7 +57,9 @@ export {
 } from './densityModes';
 export type { DensityMode, DensityConfig } from './densityModes';
 export type { 
-  Column, 
+  Column,
+  ColumnGroup,
+  ColumnOrGroup,
   Row, 
   DataGridProps, 
   GroupedRow, 
@@ -106,6 +108,7 @@ export {
   generatePresetId,
   createPreset
 } from './layoutPersistence';
+export { isColumnGroup, flattenColumns } from './types.model';
 export {
   buildTreeFromFlat,
   flattenTree,

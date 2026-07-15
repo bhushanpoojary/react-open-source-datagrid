@@ -6,6 +6,7 @@ import type { GridApi } from './gridApi.types';
 import type { PivotConfig } from './pivotEngine';
 import type {
   Column,
+  ColumnOrGroup,
   Row,
   FooterConfig,
   VirtualScrollConfig,
@@ -81,7 +82,8 @@ export interface PaginationConfig {
 
 // Props for the main DataGrid component
 export interface DataGridProps {
-  columns: Column[];
+  /** Column definitions — plain columns or column groups (multi-level headers). */
+  columns: ColumnOrGroup[];
   rows: Row[];
   pageSize?: number;
   /**
@@ -119,6 +121,7 @@ export interface DataGridProps {
   loading?: boolean; // Show the loading overlay over the grid body.
   loadingOverlay?: React.ReactNode; // Custom loading overlay content (default: "Loading…").
   noRowsOverlay?: React.ReactNode; // Custom overlay content shown when there are no rows (default: "No rows to show").
+  undoRedoCellEditing?: boolean; // Enable undo (Ctrl+Z) / redo (Ctrl+Y) for cell edits (default: false).
   onDensityChange?: (mode: DensityMode) => void; // Callback when density changes
   onRowClick?: (row: Row) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
