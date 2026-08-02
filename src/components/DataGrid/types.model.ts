@@ -17,6 +17,7 @@ export interface Column {
   sortIndex?: number; // When multiple columns declare `sort`, the one with the lowest sortIndex is applied (grid uses single-column sort).
   filterable?: boolean;
   pinnable?: boolean;
+  resizable?: boolean; // Whether the column's drag-resize handle is shown (default: true). Set to `false` to prevent users from dragging this column's width. Overrides the grid-level `disableColumnResize`.
   lockPosition?: boolean; // Prevent this column from being dragged to a new position (default: false).
   hide?: boolean; // Hide this column initially. Users can still re-show it via the Column Chooser / API.
   filterType?: FilterType; // Specify filter type for the column

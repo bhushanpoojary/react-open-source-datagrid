@@ -17,6 +17,7 @@ interface GridHeaderProps {
   masterDetailConfig?: MasterDetailConfig;
   dragRowConfig?: DragRowConfig;
   disableColumnReorder?: boolean;
+  disableColumnResize?: boolean;
   onContextMenu?: (event: React.MouseEvent, column: Column, columnIndex: number) => void;
 }
 
@@ -34,6 +35,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   masterDetailConfig,
   dragRowConfig,
   disableColumnReorder = false,
+  disableColumnResize = false,
   onContextMenu,
 }) => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -156,6 +158,8 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
   // Column resizing handlers
   const handleResizeStart = (e: React.MouseEvent, field: string) => {
+    const column = columnMap.get(field);
+    if (disableColumnResize || column?.resizable === false) return;
     e.preventDefault();
     e.stopPropagation();
     setResizingColumn(field);
@@ -455,20 +459,22 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
               </div>
 
               {/* Column Resizer */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '4px',
-                  height: '100%',
-                  cursor: 'col-resize',
-                  zIndex: 10,
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0066cc'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                onMouseDown={(e) => handleResizeStart(e, field)}
-              />
+              {!disableColumnResize && column.resizable !== false && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '4px',
+                    height: '100%',
+                    cursor: 'col-resize',
+                    zIndex: 10,
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0066cc'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  onMouseDown={(e) => handleResizeStart(e, field)}
+                />
+              )}
             </div>
           );
         })}
