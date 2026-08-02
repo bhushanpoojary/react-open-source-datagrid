@@ -47,6 +47,7 @@ interface GridBodyProps {
   onRowMouseEnter?: (event: React.MouseEvent, row: Row, rowIndex: number) => void;
   onRowMouseLeave?: () => void;
   singleClickEdit?: boolean;
+  disableRowSelection?: boolean;
   rowStyle?: RowStyle;
   rowClass?: RowClass;
   rowClassRules?: RowClassRules;
@@ -89,6 +90,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   onRowMouseEnter,
   onRowMouseLeave,
   singleClickEdit = false,
+  disableRowSelection = false,
   rowStyle,
   rowClass,
   rowClassRules,
@@ -166,27 +168,29 @@ export const GridBody: React.FC<GridBodyProps> = ({
     // If clicking on an input, don't trigger row selection
     if ((e.target as HTMLElement).tagName === 'INPUT') return;
 
-    const isMulti = e.ctrlKey || e.metaKey;
-    const isShift = e.shiftKey;
+    if (!disableRowSelection) {
+      const isMulti = e.ctrlKey || e.metaKey;
+      const isShift = e.shiftKey;
 
-    if (isShift && selectedRows.size > 0) {
-      // Range selection (simplified - select all rows between last selected and current)
-      const dataRows = rows.filter((r): r is Row => !isGroupedRow(r));
-      const lastSelectedIndex = dataRows.findIndex(r => selectedRows.has(r.id));
-      const currentDataIndex = dataRows.findIndex(r => r.id === row.id);
-      const startIndex = Math.min(lastSelectedIndex, currentDataIndex);
-      const endIndex = Math.max(lastSelectedIndex, currentDataIndex);
-      const rowIds = dataRows.slice(startIndex, endIndex + 1).map(r => r.id);
-      
-      dispatch({
-        type: 'SELECT_RANGE',
-        payload: { startIndex, endIndex, rowIds },
-      });
-    } else {
-      dispatch({
-        type: 'TOGGLE_ROW_SELECTION',
-        payload: { rowId: row.id, isMulti },
-      });
+      if (isShift && selectedRows.size > 0) {
+        // Range selection (simplified - select all rows between last selected and current)
+        const dataRows = rows.filter((r): r is Row => !isGroupedRow(r));
+        const lastSelectedIndex = dataRows.findIndex(r => selectedRows.has(r.id));
+        const currentDataIndex = dataRows.findIndex(r => r.id === row.id);
+        const startIndex = Math.min(lastSelectedIndex, currentDataIndex);
+        const endIndex = Math.max(lastSelectedIndex, currentDataIndex);
+        const rowIds = dataRows.slice(startIndex, endIndex + 1).map(r => r.id);
+
+        dispatch({
+          type: 'SELECT_RANGE',
+          payload: { startIndex, endIndex, rowIds },
+        });
+      } else {
+        dispatch({
+          type: 'TOGGLE_ROW_SELECTION',
+          payload: { rowId: row.id, isMulti },
+        });
+      }
     }
 
     // Set focus to this cell
@@ -445,6 +449,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
           pinnedRight={pinnedRight}
           treeConfig={treeConfig}
           editInputRef={editInputRef}
+          disableRowSelection={disableRowSelection}
         />
       );
     }

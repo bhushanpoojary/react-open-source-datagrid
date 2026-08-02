@@ -77,6 +77,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   defaultColDef,
   singleClickEdit = false,
   disableColumnReorder = false,
+  disableRowSelection = false,
   quickFilterText,
   rowStyle,
   rowClass,
@@ -708,6 +709,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
           onRowClick={onRowClick}
           onCellEdit={handleCellEdit}
           singleClickEdit={singleClickEdit}
+          disableRowSelection={disableRowSelection}
           rowStyle={rowStyle}
           rowClass={rowClass}
           rowClassRules={rowClassRules}

@@ -19,6 +19,7 @@ interface TreeRowProps {
   pinnedRight: string[];
   treeConfig: TreeConfig;
   editInputRef?: React.RefObject<HTMLInputElement | null>;
+  disableRowSelection?: boolean;
 }
 
 export const TreeRow: React.FC<TreeRowProps> = ({
@@ -37,6 +38,7 @@ export const TreeRow: React.FC<TreeRowProps> = ({
   pinnedRight,
   treeConfig,
   editInputRef,
+  disableRowSelection = false,
 }) => {
   const isSelected = selectedRows.has(node.id);
   const isEditing = editState.rowId === node.id;
@@ -92,13 +94,15 @@ export const TreeRow: React.FC<TreeRowProps> = ({
       return; // Don't trigger row click when clicking expand/collapse
     }
 
-    if (e.ctrlKey || e.metaKey) {
-      dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: true } });
-    } else if (e.shiftKey) {
-      // For shift-click, we'd need access to the full row list
-      dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: false } });
-    } else {
-      dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: false } });
+    if (!disableRowSelection) {
+      if (e.ctrlKey || e.metaKey) {
+        dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: true } });
+      } else if (e.shiftKey) {
+        // For shift-click, we'd need access to the full row list
+        dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: false } });
+      } else {
+        dispatch({ type: 'TOGGLE_ROW_SELECTION', payload: { rowId: node.id, isMulti: false } });
+      }
     }
 
     if (onRowClick) {
