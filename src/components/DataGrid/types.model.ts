@@ -17,6 +17,7 @@ export interface Column {
   sortIndex?: number; // When multiple columns declare `sort`, the one with the lowest sortIndex is applied (grid uses single-column sort).
   filterable?: boolean;
   pinnable?: boolean;
+  lockPosition?: boolean; // Prevent this column from being dragged to a new position (default: false).
   hide?: boolean; // Hide this column initially. Users can still re-show it via the Column Chooser / API.
   filterType?: FilterType; // Specify filter type for the column
   renderCell?: (row: Row) => React.ReactNode; // Custom cell renderer

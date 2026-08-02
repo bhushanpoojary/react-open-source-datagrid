@@ -76,6 +76,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   texts,
   defaultColDef,
   singleClickEdit = false,
+  disableColumnReorder = false,
   quickFilterText,
   rowStyle,
   rowClass,
@@ -662,6 +663,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
             showColumnPinning={showColumnPinning}
             masterDetailConfig={masterDetailConfig}
             dragRowConfig={dragRowConfig}
+            disableColumnReorder={disableColumnReorder}
             onContextMenu={(event, column, columnIndex) =>
               handleContextMenu({
                 type: 'header',

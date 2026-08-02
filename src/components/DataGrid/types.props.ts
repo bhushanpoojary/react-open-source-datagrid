@@ -112,6 +112,7 @@ export interface DataGridProps {
   showFilterCount?: boolean; // Show/hide the selected values count on the Apply button in set/multi-select filters (default: true)
   className?: string; // Additional CSS class name(s) applied to the root container element
   singleClickEdit?: boolean; // Start editing on a single click (grid-wide). Columns can override via `Column.singleClickEdit`.
+  disableColumnReorder?: boolean; // Disable drag-and-drop column reordering (default: false). Per-column `lockPosition` also prevents an individual column from being moved.
   quickFilterText?: string; // Global quick-filter text. Rows are kept when any column's value contains this text (case-insensitive).
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowStyle?: React.CSSProperties | ((row: Row, rowIndex: number) => React.CSSProperties | undefined); // Inline style applied to each data row.

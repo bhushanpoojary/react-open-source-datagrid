@@ -16,6 +16,7 @@ interface GridHeaderProps {
   showColumnPinning: boolean;
   masterDetailConfig?: MasterDetailConfig;
   dragRowConfig?: DragRowConfig;
+  disableColumnReorder?: boolean;
   onContextMenu?: (event: React.MouseEvent, column: Column, columnIndex: number) => void;
 }
 
@@ -32,6 +33,7 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   showColumnPinning,
   masterDetailConfig,
   dragRowConfig,
+  disableColumnReorder = false,
   onContextMenu,
 }) => {
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
@@ -110,12 +112,18 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
 
   // Drag and drop handlers for column reordering and grouping
   const handleDragStart = (e: React.DragEvent, field: string) => {
+    const column = columnMap.get(field);
+    if (disableColumnReorder || column?.lockPosition) {
+      e.preventDefault();
+      return;
+    }
     setDraggedColumn(field);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', field);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (disableColumnReorder) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
   };
@@ -123,7 +131,14 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
   const handleDrop = (e: React.DragEvent, targetField: string) => {
     e.preventDefault();
     
-    if (!draggedColumn || draggedColumn === targetField) {
+    if (disableColumnReorder || !draggedColumn || draggedColumn === targetField) {
+      setDraggedColumn(null);
+      return;
+    }
+
+    const sourceColumn = columnMap.get(draggedColumn);
+    const targetColumn = columnMap.get(targetField);
+    if (sourceColumn?.lockPosition || targetColumn?.lockPosition) {
       setDraggedColumn(null);
       return;
     }
@@ -308,8 +323,9 @@ export const GridHeader: React.FC<GridHeaderProps> = ({
                 borderRight: 'var(--grid-border-width, 1px) solid var(--grid-border)',
                 flexShrink: 0,
                 opacity: draggedColumn === field ? 0.5 : 1,
+                cursor: (!disableColumnReorder && column.lockPosition !== true) ? 'grab' : undefined,
               }}
-              draggable
+              draggable={!disableColumnReorder && column.lockPosition !== true}
               onDragStart={(e) => handleDragStart(e, field)}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, field)}
