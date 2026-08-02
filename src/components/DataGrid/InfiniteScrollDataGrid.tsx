@@ -20,8 +20,8 @@ import { GridBody } from './GridBody';
 import { GroupByPanel } from './GroupByPanel';
 import { ColumnChooser } from './ColumnChooser';
 import { ColumnFilters } from './ColumnFilters';
-import { getTheme, generateThemeCSS } from './themes';
-import type { ThemeName } from './themes';
+import { resolveTheme, generateThemeCSS } from './themes';
+import type { ThemeName, CustomGridTheme } from './themes';
 
 export interface InfiniteScrollDataGridProps {
   columns: Column[];
@@ -29,7 +29,7 @@ export interface InfiniteScrollDataGridProps {
   pageSize?: number;
   showColumnPinning?: boolean;
   virtualScrollConfig?: VirtualScrollConfig;
-  theme?: ThemeName;
+  theme?: ThemeName | CustomGridTheme;
   showFilterCount?: boolean;
   onRowClick?: (row: Row) => void;
   onCellEdit?: (rowIndex: number, field: string, value: unknown) => void;
@@ -64,9 +64,9 @@ export const InfiniteScrollDataGrid: React.FC<InfiniteScrollDataGridProps> = ({
   const [dataSourceInstance, setDataSourceInstance] = useState<ServerSideDataSource | null>(null);
   const [totalRows, setTotalRows] = useState<number | undefined>(undefined);
 
-  // Theme styles - generate CSS variables from theme
+  // Theme styles - generate CSS variables from theme (built-in name or custom theme object)
   const themeStyles = useMemo(() => {
-    const currentTheme = getTheme(_theme);
+    const currentTheme = resolveTheme(_theme);
     return generateThemeCSS(currentTheme);
   }, [_theme]);
 

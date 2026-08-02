@@ -6,7 +6,8 @@
 export type ThemeName = 'quartz' | 'alpine' | 'material' | 'dark' | 'nord' | 'dracula' | 'solarized-light' | 'solarized-dark' | 'monokai' | 'one-dark';
 
 export interface GridTheme {
-  name: ThemeName;
+  /** Built-in theme names are `ThemeName`; custom/merged themes may use any string. */
+  name: string;
   displayName: string;
   colors: {
     // Background colors
@@ -659,6 +660,67 @@ export function getTheme(themeName: ThemeName): GridTheme {
  */
 export function getThemeNames(): ThemeName[] {
   return Object.keys(themes) as ThemeName[];
+}
+
+/** Recursively makes every field (including nested objects) optional. */
+export type DeepPartial<T> = T extends object
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : T;
+
+/**
+ * A fully or partially custom theme object. Any of `colors`, `spacing`,
+ * `typography`, `borders`, and `shadows` may be provided in part - fields
+ * left out fall back to the corresponding value from `baseTheme` (defaults
+ * to `'quartz'`).
+ *
+ * @example
+ * ```tsx
+ * <DataGrid
+ *   theme={{
+ *     baseTheme: 'quartz',
+ *     colors: { primary: '#ff6b00', background: '#fffdf9' },
+ *   }}
+ * />
+ * ```
+ */
+export interface CustomGridTheme extends DeepPartial<Omit<GridTheme, 'name' | 'displayName'>> {
+  /** Optional display name for this custom theme (e.g. shown in a theme selector UI). */
+  name?: string;
+  displayName?: string;
+  /** Built-in theme used as the base for any fields not overridden. Defaults to `'quartz'`. */
+  baseTheme?: ThemeName;
+}
+
+function isThemeName(theme: ThemeName | CustomGridTheme): theme is ThemeName {
+  return typeof theme === 'string';
+}
+
+/**
+ * Merge a custom (possibly partial) theme on top of a base theme, producing
+ * a fully-resolved `GridTheme`. Missing fields in `overrides` fall back to `base`.
+ */
+export function mergeTheme(base: GridTheme, overrides: CustomGridTheme): GridTheme {
+  return {
+    name: overrides.name ?? base.name,
+    displayName: overrides.displayName ?? base.displayName,
+    colors: { ...base.colors, ...overrides.colors },
+    spacing: { ...base.spacing, ...overrides.spacing },
+    typography: { ...base.typography, ...overrides.typography },
+    borders: { ...base.borders, ...overrides.borders },
+    shadows: { ...base.shadows, ...overrides.shadows },
+  };
+}
+
+/**
+ * Resolve the `theme` prop value into a concrete `GridTheme`.
+ * Accepts either a built-in theme name or a custom theme object, in which
+ * case it is merged on top of `baseTheme` (defaults to `'quartz'`).
+ */
+export function resolveTheme(theme: ThemeName | CustomGridTheme): GridTheme {
+  if (isThemeName(theme)) {
+    return getTheme(theme);
+  }
+  return mergeTheme(getTheme(theme.baseTheme ?? 'quartz'), theme);
 }
 
 /**

@@ -1,6 +1,6 @@
 // Top-level props and text-override types for the DataGrid component.
 import type React from 'react';
-import type { ThemeName } from './themes';
+import type { ThemeName, CustomGridTheme } from './themes';
 import type { DensityMode } from './densityModes';
 import type { GridApi } from './gridApi.types';
 import type { PivotConfig } from './pivotEngine';
@@ -104,7 +104,7 @@ export interface DataGridProps {
   pivotConfig?: PivotConfig | null; // Configuration for pivot table mode
   masterDetailConfig?: MasterDetailConfig; // Configuration for master/detail rows
   tableId?: string; // Unique ID for multi-table drag-and-drop
-  theme?: ThemeName; // Theme to apply to the grid
+  theme?: ThemeName | CustomGridTheme; // Built-in theme name, or a custom theme object (optionally extending a `baseTheme`)
   densityMode?: DensityMode; // Density mode: compact, normal, or comfortable
   showDensityToggle?: boolean; // Show density mode toggle control (default: false)
   hideToolbar?: boolean; // Hide the toolbar (columns, export, group by) - useful for nested grids

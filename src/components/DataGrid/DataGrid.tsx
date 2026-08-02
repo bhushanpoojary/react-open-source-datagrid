@@ -25,7 +25,7 @@ import { useGridPersistence } from './useGridPersistence';
 import { useGridApiBinding } from './useGridApiBinding';
 import { useServerSideCallbacks } from './useServerSideCallbacks';
 import { useGridAnnouncements } from './useGridAnnouncements';
-import { getTheme, generateThemeCSS } from './themes';
+import { resolveTheme, generateThemeCSS } from './themes';
 import { buildTreeFromFlat, flattenTree } from './treeDataUtils';
 import { ScreenReaderAnnouncer } from './ScreenReaderAnnouncer';
 import type { GridApi } from './gridApi.types';
@@ -218,9 +218,9 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     }
   }, [masterDetailConfig?.enabled, masterDetailConfig?.defaultExpandedMasterRowKeys]);
 
-  // Theme styles - generate CSS variables from theme
+  // Theme styles - generate CSS variables from theme (built-in name or custom theme object)
   const themeStyles = useMemo(() => {
-    const currentTheme = getTheme(_theme);
+    const currentTheme = resolveTheme(_theme);
     return generateThemeCSS(currentTheme);
   }, [_theme]);
 

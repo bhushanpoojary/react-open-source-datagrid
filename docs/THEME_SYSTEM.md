@@ -117,6 +117,68 @@ function MyComponent() {
 }
 ```
 
+### Custom Theme Objects
+
+Instead of (or in addition to) a built-in theme name, `theme` also accepts a
+**custom theme object**. This lets you override any subset of colors, spacing,
+typography, borders, or shadows without having to define every field. Fields
+you don't specify fall back to `baseTheme` (defaults to `'quartz'`).
+
+```tsx
+import { DataGrid } from 'react-open-source-grid';
+import type { CustomGridTheme } from 'react-open-source-grid';
+
+const brandTheme: CustomGridTheme = {
+  baseTheme: 'quartz', // start from a built-in theme (optional, defaults to 'quartz')
+  colors: {
+    primary: '#ff6b00',
+    primaryHover: '#e35f00',
+    selected: '#ffe4cc',
+    headerBackground: '#1f2937',
+    headerText: '#f9fafb',
+  },
+  borders: {
+    radius: '2px',
+  },
+};
+
+function MyComponent() {
+  return (
+    <DataGrid
+      columns={columns}
+      rows={rows}
+      theme={brandTheme} // Fully custom colors, merged over the Quartz base theme
+    />
+  );
+}
+```
+
+You can also provide **every** field to define a theme entirely from scratch
+(no fields will be inherited from `baseTheme` for the ones you set):
+
+```tsx
+const fullyCustomTheme: CustomGridTheme = {
+  name: 'my-brand',
+  displayName: 'My Brand',
+  colors: { /* all color fields... */ },
+  spacing: { /* all spacing fields... */ },
+  typography: { /* all typography fields... */ },
+  borders: { /* all border fields... */ },
+  shadows: { /* all shadow fields... */ },
+};
+```
+
+Use `resolveTheme(theme)` if you need the fully-resolved `GridTheme` object
+(e.g. to read colors for your own surrounding UI), and `mergeTheme(base, overrides)`
+to merge a custom theme onto a specific base theme programmatically:
+
+```tsx
+import { resolveTheme, mergeTheme, darkTheme } from 'react-open-source-grid';
+
+const resolved = resolveTheme({ colors: { primary: '#00c2a8' } }); // merges onto quartz
+const darkVariant = mergeTheme(darkTheme, { colors: { primary: '#00c2a8' } });
+```
+
 ### With Theme Selector
 
 ```tsx
@@ -168,7 +230,7 @@ Each theme includes comprehensive styling definitions:
 
 ```typescript
 interface GridTheme {
-  name: ThemeName;
+  name: string;
   displayName: string;
   colors: {
     // Background colors

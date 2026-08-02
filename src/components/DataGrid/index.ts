@@ -36,13 +36,15 @@ export {
   getTheme, 
   getThemeNames, 
   generateThemeCSS,
+  resolveTheme,
+  mergeTheme,
   quartzTheme,
   alpineTheme,
   materialTheme,
   darkTheme,
   themes
 } from './themes';
-export type { ThemeName, GridTheme } from './themes';
+export type { ThemeName, GridTheme, CustomGridTheme, DeepPartial } from './themes';
 export { DensityToggle } from './DensityToggle';
 export { useDensityMode } from './useDensityMode';
 export type { UseDensityModeOptions, UseDensityModeReturn } from './useDensityMode';
