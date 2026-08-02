@@ -1,5 +1,7 @@
 # React DataGrid Component
 
+Demo site https://reactdatagrid.dev/
+
 A fully-featured, reusable DataGrid component built with React, TypeScript, and Tailwind CSS - similar to AG-Grid.
 
 ## Features
