@@ -1,7 +1,7 @@
 {
   "name": "react-open-source-grid",
   "private": false,
-  "version": "1.7.44",
+  "version": "1.7.45",
   "type": "module",
   "description": "A high-performance React DataGrid component with advanced features like virtual scrolling, infinite scrolling, tree data, market data mode, integrated charts with context menu, and more",
   "main": "./dist/lib/index.cjs",
@@ -44,6 +44,10 @@
     "url": "https://github.com/bhushanpoojary/react-open-source-datagrid/issues"
   },
   "homepage": "https://bhushanpoojary.github.io/react-open-source-datagrid",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/bhushanpoojary"
+  },
   "scripts": {
     "build:lib": "tsup src/index.ts --format cjs,esm --out-dir dist/lib --clean && tsc -p tsconfig.build.json",
     "build": "npm run build:lib",
