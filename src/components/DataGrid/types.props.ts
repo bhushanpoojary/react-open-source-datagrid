@@ -111,6 +111,7 @@ export interface DataGridProps {
   hideFilters?: boolean; // Hide the column filter row independently of the toolbar
   showFilterCount?: boolean; // Show/hide the selected values count on the Apply button in set/multi-select filters (default: true)
   className?: string; // Additional CSS class name(s) applied to the root container element
+  style?: React.CSSProperties; // Additional inline styles applied to the root container element. Merged after (and overriding) the grid's default styles, so it can be used to override theme/density defaults without `!important`.
   singleClickEdit?: boolean; // Start editing on a single click (grid-wide). Columns can override via `Column.singleClickEdit`.
   disableColumnReorder?: boolean; // Disable drag-and-drop column reordering (default: false). Per-column `lockPosition` also prevents an individual column from being moved.
   disableColumnResize?: boolean; // Disable drag-to-resize for all columns (default: false). Per-column `resizable: false` also prevents an individual column from being resized.

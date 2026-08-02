@@ -73,6 +73,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   hideFilters = false,
   showFilterCount = true,
   className,
+  style,
   texts,
   defaultColDef,
   singleClickEdit = false,
@@ -577,6 +578,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        ...style,
       }}
       className={`data-grid density-${densityMode}${className ? ` ${className}` : ''}`}
       onKeyDown={undoRedoCellEditing ? (e: React.KeyboardEvent) => {
