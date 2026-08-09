@@ -74,10 +74,14 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Package dist
+        # dist/ has 100+ individual files; attaching them all as separate release
+        # assets hits GitHub's asset-listing pagination and fails, so zip it up
+        run: (cd dist && zip -r ../dist.zip .)
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.version }}
           generate_release_notes: true
-          files: |
-            dist/**/*
+          files: dist.zip
