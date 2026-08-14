@@ -50,6 +50,23 @@ import type { PivotResult, PivotColumn } from './pivotEngine';
  * - Sticky header (header stays visible when scrolling)
  * - Grid API: Programmatic control via ref (AG Grid-inspired API)
  */
+
+// Cached measurement of the browser's rendered vertical scrollbar width (px).
+// Nested scrollable regions (e.g. the row body) can reserve this space without
+// resizing their own bounding box, so it's not reflected in a parent's
+// `clientWidth`. Measured lazily against the grid root so it inherits the
+// library's scoped scrollbar styling, then cached for the session.
+let cachedScrollbarWidth: number | null = null;
+function measureScrollbarWidth(root: HTMLElement): number {
+  if (cachedScrollbarWidth !== null) return cachedScrollbarWidth;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:absolute; visibility:hidden; overflow:scroll; width:100px; height:100px;';
+  root.appendChild(probe);
+  cachedScrollbarWidth = probe.offsetWidth - probe.clientWidth;
+  root.removeChild(probe);
+  return cachedScrollbarWidth;
+}
+
 export const DataGrid = forwardRef<GridApi, DataGridProps>(({
   columns: columnDefsRaw,
   rows,
@@ -277,6 +294,10 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     onGridReady,
   });
 
+  // Ref to the scrollable body wrapper, used to measure available width for flex
+  // column sizing (its clientWidth accounts for any reserved scrollbar space).
+  const scrollWrapperRef = useRef<HTMLDivElement>(null);
+
   // Filter out hidden columns and arrange pinned columns
   const hiddenSet = new Set(state.hiddenColumns);
   const visibleColumnOrder = state.columnOrder.filter(field => !hiddenSet.has(field));
@@ -309,7 +330,10 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
     .join('|');
   const displayOrderKey = displayColumnOrder.join(',');
   useEffect(() => {
-    const el = containerRef.current;
+    // Measure the actual scrolling viewport, not the outer (overflow: hidden) root.
+    // Its clientWidth already excludes any vertical scrollbar gutter reserved by
+    // the body, so flex columns don't overshoot and force a horizontal scrollbar.
+    const el = scrollWrapperRef.current ?? containerRef.current;
     if (!el) return;
 
     const flexFields = displayColumnOrder.filter((f) => {
@@ -339,7 +363,12 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         (s, f) => s + (columnByField.get(f)?.flex ?? 0),
         0
       );
-      const remaining = available - uiExtra - fixedWidth - 2; // small buffer to avoid overflow
+      // Reserve space for the row body's own (nested) vertical scrollbar, which
+      // isn't reflected in `el.clientWidth` since its box doesn't shrink to fit it.
+      // Without this, flex columns can fill the full width and force an unwanted
+      // horizontal scrollbar that's clipped by the grid's `overflow: hidden` root.
+      const scrollbarWidth = measureScrollbarWidth(el);
+      const remaining = available - uiExtra - fixedWidth - scrollbarWidth;
       if (remaining <= 0 || totalFlex <= 0) return;
 
       flexFields.forEach((f) => {
@@ -651,7 +680,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       )}
 
       {/* Horizontal scroll wrapper — keeps header, body & footer in a single scroll context */}
-      <div style={{ overflowX: 'auto', overflowY: 'auto', width: '100%', flex: 1, minHeight: 0, position: 'relative' }}>
+      <div ref={scrollWrapperRef} style={{ overflowX: 'auto', overflowY: 'auto', width: '100%', flex: 1, minHeight: 0, position: 'relative' }}>
         {/* Sticky Header */}
         <div role="rowgroup" style={{ position: 'sticky', top: 0, zIndex: 20, width: 'fit-content', minWidth: '100%' }}>
           <GridHeader
