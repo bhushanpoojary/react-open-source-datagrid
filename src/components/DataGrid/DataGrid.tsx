@@ -371,10 +371,19 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
       const remaining = available - uiExtra - fixedWidth - scrollbarWidth;
       if (remaining <= 0 || totalFlex <= 0) return;
 
-      flexFields.forEach((f) => {
+      // Round each share but let the last flex column absorb the leftover
+      // remainder, so the allocated widths sum to exactly `remaining` instead
+      // of leaving a few unallocated px (which would otherwise show up as a
+      // gap that doesn't quite match the reserved scrollbar width).
+      let allocated = 0;
+      flexFields.forEach((f, index) => {
         const col = columnByField.get(f);
         if (!col) return;
-        const share = Math.floor(remaining * ((col.flex ?? 0) / totalFlex));
+        const isLast = index === flexFields.length - 1;
+        const share = isLast
+          ? remaining - allocated
+          : Math.round(remaining * ((col.flex ?? 0) / totalFlex));
+        allocated += share;
         const next = clampColumnWidth(col, share);
         if (state.columnWidths[f] !== next) {
           dispatch({ type: 'RESIZE_COLUMN', payload: { field: f, width: next } });
