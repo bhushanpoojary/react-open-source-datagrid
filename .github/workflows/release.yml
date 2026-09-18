@@ -63,7 +63,17 @@ jobs:
       - name: Bump version and tag
         id: version
         run: |
-          NEW_VERSION=$(npm version "${{ steps.bump.outputs.level }}" -m "chore(release): %s [skip ci]")
+          git fetch --tags --force
+          LEVEL="${{ steps.bump.outputs.level }}"
+          # Bump package.json without tagging first so we can skip any tag that
+          # already exists (e.g. a re-run of an already-released commit).
+          NEW_VERSION=$(npm version "$LEVEL" --no-git-tag-version)
+          while git rev-parse -q --verify "refs/tags/$NEW_VERSION" >/dev/null; do
+            echo "Tag $NEW_VERSION already exists — bumping patch"
+            NEW_VERSION=$(npm version patch --no-git-tag-version)
+          done
+          git commit -am "chore(release): ${NEW_VERSION#v} [skip ci]"
+          git tag -m "chore(release): ${NEW_VERSION#v}" "$NEW_VERSION"
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Push version bump
