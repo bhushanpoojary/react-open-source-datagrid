@@ -798,7 +798,7 @@ export const DataGrid = forwardRef<GridApi, DataGridProps>(({
         )}
 
         {/* Loading / No-rows overlay (below the sticky header, which keeps its z-index) */}
-        {(loading || (paginatedRows.length === 0 && !virtualScrollConfig?.enabled)) && (
+        {(loading || (virtualScrollConfig?.enabled ? unpinnedRows.length === 0 : paginatedRows.length === 0)) && (
           <div
             role="status"
             aria-live="polite"

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react';
 
 export interface VirtualScrollerProps<T = unknown> {
   // Data
@@ -78,6 +78,19 @@ export const VirtualScroller = <T = unknown>({
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPos, setScrollPos] = useState<ScrollPosition>({ scrollTop: 0, scrollLeft: 0 });
   const [measuredHeights] = useState<Map<number, number>>(new Map());
+  // Measured client width of the scroll container, used when no explicit
+  // `containerWidth` is passed so column virtualization has a real viewport.
+  const [measuredWidth, setMeasuredWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setMeasuredWidth(el.clientWidth);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   
   // Memoize item height function
   const getItemHeight = useCallback(
@@ -168,7 +181,9 @@ export const VirtualScroller = <T = unknown>({
       };
     }
 
-    const effectiveWidth = containerWidth || 0;
+    // Fall back to the measured viewport width, then to the total column width
+    // so cells render even before the container has been measured.
+    const effectiveWidth = containerWidth || measuredWidth || totalColumnWidth;
     let accumulatedWidth = 0;
     let startIndex = 0;
     
@@ -217,7 +232,7 @@ export const VirtualScroller = <T = unknown>({
       offsetBefore,
       columns: visibleCols,
     };
-  }, [columns, scrollPos.scrollLeft, containerWidth, columnOverscan]);
+  }, [columns, scrollPos.scrollLeft, containerWidth, measuredWidth, totalColumnWidth, columnOverscan]);
 
   // Handle scroll event with throttling
   const handleScroll = useCallback(
